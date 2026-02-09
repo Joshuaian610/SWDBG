@@ -1,0 +1,21 @@
+cost=0
+produce=1
+force=0
+fight=0
+
+function onLoad()
+    self.addContextMenuItem("Exile Card", exile_card)
+end
+
+function exile_card(player_color, position, object)
+    local exile_bag = nil
+    if player_color == "Blue" then
+        exile_bag = getObjectFromGUID("96e6ce")
+    elseif player_color == "Red" then
+        exile_bag = getObjectFromGUID("051249")
+    end
+    local tags = self.getTags()
+    table.insert(tags, 'exiled')
+    self.setTags(tags)
+    exile_bag.putObject(self)
+end

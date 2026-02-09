@@ -1,0 +1,60 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.23529,
+    "g": 0.23529,
+    "r": 0.23529
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.199999988,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667296766477/DB02D9CDFEE1D80A398768A4DF808C84520A7456/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667296796866/364DBFD8FB230C1E84C76C9C0FE8FC38368DDB99/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "903ad5",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "",
+  "LuaScript_path": "ButtonEnableLeaders.903ad5.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Button Enable Leaders ",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -39.212,
+    "posY": 6.321,
+    "posZ": 3.989,
+    "rotX": 60,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 1.25,
+    "scaleY": 1,
+    "scaleZ": 1.25
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

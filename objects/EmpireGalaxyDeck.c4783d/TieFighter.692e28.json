@@ -1,0 +1,71 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 12900,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "129": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129065340212/FE89CC404725CC085A26C911AF352B9FC0F4031A/",
+      "NumHeight": 4,
+      "NumWidth": 6,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Draw Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100804281/627A606D21D704C684FA0468C58BD3F3E505881C/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "692e28",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "EmpireGalaxyDeck.c4783d/TieFighter.692e28.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Tie Fighter",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "empire",
+    "fighter",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 44.338,
+    "posY": 0.151,
+    "posZ": 25.182,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "EmpireGalaxyDeck.c4783d/TieFighter.692e28.xml"
+}

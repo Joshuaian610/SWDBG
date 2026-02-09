@@ -1,0 +1,22 @@
+cost    = 2
+produce = 2
+force   = 0
+fight   = 0
+faction = "republic"
+attack_tooltip = 'May Manually Exile Card'
+
+function onLoad()
+    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
+    pad_galaxy_discard = getObjectFromGUID("a03936")
+    pad_outer_rim      = getObjectFromGUID("606e92")
+    self.addContextMenuItem("Exile Card", exile_card)
+end
+
+function exile_card(player_area, position, object)
+    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+end -- end exile_Card()
+
+
+function bh_create()
+    pad_galaxy_deck.call('bh_create', {card=self, tooltip=attack_tooltip, faction=faction})
+end -- end bh_create()

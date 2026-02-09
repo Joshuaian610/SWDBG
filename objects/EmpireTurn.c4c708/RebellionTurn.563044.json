@@ -1,0 +1,61 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.094,
+    "g": 0.1,
+    "r": 0.856
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.2,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574768439/D847C8F155CF3F753BBE34C8CC69550A2434838F/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574768439/D847C8F155CF3F753BBE34C8CC69550A2434838F/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "563044",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Rebellion Turn",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable",
+    "turn_tracker"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -46.005,
+    "posY": 0.124,
+    "posZ": -21.005,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 7.24,
+    "scaleY": 1,
+    "scaleZ": 7.24
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

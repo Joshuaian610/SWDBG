@@ -1,0 +1,122 @@
+cost           = 4
+produce        = 2
+force          = 0
+fight          = 0
+faction        = "separatist"
+MIN_VALUE      = 0
+MAX_VALUE      = 6
+MAX_HP         = 4
+
+
+function onload(saved_data)
+    self.addContextMenuItem("Exile Card", exile_card)
+    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
+    pad_galaxy_discard = getObjectFromGUID("a03936")
+    pad_outer_rim      = getObjectFromGUID("606e92")
+    play_zone          = getObjectFromGUID("0cdb1a")
+    val                = 0
+    if saved_data ~= 0 then
+        local loaded_data = JSON.decode(saved_data)
+        if loaded_data ~= nil then
+            val = loaded_data[1]
+        end
+    end
+    local buttons = self.getButtons()
+    if buttons ~= nil then
+        for k = #buttons, 1, -1 do
+            self.removeButton(buttons[k].index)
+            table.remove(buttons)
+        end
+    end
+    for k, v in pairs(play_zone.getObjects()) do
+        if v == self and (v.hasTag('bottom_owner') or v.hasTag('top_owner') or v.hasTag('ai_owner')) then
+            ship_counter_create()
+        end
+    end
+end
+
+
+function update_save()
+    local data_to_save = {val}
+    saved_data = JSON.encode(data_to_save)
+    self.script_state = saved_data
+end -- end function update_save()
+
+
+function exile_card(player_area, position, object)
+    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+end -- end exile_card()
+
+
+function ability_button_create_ui()
+    pad_galaxy_deck.call('ability_button_create_ui', {card=self})
+end -- end ability_button_create()
+
+
+function ship_counter_create()
+    pad_galaxy_deck.call('ship_counter_create', {ship_card=self, val=val})
+end -- end function createAll()
+
+
+function add_subtract(_obj, _color, alt_click)
+    mod = alt_click and -1 or 1
+    new_value = math.min(math.max(val + mod, MIN_VALUE), MAX_VALUE)
+    if val ~= new_value then
+        val = new_value
+        update_val()
+        update_save()
+    end
+    local is_bottom = (self.hasTag('bottom_owner'))
+    local is_top    = (self.hasTag('top_owner'))
+    local is_ai     = (self.hasTag('ai_owner'))
+    if is_bottom or is_top then
+        discard_loc = (is_bottom and {-8.50, 2, -31.00} or {8.50, 2, 31.00})
+        discard_rot = (is_bottom and {0, 180, 0} or {0, 0, 0})
+    end
+    local naboo_checkzone = nil
+    naboo_checkzone       = (is_bottom and getObjectFromGUID("59b7ad")) or (is_top and getObjectFromGUID("23b5a3")) or (is_ai and getObjectFromGUID("6b5523"))
+    local naboo_in_play   = false
+    if naboo_checkzone ~= nil then
+        for _, object in pairs(naboo_checkzone.getObjects()) do
+            if object.getName() == "Naboo" and not is_ai then
+                MAX_HP = MAX_HP + 2
+                naboo_in_play = true
+            end
+        end
+    end
+    if val == MAX_HP then
+        if not is_ai then
+            self.setRotation(discard_rot)
+            self.setPositionSmooth(discard_loc, false, false)
+            set_val(0)
+        else
+            set_val(0)
+            getObjectFromGUID("051249").putObject(self)
+        end
+    end
+    if naboo_in_play then
+        MAX_HP = MAX_HP - 2
+    end
+end -- end function add_subtract()
+
+
+function update_val()
+    self.editButton({
+        index = 0,
+        label = tostring(val),
+    })
+end -- end function updateVal
+
+
+function set_val(value)
+    val = value
+    update_val()
+    update_save()
+end -- send function set_val()
+
+
+function reset_val()
+    val = 0
+    update_val()
+    update_save()
+end -- end function reset_val()

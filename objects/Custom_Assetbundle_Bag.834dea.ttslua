@@ -1,0 +1,5 @@
+function onObjectLeaveContainer(container, object)
+    if container == self and object == getObjectFromGUID("41cfbf") then
+        object.interactable = false
+    end
+end

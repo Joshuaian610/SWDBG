@@ -1,0 +1,60 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.23525,
+    "g": 0.23525,
+    "r": 0.23525
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.2,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094938481961/70766F0025782542321B874600C2D03C844BE4F7/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094940006424/00E67E53E95BB11AA8B254E4F6FEA96CD645DC71/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "16d15b",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "",
+  "LuaScript_path": "SetupBackdropTop.16d15b.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Setup Backdrop Top",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -25.001,
+    "posY": 0.02,
+    "posZ": 34.52,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 6,
+    "scaleY": 1,
+    "scaleZ": 7.5
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

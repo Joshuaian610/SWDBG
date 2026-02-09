@@ -1,0 +1,67 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 0.53,
+    "r": 0.11796
+  },
+  "ContainedObjects_path": "EmpireTurn.c4c708",
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.2,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574766785/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574766785/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "c4c708",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Empire Turn",
+  "Snap": true,
+  "States_path": {
+    "2": "SeparatistTurn.48dbb6",
+    "3": "RebellionTurn.563044",
+    "4": "RepublicTurn.974696"
+  },
+  "Sticky": true,
+  "Tags": [
+    "non_interactable",
+    "turn_tracker"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -46.739,
+    "posY": 0.324,
+    "posZ": -1.121,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 180,
+    "scaleX": 7.24,
+    "scaleY": 1,
+    "scaleZ": 7.24
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

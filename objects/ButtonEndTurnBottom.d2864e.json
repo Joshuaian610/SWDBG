@@ -1,0 +1,60 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 0.53,
+    "r": 0.11792
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.348251373,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574253163/B896457BD12B9D9FA1ABB795F3234A8CF1CF1473/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574253163/B896457BD12B9D9FA1ABB795F3234A8CF1CF1473/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "d2864e",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "",
+  "LuaScript_path": "ButtonEndTurnBottom.d2864e.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Button End Turn Bottom",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -28,
+    "posY": 0.141,
+    "posZ": -21,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 3,
+    "scaleY": 1,
+    "scaleZ": 3
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

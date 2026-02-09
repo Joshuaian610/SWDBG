@@ -1,0 +1,86 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "ImperialShuttle.18a05a",
+    "ImperialShuttle.7db6d7",
+    "ImperialShuttle.ba88f9",
+    "ImperialShuttle.6a89fe",
+    "ImperialShuttle.c0f9aa",
+    "ImperialShuttle.f98eb4",
+    "ImperialShuttle.05a037",
+    "Stormtrooper.d7f87f",
+    "Stormtrooper.8e59cd",
+    "Inquisitor.118a7e"
+  ],
+  "ContainedObjects_path": "EmpireDeck.021581",
+  "CustomDeck": {
+    "42": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330534565906/47163B49174B08D1E99E6FE30C4CDB926D49B272/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    4201,
+    4204,
+    4203,
+    4205,
+    4206,
+    4200,
+    4202,
+    4207,
+    4208,
+    4209
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "021581",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Empire Deck",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "empire",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 7.75,
+    "posY": 0.21,
+    "posZ": -12.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

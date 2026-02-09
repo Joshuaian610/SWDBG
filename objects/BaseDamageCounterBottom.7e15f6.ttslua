@@ -1,0 +1,148 @@
+MIN_VALUE = 0
+MAX_VALUE = 20
+
+function onload(saved_data)
+    val = 0
+    pad_galaxy_deck = getObjectFromGUID("83b3ce")
+    if saved_data ~= 0 then
+        local loaded_data = JSON.decode(saved_data)
+        if loaded_data ~= nil then
+            val = loaded_data[1]
+        end
+    end
+    local name = self.getName()
+    if name == "Damage Counter Empire" or
+    name == "Damage Counter Separatist" then
+        b_color = {0, 0, 1, .8}
+        h_color = {0, 0, 1, .4}
+        createAll(b_color, h_color)
+    elseif name == "Damage Counter Republic" or
+    name == "Damage Counter Rebellion" then
+        b_color = {1, 0, 0, .8}
+        h_color = {1, 0, 0, .4}
+        createAll(b_color, h_color)
+    else
+        b_color = {1, 0, 1, .4}
+        h_color = {1, 0, 1, .2}
+        createAll(b_color, h_color)
+    end
+end -- end function onload()
+
+
+function updateSave()
+    local data_to_save = {val}
+    saved_data = JSON.encode(data_to_save)
+    self.script_state = saved_data
+end -- end function updateSave()
+
+
+function createAll()
+    pad_galaxy_deck.call('remove_buttons', {object=self})
+    f_color = {1, 1, 1, 255}
+    self.createButton({
+        click_function = "add_subtract",
+        function_owner = self,
+        label          = tostring(val),
+        position       = {0.00, 0.36, 0.00},
+        height         = 725,
+        width          = 725,
+        font_size      = 1000,
+        scale          = {x=1, y=1, z=1},
+        font_color     = f_color,
+        hover_color    = h_color,
+        color          = b_color,
+    })
+end -- end function createAll()
+
+function removeAll()
+      self.removeButton(0)
+end -- end function removeAll()
+
+function reloadAll()
+    removeAll()
+    createAll()
+    updateSave()
+end -- end function reloadAll()
+
+function add_subtract(_obj, _color, alt_click)
+    mod = alt_click and -1 or 1
+    new_value = math.min(math.max(val + mod, MIN_VALUE), MAX_VALUE)
+    if val ~= new_value then
+        val = new_value
+        updateVal()
+        updateSave()
+        -- check to see max HP on related base, discard & reset counter if destroyed
+        local base_max_hp                 = 999
+        local faction                     = nil
+        local color                       = nil
+        local bottom_faction, top_faction = pad_galaxy_deck.call('get_playerareas')
+        local bottom_color, top_color     = pad_galaxy_deck.call('get_playercolors')
+        local base_found                  = false
+        local found_base                  = nil
+        if bottom_faction == 'rebellion' then bottom_faction = 'rebel' end
+        if top_faction == 'rebellion' then top_faction = 'rebel' end
+        if self.getGUID() == "7e15f6" then
+            faction = bottom_faction
+            color   = top_color
+            zone    = getObjectFromGUID("59b7ad")
+            rot     = {0.00, 0.00, 0.00}
+            loc     = {29.50, 3.50, 21.00}
+        elseif self.getGUID() == "fa055e" then
+            faction = top_faction
+            color   = bottom_color
+            zone    = getObjectFromGUID("23b5a3")
+            rot     = {0.00, 180.00, 0.00}
+            loc     = {29.50, 3.50, -21.00}
+        end
+        for k, object in pairs(zone.getObjects()) do
+            if object.tag == "Card" and object.hasTag(faction .. '_base') then
+                base_max_hp = object.getVar('max_hp')
+                base_found  = true
+                found_base  = object
+            end          
+        end
+        if not base_found then
+          return nil
+        end
+        if val >= base_max_hp then
+            broadcastToAll(found_base.getName() .. " has been destroyed!", color)
+            found_base.setRotation(rot)
+            found_base.setPositionSmooth(loc, false, false)
+            val = 0
+            updateVal()
+            updateSave()
+        end
+    end
+end -- end function add_subtract()
+
+function subtract()
+  new_value = math.min(math.max(val -1, MIN_VALUE), MAX_VALUE)
+  if val ~= new_value then
+      val = new_value
+      updateVal()
+      updateSave()
+  end
+end -- end function subtract()
+
+function updateVal()
+    self.editButton({
+        index = 0,
+        label = tostring(val),
+    })
+end -- end function updateVal
+
+function set_val(value)
+    val = value
+    updateVal()
+    updateSave()
+end -- send function set_val()
+
+function reset_val()
+    val = 0
+    updateVal()
+    updateSave()
+end -- end function set_val()
+
+function keepSample(_obj, _string, value)
+    reloadAll()
+end -- end function keepSample()

@@ -1,0 +1,84 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "Bag": {
+    "Order": 0
+  },
+  "ColorDiffuse": {
+    "b": 0.8,
+    "g": 0.8,
+    "r": 0.8
+  },
+  "ContainedObjects_order": [
+    "Custom_Tile.b7e197",
+    "Custom_Tile.ac18e9",
+    "Custom_Tile.4d7745",
+    "Custom_Tile.53020e",
+    "LeadersCardRepublic.b5ca34",
+    "LeadersCardRebellion.a41512",
+    "LeadersCardEmpire.adf064",
+    "LeadersCardSeparatist.f001ad",
+    "Custom_Token.41cfbf",
+    "BlockSquare.590c7d",
+    "BlockSquare.59278f",
+    "BlockSquare.4863a8",
+    "BlockSquare.fa5ca7",
+    "BlockSquare.4fd77b",
+    "FacedownMusterPad.5248ed",
+    "FacedownMusterPad.5e3df3",
+    "FacedownMusterPad.f812d9",
+    "FacedownMusterPad.ea4e10"
+  ],
+  "ContainedObjects_path": "Custom_Assetbundle_Bag.834dea",
+  "CustomAssetbundle": {
+    "AssetbundleSecondaryURL": "",
+    "AssetbundleURL": "https://steamusercontent-a.akamaihd.net/ugc/1752432848399246240/1E137FCF0B49F02A8A3BF07B28E574B32F2E0D38/",
+    "LoopingEffectIndex": 0,
+    "MaterialIndex": 0,
+    "TypeIndex": 6
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "834dea",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "",
+  "LuaScript_path": "Custom_Assetbundle_Bag.834dea.ttslua",
+  "MaterialIndex": -1,
+  "MeasureMovement": false,
+  "MeshIndex": -1,
+  "Name": "Custom_Assetbundle_Bag",
+  "Nickname": "",
+  "Snap": true,
+  "States_path": {
+    "1": "BD1.12e06c"
+  },
+  "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": 46,
+    "posY": 0.243,
+    "posZ": 32,
+    "rotX": 0,
+    "rotY": 210,
+    "rotZ": 0,
+    "scaleX": 17,
+    "scaleY": 17,
+    "scaleZ": 17
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

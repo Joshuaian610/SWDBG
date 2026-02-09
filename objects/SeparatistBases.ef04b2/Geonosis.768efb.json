@@ -1,0 +1,63 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 6403,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "64": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094937038248/41B89431775EFA36AEBBA55C6A0607A994D41AF7/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094933234043/BBB232C1F6B0A0C8B1CDE1B5677505234215F167/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "768efb",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "max_hp = 16\r\n",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Geonosis",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "separatist",
+    "separatist_base",
+    "separatist_owner"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -13.902,
+    "posY": 0.287,
+    "posZ": -12.087,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1.6,
+    "scaleY": 1,
+    "scaleZ": 1.6
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

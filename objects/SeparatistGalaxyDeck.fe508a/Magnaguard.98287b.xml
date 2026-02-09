@@ -1,0 +1,25 @@
+<Panel
+    id                = "force_button_blue"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(98287b)" image="Force Blue"></Button>
+</Panel>
+
+<Panel
+    id                = "force_button_purple"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(98287b)" image="Force Purple"></Button>
+</Panel>

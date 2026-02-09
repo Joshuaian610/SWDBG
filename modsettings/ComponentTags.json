@@ -1,0 +1,176 @@
+{
+  "labels": [
+    {
+      "displayed": "trash",
+      "normalized": "trash"
+    },
+    {
+      "displayed": "empire_base",
+      "normalized": "empire_base"
+    },
+    {
+      "displayed": "rebel_base",
+      "normalized": "rebel_base"
+    },
+    {
+      "displayed": "neutral",
+      "normalized": "neutral"
+    },
+    {
+      "displayed": "rebel",
+      "normalized": "rebel"
+    },
+    {
+      "displayed": "empire",
+      "normalized": "empire"
+    },
+    {
+      "displayed": "ship",
+      "normalized": "ship"
+    },
+    {
+      "displayed": "",
+      "normalized": ""
+    },
+    {
+      "displayed": "to_delete",
+      "normalized": "to_delete"
+    },
+    {
+      "displayed": "bottom_owner",
+      "normalized": "bottom_owner"
+    },
+    {
+      "displayed": "rebel_owner",
+      "normalized": "rebel_owner"
+    },
+    {
+      "displayed": "turn_tracker",
+      "normalized": "turn_tracker"
+    },
+    {
+      "displayed": "unit",
+      "normalized": "unit"
+    },
+    {
+      "displayed": "fighter",
+      "normalized": "fighter"
+    },
+    {
+      "displayed": "outcast",
+      "normalized": "outcast"
+    },
+    {
+      "displayed": "trooper",
+      "normalized": "trooper"
+    },
+    {
+      "displayed": "unique",
+      "normalized": "unique"
+    },
+    {
+      "displayed": "",
+      "normalized": ""
+    },
+    {
+      "displayed": "or_pilot",
+      "normalized": "or_pilot"
+    },
+    {
+      "displayed": "separatist_base",
+      "normalized": "separatist_base"
+    },
+    {
+      "displayed": "republic_base",
+      "normalized": "republic_base"
+    },
+    {
+      "displayed": "separatist",
+      "normalized": "separatist"
+    },
+    {
+      "displayed": "republic",
+      "normalized": "republic"
+    },
+    {
+      "displayed": "republic_owner",
+      "normalized": "republic_owner"
+    },
+    {
+      "displayed": "separatist_owner",
+      "normalized": "separatist_owner"
+    },
+    {
+      "displayed": "row_button",
+      "normalized": "row_button"
+    },
+    {
+      "displayed": "non_interactable",
+      "normalized": "non_interactable"
+    },
+    {
+      "displayed": "exile_button",
+      "normalized": "exile_button"
+    },
+    {
+      "displayed": "jedi",
+      "normalized": "jedi"
+    },
+    {
+      "displayed": "",
+      "normalized": ""
+    },
+    {
+      "displayed": "droid",
+      "normalized": "droid"
+    },
+    {
+      "displayed": "bounty_hunter",
+      "normalized": "bounty_hunter"
+    },
+    {
+      "displayed": "scoundrel",
+      "normalized": "scoundrel"
+    },
+    {
+      "displayed": "transport",
+      "normalized": "transport"
+    },
+    {
+      "displayed": "vehicle",
+      "normalized": "vehicle"
+    },
+    {
+      "displayed": "officer",
+      "normalized": "officer"
+    },
+    {
+      "displayed": "sith",
+      "normalized": "sith"
+    },
+    {
+      "displayed": "top_owner",
+      "normalized": "top_owner"
+    },
+    {
+      "displayed": "buttons_cardback",
+      "normalized": "buttons_cardback"
+    },
+    {
+      "displayed": "ability_button",
+      "normalized": "ability_button"
+    },
+    {
+      "displayed": "add_force_button",
+      "normalized": "add_force_button"
+    },
+    {
+      "displayed": "ability_button_sec",
+      "normalized": "ability_button_sec"
+    },
+    {
+      "displayed": "empire_owner",
+      "normalized": "empire_owner"
+    }
+  ]
+}

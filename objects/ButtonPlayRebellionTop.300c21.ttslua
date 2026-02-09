@@ -1,0 +1,187 @@
+faction          = "rebellion"
+player_area      = "top"
+backdrop         = "16d15b"
+b_color          = {1, 0, 0, .4}
+h_color          = {1, 0, 0, .1}
+color            = "Red"
+deck_starter     = getObjectFromGUID("adeeb4")
+deck_galaxy      = getObjectFromGUID("aa8011")
+deck_bases       = getObjectFromGUID("7aa8b1")
+deck_ships       = getObjectFromGUID("895161")
+counterpart      = getObjectFromGUID("f36332")
+player_ui_assets = {
+    getObjectFromGUID("e3e3b8"), -- [1] discard base
+    getObjectFromGUID("57f0a2"), -- [2] deck base
+    getObjectFromGUID("ded0c2"), -- [3] discard button
+    getObjectFromGUID("c0c024"), -- [4] bases base
+    getObjectFromGUID("fa055e"), -- [5] damage counter
+    getObjectFromGUID("53bed7"), -- [6] victory pad
+    getObjectFromGUID("817b24"), -- [7] force track button
+    getObjectFromGUID("b6d068"), -- [8] end turn button
+    getObjectFromGUID("051249"), -- [9] exile bag
+}
+destroy_assets = { -- backdrop, buttons, zone
+    getObjectFromGUID("16d15b"),
+    getObjectFromGUID("9c39bf"),
+    getObjectFromGUID("32f884"),
+    getObjectFromGUID("53fec0"),
+    getObjectFromGUID("16cb03"),
+    getObjectFromGUID("300c21"),
+    getObjectFromGUID("ddadba"),
+}
+
+function onLoad()
+    capitalized_faction = (faction:gsub("^%l", string.upper))
+    self.createButton({
+        click_function = "setup_faction",
+        function_owner = self,
+        label          = "",
+        color          = {1, 1, 1, .1},
+        hover_color    = {1, 1, 1, .3},
+        position       = {0, 0.351, 0.00},
+        height         = 990,
+        width          = 1390,
+        tooltip        = "Pressing this button will set your play area up for " .. capitalized_faction .. ". This click is instant and permanent!",
+    })
+end -- end onLoad()
+
+function remove_buttons(object)
+    local buttons = object.getButtons()
+    if buttons ~= nil then
+        for k = #buttons, 1, -1 do
+            object.removeButton(buttons[k].index)
+        end
+    end
+end
+
+function setup_faction(_, playercolor, _)
+    -- pull image info from backdrop, define image vars
+    local setup_vars      = getObjectFromGUID(backdrop).getVar('setup_vars')
+    local ui_asset_images = setup_vars[faction]
+    -- change images, color tint on UI area assets
+    for i = 1, 9 do
+        if i ~= 9 then
+            player_ui_assets[i].setCustomObject({
+                image        = ui_asset_images[i],
+                image_bottom = ui_asset_images[i],
+            })
+        end
+        player_ui_assets[i].setColorTint(color)
+        player_ui_assets[i] = player_ui_assets[i].reload()
+        local object_name = nil
+        if i == 1 then
+            object_name = "Base Discard " .. capitalized_faction
+        elseif i == 2 then
+            object_name = "Base Deck " .. capitalized_faction
+        elseif i == 3 then
+            object_name = "Button Discard " .. capitalized_faction
+        elseif i == 4 then
+            object_name = "Base Bases " .. capitalized_faction
+        elseif i == 5 then
+            object_name = "Damage Counter " .. capitalized_faction
+        elseif i == 9 then
+            object_name = capitalized_faction .. " Exile Bag"
+        end
+        player_ui_assets[i].tooltip = false
+        if i == 9 then
+            player_ui_assets[9].tooltip = true
+        end
+        player_ui_assets[i].setName(object_name)
+    end
+    player_ui_assets[8].setInvisibleTo(Global.getVar('all_colors'))
+    -- change color on counter
+    local buttons = player_ui_assets[5].getButtons()
+    if buttons ~= nil then player_ui_assets[5].removeButton(0) end
+    Wait.frames(function()
+    player_ui_assets[5].call('createAll', b_color, h_color)
+    end, 5)
+    -- place decks
+    local loc_starter     = nil
+    local rot_starter     = nil
+    local loc_bases       = nil
+    local loc_initial     = nil
+    local rot_base        = nil
+    local rot_initial     = nil
+    local loc_base_galaxy = {-28.00, 1.50, 2.50}
+    if player_area == "bottom" then
+        loc_starter    = {-3.50, 1.00, -31.00}
+        rot_starter    = {0.00, 180.00, 180.00}
+        loc_bases      = {8.00, 0.44, -31.00}
+        loc_initial    = {8.00, 3.00, -31.00}
+        rot_base       = {0.00, 180.00, 180.00}
+        rot_initial    = {0.00, 180.00, 0.00}
+    elseif player_area == "top" then
+        loc_starter    = {3.50, 1.00, 31.00}
+        rot_starter    = {0.00, 0.00, 180.00}
+        loc_bases      = {-8.00, 0.45, 31.00}
+        loc_initial    = {-8.00, 3.00, 31.00}
+        rot_base       = {0.00, 0.00, 180.00}
+        rot_initial    = {0.00, 0.00, 0.00}
+    end
+    -- starter
+    deck_starter.setLock(false)
+    deck_starter.setRotation(rot_starter)
+    deck_starter.setPositionSmooth(loc_starter)
+    -- bases (needs to pull and place initial base)
+    local initial_base_name = nil
+    if faction == "empire" then
+        initial_base_name = "Lothal"
+    elseif faction == "republic" then
+        initial_base_name = "Rishi"
+    elseif faction == "rebellion" then
+        initial_base_name = "Dantooine"
+    elseif faction == "separatist" then
+        initial_base_name = "Xorrn"
+    end
+    local base_deck_objects = deck_bases.getObjects()
+    local target_guid       = nil
+    local initial_base      = nil
+    for _, object in ipairs(base_deck_objects) do
+        if object.name == initial_base_name then
+            target_guid = object.guid
+        end
+    end
+    if target_guid ~= nil then
+        initial_base = deck_bases.takeObject({guid=target_guid})
+    else
+        broadcastToAll("Unable to find initial base - you may want to consider re-loading the mod and starting setup over.", "Orange")
+        return nil
+    end
+    deck_bases.setLock(true)
+    Wait.time(function() deck_bases.setLock(false) end, 2)
+    deck_bases.setRotation(rot_base)
+    deck_bases.setPosition(loc_bases)
+    initial_base.setRotation(rot_initial)
+    initial_base.setPosition(loc_initial)
+    -- galaxy deck
+    deck_galaxy.setLock(false)
+    deck_galaxy.setRotation({0.00, 90.00, 180.00})
+    deck_galaxy.setPosition({-28.00, 3.00, 2.50})
+    -- ships deck
+    deck_ships.setLock(false)
+    deck_ships.setRotation({0.00, 90.00, 180.00})
+    deck_ships.setPosition({-28.00, 4.00, 2.50})
+    -- destroy backdrop and buttons
+    for i = 1, 7 do
+        if destroy_assets[i] ~= nil then
+            destroy_assets[i].destruct()
+        end
+    end
+    -- destroy counterpart button in other player area
+    if counterpart ~= nil then
+        counterpart.destruct()
+    end
+    -- destroy card back buttons
+    for _, object in pairs(getObjects()) do
+        if object.hasTag('buttons_cardback') then
+            object.destruct()
+        end
+    end
+    -- mark object for detection functions
+    -- top, so, uses BD-1 droid
+    getObjectFromGUID("834dea").setName(faction)
+    -- broadcast
+    if playercolor ~= nil then
+        broadcastToAll(Player[playercolor].steam_name .. " will play as " .. capitalized_faction .. ".", color)
+    end
+end -- end setup_faction()

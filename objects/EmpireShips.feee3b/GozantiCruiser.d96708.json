@@ -1,0 +1,70 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 12501,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "125": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129064501288/980CDEB91F0D7C8D57E5D7C2B94D5C80174AD518/",
+      "NumHeight": 2,
+      "NumWidth": 4,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Ability Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492083153844/EFA3D454799F0BFA8FF0974222193752069A978B/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "d96708",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "EmpireShips.feee3b/GozantiCruiser.d96708.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Gozanti Cruiser",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "empire",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 14.153,
+    "posY": 0.267,
+    "posZ": -10.675,
+    "rotX": 0,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "EmpireShips.feee3b/GozantiCruiser.d96708.xml"
+}

@@ -1,0 +1,60 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.07836,
+    "g": 0.07836,
+    "r": 0.07836
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.348251373,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094940013978/47ECB7464F33323266291BA68A79F110A0E55E4C/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667296755589/BA4EC6CC28F1A70623B1E0C76BE3AC9F01831269/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "ada5ae",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "",
+  "LuaScript_path": "ButtonSetupGame.ada5ae.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Button Setup Game",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -40.187,
+    "posY": 7.313,
+    "posZ": 0,
+    "rotX": 60,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 7,
+    "scaleY": 1,
+    "scaleZ": 7
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

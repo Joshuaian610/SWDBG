@@ -1,0 +1,62 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 1309,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "13": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532320962/80EB6DDCDC0D1C79C2CA31594A022FB0DE3CA04A/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532320302/59D891D30524BB027ED1C986DA9C1292B5BB7902/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "Description": "Exceeding this base's total hit point value on the counter to the right will automatically discard the base, and reset the counter to 0.",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "ce3eb8",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "max_hp = 16",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Rodia",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "empire_base",
+    "empire_owner"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 36.648,
+    "posY": 1.985,
+    "posZ": -3.142,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1.6,
+    "scaleY": 1,
+    "scaleZ": 1.6
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

@@ -1,0 +1,26 @@
+<Panel
+    id                = "ability_button_blue"
+    active            = "false"
+    height            = "40"
+    width             = "85"
+    position          = "45 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(c23e47)" image="Repair Blue Small"></Button>
+</Panel>
+
+
+<Panel
+    id                = "ability_button_gold"
+    active            = "false"
+    height            = "40"
+    width             = "85"
+    position          = "-45 175 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action_sec(c23e47)" image="Resource Small"></Button>
+</Panel>

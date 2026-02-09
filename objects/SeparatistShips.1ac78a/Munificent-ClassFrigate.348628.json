@@ -1,0 +1,80 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 12300,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "123": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129064558538/09D3958275F4584ACFB32CBEF6503E80D54A4847/",
+      "NumHeight": 2,
+      "NumWidth": 4,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Ability Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492083153844/EFA3D454799F0BFA8FF0974222193752069A978B/"
+    },
+    {
+      "Name": "Ability Purple",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492083155030/E44005DEF51A0680CC9B51AC70DF821BB3756819/"
+    },
+    {
+      "Name": "Ability Cancel",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492087450051/E22B9555C97FBDF989BA28A92D56C267120D0728/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "348628",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "SeparatistShips.1ac78a/Munificent-ClassFrigate.348628.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Munificent-Class Frigate",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "separatist",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -13.652,
+    "posY": 0.248,
+    "posZ": -10.15,
+    "rotX": 0,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "SeparatistShips.1ac78a/Munificent-ClassFrigate.348628.xml"
+}

@@ -1,0 +1,86 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 4447,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "44": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330535871872/461EF02D04B653625C8F349797E1719A2F56CEB9/",
+      "NumHeight": 7,
+      "NumWidth": 10,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Draw Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100804281/627A606D21D704C684FA0468C58BD3F3E505881C/"
+    },
+    {
+      "Name": "Draw Purple",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100806817/AADBB76B88F4082EAD0FC8FC9D88A4184A984736/"
+    },
+    {
+      "Name": "Draw Orange",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100809758/50DF631912295A5F124D92F02B46C5CE3DADAAD4/"
+    },
+    {
+      "Name": "Draw Red",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100813346/62D3BCE0A6991EE95C1E245D3FA519EF4F13780E/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "aaabb9",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "OriginalNeutralUnits.33b71a/Z-95Headhunter.aaabb9.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Z-95 Headhunter",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "fighter",
+    "neutral",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -21,
+    "posY": 0.348,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "OriginalNeutralUnits.33b71a/Z-95Headhunter.aaabb9.xml"
+}

@@ -1,0 +1,77 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 6821,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "68": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2394314828581900843/A3A99B20AB2360F38531375EF80B5092A59FFEFB/",
+      "NumHeight": 4,
+      "NumWidth": 6,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Exile Purple",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100483586/4F854465808F636FFB64CE9C6BA70AA0B72AA2B5/"
+    },
+    {
+      "Name": "Exile Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100474631/E099A6762D5874B1FD0AB26F53A95C1B1E75CFAA/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "8f92a4",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "SeparatistGalaxyDeck.fe508a/VultureDroid.8f92a4.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Vulture Droid",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "droid",
+    "fighter",
+    "separatist",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -3.261,
+    "posY": 0.421,
+    "posZ": -13.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "SeparatistGalaxyDeck.fe508a/VultureDroid.8f92a4.xml"
+}

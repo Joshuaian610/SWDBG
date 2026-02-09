@@ -1,0 +1,23 @@
+function onLoad()
+    pad_galaxy_deck = getObjectFromGUID("83b3ce")
+    create_button()
+end -- end onLoad()
+
+function create_button()
+    self.createButton({
+        click_function = "discard_random_card",
+        function_owner = self,
+        label          = "",
+        color          = {1, 1, 1, .1},
+        hover_color    = {1, 1, 1, .3},
+        position       = {0, 0.351, 0.00},
+        height         = 990,
+        width          = 1390,
+        tooltip        = "Pressing this button will discard a random card from your hand.",
+    })
+end -- end create_button()
+
+function discard_random_card()
+    local color = getObjectFromGUID("dcb1f5").getData()["FogColor"]    
+    pad_galaxy_deck.call('discard_random_card', {button=self, color=color})
+end -- end discard_random_card()

@@ -1,0 +1,86 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "SeparatistShuttle.af0067",
+    "SeparatistShuttle.9bbdab",
+    "SeparatistShuttle.9c6846",
+    "SeparatistShuttle.63eb05",
+    "SeparatistShuttle.83a820",
+    "SeparatistShuttle.875fc2",
+    "SeparatistShuttle.fdfcb1",
+    "B1BattleDroid.030201",
+    "B1BattleDroid.52eb6e",
+    "DarkSideAgent.1ae413"
+  ],
+  "ContainedObjects_path": "SeparatistDeck.3afb00",
+  "CustomDeck": {
+    "70": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094933221970/FAF0257728646389F39D03DDBDDA4D18ACD41813/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    7000,
+    7001,
+    7002,
+    7004,
+    7003,
+    7005,
+    7006,
+    7007,
+    7008,
+    7009
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "3afb00",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Separatist Deck",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "separatist",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -7.77,
+    "posY": 0.21,
+    "posZ": -12.523,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

@@ -1,0 +1,61 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 1,
+    "r": 1
+  },
+  "CustomImage": {
+    "CustomToken": {
+      "MergeDistancePixels": 15,
+      "Stackable": false,
+      "StandUp": false,
+      "Thickness": 0.3520526
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2473129090125015120/462AB307159348C1B962D3EA715CA6F3C82ECE46/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "57444a",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "Infinite_Bag.c20af0/ExileButton.57444a.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Token",
+  "Nickname": "Exile Button",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "exile_button",
+    "non_interactable"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -31.993,
+    "posY": 2.276,
+    "posZ": -31.73,
+    "rotX": 2,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 0.69,
+    "scaleY": 1,
+    "scaleZ": 0.69
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

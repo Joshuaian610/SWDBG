@@ -1,0 +1,50 @@
+setup_vars = {
+    -- [1] image for discard pad
+    -- [2] image for deck pad
+    -- [3] image for discard button
+    -- [4] image for base pad
+    -- [5] image for base damage counter
+    -- [6] image for victory pad
+    -- [7] image for "force is with me" track button
+    -- [8] image for end turn button
+    empire     = {
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942086919/01911182179C9D5FBD491DC19C614D8EDC40B901/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942089207/F1125F628012C0D27FB2231818A7E54E6BD2113F/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2033983734574288361/A7B6B2E17AA5933AB73CD8CA1530D55857829D1A/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942174350/4CDBB3A954865EE1D35F521229E7F04370470FFB/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942096350/E1220637C8437310DCD63DB56BC6F4B4A024BC15/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2033983734574257378/6B4D14965A8730B86F7A6E6E7A47716CD2110B0F/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094943153263/0E718A8F31DC07FA493BCA34065AB852435F5657/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2475380256397752863/90106661570187927AC1B4F7210EE980AEFFD615/",
+    },
+    rebellion  = {
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942113361/DEA4F312CE91131DBAA1A67BA9D2A8ABC57C0B8C/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942114462/4909F08213FD194847CB8595797A13F1201C8599/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2033983734574528588/0F5CDE860D28D9A02A9451EDAB7B9387A6CB21D8/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942176664/F29B42F76C87CA965B74B896CBA8E12DDBD8308E/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942186876/139B2CF01B60BC00F6939794900ADA7F2EB4A131/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2033983734574262794/80DE96F28A85CFADE9BA8CFCEAEB8EB641EC8FBB/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094943154389/45658DCBE23B6173A3903AFD73B4FB9F3B724970/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2475380256397753881/51F4B4558037CBA608B543F92FECDABB16093D36/",
+    },
+    republic   = {
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942104886/9D5E65C4A9D6BA9DA515F9786A6238FFA675C685/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942106004/68E7FB40F0A6B5AEF4B0125E4FE04E7769BFE695/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942107341/DE706A4BBF96E7A1EF9F31ED2479DC8858F46D17/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942178867/CFAFFC2C4EB6B9CADDE054FC0131977B31BABCB3/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942108949/820B6E07BAC134E2F8A388989AE9D1D69DD80E77/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094943235363/A6A5849A4801E3DF7C7092363D286FE325534D67/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094943155542/1BD0C601D4F5B2152B939528DFB7E6AA1E097B2E/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2475380256397755002/9614E7C73EA575EC4712584F85595CAEE9B13072/",
+    },
+    separatist = {
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942180815/B43CE051C6E219B9746ECCBACE14346C1CF4E101/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942182683/AC036EE89BC132D1129995FF0A0ABBEBBA07F7CC/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942184406/777D24E5A7B176C3A885FF303012441F3A74520B/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942188374/EB351821189A7703EAC27FBFE71C6B72FA5FAEB6/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094942190096/9A2BA6FF66D49365BD1D1A88967F3559354BE258/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094943151067/B99EFD9E0C622FF629667437F6F9D8789FD68693/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2395440094943156597/5987A4CC1F6DA7037727D8FE1F5AE2FC9520AFC1/",
+        "https://steamusercontent-a.akamaihd.net/ugc/2475380256397756152/A2D05044A715446E39066A98D96CE5F80E958007/",
+    },
+}

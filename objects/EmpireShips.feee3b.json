@@ -1,0 +1,80 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "GozantiCruiser.cbe3ac",
+    "GozantiCruiser.d96708",
+    "GozantiCruiser.6b1457",
+    "ImperialCarrier.f78c6e",
+    "ImperialCarrier.d1bbc0",
+    "StarDestroyer.eb0440",
+    "StarDestroyer.0f218b"
+  ],
+  "ContainedObjects_path": "EmpireShips.feee3b",
+  "CustomDeck": {
+    "125": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129064501288/980CDEB91F0D7C8D57E5D7C2B94D5C80174AD518/",
+      "NumHeight": 2,
+      "NumWidth": 4,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    12502,
+    12501,
+    12500,
+    12504,
+    12503,
+    12505,
+    12506
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "feee3b",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Empire Ships",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "empire",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 13.86,
+    "posY": 0.195,
+    "posZ": -10,
+    "rotX": 0,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

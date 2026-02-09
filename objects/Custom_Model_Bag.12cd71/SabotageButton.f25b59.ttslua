@@ -1,0 +1,38 @@
+function onLoad()
+    self.createButton({
+          click_function = "cycle_mark",
+          function_owner = self,
+          label = "",
+          color = {0.6, 0.78, 0.73, 0.0},
+          hover_color = {0.6, 0.78, 0.73, 0.4},
+          position = {0, 0.3, 0},
+          height = 750,
+          width = 2900,
+          tooltip = "Click this button to indicate you have sabotaged enemy Leader. Clicking it again will cancel, but not return the automatic force and resources granted.",
+    })
+end -- end onLoad()
+
+
+function cycle_mark(button, playercolor, _)
+
+    if playercolor == "Red" then
+        local icon = getObjectFromGUID("07518a")
+        local mark = icon.getGMNotes()
+        if mark == "none" then
+            icon.setGMNotes('marked')
+            icon.setDecals({
+                {
+                    name     = "rebel_icon_leader",
+                    url      = "https://steamusercontent-a.akamaihd.net/ugc/2028356137284609810/7E7C4AE358BC6AF0B69A7B4AF4C8F1B172B7B2A7/",
+                    position = {0, .3, 0},
+                    rotation = {90, 180, 0},
+                    scale    = {1.4, 1.4, 1.4},
+                },
+            })
+        elseif mark == "marked" then
+            icon.setGMNotes('none')
+            icon.setDecals({})
+        end
+    end
+
+end -- end cycle_mark()

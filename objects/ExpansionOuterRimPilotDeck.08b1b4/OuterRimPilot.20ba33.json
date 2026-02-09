@@ -1,0 +1,86 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 5601,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "56": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094933212304/7873845D06546D0BAFECF71FF399C1060497B9D4/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Exile Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100474631/E099A6762D5874B1FD0AB26F53A95C1B1E75CFAA/"
+    },
+    {
+      "Name": "Exile Purple",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100483586/4F854465808F636FFB64CE9C6BA70AA0B72AA2B5/"
+    },
+    {
+      "Name": "Exile Orange",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100488199/014464FFEF094DCF207C858586EAC8718E76EF6B/"
+    },
+    {
+      "Name": "Exile Red",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100493032/E4CB47D0A10996F008A9B3A4500D9C8225DEAF13/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "20ba33",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "ExpansionOuterRimPilotDeck.08b1b4/OuterRimPilot.20ba33.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Outer Rim Pilot",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "neutral",
+    "or_pilot",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 6.997,
+    "posY": 0.393,
+    "posZ": 0,
+    "rotX": 358,
+    "rotY": 270,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "ExpansionOuterRimPilotDeck.08b1b4/OuterRimPilot.20ba33.xml"
+}

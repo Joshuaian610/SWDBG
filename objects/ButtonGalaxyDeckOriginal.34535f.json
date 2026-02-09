@@ -1,0 +1,57 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.23525,
+    "g": 0.23525,
+    "r": 0.23525
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.199999526,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2394314828578326052/6010D720F32D51A1F608863BA9A0107B277E9100/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2394314828578326052/6010D720F32D51A1F608863BA9A0107B277E9100/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "34535f",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Button Galaxy Deck Original",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": -41.5,
+    "posY": 10.248,
+    "posZ": -0.007,
+    "rotX": 60,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.25,
+    "scaleY": 1,
+    "scaleZ": 2
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

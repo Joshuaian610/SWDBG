@@ -1,0 +1,52 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.8,
+    "g": 0.8,
+    "r": 0.8
+  },
+  "CustomAssetbundle": {
+    "AssetbundleSecondaryURL": "",
+    "AssetbundleURL": "https://steamusercontent-a.akamaihd.net/ugc/1752432848399247234/408820F73E6EC0AAE8052EA7520ED85267D8AF96/",
+    "LoopingEffectIndex": 0,
+    "MaterialIndex": 0,
+    "TypeIndex": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "12e06c",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Assetbundle",
+  "Nickname": "BD1",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": 46,
+    "posY": 0.243,
+    "posZ": 32,
+    "rotX": 0,
+    "rotY": 210,
+    "rotZ": 0,
+    "scaleX": 17,
+    "scaleY": 17,
+    "scaleZ": 17
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

@@ -1,0 +1,86 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "RepublicShuttle.fdce2c",
+    "RepublicShuttle.f8324c",
+    "RepublicShuttle.7a2935",
+    "RepublicShuttle.c18485",
+    "RepublicShuttle.c0e093",
+    "RepublicShuttle.31ca94",
+    "RepublicShuttle.86898c",
+    "CloneTrooper.467fba",
+    "CloneTrooper.f353c3",
+    "JediKnight.530c8a"
+  ],
+  "ContainedObjects_path": "RepublicDeck.fb6a32",
+  "CustomDeck": {
+    "69": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094933219172/6BAE02E79E4DD0BE2786BFF6504758BC8F4F671C/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    6900,
+    6901,
+    6902,
+    6903,
+    6906,
+    6904,
+    6905,
+    6907,
+    6908,
+    6909
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "fb6a32",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Republic Deck",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "republic",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 7.75,
+    "posY": 0.21,
+    "posZ": 12.5,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

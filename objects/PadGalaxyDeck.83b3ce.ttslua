@@ -1,0 +1,1666 @@
+function onLoad()
+    pad_galaxy_deck      = getObjectFromGUID("83b3ce")
+    pad_galaxy_discard   = getObjectFromGUID("a03936")
+    pad_outer_rim        = getObjectFromGUID("606e92")
+    play_zone            = getObjectFromGUID("0cdb1a")
+    all_colors           = Global.getTable('all_colors')
+end -- end onLoad()
+
+function ability_button_create_ui(parms)
+    local card                    = parms.card
+    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local tags                    = card.getTags()
+    local is_bottom               = (card.hasTag('bottom_owner') and true or false)
+    local button_color            = (is_bottom and bottom_color or top_color)
+    if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
+        card.UI.show('ability_button_' .. string.lower(button_color))
+    end
+end -- end ability_button_create_ui()
+
+
+function sec_ability_button_create_ui(parms)
+    local card                    = parms.card
+    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local tags                    = card.getTags()
+    local is_bottom               = (card.hasTag('bottom_owner') and true or false)
+    local button_color            = (is_bottom and bottom_color or top_color)
+    if card.hasTag('bottom_owner') or card.hasTag('top_owner') and card.getName() ~= "Jar Jar Binks" then -- only create if card is owned, Jar Jar creates sec in row
+        card.UI.show('ability_button_' .. string.lower(button_color))
+        card.UI.show('ability_button_gold')
+    end
+end -- end ability_button_create_ui()
+
+
+function ability_button_create(parms)
+    local card                    = parms.card
+    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local tags                    = card.getTags()
+    local is_bottom = false
+    for _, tag in ipairs(tags) do
+        if tag == "bottom_owner" then
+            is_bottom = true
+        end
+    end
+    local button_color            = (is_bottom and bottom_color or top_color)
+    local color, hover_color      = get_button_colors({button_color=button_color})
+    if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
+        card.createButton({
+            click_function = "primary_button_action",
+            function_owner = pad_galaxy_discard,
+            label          = '',
+            position       = {0, 0.5, 1.23},
+            height         = 575,
+            width          = 1800,
+            color          = color,
+            hover_color    = hover_color,
+            rotation       = {0, 0, 0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+            tooltip        = "Use " .. card.getName() .. " ability.",
+        })
+    end
+    if card.getName() == "Jar Jar Binks" and (not card.hasTag('bottom_owner') and not card.hasTag('top_owner')) then
+        color, hover_color = get_button_colors({button_color="Purple"})
+        card.createButton({
+            click_function = "primary_button_action",
+            function_owner = pad_galaxy_discard,
+            label          = '',
+            position       = {0, 0.5, 1.23},
+            height         = 575,
+            width          = 1800,
+            color          = color,
+            hover_color    = hover_color,
+            rotation       = {0, 0, 0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+            tooltip        = "Use " .. card.getName() .. " ability.",
+        })
+    end
+end -- end ability_button_create()
+
+
+function add_unit_force(player, value, id)
+    local card_object        = getObjectFromGUID(value)
+    local playercolor        = player.color
+    local is_bottom          = card_object.hasTag('bottom_owner') and true or false
+    local button_force_track = (is_bottom and getObjectFromGUID("d586db") or getObjectFromGUID("817b24"))
+    local name               = card_object.getName()
+    broadcastToAll(name .. " has generated Force.", playercolor)
+    if name == "Dark Side Agent" or name == "Inquisitor" or
+    name == "Temple Guardian" or name == "Jedi Knight" or
+    name == "Underworld Contact" or name == "Aurra Sing" or
+    name == "Wat Tambor" or name == "Ahsoka Tano" or
+    name == "Magnaguard" or name == "Aayla Secura" or
+    name == "Anakin Skywalker" then
+        move_force_track({button=button_force_track, count=1})
+    elseif name == "Lobot" or name == "Zam Wesell" or name == "Jabba the Hutt" or
+    name == "Count Dooku" or name == "Asajj Ventress" or name == "Kel Dor Mystic" or
+    name == "Mace Windu" or name == "Darth Vader" or name == "Luke Skywalker" or
+    name == "Princess Leia" or name == "Grand Moff Tarkin" or name == "Chirrut Imwe" or
+    name == "Obi-Wan Kenobi" then
+        move_force_track({button=button_force_track, count=2})
+    end
+    remove_force_buttons({object=card_object})
+    if name == "Temple Guardian" or name == "Inquisitor" or name == "Jedi Knight" or
+    name == "Dark Side Agent" or name == "Lobot" or name == "Zam Wesell" then
+        pad_galaxy_deck.call('remove_ability_buttons', {object=card_object})
+    end
+end -- end add_force_x1()
+
+
+function add_resource(parms)
+    local area          = parms.area
+    local count         = parms.count
+    is_bottom           = (area == "bottom")
+    counter             = getObjectFromGUID(is_bottom and "79146f" or "34be5a")
+    board_counter       = getObjectFromGUID(is_bottom and "5ddc6c" or "c6a07b")
+    local current_value = counter.getVar('val')
+    current_value       = current_value + count
+    counter.call('set_val', current_value)
+    board_counter.call('set_val', current_value)
+end -- end add_resource()
+
+
+function add_tag(parms)
+    local tag    = parms.tag
+    local obj = parms.object
+    local tags   = obj.getTags()
+    table.insert(tags, tag)
+    obj.setTags(tags)
+end -- end add_tag()
+
+
+function animate_button(parms)
+    button = parms.obj
+    remove_buttons({object=button})
+    local pos = button.getPosition()
+    pos.y = pos.y - .35
+    button.setPosition(pos)
+    pos.y = pos.y + .35
+    button.setPositionSmooth(pos, false, false)
+    Wait.time(function()
+    button.call('create_button')
+    end, .5)
+end -- end animate_button()
+
+
+function bh_create(parms)
+    local card                        = parms.card
+    local attack_tooltip              = parms.tooltip
+    local faction                     = parms.faction
+    local bottom_faction, top_faction = pad_galaxy_deck.call('get_playerareas')
+    local attack_faction              = (faction == bottom_faction and top_faction or bottom_faction)
+    local attack_action               = nil
+    if attack_faction == "republic" or attack_faction == "rebellion" then
+        attack_action = "Sabotage"
+    elseif attack_faction == "empire" or attack_faction == "separatist" then
+        attack_action = "Bounty Hunt"
+    end
+    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local button_color            = (attack_faction == bottom_faction and bottom_color or top_color)
+    local color, hover_color      = get_button_colors({button_color=button_color})
+    if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then -- only create if card is not owned
+        card.createButton({
+            click_function = "bh_action",
+            function_owner = pad_galaxy_discard,
+            label          = '',
+            position       = {0, 0.5, 1.23},
+            height         = 575,
+            width          = 1800,
+            color          = color,
+            hover_color    = hover_color,
+            rotation       = {0, 0, 0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+            tooltip        = attack_action .. ' ' .. card.getName() .. ': ' .. attack_tooltip
+        })
+    end
+end -- end bh_create()
+
+
+function cancel_create(parms)
+    local button                  = parms.button
+    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local tags                    = button.getTags()
+    local is_bottom = false
+    for _, tag in ipairs(tags) do
+        if tag == "bottom_owner" then
+            is_bottom = true
+        end
+    end
+    local button_color       = (is_bottom and bottom_color or top_color)
+    local color, hover_color = get_button_colors({button_color=button_color})
+    if button.hasTag('buttons') then
+        button.createButton({
+            click_function = "cancel_card_action",
+            function_owner = pad_galaxy_deck,
+            label          = 'Cancel Action',
+            position       = {0, 0.5, 1.23},
+            height         = 575,
+            width          = 1800,
+            font_size      = 275,
+            color          = {0, 0, 0, .9},
+            hover_color    = {0, 0, 0, .5},
+            font_color     = {1, 1, 1},
+            rotation       = {0, 0, 0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+            tooltip        = "Cancel use of " .. button.getName() .. " ability.",
+        })
+    elseif button.hasTag('ability_button') then
+        button.UI.show('ability_button_cancel')
+    end
+end -- end cancel_create()
+
+
+function cancel_card_action_ui(player, value, id)
+    cancel_card_action(getObjectFromGUID(value), player.color, _)
+end -- end cancel_card_action_ui()
+
+
+function cancel_card_action(button, playercolor, _)
+    local name     = button.getName()
+    if name == 'Grand Moff Tarkin' then
+        Global.setVar('next_card_tarkin', false)
+        button.removeTag('next_card_tarkin')
+    elseif name == 'Princess Leia' then
+        button.removeTag('next_card_leia')
+        Global.setVar('next_card_leia', false)
+    elseif name == 'AT-AT' then
+        Global.setVar('next_card_atat', false)
+        button.removeTag('next_card_atat')
+    elseif name == 'Millenium Falcon' then
+        Global.setVar('next_card_falcon', false)
+        button.removeTag('next_card_falcon')
+    elseif name == 'Underworld Contaact' then
+        Global.setVar('next_card_contact', false)
+        button.removeTag('next_card_contact')
+    elseif name == 'Nute Gunray' then
+        Global.setVar('next_card_nute', false)
+    elseif name == "Twi'lek Smuggler" or name == "Acclamator-Class Ship" then
+        Global.setVar('next_card_to_deck_bottom', false)
+        Global.setVar('next_card_to_deck_top', false)
+    elseif name == "B2 Battle Droid" or name == "Munificent-Class Frigate" or
+    name == "Tri-Fighter" or name == "AAT" then
+        for _, object in pairs(getObjects()) do
+            if object.hasTag('exile_button') then
+                object.destruct()
+            end
+        end
+    elseif name == "Wat Tambor" then
+        Global.setVar('wat_condition_met')
+    end
+    if button.hasTag('buttons') then
+        pad_galaxy_deck.call('remove_buttons', {object=button})
+        button.createButton({
+            click_function = "primary_button_action",
+            function_owner = pad_galaxy_discard,
+            label          = '',
+            position       = {0, 0.5, 1.23},
+            height         = 575,
+            width          = 1800,
+            color          = color,
+            hover_color    = hover_color,
+            rotation       = {0, 0, 0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+            tooltip        = "Use " .. button.getName() .. " ability.",
+        })
+    elseif button.hasTag('ability_button') then
+        remove_ability_buttons({object=button})
+        ability_button_create_ui({card=button})
+    end
+end -- end cancel_card_action()
+
+
+function card_exhaust(parms)
+    local card         = parms.card
+    local is_bottom    = (card.hasTag('bottom_owner'))
+    local is_top       = (card.hasTag('top_owner'))
+    local obj_rotation = ((is_bottom and {0.00, 210.00, 0.00}) or (is_top and {0.00, 30.00, 0.00}))
+    card.setRotationSmooth(obj_rotation, false, false)
+end -- end card_exhaust
+
+
+function check_base(faction)
+    local bottom_faction, top_faction = pad_galaxy_deck.call('get_playerareas')
+    local is_bottom = (faction == bottom_faction or top_faction)
+    local check_zone = getObjectFromGUID(is_bottom and "59b7ad" or "23b5a3")
+    for k, v in pairs(check_zone.getObjects()) do
+        if v.tag == "Card" and (v.hasTag('empire_base') or v.hasTag('rebel_base')) or
+        v.hasTag('republic_base') or v.hasTag('separatist_base') then
+            return v.getName()
+        end
+    end
+end -- end check_base
+
+
+function check_is_ai()
+    local is_ai = false
+    for _, object in pairs(getObjects()) do
+        if object.getGUID() == "f001ad" or object.getGUID() == "adf064" or
+        object.getGUID() == "b5ca34" or object.getGUID() == "a41512" then
+            is_ai = true
+        end
+    end
+    return is_ai
+end -- end check_is_ai()
+
+
+function damage_base(parms)
+    local is_bottom     = parms.is_bottom
+    local counter       = getObjectFromGUID(is_bottom and "fa055e" or "7e15f6")
+    local zone          = getObjectFromGUID(is_bottom and "23b5a3" or "59b7ad")
+    local is_ai         = check_is_ai()
+    if is_bottom and is_ai then zone = getObjectFromGUID("6b5523") end
+    local count         = parms.count
+    local color         = parms.color
+    local faction       = parms.faction
+    if faction == "rebellion" then faction = "rebel" end
+    local current_value = counter.getVar('val')
+    local current_value = current_value + count
+    local max_hp        = nil
+    local base_found    = false
+    local found_base    = nil
+    counter.call('set_val', current_value)
+    for k, object in pairs(zone.getObjects()) do
+        if object.tag == "Card" and object.hasTag(faction .. '_base') then
+            max_hp     = object.getVar('max_hp')
+            base_found = true
+            found_base = object
+        end
+    end
+    if not base_found then
+        return nil
+    end
+    if current_value >= max_hp then
+        broadcastToAll(found_base.getName() .. " has been destroyed!", color)
+        found_base.setRotation(is_bottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
+        found_base.setPositionSmooth((is_bottom and {29.50, 3.50, -21.00} or {29.50, 3.50, 21.00}), false, false)
+        counter.call('set_val', 0)
+    end
+end -- end damage_base()
+
+
+function deal_card(parms)
+    local player_area  = parms.player_area
+    local count        = parms.count
+    local deck_zone    = nil
+    local discard_zone = nil
+    local hand_zone    = nil
+    local pos_deck     = nil
+    local pos_discard  = nil
+    local faction      = nil
+    local faction_tint = nil
+    local bottom_faction, top_faction = get_playerareas()
+    if player_area == "bottom" then
+        deck_zone    = getObjectFromGUID("209eca")
+        discard_zone = getObjectFromGUID("61dacf")
+        hand_zone    = getObjectFromGUID("dcb1f5")
+        pos_deck     = {-3.50, 1.50, -31.00}
+        pos_discard  = {-8.50, 1.50, -31.00}
+        faction      = bottom_faction
+        faction_tint = getObjectFromGUID("dcb1f5").getData()["FogColor"]
+    elseif player_area == "top" then
+        deck_zone    = getObjectFromGUID("97aa40")
+        discard_zone = getObjectFromGUID("3ebaef")
+        hand_zone    = getObjectFromGUID("f27d6d")
+        pos_deck     = {3.50, 2.50, 31.00}
+        pos_discard  = {8.50, 2.50, 31.00}
+        faction      = top_faction
+        faction_tint = getObjectFromGUID("f27d6d").getData()["FogColor"]
+    end
+    local deal_deck = nil
+    local deck_or_card_found = false
+    local deck_count = 0
+    -- check for deck or card
+    for k, v in pairs(deck_zone.getObjects()) do
+        if v.tag == "Deck" then
+            deck_or_card_found = true
+            deal_deck = v
+            deck_count = deal_deck.getQuantity()
+        end
+        if v.tag == "Card" then
+            deck_or_card_found = true
+            deal_deck = v
+            deck_count = 1
+        end
+    end
+    if deck_count >= count then
+        if deck_or_card_found then deal_deck.deal(count, faction_tint) end
+    elseif deck_count < count then
+        if deck_or_card_found then deal_deck.deal(deck_count, faction_tint) end
+    end
+    if deck_or_card_found == false or deck_count < count then
+        Wait.time(function()
+        for k, v in pairs(discard_zone.getObjects()) do
+            if v.tag == "Deck" then
+                deal_deck = v
+                deal_deck.flip()
+                deal_deck.shuffle()
+                Wait.time(function() deal_deck.setPosition(pos_deck) end, 1)
+                deal_deck.setName(faction:gsub("^%l", string.upper))
+            end
+        end
+        end, 1)
+        Wait.time(function() deal_deck.deal(count - deck_count, faction_tint) end, 3)
+    end
+end -- end deal_card()
+
+
+function discard_object(parms)
+    local object = parms.object
+    -- DISCARD PAD
+    local rot_discard_bottom      = {0.00, 180.00, 0.00}
+    local loc_discard_bottom      = {-8.50, 2.5, -31.00}
+    local rot_deck_bottom         = {0.00, 180.00, 180.00}
+    local loc_deck_empire         = {-3.50, 2.5, -31}
+    local rot_discard_top         = {0.00, 0.00, 0.00}
+    local loc_discard_top         = {8.5, 2.5, 31.00}
+    local rot_deck_top            = {0.00, 0.00, 180.00}
+    local loc_deck_top            = {3.50, 2.5, 31}
+    local rot_discard_galaxy      = {0.00, 90.00, 0.00}
+    local loc_discard_galaxy      = {-28.00, 2.5, -2.50}
+    local rot_discard_base_bottom = {0.00, 0.00, 0.00}
+    local loc_discard_base_bottom = {29.40, 1.5, 14.65}
+    local rot_discard_base_top    = {0.00, 180.00, 0.00}
+    local loc_discard_base_top    = {29.40, 1.5, -14.65}
+    if zone == getObjectFromGUID("1f2094") or zone == getObjectFromGUID("fecb4e") or -- empire pad
+    zone == getObjectFromGUID("2a77c3") or zone == getObjectFromGUID("9d4e7e") then  -- rebel pad
+        if object.hasTag('bottom_owner') and object.tag == "Card" then
+            object.setRotation(rot_discard_bottom)
+            object.setPosition(loc_discard_bottom)
+            check_discard(zone, object)
+        elseif object.hasTag('top_owner') and object.tag == "Card" then
+            object.setRotation(rot_discard_top)
+            object.setPosition(loc_discard_top)
+            check_discard(zone, object)
+        elseif object.hasTag('bottom_owner') == false and object.hasTag('top_owner') == false and
+        object.hasTag('trash') == false and object.hasTag('rebel_base') == false and
+        object.hasTag('empire_base') and object.hasTag('republic_base') == false and
+        object.hasTag('separatist_base') then
+            object.setRotation(rot_discard_galaxy)
+            object.setPosition(loc_discard_galaxy)
+            check_discard(zone, object)
+        -- elseif object.hasTag('empire_base') then
+        --     object.setRotation(rot_discard_base_bottom)
+        --     object.setPosition(loc_discard_base_bottom)
+        -- elseif object.hasTag('rebel_base') then
+        --     object.setRotation(rot_discard_base_top)
+        --     object.setPosition(loc_discard_base_top)
+        elseif object.hasTag('trash') then
+            object.destruct()
+        end
+    end
+end -- end discard_object()
+
+
+function discard_ai_card(parms)
+    local is_random                    = parms.is_random
+    local check_zone                   = getObjectFromGUID("88751a")
+    local muster_cards                 = {}
+    local discard_target               = nil
+    local _, color                     = pad_galaxy_deck.call('get_playercolors')
+    local _, opponent_faction          = pad_galaxy_deck.call('get_playerareas')
+    local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
+    for _, object in pairs(check_zone.getObjects()) do
+        if object.tag == "Card" and not object.is_face_down then
+            table.insert(muster_cards, object)
+        end
+    end
+    if not is_random then
+        -- do the discard lowest in muster thing, checking first by card cost, then attack value to break ties
+        local lowest_cost         = 0
+        local lowest_attack       = 0
+        local multiples           = {}
+        local tie_break_multiples = {}
+        for i = 1, #muster_cards do
+            local card_cost = muster_cards[i].getVar('cost')
+            if i == 1 then
+                lowest_cost = card_cost
+                table.insert(multiples, muster_cards[i])
+            else
+                if card_cost == lowest_cost then
+                    table.insert(multiples, muster_cards[i])
+                elseif card_cost <= lowest_cost then
+                    multiples = {}
+                    table.insert(multiples, muster_cards[i])
+                end
+            end
+        end
+        -- check if tie break needed, do so if so
+        if #multiples == 1 then
+            discard_target = multiples[1]
+        elseif #multiples > 1 then
+            -- break tie by attack
+            for i = 1, #multiples do
+                local card_attack = multiples[i].getVar('fight')
+                if i == 1 then
+                    lowest_attack = card_attack
+                    table.insert(tie_break_multiples, multiples[i])
+                else
+                    if card_attack == lowest_attack then
+                        table.insert(tie_break_multiples, multiples[i])
+                    elseif card_attack <= lowest_attack then
+                        tie_break_multiples = {}
+                        table.insert(tie_break_multiples, multiples[i])
+                    end
+                end
+            end
+        end
+        if #tie_break_multiples > 0 then
+            local random_index = math.random(1, #tie_break_multiples)
+            discard_target = tie_break_multiples[random_index]
+        end
+    else
+    -- or, do the discard random in muster thing
+        local discard_index = math.random(1, #muster_cards)
+        discard_target = muster_cards[discard_index]
+    end
+    -- once card identified, move to muster pile facedown
+    Wait.time(function()
+    if not is_random then
+        broadcastToAll("AI " .. capitalized_opponent_faction .. " has decided to discard " .. discard_target.getName() .. ".", color)
+    else
+        broadcastToAll("AI " .. capitalized_opponent_faction .. " has randomly discarded " .. discard_target.getName() .. ".", color)
+    end
+    discard_target.setPosition({-1.88, 1.00, 20.39})
+    discard_target.flip()
+    end, 1)
+end -- discard_ai_card()
+
+
+function discard_random_card(parms)
+    local button                = parms.button
+    local color                 = parms.color
+    animate_button({obj=button})
+    local button_position       = button.getPosition()
+    local button_discard_bottom = getObjectFromGUID("bfc82c")
+    local button_discard_top    = getObjectFromGUID("ded0c2")
+    local is_bottom             = (button == button_discard_bottom)
+    local is_top                = (button == button_discard_top)
+    local discard_loc           = (is_bottom and {-8.50, 2, -31.00} or {8.50, 2, 31.00})
+    local discard_rot           = (is_bottom and {0, 180, 0} or {0, 0, 0})
+    if is_bottom or is_top then
+        local hand = Player[color].getHandObjects()
+        if #hand > 0 then
+            local random_index = math.random(1, #hand)
+            local random_card = hand[random_index]
+            random_card.setRotation(discard_rot)
+            random_card.setPosition(discard_loc)
+            if Player[color].steam_name ~= nil then
+                broadcastToAll(Player[color].steam_name .. " has randomly discarded " .. random_card.getName() .. ".", color)
+            end
+        elseif #hand == 0 then
+            broadcastToColor("No cards in hand to discard.", color, color)
+        end
+    end
+end -- end discard_random_card
+
+
+function draw_galaxy_card()
+    -- determine leftmost free slot
+    local slots = {
+        getObjectFromGUID("c98289"),
+        getObjectFromGUID("46fd89"),
+        getObjectFromGUID("174e23"),
+        getObjectFromGUID("84fd72"),
+        getObjectFromGUID("d83464"),
+        getObjectFromGUID("c5ef86"),
+    }
+    local display_full = false
+    local position     = nil
+    for i = 1, 6 do
+        local card_in_zone = false
+        for _, object in pairs(slots[i].getObjects()) do
+            if object.tag == "Card" then
+                card_in_zone = true
+            end
+        end
+        if card_in_zone == false then
+            -- determine position to deal card to via slot number
+            if i == 1 then
+              position = {-21.00, 0.75, 0.00}
+            elseif i == 2 then
+              position = {-14.00, 0.75, 0.00}
+            elseif i == 3 then
+              position = {-7.00, 0.75, 0.00}
+            elseif i == 4 then
+              position = {0.00, 0.75, 0.00}
+            elseif i == 5 then
+              position = {7.00, 0.75, 0.00}
+            elseif i == 6 then
+              position = {14.00, 0.75, 0.00}
+            end
+            -- determine galaxy deck, deal card
+            local galaxy_deck = nil
+            local card = nil
+            local deck_or_card_found = false
+            for k, v in pairs(getObjectFromGUID("cdc550").getObjects()) do
+                if v.tag == "Deck" then
+                    deck_or_card_found = true
+                    galaxy_deck = v
+                    card = galaxy_deck.takeObject()
+                    getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
+                    return nil
+                end
+                if v.tag == "Card" then
+                    deck_or_card_found = true
+                    card = v
+                    getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
+                    return nil
+                end
+            end
+            if deck_or_card_found == false then
+                for k, v in pairs(getObjectFromGUID("3971c5").getObjects()) do
+                    if v.tag == "Deck" then
+                        galaxy_deck = v
+                        galaxy_deck.setName('Galaxy Deck')
+                        galaxy_deck.flip()
+                        galaxy_deck.shuffle()
+                        galaxy_deck.setPositionSmooth({-28.00, 1, 2.50}, false, false)
+                        card = galaxy_deck.takeObject()
+                        getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
+                        return nil
+                    end
+                end
+            end
+        end
+    end
+end -- end draw_galaxy_card()
+
+
+function draw_galaxy_card_to_slot(parms)
+    local slot     = parms.slot
+    local position = nil1
+    if slot == 1 then
+      position = {-21.00, 0.75, 0.00}
+    elseif slot == 2 then
+      position = {-14.00, 0.75, 0.00}
+    elseif slot == 3 then
+      position = {-7.00, 0.75, 0.00}
+    elseif slot == 4 then
+      position = {0.00, 0.75, 0.00}
+    elseif slot == 5 then
+      position = {7.00, 0.75, 0.00}
+    elseif slot == 6 then
+      position = {14.00, 0.75, 0.00}
+    end
+    -- determine galaxy deck, deal card
+    local galaxy_deck = nil
+    local card = nil
+    local deck_or_card_found = false
+    for k, v in pairs(getObjectFromGUID("cdc550").getObjects()) do
+        if v.tag == "Deck" then
+            deck_or_card_found = true
+            galaxy_deck = v
+            card = galaxy_deck.takeObject()
+            getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
+            return nil
+        end
+        if v.tag == "Card" then
+            deck_or_card_found = true
+            card = v
+            getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
+            return nil
+        end
+    end
+    if deck_or_card_found == false then
+        for k, v in pairs(getObjectFromGUID("3971c5").getObjects()) do
+            if v.tag == "Deck" then
+                galaxy_deck = v
+                galaxy_deck.setName('Galaxy Deck')
+                galaxy_deck.flip()
+                galaxy_deck.shuffle()
+                galaxy_deck.setPositionSmooth({-28.00, 1, 2.50}, false, false)
+                card = galaxy_deck.takeObject()
+                getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
+                return nil
+            end
+        end
+    end
+end -- end draw_galaxy_card_to_slot()
+
+
+function end_turn(button, _, _)
+    local bottom_color, top_color = get_playercolors()
+    -- discard all units
+    local is_bottom = false
+    local is_top    = false
+    if button.getGUID() == "d2864e" then
+        is_bottom = true
+    elseif button.getGUID() == "b6d068" then
+        is_top = true
+    end
+    local color = (is_bottom and bottom_color or top_color)
+    local is_ai = check_is_ai()
+    local discard_loc = (is_bottom and {-8.50, 2, -31.00} or {8.50, 2, 31.00})
+    local discard_rot = (is_bottom and {0, 180, 0} or {0, 0, 0})
+    local deck_loc    = (is_bottom and {-3.50, 2, -31.00} or {3.50, 2, 31.00})
+    -- discard cards
+    for k, v in pairs(play_zone.getObjects()) do
+        if is_bottom then
+            if v.hasTag('unit') and v.hasTag('bottom_owner') then
+                v.setRotation(discard_rot)
+                v.setPositionSmooth(discard_loc, false, false)
+            end
+        end
+        if is_top and not is_ai then
+            if v.hasTag('unit') and v.hasTag('top_owner') then
+                v.setRotation(discard_rot)
+                v.setPositionSmooth(discard_loc, false, false)
+            end
+        end
+        -- handle tarkin exile
+        if v.hasTag('tarkin_exile') then
+            v.setDescription("")
+            v.highlightOff()
+            exile_card({p_area="Blue", obj=v})
+        end
+    end
+    -- reset resource counter (needs Mygeeto base in play check)
+    local mygeeto_in_play   = false
+    local mygeeto_checkzone = (is_bottom and getObjectFromGUID("59b7ad") or getObjectFromGUID("23b5a3"))
+    for _, object in pairs(mygeeto_checkzone.getObjects()) do
+        if object.getName() == "Mygeeto" then
+            mygeeto_in_play = true
+        end
+    end
+    local mygeeto_resource_counter = getObjectFromGUID(is_bottom and "79146f" or "34be5a")
+    if not mygeeto_in_play then
+        mygeeto_resource_counter.call('set_val', 0)
+    else
+        local resource_count = mygeeto_resource_counter.getVar('val')
+        broadcastToAll("Mygeeto is in play, Separatist resources have not been reset.", color)
+        Wait.time(function() mygeeto_resource_counter.call('set_val',  resource_count) end, 1)
+    end
+    local player_hand = Player[color].getHandObjects()
+    for i, card in ipairs(player_hand) do
+        card.setPosition(discard_loc)
+    end
+    local deck_zone    = (is_bottom and "209eca" or "97aa40")
+    local discard_zone = (is_bottom and "61dacf" or "3ebaef")
+
+    -- deal new hand
+    Wait.time(function()
+    if not is_ai or (is_bottom and is_ai) then
+        pad_galaxy_deck.call('deal_card', {player_area=(is_bottom and "bottom" or "top"), count=5})
+    end
+    -- create ship ability buttons for new player
+    if is_bottom then
+        for k, v in pairs(play_zone.getObjects()) do
+            if v.hasTag('bottom_owner') and v.hasTag('ship') then
+                if v.hasTag('ability_button') or v.hasTag('ability_button_sec') then
+                    remove_ability_buttons({object=v})
+                end
+                remove_buttons({object=v})
+                v.call('ship_counter_create')
+            end
+        end
+        for k, v in pairs(play_zone.getObjects()) do
+            if v.hasTag('top_owner') and v.hasTag('ship') and v.hasTag('ability_button') then
+              v.call('ability_button_create_ui')
+            end
+            if v.hasTag('top_owner') and v.hasTag('ship') and v.hasTag('ability_button_sec') then
+              v.call('sec_ability_button_create_ui')
+            end
+        end
+    else
+        for k, v in pairs(play_zone.getObjects()) do
+            if v.hasTag('top_owner') and v.hasTag('ship') then
+                if v.hasTag('ability_button') or v.hasTag('ability_button_sec') then
+                    remove_ability_buttons({object=v})
+                end
+                remove_buttons({object=v})
+                v.call('ship_counter_create')
+            end
+        end
+        for k, v in pairs(play_zone.getObjects()) do
+            if v.hasTag('bottom_owner') and v.hasTag('ship') and v.hasTag('ability_button') then
+              v.call('ability_button_create_ui')
+            end
+            if v.hasTag('bottom_owner') and v.hasTag('ship') and v.hasTag('ability_button_sec') then
+              v.call('sec_ability_button_create_ui')
+            end
+        end
+    end
+    end, 1)
+
+
+
+    local next_color = (is_bottom and top_color or bottom_color)
+    if Turns.enable == true then
+        Turns.turn_color = next_color
+    end
+    set_board_to(next_color)
+end -- end end_turn()
+
+
+function exile_card(parms)
+    local player_area             = parms.p_area
+    local object                  = parms.obj
+    local bottom_color, top_color = get_playercolors()
+    local exile_bag               = (object.hasTag('bottom_owner') and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+    local color                   = (player_area == bottom_color and bottom_color or top_color)
+    if not object.hasTag('bottom_owner') and not object.hasTag('top_owner') then
+        exile_bag = (player_area == bottom_color and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+    end
+    local tags = object.getTags()
+    table.insert(tags, 'exiled')
+    object.setTags(tags)
+    -- check if card is in galaxy row
+    local zones       = {"c98289", "46fd89", "174e23", "84fd72", "d83464", "c5ef86"}
+    local card_in_row = false
+    for i = 1, 6 do
+        for _, v in pairs(getObjectFromGUID(zones[i]).getObjects()) do
+            if v == object then
+                card_in_row = true
+            end
+        end
+    end
+    exile_bag.putObject(object)
+    Wait.time(function()
+    -- handle Nute Gunray
+    if Global.getVar('next_card_nute') then
+        card_in_row = false
+        pad_galaxy_discard.call('handle_nute_gunray', {exile_bag=exile_bag, color=color})
+    end
+    -- replace card with galaxy row card if needed
+    if card_in_row then draw_galaxy_card() end
+    end, 1)
+end -- end exile_card()
+
+
+function exile_row_card(parms)
+    local bottom_color, top_color = get_playercolors()
+    local button                  = parms.button
+    local playercolor             = parms.playercolor
+    local card_zone               = parms.card_zone
+    local calling_card_guid       = parms.calling_card
+    local calling_card            = getObjectFromGUID(calling_card_guid)
+    -- animate button
+    animate_button({obj=button})
+    -- get card in zone
+    local exile_target_card       = nil
+    local card_found              = false
+    for _, object in pairs(card_zone.getObjects()) do
+        if object.tag == "Card" then
+            exile_target_card = object
+            card_found = true
+        end
+    end
+    if not card_found then
+        broadcastToAll("No exile target card found in slot.", playercolor)
+        return nil
+    end
+    -- exile card
+    local color = (playercolor == bottom_color and bottom_color or top_color)
+    exile_card({p_area=color, obj=exile_target_card})
+    -- do the calling_card action (all exile separatist cards only)
+    if calling_card.getName() == "B2 Battle Droid" then
+        -- draw a card for separatist
+        deal_card({player_area=((playercolor == bottom_color) and "bottom" or "top"), count=1})
+        broadcastToAll("Separatist has exiled a card, and draws a card via B2 Battle Droid ability.", playercolor)
+    elseif calling_card.getName() == "Munificent-Class Frigate" then
+        -- repair 2 base damage
+        repair_base({player_area=playercolor, count=2, tags=calling_card.getTags()})
+        broadcastToAll("Separatist has exiled a card, has repaired 2 base damage via Munificent-Class Frigate ability.", playercolor)
+    elseif calling_card.getName() == "Tri-Fighter" then
+        -- broadcast to do 3 damage manually to enemy ship
+        broadcastToAll("Separatist has exiled a card, and may manually do 3 damage to an enemy ship via Munificent-Class Frigate ability.", playercolor)
+    elseif calling_card.getName() == "AAT" then
+        -- gain 2 force
+        broadcastToAll("Separatist has exiled a card, and has gained +2 Force.", playercolor)
+        pad_galaxy_deck.call('move_force_track', {button=(playercolor == bottom_color and getObjectFromGUID("d586db") or getObjectFromGUID("817b24")), count=2})
+    end
+    -- remove buttons on calling_card
+    if calling_card.hasTag('buttons') then
+        remove_buttons({object=calling_card})
+    elseif calling_card.hasTag('ability_button') then
+        remove_ability_buttons({object=calling_card})
+    end
+    Wait.time(function()
+    -- clean up exile buttons
+    for _, object in pairs(getObjects()) do
+        if object.hasTag('exile_button') then
+            object.destruct()
+        end
+    end
+    end, 1)
+end -- end exile_row_card()
+
+
+function exile_row_deploy(parms)
+    local calling_card = parms.calling_card
+    local is_bottom    = parms.is_bottom
+    local button_bag   = getObjectFromGUID("c20af0")
+    local zones        = {
+        -- from galaxy deck side to outer rim/force track side
+        "c98289",
+        "46fd89",
+        "174e23",
+        "84fd72",
+        "d83464",
+        "c5ef86",
+    }
+    local button_locs  = {
+        (is_bottom and {-20.98, 0.14, -7.00} or {-21.00, 0.14, 7.00}),
+        (is_bottom and {-14.00, 0.14, -7.00} or {-14.00, 0.14, 7.00}),
+        (is_bottom and {-7.00, 0.14, -7.00} or {-7.00, 0.14, 7.00}),
+        (is_bottom and {0.00, 0.14, -7.00} or {0.00, 0.14, 7.00}),
+        (is_bottom and {7.00, 0.14, -7.00} or {7.00, 0.14, 7.00}),
+        (is_bottom and {14.00, 0.14, -7.00} or {14.00, 0.14, 7.00}),
+    }
+    local rotation  = (is_bottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
+    local exile_bag = (is_bottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+    for i = 1, 6 do
+        for _, object in pairs(getObjectFromGUID(zones[i]).getObjects()) do
+            if object.hasTag('separatist') then
+               local button = button_bag.takeObject()
+               Wait.frames(function()
+               button.setLock(true)
+               button.interactable = false
+               button.setRotation(rotation)
+               button.setPosition(button_locs[i])
+               button.setDescription(zones[i])
+               button.setGMNotes(calling_card)
+               end, 1)
+            end
+        end
+    end
+end -- end exile_row_deploy
+
+
+function force_button_create(parms)
+    local card                    = parms.card
+    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local tags                    = card.getTags()
+    local is_bottom = false
+    for _, tag in ipairs(tags) do
+        if tag == "bottom_owner" then
+            is_bottom = true
+        end
+    end
+    local button_color            = (is_bottom and bottom_color or top_color)
+    local color, hover_color      = get_button_colors({button_color=button_color})
+    if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
+        card.UI.show('force_button_' .. button_color)
+    end
+end -- end force_button_create_ui()
+
+
+function galaxy_discard(parms)
+    local button                  = parms.button
+    local card_zone               = parms.card_zone
+    local alt_click               = parms.alt_click
+    animate_button({obj=button})
+    local is_bottom               = false
+    if button == getObjectFromGUID("64b1c3") or button == getObjectFromGUID("859a1a") or button == getObjectFromGUID("96be63") or
+    button == getObjectFromGUID("b205d2") or button == getObjectFromGUID("7fc7d3") or button == getObjectFromGUID("8cf6b7") then
+        is_bottom = true
+    end
+    local exile_bag                   = (is_bottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+    local card_tag                    = nil
+    local card_destination            = {-28.00, 2.5, -2.50}
+    local card_rotation               = {0, 90, 0}
+    local card_object                 = nil
+    local card_in_zone                = false
+    local bottom_color, top_color     = get_playercolors()
+    local playercolor                 = (is_bottom and bottom_color or top_color)
+    local force_owner                 = get_force_owner()
+    local bottom_faction, top_faction = get_playerareas()
+    local wat_condition_met           = Global.getVar('wat_condition_met')
+    local wat_owner_force             = false
+    local stop_draw                   = false
+    for k, v in pairs(card_zone.getObjects()) do
+        if v.tag == "Card" then
+            card_in_zone = true
+            card_object = v
+        end
+    end
+    if card_in_zone == false then
+        broadcastToAll("No card in this slot to discard!", playercolor)
+        return nil
+    end
+    local card_tags = card_object.getTags()
+    if not Global.getVar('wat_condition_met') or (Global.getVar('wat_condition_met') and card_object.hasTag('neutral')) then
+        card_object.setRotationSmooth(card_rotation)
+        card_object.setPositionSmooth(card_destination, false, false)
+    end
+    -- handle Nute Gunray
+    if Global.getVar('next_card_nute') then
+        Wait.time(function()
+        pad_galaxy_discard.call('handle_nute_gunray', {exile_bag=exile_bag, color=playercolor})
+        end, 1)
+    end
+    -- handle Wat Tambor
+    if Global.getVar('wat_condition_met') then
+        if card_object.hasTag('neutral') then
+            -- check if separatist has force
+            if (force_owner == "Bottom" and bottom_faction == "separatist") or (force_owner == "Top" and top_faction == "separatist") then
+                wat_owner_force = true
+                broadcastToAll("Wat Tambor ability discarded card while Separatist is Force owner. It may be replaced with a Separatist card from galaxy discard.", playercolor)
+                -- check if discard pile exists
+                local discard_zone  = getObjectFromGUID("3971c5")
+                local discard_found = false
+                local discard_pile  = nil
+                for _, object in ipairs(discard_zone.getObjects()) do
+                    if object.tag == "Card" or object.tag == "Deck" then
+                        discard_found = true
+                        stop_draw = true
+                        discard_pile  = object
+                    end
+                end
+            else
+                Wait.time(function()
+                broadcastToAll("Wat Tambor ability discarded card while Separatist is not Force owner. Drawing a replacement card from galaxy deck.", playercolor)
+                draw_galaxy_card()
+                end, 1)
+            end
+            if not discard_found then
+                Wait.time(function()
+                if not stop_draw then
+                    broadcastToAll("No galaxy discard pile available, Wat Tambor ability is ineffective. Drawing a replacement card from galaxy deck.", playercolor)
+                    draw_galaxy_card()
+                end
+                end, 1)
+            end
+            -- search galaxy discard
+            -- if discard_found and wat_owner_force then
+            --     if discard_pile.type == "Deck" then
+            --         discard_pile.Container.search(playercolor)
+            --     end
+            -- end
+        else
+            broadcastToAll("Wat Tambor ability is active, next card discarded must be a Neutral card.", playercolor)
+            return nil
+        end
+    end
+    if not alt_click and not Global.getVar('next_card_nute') and not wat_condition_met then
+        Wait.time(function()
+        if not stop_draw then
+            draw_galaxy_card()
+        end
+        end, 1)
+    end
+    if Global.getVar('wat_condition_met') then
+        remove_ability_buttons({object=getObjectFromGUID("8d5301")})
+    end
+    Global.setVar('wat_condition_met', false)
+    if Player[playercolor].steam_name ~= nil then
+        broadcastToAll(Player[playercolor].steam_name .. " has discarded " .. card_object.getName() .. " from the galaxy row.", playercolor)
+    else
+        broadcastToAll(card_object.getName() .. " has been discarded from the galaxy row.", playercolor)
+    end
+end -- end galaxy_discard()
+
+
+function get_button_colors(parms)
+    local button_color = parms.button_color
+    if button_color == "Blue" then
+        color          = {0, 0, 1, .8}
+        hover_color    = {0, 0, 1, .9}
+    elseif button_color == "Red" then
+        color          = {1, 0, 0, .8}
+        hover_color    = {1, 0, 0, .9}
+    elseif button_color == "Orange" then
+        color          = {0.95, 0.39, 0.11, .8}
+        hover_color    = {0.95, 0.39, 0.11, .9}
+    elseif button_color == "Purple" then
+        color          = {0.62, 0.12, 0.94, .8}
+        hover_color    = {0.62, 0.12, 0.94, .9}
+    else -- backup plan in case of single player or other color detection failure
+        broadcastToAll("Card button creation color detection failure - tell Nonprophet to investigate in the discord bug-reports channel!", "Yellow")
+        if faction == "republic" or faction == "rebellion" then
+            color          = {1, 0, 0, .8}
+            hover_color    = {1, 0, 0, .9}
+        elseif faction == "empire" or faction == "separatist" then
+            color          = {0, 0, 1, .8}
+            hover_color    = {0, 0, 1, .9}
+        end
+    end
+    return color, hover_color
+end -- end get_button_color()
+
+
+function get_factions()
+    local factions = {
+        false, -- empire
+        false, -- republic
+        false, -- rebellion
+        false, -- separatist
+    }
+
+    local bottom_string = getObjectFromGUID("7e15f6").getName()
+    local top_string    = getObjectFromGUID("fa055e").getName()
+    local strings = {bottom_string, top_string}
+    for i = 1, 2 do
+        if string.find(strings[i], "Empire") then
+            factions[1] = true
+        elseif string.find(strings[i], "Republic") then
+            factions[2] = true
+        elseif string.find(strings[i], "Rebellion") then
+            factions[3] = true
+        elseif string.find(strings[i], "Separatist") then
+            factions[4] = true
+        end
+    end
+    return factions
+end -- end get_factions
+
+
+function get_force_owner()
+    local force_owner = "Nobody"
+    local force_tracker = getObjectFromGUID("74b511")
+    local start_location = force_tracker.getPosition()
+    if start_location.z < -7.5 and start_location.z > -9.5 then
+        force_owner = "Bottom"
+    elseif start_location.z < -4.3 and start_location.z > -6.3 then
+        force_owner = "Bottom"
+    elseif start_location.z < -1.65 and start_location.z > -3.65 then
+        force_owner = "Bottom"
+    elseif start_location.z < 1 and start_location.z > -1 then
+        force_owner = "Nobody"
+    elseif start_location.z < 3.65 and start_location.z > 1.65 then
+        force_owner = "Top"
+    elseif start_location.z < 6.3 and start_location.z > 4.3 then
+        force_owner = "Top"
+    elseif start_location.z < 9.5 and start_location.z > 7.5 then
+        force_owner = "Top"
+    end
+    return force_owner
+end -- end get_force_owner()
+
+
+function get_galaxy_deck()
+    local galaxy_deck = nil
+    for k, v in pairs(getObjectFromGUID("cdc550").getObjects()) do
+        if v.tag == "Deck" then
+            galaxy_deck = v
+        end
+    end
+    if galaxy_deck then
+        return galaxy_deck
+    else
+        return nil
+    end
+end -- end get_galaxy_deck()
+
+
+function get_playerareas()
+    local bottom_faction = getObjectFromGUID("12cd71").getName()
+    local top_faction    = getObjectFromGUID("834dea").getName()
+    return bottom_faction, top_faction
+end -- end get_playerareas()
+
+
+function get_playercolors()
+    local bottom_color =  getObjectFromGUID("12cd71").getDescription()
+    local top_color    =  getObjectFromGUID("834dea").getDescription()
+    return bottom_color, top_color
+end -- end get_playercolors
+
+
+function get_turn()
+    local bottom_zone = getObjectFromGUID("72633f")
+    local top_zone    = getObjectFromGUID("a36af8")
+    local zones       = {bottom_zone, top_zone}
+    for i = 1, 2 do
+        for k, v in pairs (zones[i].getObjects()) do
+            if v.hasTag('turn_tracker') then
+                if i == 1 then
+                    return 1
+                elseif i == 2 then
+                    return 2
+                end
+            end
+        end
+    end
+end -- end get_turn()
+
+
+function get_turn_tracker()
+    all_objects = getObjects()
+    turn_tracker = nil
+    for k, v in pairs(all_objects) do
+        if v.hasTag('turn_tracker') then
+            turn_tracker = v
+        end
+    end
+    if turn_tracker ~= nil then
+        return turn_tracker
+    else
+        broadcastToAll("Turn tracker not found! You should probably reload the mod.", "Orange")
+    end
+end -- end -- get_turn_tracker()
+
+
+function move_force_track(parms)
+    local button                  = parms.button
+    local count                   = parms.count
+    -- z axis locs, top to bottom
+    local loc_1                   = 8.50
+    local loc_2                   = 5.30
+    local loc_3                   = 2.65
+    local loc_4                   = 0
+    local loc_5                   = -2.65
+    local loc_6                   = -5.30
+    local loc_7                   = -8.50
+    local locs                    = {loc_1, loc_2, loc_3, loc_4, loc_5, loc_6, loc_7,}
+    local loc_1_color             = nil
+    local loc_2_color             = nil
+    local loc_3_color             = nil
+    local loc_4_color             = {1, 1, 1}
+    local loc_5_color             = nil
+    local loc_6_color             = nil
+    local loc_7_color             = nil
+    local is_bottom               = (button == getObjectFromGUID("d586db") and true or false)
+    local force_tracker           = getObjectFromGUID("74b511")
+    local force_track             = getObjectFromGUID("53e12c")
+    local start_location          = force_tracker.getPosition()
+    local bottom_force_button     = getObjectFromGUID("d586db")
+    local top_force_button        = getObjectFromGUID("817b24")
+    local bottom_color, top_color = get_playercolors()
+    if top_color == "Blue" then
+        loc_1_color = "Blue"
+        loc_2_color = {.33, .33, 1}
+        loc_3_color = {.66, .66, 1}
+    elseif top_color == "Red" then
+        loc_1_color = "Red"
+        loc_2_color = {1, .33, .33}
+        loc_3_color = {1, .66, .66}
+    elseif top_color == "Purple" then
+        loc_1_color = "Purple"
+        loc_2_color = {0.75, 0.56, 0.97}
+        loc_3_color = {0.88, 0.78, 0.99}
+    elseif top_color == "Orange" then
+        loc_1_color = "Orange"
+        loc_2_color = {0.97, 0.60, 0.56}
+        loc_3_color = {0.99, 0.80, 0.78}
+    end
+    if bottom_color == "Blue" then
+        loc_5_color = {.66, .66, 1}
+        loc_6_color = {.33, .33, 1}
+        loc_7_color = "Blue"
+    elseif bottom_color == "Red" then
+        loc_5_color = {1, .66, .66}
+        loc_6_color = {1, .33, .33}
+        loc_7_color = "Red"
+    elseif bottom_color == "Purple" then
+        loc_5_color = {0.88, 0.78, 0.99}
+        loc_6_color = {0.75, 0.56, 0.97}
+        loc_7_color = "Purple"
+    elseif bottom_color == "Orange" then
+        loc_5_color = {0.99, 0.80, 0.78}
+        loc_6_color = {0.97, 0.60, 0.56}
+        loc_7_color = "Orange"
+    end
+    local bottom_faction, top_faction = get_playerareas()
+    local capitalized_bottom_faction  = (bottom_faction:gsub("^%l", string.upper))
+    local capitalized_top_faction     = (top_faction:gsub("^%l", string.upper))
+    local faction                     = (is_bottom and capitalized_bottom_faction or capitalized_top_faction)
+    local playercolor                 = (is_bottom and bottom_color or top_color)
+    for i = 1, count do
+        if button == bottom_force_button then
+            if start_location.z < -7.5 and start_location.z > -9.5 then
+                return nil
+            elseif start_location.z < -4.3 and start_location.z > -6.3 then
+                start_location.z = loc_7
+                force_tracker.highlightOn(bottom_color)
+                force_tracker.setColorTint(loc_7_color)
+                force_track.setColorTint(loc_7_color)
+            elseif start_location.z < -1.65 and start_location.z > -3.65 then
+                start_location.z = loc_6
+                force_tracker.setColorTint(loc_6_color)
+                force_track.setColorTint(loc_6_color)
+            elseif start_location.z < 1 and start_location.z > -1 then
+                start_location.z = loc_5
+                force_tracker.setColorTint(loc_5_color)
+                force_track.setColorTint(loc_5_color)
+            elseif start_location.z < 3.65 and start_location.z > 1.65 then
+                start_location.z = loc_4
+                force_tracker.setColorTint(loc_4_color)
+                force_track.setColorTint(loc_4_color)
+            elseif start_location.z < 6.3 and start_location.z > 4.3 then
+                start_location.z = loc_3
+                force_tracker.setColorTint(loc_3_color)
+                force_track.setColorTint(loc_3_color)
+            elseif start_location.z < 9.5 and start_location.z > 7.5 then
+                start_location.z = loc_2
+                force_tracker.setColorTint(loc_2_color)
+                force_track.setColorTint(loc_2_color)
+                force_tracker.highlightOff()
+            end
+        elseif button == top_force_button then
+            if start_location.z < -7.5 and start_location.z > -9.5 then
+                start_location.z = loc_6
+                force_tracker.setColorTint(loc_6_color)
+                force_tracker.highlightOff()
+                force_track.setColorTint(loc_6_color)
+            elseif start_location.z < -4.3 and start_location.z > -6.3 then
+                start_location.z = loc_5
+                force_tracker.setColorTint(loc_5_color)
+                force_track.setColorTint(loc_5_color)
+            elseif start_location.z < -1.65 and start_location.z > -3.65 then
+                start_location.z = loc_4
+                force_tracker.setColorTint(loc_4_color)
+                force_track.setColorTint(loc_4_color)
+            elseif start_location.z < 1 and start_location.z > -1 then
+                start_location.z = loc_3
+                force_tracker.setColorTint(loc_3_color)
+                force_track.setColorTint(loc_3_color)
+            elseif start_location.z < 3.65 and start_location.z > 1.65 then
+                start_location.z = loc_2
+                force_tracker.setColorTint(loc_2_color)
+                force_track.setColorTint(loc_2_color)
+            elseif start_location.z < 6.3 and start_location.z > 4.3 then
+                start_location.z = loc_1
+                force_tracker.setColorTint(loc_1_color)
+                force_track.setColorTint(loc_1_color)
+                force_tracker.highlightOn(top_color)
+            elseif start_location.z < 9.5 and start_location.z > 7.5 then
+                return nil
+            end
+        end
+        force_tracker.setPosition(start_location)
+    end
+    broadcastToAll(faction .. " Force +" .. count, playercolor)
+end -- end move_force_track()
+
+
+function next_card_to_hand(parms)
+    local faction                     = parms.faction
+    local bottom_faction, top_faction = get_playerareas()
+    local is_bottom                   = (faction == bottom_faction)
+    if is_bottom then
+        Global.setVar('next_card_to_hand_bottom', true)
+    else
+        Global.setVar('next_card_to_hand_top', true)
+    end
+end -- end next_card_to_hand()
+
+
+function next_card_to_deck(parms)
+    local faction                     = parms.faction
+    local bottom_faction, top_faction = get_playerareas()
+    local is_bottom                   = (faction == bottom_faction)
+    if is_bottom then
+        Global.setVar('next_card_to_deck_bottom', true)
+    else
+        Global.setVar('next_card_to_deck_top', true)
+    end
+end -- end next_card_to_hand()
+
+
+function repair_base(parms)
+    faction = parms.player_area
+    count   = parms.count
+    tags    = parms.tags
+    local bottom_faction, top_faction = get_playerareas()
+    local is_bottom                   = nil
+    for _, tag in ipairs(tags) do
+        if tag == "bottom_owner" then
+            is_bottom = true
+        end
+    end
+    local counter = getObjectFromGUID(is_bottom and "7e15f6" or "fa055e")
+    local current_value = counter.getVar('val')
+    current_value = current_value - count
+    if current_value < 0 then current_value = 0 end
+    counter.call('set_val', current_value)
+end -- end repair_base()
+
+
+function remove_buttons(parms)
+    local object = parms.object
+    local buttons = object.getButtons()
+    if buttons ~= nil then
+        for k = #buttons, 1, -1 do
+            object.removeButton(buttons[k].index)
+        end
+    end
+end -- end remove_buttons()
+
+
+function remove_ability_buttons(parms)
+    local object = parms.object
+    object.UI.hide('ability_button_blue')
+    object.UI.hide('ability_button_purple')
+    object.UI.hide('ability_button_orange')
+    object.UI.hide('ability_button_red')
+    object.UI.hide('ability_button_gold')
+    object.UI.hide('ability_button_white')
+    object.UI.hide('ability_button_cancel')
+end -- end remove_ui_buttons()
+
+
+function remove_force_buttons(parms)
+    local object = parms.object
+    object.UI.hide('force_button_blue')
+    object.UI.hide('force_button_purple')
+    object.UI.hide('force_button_orange')
+    object.UI.hide('force_button_red')
+end -- end remove_force_buttons()
+
+
+function rotate_dealt_card(parms)
+    -- first need to determine which faction is on which side
+    local card           = parms.card
+    local position       = parms.position
+    local bottom_faction, top_faction = get_playerareas()
+    if bottom_faction == "rebellion" then bottom_faction = "rebel" end
+    if top_faction == "rebellion" then top_faction = "rebel" end
+    if card.hasTag('neutral') and not card.hasTag('ship') then
+        card.setRotation({0.00, 270.00, 0.00})
+    elseif card.hasTag('neutral') and card.hasTag('ship') then
+        card.setRotation({0.00, 180.00, 0.00})
+    elseif card.hasTag('empire') or card.hasTag('rebel') or
+    card.hasTag('republic') or card.hasTag('separatist') then
+        local tags = card.getTags()
+        if card.hasTag('unit') then
+            for _, tag in ipairs(tags) do
+                if string.find(tag, bottom_faction) then
+                    card.setRotation({0.00, 180.00, 0.00})
+                elseif string.find(tag, top_faction) then
+                    card.setRotation({0.00, 0.00, 0.00})
+                end
+            end
+        elseif card.hasTag('ship') then
+            for _, tag in ipairs(tags) do
+                if string.find(tag, bottom_faction) then
+                    card.setRotation({0.00, 90.00, 0.00})
+                elseif string.find(tag, top_faction) then
+                    card.setRotation({0.00, 270.00, 0.00})
+                end
+            end
+        end
+    end
+    card.setPositionSmooth(position, false, false)
+end -- end rotate_dealt_card()
+
+
+function sec_ability_button_create(parms)
+    local card                    = parms.card
+    local primary_tooltip         = parms.pri_tooltip
+    local secondary_tooltip       = parms.sec_tooltip
+    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local tags                    = card.getTags()
+    local is_bottom = false
+    for _, tag in ipairs(tags) do
+        if tag == 'bottom_owner' then
+            is_bottom = true
+        end
+    end
+    local button_color            = (is_bottom and bottom_color or top_color)
+    local color, hover_color      = get_button_colors({button_color=button_color})
+    if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
+        card.createButton({
+            click_function = "primary_button_action",
+            function_owner = pad_galaxy_discard,
+            label          = '',
+            position       = {-.545, 0.5,1.23},
+            height         = 575,
+            width          = 1000,
+            color          = color,
+            hover_color    = hover_color,
+            rotation       = {0, 0, 0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+            tooltip        = "Use " .. card.getName() .. " ability for " .. primary_tooltip .. "."
+        })
+        card.createButton({
+            click_function = "secondary_button_action",
+            function_owner = pad_galaxy_discard,
+            label          = '',
+            position       = {.545, 0.5,1.23},
+            height         = 575,
+            width          = 1000,
+            color          = {0.7569, 0.6863, 0.1020, .8},
+            hover_color    = {0.7569, 0.6863, 0.1020, .9},
+            rotation       = {0, 0, 0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+            tooltip        = "Use " .. card.getName() .. " ability for " .. secondary_tooltip .. ".",
+        })
+    end
+end -- end sec_ability_button_create()
+
+
+function set_board_to(color)
+    local is_ai                   = check_is_ai()
+    local bottom_color, top_color = get_playercolors()
+    local set_board_to_bottom     = false
+    local set_board_to_top        = false
+    if color == top_color then
+        set_board_to_top          = true
+        set_board_to_bottom       = false
+    end
+    if color == bottom_color then
+        set_board_to_bottom       = true
+        set_board_to_top          = false
+    end
+    local owner_tag               = (set_board_to_bottom and "bottom_owner" or "top_owner")
+    if is_ai and owner_tag == "top_owner" then
+        owner_tag = "ai_owner"
+    end
+    local to_add                  = 0
+    local counter                 = getObjectFromGUID(set_board_to_bottom and "79146f" or "34be5a")
+    local board_counter           = getObjectFromGUID(set_board_to_bottom and "5ddc6c" or "c6a07b")
+    local current_value           = 0
+    -- clean up ability tags
+    for _, object in pairs(getObjects()) do
+        if object.hasTag('twilek_ability') then
+            object.removeTag('twilek_ability')
+        end
+    end
+    -- reset vars
+    Global.setVar('next_card_to_hand_empire', false)
+    Global.setVar('next_card_to_hand_rebel', false)
+    Global.setVar('next_card_to_hand_separatist', false)
+    Global.setVar('next_card_to_hand_republic', false)
+    Global.setVar('next_card_to_deck_empire', false)
+    Global.setVar('next_card_to_deck_rebel', false)
+    Global.setVar('next_card_to_deck_separatist', false)
+    Global.setVar('next_card_to_deck_republic', false)
+    Global.setVar('next_card_tarkin', false)
+    Global.setVar('next_card_leia', false)
+    Global.setVar('next_card_atat', false)
+    Global.setVar('next_card_falcon', false)
+    Global.setVar('next_card_contact', false)
+    Global.setVar('next_card_atte', false)
+    Global.setVar('next_card_asajj', false)
+    Global.setVar('next_card_nute' , false)
+    Global.setVar('droideka_condition_met', false)
+    Global.setVar('hondo_condition_met', false)
+    Global.setVar('wat_condition_met', false)
+    -- disable hondo highlight if still on
+    if getObjectFromGUID("7156f4") ~= nil then
+        getObjectFromGUID("7156f4").highlightOff()
+    end
+    -- set end turn button visibility
+    getObjectFromGUID("d2864e").setInvisibleTo(set_board_to_bottom and {} or all_colors)
+    getObjectFromGUID("b6d068").setInvisibleTo(set_board_to_bottom and all_colors or {})
+    -- get, postion, and set turn tracker
+    all_objects = getObjects()
+    local turn_tracker = nil
+    for k, v in pairs(all_objects) do
+        if v.hasTag('turn_tracker') then
+            turn_tracker = v
+        end
+    end
+    local bottom_faction, top_faction = get_playerareas()
+    local next_faction                = (set_board_to_bottom and bottom_faction or top_faction)
+    local state_id                    = nil
+    if next_faction == "empire" then
+        state_id = 1
+        Global.setVar('trench_condition_met' , false)
+    elseif next_faction == "separatist" then
+        state_id = 2
+        local trench_up = false
+        for _, object in pairs(play_zone.getObjects()) do
+            if object.hasTag(owner_tag) and object.hasTag('ship') then
+                trench_up = true
+            end
+        end
+        if trench_up then
+            Global.setVar('trench_condition_met' , true)
+        else
+            Global.setVar('trench_condition_met' , false)
+        end
+    elseif next_faction == "rebellion" then
+        state_id = 3
+        Global.setVar('trench_condition_met' , false)
+    elseif next_faction == "republic" then
+        state_id = 4
+        Global.setVar('trench_condition_met' , false)
+    end
+    local turn_tracker_pos = set_board_to_bottom and {-46.00, 0.12, -21.00} or {46.00, 0.12, 21.00}
+    local turn_tracker_rot = set_board_to_bottom and {0, 180, 0} or {0, 0, 0}
+    if is_ai and not set_board_to_bottom then
+        turn_tracker_rot =  {0, 180, 0}
+    end
+    turn_tracker.setRotation(turn_tracker_rot)
+    turn_tracker.setPosition(turn_tracker_pos)
+    turn_tracker = turn_tracker.setState(state_id)
+    turn_tracker.setLock(true)
+    turn_tracker.interactable = false
+    -- swap board counter visibility
+    getObjectFromGUID("5ddc6c").setInvisibleTo(set_board_to_bottom and {} or all_colors) -- bottom resource counter
+    getObjectFromGUID("c6a07b").setInvisibleTo(set_board_to_bottom and all_colors or {}) -- top resource counter
+    -- set up next player's resource counters
+    -- add force resource
+    local force_tracker    = getObjectFromGUID("74b511")
+    local tracker_position = force_tracker.getPosition().z
+    if set_board_to_bottom then tracker_position = (tracker_position * -1) end
+    local mygeeto_in_play   = false
+    local mygeeto_checkzone = (set_board_to_bottom and getObjectFromGUID("59b7ad") or getObjectFromGUID("23b5a3"))
+    for _, object in pairs(mygeeto_checkzone.getObjects()) do
+        if object.getName() == "Mygeeto" then
+            mygeeto_in_play = true
+        end
+    end
+    if mygeeto_in_play then
+        to_add = to_add + counter.getVar('val')
+        broadcastToAll("Mygeeto is in play - Separatists begin turn with last turn's overflow, " .. to_add .. " resources.", color)
+    end
+    if tracker_position > 7.5 and tracker_position < 9.5 then
+        to_add = to_add + 1
+    end
+    -- add capital ships resources
+    for k, v in pairs(play_zone.getObjects()) do
+        if v.hasTag(owner_tag) and v.hasTag('ship') then
+            to_add = to_add + v.getVar('produce')
+        end
+    end
+    if to_add ~= nil then
+        current_value = current_value + to_add
+    end
+    if set_board_to_top and is_ai then
+        current_value = 0
+    end
+    counter.call('set_val', current_value)
+    board_counter.call('set_val', current_value)
+    -- check for base, force search base deck if no base
+    local base_card = nil
+    local base_deck = nil
+    local base_zone = (set_board_to_bottom and getObjectFromGUID("59b7ad") or getObjectFromGUID("23b5a3"))
+    if not set_board_to_bottom and is_ai then
+        base_zone = getObjectFromGUID("6b5523")
+    end
+    for _, object in ipairs(base_zone.getObjects()) do
+        if object.tag == "Card" then
+            base_card = object
+        end
+        if object.tag == "Deck" then
+            base_deck = object
+        end
+    end
+    if base_card == nil then
+        broadcastToAll("Base destroyed, please select a new base!", color)
+        Wait.time(function() base_deck.Container.search(color) end, .5)
+    end
+end -- end set_board_to()
+
+
+function ship_counter_create(parms)
+    local card                    = parms.ship_card
+    local val                     = parms.val
+    local bottom_color, top_color = get_playercolors()
+    local is_bottom               = (card.hasTag('bottom_owner'))
+    local is_top                  = (card.hasTag('top_owner') or card.hasTag('ai_owner'))
+    local owner_color             = (is_bottom and bottom_color or top_color)
+    local f_color                 = {1, 1, 1, 255}
+    local s_color                 = nil
+    local h_color                 = nil
+    local s_color, h_color          = get_button_colors({button_color=owner_color})
+    remove_buttons({object=card})
+    if card.hasTag('bottom_owner') or card.hasTag('top_owner') or card.hasTag('ai_owner') then
+        card.createButton({
+            label          = tostring(val),
+            click_function = "add_subtract",
+            function_owner = card,
+            position       = {.55, 0.5,-.65},
+            height         = 600,
+            width          = 600,
+            font_size      = 600,
+            font_color     = f_color,
+            hover_color    = h_color,
+            color          = s_color,
+            rotation       = {0,90,0},
+            scale          = {x=0.5, y=0.5, z=0.5},
+        })
+    end
+end -- end ship_counter_create()

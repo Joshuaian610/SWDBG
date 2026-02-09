@@ -1,0 +1,36 @@
+{
+  "files.associations": {
+        "*.ttslua": "lua",
+        "*.luascriptstate": "json",
+        "*.gmnotes": "json"
+    },
+  "Lua.diagnostics.disable": [
+    "lowercase-global",
+    "undefined-field",
+    "inject-field",
+    "missing-fields",
+    "cast-local-type",
+    "missing-return",
+    "need-check-nil",
+    "assign-type-mismatch",
+    "param-type-mismatch"
+  ],
+  "Lua.diagnostics.globals": [
+        "_",
+        "Timer"
+    ],
+    "Lua.diagnostics.disable": [
+        "lowercase-global",
+        "undefined-field",
+        "inject-field",
+        "missing-fields",
+        "cast-local-type",
+        "missing-return",
+        "need-check-nil",
+        "assign-type-mismatch"
+    ],
+    "Lua.type.weakNilCheck": true,
+    "Lua.workspace.library": [
+        "C:\\git\\typed-tabletop-simulator\\packages\\declaration\\lua\\language-server"
+    ],
+}

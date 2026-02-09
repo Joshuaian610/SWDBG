@@ -1,0 +1,17 @@
+cost    = 0
+produce = 0
+force   = 0
+fight   = 2
+faction = "rebellion"
+
+function onLoad()
+    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
+    pad_galaxy_discard = getObjectFromGUID("a03936")
+    pad_outer_rim      = getObjectFromGUID("606e92")
+    self.addContextMenuItem("Exile Card", exile_card)
+end
+
+function exile_card(player_area, position, object)
+    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+end
+

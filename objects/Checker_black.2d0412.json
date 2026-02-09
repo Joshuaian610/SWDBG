@@ -1,0 +1,66 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "AttachedDecals": [
+    {
+      "CustomDecal": {
+        "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330549482623/38660974D1B8FAA224C2390526C7908A50FB8222/",
+        "Name": "force_label",
+        "Size": 1
+      },
+      "Transform": {
+        "posX": 0.0323772468,
+        "posY": 0.2604835,
+        "posZ": -0.0306396447,
+        "rotX": 90,
+        "rotY": 179.9548,
+        "rotZ": 0,
+        "scaleX": 2.858156,
+        "scaleY": 1,
+        "scaleZ": 1
+      }
+    }
+  ],
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "a": 0,
+    "b": 0,
+    "g": 0,
+    "r": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "2d0412",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Checker_black",
+  "Nickname": "",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": true,
+  "Transform": {
+    "posX": 29.4,
+    "posY": -0.188,
+    "posZ": -10.555,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1.6,
+    "scaleY": 1.6,
+    "scaleZ": 1.6
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

@@ -1,0 +1,65 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "Bag": {
+    "Order": 0
+  },
+  "ColorDiffuse": {
+    "b": 0.14877,
+    "g": 0.39797,
+    "r": 0.51385
+  },
+  "CustomAssetbundle": {
+    "AssetbundleSecondaryURL": "",
+    "AssetbundleURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465963630158927/97F7C1B2A366457E8F01202A08B58BACEFA5AE51/",
+    "LoopingEffectIndex": 1,
+    "MaterialIndex": 2,
+    "TypeIndex": 6
+  },
+  "Description": "Drop Exiled Cards Here",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "051249",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "",
+  "LuaScript_path": "Exiled!.051249.ttslua",
+  "MaterialIndex": -1,
+  "MeasureMovement": false,
+  "MeshIndex": -1,
+  "Name": "Custom_Assetbundle_Bag",
+  "Nickname": "Exiled!",
+  "Number": 0,
+  "PhysicsMaterial": {
+    "BounceCombine": 0,
+    "Bounciness": 0,
+    "DynamicFriction": 0,
+    "FrictionCombine": 0,
+    "StaticFriction": 0
+  },
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": true,
+  "Transform": {
+    "posX": 29.5,
+    "posY": -0.69,
+    "posZ": 33,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1.65,
+    "scaleY": 1.65,
+    "scaleZ": 1.65
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

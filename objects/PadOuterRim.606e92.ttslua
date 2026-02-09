@@ -1,0 +1,469 @@
+function onLoad()
+    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
+    pad_galaxy_discard = getObjectFromGUID("a03936")
+    play_zone          = getObjectFromGUID("0cdb1a")
+end -- end onLoad()
+
+
+function purchase_card(parms)
+    local button                       = parms.btn
+    local playercolor                  = parms.player_color
+    local alt_click                    = parms.altclick
+    local player_area                  = parms.playerarea
+    local is_bottom                    = (player_area == "bottom")
+    local is_top                       = (player_area == "top")
+    local bottom_color, top_color      = pad_galaxy_deck.call('get_playercolors')
+    local bottom_faction, top_faction  = pad_galaxy_deck.call('get_playerareas')
+    local color                        = (is_bottom and bottom_color or top_color)
+    local faction                      = (is_bottom and bottom_faction or top_faction)
+    local capitalized_faction          = (faction:gsub("^%l", string.upper))
+    local opponent_faction             = (is_bottom and top_faction or bottom_faction)
+    local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
+    local faction_tag                  = faction
+    local opponent_tag                 = opponent_faction
+    local card_tag                     = (is_bottom and 'bottom_owner' or 'top_owner')
+    local counter                      = (is_bottom and getObjectFromGUID("79146f") or getObjectFromGUID("34be5a"))
+    local board_counter                = (is_bottom and getObjectFromGUID("5ddc6c") or getObjectFromGUID("c6a07b"))
+    local card_dest                    = nil
+    local card_rot                     = nil
+    local next_card_to_hand_bottom     = Global.getVar('next_card_to_hand_bottom')
+    local next_card_to_hand_top        = Global.getVar('next_card_to_hand_top')
+    local next_card_to_deck_bottom     = Global.getVar('next_card_to_deck_bottom')
+    local next_card_to_deck_top        = Global.getVar('next_card_to_deck_top')
+    local next_card_leia               = Global.getVar('next_card_leia')
+    local next_card_atat               = Global.getVar('next_card_atat')
+    local next_card_falcon             = Global.getVar('next_card_falcon')
+    local next_card_tarkin             = Global.getVar('next_card_tarkin')
+    local next_card_contact            = Global.getVar('next_card_contact')
+    local next_card_atte               = Global.getVar('next_card_atte')
+    local next_card_asajj              = Global.getVar('next_card_asajj')
+    local attack_action                = nil
+    local is_ai                        = pad_galaxy_deck.call('check_is_ai')
+    if faction_tag == "rebellion" then faction_tag = "rebel" end
+    if opponent_tag == "rebellion" then opponent_tag = "rebel" end
+    if faction == "rebellion" or faction == "republic" then
+        attack_action = "Sabotage"
+    elseif faction == "empire" or faction == "separatist" then
+        attack_action = "Bounty Hunt"
+    end
+    pad_galaxy_deck.call('animate_button', {obj=button})
+    if is_bottom then
+        if next_card_to_hand_bottom then
+            card_destination = {0.00, 1.46, -43.00}
+            card_rot         = {0.00, 180.00, 0.00}
+        elseif next_card_to_deck_bottom then
+            card_destination = {-3.50, 3.5, -31.00}
+            card_rot         = {0.00, 180.00, 180.00}
+        else
+            card_destination = {-8.50, 2.5, -31.00}
+            card_rot         = {0.00, 180.00, 0.00}
+        end
+    elseif is_top then
+        if next_card_to_hand_top then
+            card_destination = {0.00, 1.46, 43.00}
+            card_rot         = {0.00, 0.00, 0.00}
+        elseif next_card_to_deck_top then
+            card_destination = {3.50, 3.5, 31.00}
+            card_rot         = {0.00, 0.00, 180.00}
+        else
+            card_destination = {8.50, 2.5, 31.00}
+            card_rot         = {0.00, 0.00, 0.00}
+        end
+    end
+    local current_resources = counter.getVar('val')
+    local card_in_zone      = false
+    local card_object       = nil
+    local card_cost         = nil
+    local base_card_cost    = nil
+    local card_zone         = button.getVar('checkzone')
+    local for_free          = (alt_click and true or false)
+    if next_card_tarkin then for_free = true end
+    for k, v in pairs(card_zone.getObjects()) do
+        if v.tag == "Card" then
+            card_in_zone   = true
+            card_object    = v
+            card_cost      = card_object.getVar('cost')
+            base_card_cost = card_cost
+            -- if tarkin ability adding card, check if empire card
+            if next_card_tarkin and not v.hasTag('empire') then
+                if not is_ai then
+                    broadcastToColor("Next card purchased for free must be Empire card, using Grand Moff Tarkin ability", color, color)
+                else
+                    broadcastToAll("Next card purchased for free must be Empire card, using Grand Moff Tarkin ability", color)
+                end
+                return nil
+            end
+            -- if at-at sabotage ability purchasing card, check if empire card
+            if next_card_atat and not v.hasTag(faction_tag) then
+                if not is_ai then
+                    broadcastToColor("Next card purchased must be " .. capitalized_faction .. " card, using AT-AT " .. attack_action .. " reward.", color, color)
+                else
+                    broadcastToAll("Next card purchased must be " .. capitalized_faction .. " card, using AT-AT " .. attack_action .. " reward.", color)
+                end
+                return nil
+            end
+            -- if falcon bounty hunt ability purchasing card, check if empire card
+            if next_card_falcon and not v.hasTag(faction_tag) then
+                if not is_ai then
+                    broadcastToColor("Next card purchased must be " .. capitalized_faction .. " card, using Millennium Falcon " .. attack_action .. " reward.", color, color)
+                else
+                    broadcastToAll("Next card purchased must be " .. capitalized_faction .. " card, using Millennium Falcon " .. attack_action .. " reward.", color)
+                end
+                return nil
+            end
+            -- if leia adding card, check if rebel card
+            if next_card_leia and not v.hasTag('rebel') then
+                if not is_ai then
+                    broadcastToColor("Next card purchased must be Rebellion card, using Princess Leia ability.", "Red", "Red")
+                else
+                    broadcastToAll("Next card purchased must be Rebellion card, using Princess Leia ability.", "Red")
+                end
+                return nil
+            end
+            if next_card_contact and not v.hasTag('neutral') then
+                if not is_ai then
+                    broadcastToColor("Next card purchased must be Neutral card, using Underworld Contact ability.", color, color)
+                else
+                    broadcastToAll("Next card purchased must be Neutral card, using Underworld Contact ability.", color)
+                end
+                return nil
+            end
+            if next_card_atte and v.hasTag('faction_tag') then
+                if not is_ai then
+                    broadcastToColor("Next card purchased must be " .. capitalized_faction .. " card, using AT-TE " .. attack_action .. " reward.", color, color)
+                else
+                    broadcastToAll("Next card purchased must be " .. capitalized_faction .. " card, using AT-TE " .. attack_action .. " reward.", color)
+                end
+                return nil
+            end
+            if next_card_asajj and v.hasTag('faction_tag') then
+                if not is_ai then
+                    broadcastToColor("Next card purchased must be " .. capitalized_faction .. " card, using Asajj Ventress " .. attack_action .. " reward.", color, color)
+                else
+                    broadcastToAll("Next card purchased must be " .. capitalized_faction .. " card, using Asajj Ventress " .. attack_action .. " reward.", color)
+                end
+                return nil
+            end
+        end
+    end
+    -- outer rim pilot purchase
+    local card_in_zone = false
+    if card_zone == getObjectFromGUID("e59ff7") then
+        for _, v in ipairs(card_zone.getObjects()) do
+            if v.tag == "Deck" then
+                if for_free ~= true then
+                      if current_resources >= 2 then
+                          card_in_zone = true
+                          card_object    = v.takeObject()
+                          card_cost      = 2
+                          base_card_cost = 2
+                      elseif current_resources < 2 then
+                          if not is_ai then
+                              broadcastToColor("Not enough resources to purchase this card!", color, color)
+                          else
+                              broadcastToAll("Not enough resources to purchase this card!", color)
+                          end
+                          return nil
+                      end
+                else
+                    card_in_zone = true
+                    card_object    = v.takeObject()
+                    card_cost      = 0
+                    base_card_cost = 2
+                end
+            end
+            if v.tag == "Card" then
+                if for_free ~= true then
+                      if current_resources >= 2 then
+                          card_in_zone = true
+                          card_object    = v
+                          card_cost      = 2
+                          base_card_cost = 2
+                      elseif current_resources < 2 then
+                          if not is_ai then
+                              broadcastToColor("Not enough resources to purchase this card!", color, color)
+                          else
+                              broadcastToAll("Not enough resources to purchase this card!", color)
+                          end
+                          return nil
+                      end
+                else
+                    card_in_zone = true
+                    card_object    = v
+                    card_cost      = 0
+                    base_card_cost = 2
+                end
+            end
+        end
+        if card_in_zone == false or card_object == nil then
+            broadcastToAll("No card in this slot to purchase!", color)
+            return nil
+        end
+        -- new_total = current_resources
+        -- if for_free ~= true then
+        --    new_total = new_total - 2
+        -- end
+        -- counter.call('set_val', new_total)
+        -- board_counter.call('set_val', new_total)
+    end
+    -- tag card, send purchased card home, deal next
+    local owner_tag        = nil
+    local check_if_enemy   = nil
+    local card_tags        = card_object.getTags()
+    local factions         = pad_galaxy_deck.call('get_factions')
+    local current_faction  = nil
+    local enemy_faction    = nil
+    local bottom_check_obj = getObjectFromGUID("12cd71")
+    local top_check_obj    = getObjectFromGUID("834dea")
+    if is_bottom then
+        current_faction = bottom_check_obj.getName()
+        enemy_faction   = top_check_obj.getName()
+    elseif is_top or is_ai then
+        current_faction = top_check_obj.getName()
+        enemy_faction   = bottom_check_obj.getName()
+    end
+    local capitalized_faction       = (current_faction:gsub("^%l", string.upper))
+    local capitalized_enemy_faction = (enemy_faction:gsub("^%l", string.upper))
+    owner_tag = (is_bottom and "bottom_owner" or "top_owner")
+    if is_ai and not is_bottom then
+        owner_tag = "ai_owner"
+    end
+    for _, value in pairs(card_tags) do
+        if value == enemy_faction then
+            check_if_enemy = true
+            broadcastToAll("Unable to purchase enemy faction card!", color)
+            return nil
+        end
+    end
+    -- determine cost of card and current player's resource total,
+    -- then end the function if not enough resources to pay for card
+    local new_total = nil
+    -- handle Underworld Contact purchase action
+    if next_card_contact and card_object.hasTag('neutral') then
+        local original_card_cost = card_cost
+        card_cost = card_cost -2
+        -- need to call the below stuff here as well to prevent discount message in case of not enough resources
+        if for_free ~= true and current_resources < card_cost then
+            if not is_ai then
+                broadcastToColor("Not enough resources to purchase this card!", color, color)
+            else
+                broadcastToAll("Not enough resources to purchase this card!", color)
+            end
+            return nil
+        end
+        if card_cost < 0 then card_cost = 0 end
+        broadcastToAll("Original card cost of " .. original_card_cost .. " has been discounted by 2 to " .. card_cost .. ".", color)
+    end
+    if for_free ~= true and current_resources < card_cost then
+        if not is_ai then
+            broadcastToColor("Not enough resources to purchase this card!", color, color)
+        else
+            broadcastToAll("Not enough resources to purchase this card!", color)
+        end
+        return nil
+    end
+    if for_free ~= true then
+        if current_resources >= card_cost then
+            new_total = current_resources - card_cost
+            counter.call('set_val', new_total)
+            board_counter.call('set_val', new_total)
+        end
+    end
+    -- clean up next_card_contact
+    if next_card_contact and card_object.hasTag('neutral') then
+        Global.setVar('next_card_contact', false)
+        for _, object in ipairs(getObjects()) do
+            if object.hasTag('next_card_contact') then
+                pad_galaxy_deck.call('remove_buttons', {object=object})
+                object.removeTag('next_card_contact')
+            end
+        end
+    end
+    -- handle Fang Fighter
+    local force_owner = pad_galaxy_deck.call('get_force_owner')
+    if card_object.getName() == "Fang Fighter" and (not is_ai or (is_bottom and is_ai)) then
+        card_destination = (is_bottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
+        local deal_deck = nil
+        local deck_count = 0
+        local card_found = false
+        if is_bottom then
+            if force_owner == "Bottom" then
+                broadcastToAll("The Force is with the " .. capitalized_faction .. ", who draws a card from the Fang Fighter ability.", color)
+                pad_galaxy_deck.call('deal_card', {player_area="bottom", count=1})
+            end
+        elseif is_top then
+            if force_owner == "Top" then
+                broadcastToAll("The Force is with the " .. capitalized_faction .. ", who draws a card from the Fang Fighter ability.", color)
+                pad_galaxy_deck.call('deal_card', {player_area="top", count=1})
+            end
+        end
+    end
+    -- handle Vulture Droid
+    if card_object.getName() == "Vulture Droid" and (not is_ai or (is_bottom and is_ai)) then
+        card_destination = (is_bottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
+        broadcastToAll("Vulture Droid added to Separatist hand via it's ability.", color)
+    end
+    -- handle Quarren Mercenary
+    if card_object.getName() == 'Quarren Mercenary' and (not is_ai or (is_bottom and is_ai)) then
+        if is_bottom and force_owner == "Bottom" then
+            broadcastToAll("The Force is with the " .. capitalized_faction .. ", who may exile two cards out of hand or discard pile.", color)
+        elseif is_bottom and force_owner ~= "Bottom" then
+            broadcastToAll("The Force is not with the " .. capitalized_faction .. ", who may only exile one card out of hand or discard pile.", color)
+        elseif is_top and force_owner == "Top" then
+            broadcastToAll("The Force is with the " .. capitalized_faction .. ", who may exile two cards out of hand or discard pile.", color)
+        elseif is_top and force_owner ~= "Top" then
+            broadcastToAll("The Force is not with the " .. capitalized_faction .. ", who may only exile one card out of hand or discard pile.", color)
+        end
+    end
+    -- handle Super Commando
+    if card_object.getName() == "Super Commando" and (not is_ai or (is_bottom and is_ai)) then
+        if is_bottom then
+            card_destination = {0.00, 1.46, -43.00}
+        elseif is_top then
+            card_destination = {0.00, 1.46, 43.00}
+        end
+        broadcastToAll("Super Commando added to " .. capitalized_faction .. " hand via purchase ability, " .. capitalized_faction .. " may manually exile 1 card.", color)
+    end
+    -- handle Princess Leia
+    if Global.getVar('next_card_leia') then
+        pad_galaxy_deck.call('remove_ability_buttons', {object=getObjectFromGUID("7b1d8c")})
+    end
+    -- handle Hondo Onaka
+    local cost_over_4   = base_card_cost > 3 and true or false
+    local hondo_in_play = false
+    if not is_ai or (is_bottom and is_ai) then
+        for _, object in ipairs(play_zone.getObjects()) do
+            if object.getName() == "Hondo Onaka" and
+            (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
+                hondo_in_play = true
+                if cost_over_4 then
+                    Global.setVar('hondo_condition_met', true)
+                    object.highlightOn(color)
+                else
+                    Global.setVar('hondo_condition_met', false)
+                    object.highlightOff()
+                end
+            end
+        end
+    end
+    -- handle Grand Moff Tarkin
+    if Global.getVar('next_card_tarkin') then
+        card_destination = (is_bottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
+        pad_galaxy_deck.call('remove_ability_buttons', {object=getObjectFromGUID("624155")})
+    end
+    -- execution
+    if not is_bottom and is_ai then
+        card_rot         = {0.00, 180.00, 180.00}
+        card_destination = {-1.88, 3.00, 20.39}
+    end
+    -- handle AI Jar Jar Binks
+    if is_ai and is_top and card_object.getName() == "Jar Jar Binks" then
+        card_rot         = {0.00, 180.00, 0.00}
+        card_destination = {-8.50, 1.00, -31.00}
+        pad_galaxy_deck.call('move_force_track', {button=getObjectFromGUID("817b24"), count=1})
+    end
+    card_object.setRotation(card_rot)
+    card_object.setPositionSmooth(card_destination, false, false)
+    pad_galaxy_deck.call('add_tag', {tag=owner_tag, object=card_object})
+    if not is_ai then
+        pad_galaxy_deck.call('add_tag', {tag="just_bought", object=card_object})
+    end
+    if Global.getVar('next_card_tarkin') then
+        pad_galaxy_deck.call('add_tag', {tag='tarkin_exile',object=card_object})
+        card_object.setDescription("WILL BE EXILED VIA TARKIN ABILITY AT END OF TURN!")
+        card_object.highlightOn("Blue")
+    end
+    if button ~= button_purchase_7 and button ~= button_purchase_8 then
+        Wait.time(function()
+        if Global.getVar('next_card_nute') then
+            exile_bag = (is_bottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+            pad_galaxy_discard.call('handle_nute_gunray', {exile_bag=exile_bag, color=color})
+        else
+            pad_galaxy_deck.call('draw_galaxy_card')
+        end
+        end, 1)
+    end
+    if not for_free then
+        if Player[color].steam_name ~= nil then
+            broadcastToAll(Player[color].steam_name .. " has purchased " .. card_object.getName() .. ".", color)
+        else
+            if is_ai then
+                broadcastToAll("AI " .. capitalized_faction .. " has purchased " .. card_object.getName() .. ".", color)
+            end
+        end
+    elseif for_free then
+        if Player[color].steam_name ~= nil then
+            broadcastToAll(Player[color].steam_name .. " has purchased " .. card_object.getName() .. " for free.", color)
+        else
+            if is_ai then
+                broadcastToAll("AI " .. capitalized_faction .. " has purchased " .. card_object.getName() .. " for free.", color)
+            end
+        end
+    end
+    -- cleanup
+    for_free = false
+    -- remove relevant card ability buttons
+    for _, object in pairs(play_zone.getObjects()) do
+        if object.hasTag('twilek_ability') then
+            pad_galaxy_deck.call('remove_ability_buttons', {object=object})
+            object.removeTag('twilek_ability')
+        end
+    end
+    -- reset vars
+    Global.setVar('next_card_to_hand_bottom', false)
+    Global.setVar('next_card_to_deck_bottom', false)
+    Global.setVar('next_card_to_hand_top', false)
+    Global.setVar('next_card_to_deck_top', false)
+    Global.setVar('next_card_atat', false)
+    Global.setVar('next_card_falcon', false)
+    Global.setVar('next_card_leia', false)
+    Global.setVar('next_card_tarkin', false)
+    Global.setVar('next_card_contact', false)
+    Global.setVar('next_card_atte', false)
+    Global.setVar('next_card_asajj', false)
+    for _, object in ipairs(getObjects()) do
+        if object.hasTag('next_card_atat') then
+            pad_galaxy_deck.call('remove_buttons', {object=object})
+            if object.getTag('next_card_atat') then
+                object.removeTag('next_card_atat')
+            end
+        end
+        if object.hasTag('next_card_falcon') then
+            pad_galaxy_deck.call('remove_ability_buttons', {object=object})
+            if object.hasTag('next_card_falcon') then
+                object.removeTag('next_card_falcon')
+            end
+        end
+        if object.hasTag('next_card_leia') then
+            pad_galaxy_deck.call('remove_ability_buttons', {object=object})
+            if object.hasTag('next_card_leia') then
+                object.removeTag('next_card_leia')
+            end
+        end
+        if object.hasTag('next_card_tarkin') then
+            pad_galaxy_deck.call('remove_ability_buttons', {object=object})
+            if object.hasTag('next_card_tarkin') then
+                object.removeTag('next_card_tarkin')
+            end
+        end
+        if object.hasTag('next_card_contact') then
+            pad_galaxy_deck.call('remove_ability_buttons', {object=object})
+            if object.hasTag('next_card_contact') then
+                object.removeTag('next_card_contact')
+            end
+        end
+        if object.hasTag('next_card_atte') then
+            pad_galaxy_deck.call('remove_ability_buttons', {object=object})
+            if object.hasTag('next_card_atte') then
+                object.removeTag('next_card_atte')
+            end
+        end
+        if object.hasTag('next_card_asajj') then
+            pad_galaxy_deck.call('remove_ability_buttons', {object=object})
+            if object.hasTag('next_card_asajj') then
+                object.removeTag('next_card_asajj')
+            end
+        end
+    end
+end -- end purchase_card()
+

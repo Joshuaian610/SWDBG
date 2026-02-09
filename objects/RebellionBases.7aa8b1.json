@@ -1,0 +1,95 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "Yavin4.1518d6",
+    "Sullust.07ddcc",
+    "Tattooine.ef02df",
+    "Jedha.7c0828",
+    "Hoth.56be01",
+    "Bespin.ab9766",
+    "Alderaan.d3b8dc",
+    "Dagobah.613775",
+    "MonCala.a28888",
+    "Dantooine.70ba75"
+  ],
+  "ContainedObjects_path": "RebellionBases.7aa8b1",
+  "CustomDeck": {
+    "27": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532322348/E71A95A4398B16A75A796AA3BB3C7C5C80545E7D/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532317139/7E145F9BC705944C6FBB62CAFB9F732D81627A78/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    },
+    "28": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532322348/E71A95A4398B16A75A796AA3BB3C7C5C80545E7D/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532317139/7E145F9BC705944C6FBB62CAFB9F732D81627A78/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    2709,
+    2708,
+    2707,
+    2706,
+    2705,
+    2703,
+    2704,
+    2702,
+    2701,
+    2800
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "7aa8b1",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Rebellion Bases",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "rebel",
+    "rebel_base"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -13.75,
+    "posY": 0.094,
+    "posZ": 15,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 1.6,
+    "scaleY": 1,
+    "scaleZ": 1.6
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

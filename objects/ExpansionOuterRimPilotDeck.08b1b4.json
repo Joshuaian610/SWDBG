@@ -1,0 +1,87 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "OuterRimPilot.fcb549",
+    "OuterRimPilot.7d97b1",
+    "OuterRimPilot.ad6752",
+    "OuterRimPilot.e23047",
+    "OuterRimPilot.20ba33",
+    "OuterRimPilot.b0a8c8",
+    "OuterRimPilot.fb4447",
+    "OuterRimPilot.91c43e",
+    "OuterRimPilot.bed2c1",
+    "OuterRimPilot.e80023"
+  ],
+  "ContainedObjects_path": "ExpansionOuterRimPilotDeck.08b1b4",
+  "CustomDeck": {
+    "56": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094933212304/7873845D06546D0BAFECF71FF399C1060497B9D4/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    5607,
+    5606,
+    5600,
+    5609,
+    5601,
+    5602,
+    5603,
+    5608,
+    5604,
+    5605
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "08b1b4",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Expansion Outer Rim Pilot Deck",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "neutral",
+    "or_pilot",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 7,
+    "posY": 0.21,
+    "posZ": 0.001,
+    "rotX": 0,
+    "rotY": 270,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

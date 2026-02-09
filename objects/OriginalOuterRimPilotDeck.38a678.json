@@ -1,0 +1,87 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "OuterRimPilot.5efe83",
+    "OuterRimPilot.9dd149",
+    "OuterRimPilot.1e44a9",
+    "OuterRimPilot.e3216f",
+    "OuterRimPilot.f9fbc4",
+    "OuterRimPilot.003471",
+    "OuterRimPilot.10b4f2",
+    "OuterRimPilot.b93d32",
+    "OuterRimPilot.58eae9",
+    "OuterRimPilot.8df203"
+  ],
+  "ContainedObjects_path": "OriginalOuterRimPilotDeck.38a678",
+  "CustomDeck": {
+    "9": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532261585/BD8FA9E4684FBF7D440A62B52747D3EE421BC6CF/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    908,
+    907,
+    906,
+    909,
+    902,
+    905,
+    903,
+    901,
+    900,
+    904
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "38a678",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Original Outer Rim Pilot Deck",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "neutral",
+    "or_pilot",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 14,
+    "posY": 0.21,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 270,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

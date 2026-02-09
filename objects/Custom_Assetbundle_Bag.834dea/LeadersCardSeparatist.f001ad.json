@@ -1,0 +1,227 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "AttachedSnapPoints": [
+    {
+      "Position": {
+        "x": -0.688,
+        "y": 0.451,
+        "z": 0.091
+      }
+    },
+    {
+      "Position": {
+        "x": 0.539,
+        "y": 0.451,
+        "z": 0.238
+      }
+    },
+    {
+      "Position": {
+        "x": 0.54,
+        "y": 0.451,
+        "z": -0.067
+      }
+    },
+    {
+      "Position": {
+        "x": 0.54,
+        "y": 0.451,
+        "z": -0.312
+      }
+    },
+    {
+      "Position": {
+        "x": 0.858,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.665,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.472,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.276,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.087,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.109,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.302,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.495,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.691,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.883,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -1.079,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 1.246,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": 0.949,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": 0.658,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": 0.374,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": 0.085,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": -0.209,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": -0.497,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": -0.782,
+        "y": 0.451,
+        "z": -0.911
+      }
+    },
+    {
+      "Position": {
+        "x": -1.077,
+        "y": 0.451,
+        "z": -0.911
+      }
+    }
+  ],
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 0.53,
+    "r": 0.118
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.450887173,
+      "Type": 0
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667292969132/7A4900F1898D000F1ABDDEDB3A536682DEDAC37E/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667292969132/7A4900F1898D000F1ABDDEDB3A536682DEDAC37E/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "f001ad",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Leaders Card Separatist",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": 102.126,
+    "posY": 17.882,
+    "posZ": 40.142,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 5.2,
+    "scaleY": 1,
+    "scaleZ": 5.2
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

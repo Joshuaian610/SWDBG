@@ -1,0 +1,80 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "Aurore-ClassFreighter.8a5e75",
+    "Aurore-ClassFreighter.4664c6",
+    "SpaceYacht.00dc5a",
+    "SpaceYacht.a1b06a",
+    "SpaceYacht.79626e",
+    "Dreadnought-ClassCarrier.0d45c7",
+    "Dreadnought-ClassCarrier.23515b"
+  ],
+  "ContainedObjects_path": "CloneWarsNeutralShips.98f4b5",
+  "CustomDeck": {
+    "124": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129064789182/811581E476F7C957FB91F7C6E183D08E12AD51C9/",
+      "NumHeight": 2,
+      "NumWidth": 4,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    12400,
+    12401,
+    12404,
+    12403,
+    12402,
+    12405,
+    12406
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "98f4b5",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Clone Wars Neutral Ships",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "neutral",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 0,
+    "posY": 0.195,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

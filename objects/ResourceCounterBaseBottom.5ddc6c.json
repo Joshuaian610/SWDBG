@@ -1,0 +1,55 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 1,
+    "r": 1
+  },
+  "CustomMesh": {
+    "CastShadows": true,
+    "ColliderURL": "",
+    "Convex": true,
+    "DiffuseURL": "https://steamusercontent-a.akamaihd.net/ugc/755969254323598194/6B41EBE3382420EF6C8B99FDC5DC5326C4B11760/",
+    "MaterialIndex": 3,
+    "MeshURL": "https://steamusercontent-a.akamaihd.net/ugc/755969254323594962/2F5F226A94AF22DA95182A1BA45337B4A2B35DFF/",
+    "NormalURL": "",
+    "TypeIndex": 1
+  },
+  "Description": "Left Click to increase\nRight Click to decrease",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "5ddc6c",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "[0]",
+  "LuaScript_path": "ResourceCounterBaseBottom.5ddc6c.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Model",
+  "Nickname": "Resource Counter Base Bottom",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": -28,
+    "posY": -0.086,
+    "posZ": -10,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 5,
+    "scaleY": 0.35,
+    "scaleZ": 5
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

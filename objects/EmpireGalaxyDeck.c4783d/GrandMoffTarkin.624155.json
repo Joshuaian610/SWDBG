@@ -1,0 +1,83 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 12921,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "129": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129065340212/FE89CC404725CC085A26C911AF352B9FC0F4031A/",
+      "NumHeight": 4,
+      "NumWidth": 6,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Ability Blue Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098324064/EFA3D454799F0BFA8FF0974222193752069A978B/"
+    },
+    {
+      "Name": "Force Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086174365/A65556DB7C107631AE894811FD3A315B927CBE24/"
+    },
+    {
+      "Name": "Ability Cancel",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492087450051/E22B9555C97FBDF989BA28A92D56C267120D0728/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "624155",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "EmpireGalaxyDeck.c4783d/GrandMoffTarkin.624155.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Grand Moff Tarkin",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "add_force_button",
+    "empire",
+    "officer",
+    "unique",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 32.587,
+    "posY": 2.069,
+    "posZ": -5.783,
+    "rotX": 1,
+    "rotY": 180,
+    "rotZ": 359,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "EmpireGalaxyDeck.c4783d/GrandMoffTarkin.624155.xml"
+}

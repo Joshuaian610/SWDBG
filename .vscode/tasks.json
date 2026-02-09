@@ -1,0 +1,41 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SWDBG: Build",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/.vscode/build.py",
+        "--action",
+        "build",
+        "--moddir",
+        "${workspaceFolder}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}${pathSeparator}.vscode"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "SWDBG: Decompose",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/.vscode/build.py",
+        "--action",
+        "decompose",
+        "--moddir",
+        "${workspaceFolder}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}${pathSeparator}.vscode"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

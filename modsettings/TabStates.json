@@ -1,0 +1,68 @@
+{
+  "0": {
+    "body": "",
+    "color": "Grey",
+    "id": 0,
+    "title": "Mod Tips",
+    "visibleColor": {
+      "b": 0.5,
+      "g": 0.5,
+      "r": 0.5
+    }
+  },
+  "1": {
+    "body": "",
+    "color": "Red",
+    "id": 1,
+    "title": "Red",
+    "visibleColor": {
+      "b": 0.094,
+      "g": 0.1,
+      "r": 0.856
+    }
+  },
+  "2": {
+    "body": "",
+    "color": "Blue",
+    "id": 2,
+    "title": "Blue",
+    "visibleColor": {
+      "b": 1,
+      "g": 0.53,
+      "r": 0.118
+    }
+  },
+  "4": {
+    "body": "",
+    "color": "Orange",
+    "id": 4,
+    "title": "Orange",
+    "visibleColor": {
+      "b": 0.113,
+      "g": 0.392,
+      "r": 0.956
+    }
+  },
+  "5": {
+    "body": "",
+    "color": "Purple",
+    "id": 5,
+    "title": "Purple",
+    "visibleColor": {
+      "b": 0.941,
+      "g": 0.125,
+      "r": 0.627
+    }
+  },
+  "6": {
+    "body": "Leaders, A Solitaire Variant by Robert J (Azuredeath)\n\nCurrently, Leaders mode is in beta. I have not yet consulted with Azuredeath regarding the balance of cross game matchups, however, the current setup allows for cross game matchups, and will pull the ruleset for whichever faction is the AI - CW ruleset for a CW AI Leader, Original ruleset for an Original AI Leader.\n\nLeaders mode may be enabled at game start by ensuring the checkbox on the game setup panel is checked. If checked, whatever faction is selected to occupy the top (usual player 2) player area will be set up for an AI Leader instead of a second player.\n\nAt this time, I believe the assets and scripting fundamentals are in place to allow for a full game without error, albeit, sometimes rather manually when it comes to running the AI turn. There are plans to incorporate more automated scripting in this area.\n\nThere are some differences with a physical layout of Leaders - the Shuttles pile and the Muster pile have been consolidated into a deck stack to save room. I do plan on adding a pad for these areas to spell out where to place those cards. For now, reserve the snap point slot directly to the right of the top right of the Leaderboard as the face down Muster deck (as this is where purchased AI cards will land), and the rest of the slots to it's right as the face up Muster slots.\n\nPlease report any bugs to Nonprophet in the bug-reports channel in discord if you hit any. Thanks for playing!\n\n\n",
+    "color": "Grey",
+    "id": 6,
+    "title": "Leaders Tips",
+    "visibleColor": {
+      "b": 0.5,
+      "g": 0.5,
+      "r": 0.5
+    }
+  }
+}

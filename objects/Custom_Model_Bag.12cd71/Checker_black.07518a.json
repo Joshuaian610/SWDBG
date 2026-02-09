@@ -1,0 +1,46 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "a": 0.00338,
+    "b": 0,
+    "g": 0,
+    "r": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "none",
+  "GUID": "07518a",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "Custom_Model_Bag.12cd71/Checker_black.07518a.ttslua",
+  "MeasureMovement": false,
+  "Name": "Checker_black",
+  "Nickname": "",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": -47.699,
+    "posY": 6.459,
+    "posZ": -33.423,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 3.15,
+    "scaleY": 3.15,
+    "scaleZ": 3.15
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

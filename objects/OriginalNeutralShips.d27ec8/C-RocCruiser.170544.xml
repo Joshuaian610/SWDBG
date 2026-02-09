@@ -1,0 +1,51 @@
+<Panel
+    id                = "ability_button_blue"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 0 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bddfbc)" image="Ability Blue Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_purple"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 0 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bddfbc)" image="Ability Purple Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_red"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 0 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bddfbc)" image="Ability Red Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_orange"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 0 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bddfbc)" image="Ability Orange Large"></Button>
+</Panel>

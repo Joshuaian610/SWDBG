@@ -1,0 +1,255 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "AttachedSnapPoints": [
+    {
+      "Position": {
+        "x": -0.688,
+        "y": 0.451,
+        "z": 0.091
+      }
+    },
+    {
+      "Position": {
+        "x": 0.539,
+        "y": 0.451,
+        "z": 0.238
+      }
+    },
+    {
+      "Position": {
+        "x": 0.54,
+        "y": 0.451,
+        "z": -0.067
+      }
+    },
+    {
+      "Position": {
+        "x": 0.54,
+        "y": 0.451,
+        "z": -0.312
+      }
+    },
+    {
+      "Position": {
+        "x": 1.246,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": 1.053,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": 0.858,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": 0.665,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": 0.472,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": 0.28,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": 0.084,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": -0.109,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": -0.304,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": -0.496,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": -0.689,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": -0.885,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": -1.077,
+        "y": 0.451,
+        "z": -0.908
+      }
+    },
+    {
+      "Position": {
+        "x": 0.858,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.665,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.472,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.276,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.087,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.109,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.302,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.495,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.691,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.883,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -1.079,
+        "y": 0.451,
+        "z": 0.825
+      }
+    }
+  ],
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.09398,
+    "g": 0.09998,
+    "r": 0.856
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.450887173,
+      "Type": 0
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2040737231373284032/2135DD3EF505EFE110F67ED08CAAD270C2FA0266/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2040737231373284032/2135DD3EF505EFE110F67ED08CAAD270C2FA0266/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "a41512",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Leaders Card Rebellion",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": 102.266,
+    "posY": 17.608,
+    "posZ": 42.208,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 5.2,
+    "scaleY": 1,
+    "scaleZ": 5.2
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

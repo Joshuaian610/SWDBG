@@ -1,0 +1,60 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 0.53,
+    "r": 0.11799
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.348251343,
+      "Type": 0
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2040737231388604982/E45B1F06FD104AC8A8D3E43C04A8038F806CD8B3/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2040737231388604982/E45B1F06FD104AC8A8D3E43C04A8038F806CD8B3/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "43fbe2",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "Custom_Model_Bag.12cd71/Custom_Tile.43fbe2.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -46.441,
+    "posY": 6.482,
+    "posZ": -32.131,
+    "rotX": 355,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 1.26,
+    "scaleY": 1,
+    "scaleZ": 1.26
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

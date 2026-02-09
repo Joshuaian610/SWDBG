@@ -1,0 +1,36 @@
+cost    = 3
+produce = 0
+force   = 0
+fight   = 0
+faction = "neutral"
+attack_tooltip = 'Gain 3 Resources'
+
+function onLoad()
+    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
+    pad_galaxy_discard = getObjectFromGUID("a03936")
+    pad_outer_rim      = getObjectFromGUID("606e92")
+    self.addContextMenuItem("Exile Card", exile_card)
+end
+
+function exile_card(player_area, position, object)
+    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+end
+
+
+function sec_ability_button_create_ui()
+    pad_galaxy_deck.call('sec_ability_button_create_ui', {card=self, pri_tooltip="Force", sec_tooltip="Resource"})
+end -- end ability_button_create()
+
+
+function force_button_create()
+    pad_galaxy_deck.call('force_button_create', {card=self})
+end -- end force_button_create()
+
+
+function bh_create()
+    return nil
+end -- end bh_create()
+
+function bh_neutral_create()
+    pad_galaxy_deck.call('bh_neutral_create', {card=self, tooltip=attack_tooltip, faction=faction})
+end -- end bh_neutral_create()

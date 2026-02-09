@@ -1,0 +1,61 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 0.53,
+    "r": 0.118
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.2,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939849222/70A7F1B99AA2D9F75ED43A97B0A29F2CE4FAB071/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939849222/70A7F1B99AA2D9F75ED43A97B0A29F2CE4FAB071/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "48dbb6",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Separatist Turn",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable",
+    "turn_tracker"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -46.005,
+    "posY": 0.124,
+    "posZ": -21.005,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 7.24,
+    "scaleY": 1,
+    "scaleZ": 7.24
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

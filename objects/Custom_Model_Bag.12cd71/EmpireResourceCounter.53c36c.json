@@ -1,0 +1,58 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 1,
+    "r": 1
+  },
+  "CustomMesh": {
+    "CastShadows": true,
+    "ColliderURL": "",
+    "Convex": true,
+    "DiffuseURL": "https://steamusercontent-a.akamaihd.net/ugc/755969254323598194/6B41EBE3382420EF6C8B99FDC5DC5326C4B11760/",
+    "MaterialIndex": 3,
+    "MeshURL": "https://steamusercontent-a.akamaihd.net/ugc/755969254323594962/2F5F226A94AF22DA95182A1BA45337B4A2B35DFF/",
+    "NormalURL": "",
+    "TypeIndex": 1
+  },
+  "Description": "Left Click to increase\nRight Click to decrease",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "53c36c",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScriptState": "[0]",
+  "LuaScript_path": "Custom_Model_Bag.12cd71/EmpireResourceCounter.53c36c.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Model",
+  "Nickname": "Empire Resource Counter",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "rebel_owner"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -3.58,
+    "posY": 14.88,
+    "posZ": -30.25,
+    "rotX": 40,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 3,
+    "scaleY": 1,
+    "scaleZ": 3
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

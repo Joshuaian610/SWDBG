@@ -1,0 +1,38 @@
+<Panel
+    id                = "ability_button_blue"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 0 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(348628)" image="Ability Blue"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_purple"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 0 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(348628)" image="Ability Purple"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_cancel"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 0 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/cancel_card_action_ui(348628)" image="Ability Cancel"></Button>
+</Panel>

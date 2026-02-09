@@ -1,0 +1,99 @@
+MIN_VALUE = 0
+MAX_VALUE = 999
+
+function onload(saved_data)
+    val = 0
+    if saved_data ~= 0 then
+        local loaded_data = JSON.decode(saved_data)
+        val = loaded_data[1]
+    end
+    createAll()
+end -- end function onload()
+
+
+function updateSave()
+    local data_to_save = {val}
+    saved_data = JSON.encode(data_to_save)
+    self.script_state = saved_data
+end -- end function updateSave()
+
+
+function createAll()
+    s_color = {0, 0, 0, 95}
+    f_color = {0.7569, 0.6863, 0.1020, 255}
+    self.createButton({
+        label=tostring(val),
+        click_function="add_subtract",
+        function_owner=self,
+        position={0,1.59,0.00},
+        height=750,
+        width=750,
+        font_size=750,
+        font_color=f_color,
+        hover_color = {0,0,0,.9},
+        color={0,0,0,0}
+    })
+end -- end function createAll()
+
+function removeAll()
+      self.removeButton(0)
+end -- end function removeAll()
+
+function reloadAll()
+      removeAll()
+      createAll()
+      updateSave()
+end -- end function reloadAll()
+
+function add_subtract(_obj, _color, alt_click)
+    local bottom_faction, top_faction = getObjectFromGUID("83b3ce").call('get_playerareas')
+    local bottom_color, top_color     = getObjectFromGUID("83b3ce").call('get_playercolors')
+    local faction                     = bottom_faction
+    local faction                     = (faction:gsub("^%l", string.upper))
+    local color                       = bottom_color
+    mod                               = alt_click and -1 or 1
+    new_value = math.min(math.max(val + mod, MIN_VALUE), MAX_VALUE)
+    if val ~= new_value then
+        val = new_value
+        updateVal()
+        updateSave()
+        getObjectFromGUID("79146f").call('set_val', val)
+        if not alt_click and (faction ~= "" and color ~= "") then
+            broadcastToAll(faction .. " has manually added +1 Resource to their counter.", color)
+        elseif alt_click and (faction ~= "" and color ~= "") then
+            broadcastToAll(faction .. " has manually removed +1 Resource from their counter.", color)
+        end
+    end
+end -- end function add_subtract()
+
+function subtract()
+  new_value = math.min(math.max(val -1, MIN_VALUE), MAX_VALUE)
+  if val ~= new_value then
+      val = new_value
+      updateVal()
+      updateSave()
+  end
+end -- end function subtract()
+
+function updateVal()
+    self.editButton({
+        index = 0,
+        label = tostring(val),
+    })
+end -- end function updateVal
+
+function set_val(value)
+    val = value
+    updateVal()
+    updateSave()
+end -- send function set_val()
+
+function reset_val()
+    val = 0
+    updateVal()
+    updateSave()
+end -- end function set_val()
+
+function keepSample(_obj, _string, value)
+    reloadAll()
+end -- end function keepSample()

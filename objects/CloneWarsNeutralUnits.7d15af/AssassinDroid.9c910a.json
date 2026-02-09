@@ -1,0 +1,87 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 6615,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "66": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2394314828581893289/40BFCF5C0F098C9C61DEC1B29C815729BD7C0014/",
+      "NumHeight": 4,
+      "NumWidth": 6,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Ability Blue Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098324064/EFA3D454799F0BFA8FF0974222193752069A978B/"
+    },
+    {
+      "Name": "Ability Purple Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098326569/E44005DEF51A0680CC9B51AC70DF821BB3756819/"
+    },
+    {
+      "Name": "Ability Orange Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098329187/7058ECC9C3A8CEB53EC411223B8C11B9EC7B0093/"
+    },
+    {
+      "Name": "Ability Red Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098333057/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "9c910a",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "CloneWarsNeutralUnits.7d15af/AssassinDroid.9c910a.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Assassin Droid",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "bounty_hunter",
+    "droid",
+    "neutral",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 93.002,
+    "posY": 1.985,
+    "posZ": 14.48,
+    "rotX": 0,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "CloneWarsNeutralUnits.7d15af/AssassinDroid.9c910a.xml"
+}

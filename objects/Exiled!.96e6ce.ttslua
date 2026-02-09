@@ -1,0 +1,173 @@
+function onLoad()
+    self.createButton({
+        click_function="click_clopen", function_owner=self,
+        position={0,0.5,0}, height=500, width=500, color={0,0,0,0}
+    })
+    params = {assetbundle="http://chry.me/up/new_blackhole4.unity3d",material=2}
+end
+
+function click_clopen()
+    if self.AssetBundle.getLoopingEffectIndex() == 0 then
+        params.type = 6
+        self.AssetBundle.playLoopingEffect(1)
+    else
+        params.type = 0
+        self.AssetBundle.playLoopingEffect(0)
+    end
+    self.setCustomObject(params)
+    self.reload()
+end
+
+rc_car = true
+--USED FOR OTHER SCRIPTS TO DETECT WHETHER THIS OBJECT IS A RC_CAR OR NOT.
+
+movement_speed = 0.5
+
+rotate_object_to_pointer = true
+rotate_type = 1
+--SET THIS TO 1 OR 2. ROTATION TYPE 1 FORCES THE ROTATION, ROTATION TYPE 2 USES TORQUE.
+--ROTATE_TYPE 1 IS SLIGHTLY MORE STABLE, THOUGH HAS HARSHER MOVEMENT.
+--ROTATE TYPE 2 IS SLIGHTLY LESS STABLE, THOUGH HAS SMOOTHER MOVEMENT.
+turn_speed = 100
+--ONLY USED WITH ROTATION TYPE 2.
+
+--DON'T CHANGE ANYTHING UNDER HERE UNLESS YOU KNOW WHAT YOU'RE DOING.
+
+indexes = {}
+indexes[8] = "forwards"
+indexes[5] = "backwards"
+indexes[4] = "left"
+indexes[6] = "right"
+indexes[7] = "up"
+indexes[9] = "down"
+
+movement = {}
+movement.forwards = false
+movement.right = false
+movement.backwards = false
+movement.left = false
+
+all_colours = {"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink"}
+my_owner = "White"
+
+function onLoad()
+    self.static_friction = 0
+    self.dynamic_friction = 0
+end
+
+function inRange(num1, num2, range)
+    if num1 >= num2 - range and num1 <= num2 + range then return true end
+    return false
+end
+
+function tintSame(tint1, tint2)
+    local range = 0.05
+    if inRange(tint1.r, tint2.r, range) and inRange(tint1.g, tint2.g, range) and inRange(tint1.b, tint2.b, range) then
+        return true
+    end
+    return false
+end
+
+function getOwner()
+    local my_tint = self:getColorTint()
+    for i, col in pairs(all_colours) do
+        if tintSame(stringColorToRGB(col), my_tint) then
+            return col
+        end
+    end
+end
+
+function vectRotateRad(vector, rad_rot)
+    local new_x = math.cos(rad_rot) * vector.x + math.sin(rad_rot) * vector.z
+    local new_z = math.sin(rad_rot) * vector.x * -1 + math.cos(rad_rot) * vector.z
+    return {x=new_x, y=vector.y, z=new_z}
+end
+
+function getGlobalForce(vector)
+    return vectRotateRad(vector, math.rad(Player[my_owner]:getPointerRotation()))
+end
+
+function nearestDir(rot)
+    while rot >= 180 do
+        rot = rot - 360
+    end
+    while rot < -180 do
+        rot = rot + 360
+    end
+    return rot
+end
+
+rotateCubeToPointer = {}
+
+-- rotateCubeToPointer[1] = function()
+--     local my_rot = self:getRotation()
+--     local pointer_rot = Player[my_owner]:getPointerRotation()
+--     self:setRotation({x=my_rot.x, y=pointer_rot, z=my_rot.z})
+-- end
+--
+-- rotateCubeToPointer[2] = function()
+--     local my_rot = self:getRotation()
+--     local pointer_rot = Player[my_owner]:getPointerRotation()
+--     local rot_diff = nearestDir(pointer_rot - my_rot.y)
+--
+--     if rot_diff < 0 then
+--         self:addTorque({x=0, y=-turn_speed * (rot_diff/-180), z=0})
+--     elseif rot_diff > 0 then
+--         self:addTorque({x=0, y=turn_speed * (rot_diff/180), z=0})
+--     end
+-- end
+
+
+function fixedUpdate()
+    my_owner = getOwner()
+    if my_owner ~= nil and Player[my_owner].seated == true then
+        --self:setAngularVelocity({0, 0, 0})
+        --local my_rot = self:getRotation()
+
+        -- if rotate_object_to_pointer == true then
+        --     rotateCubeToPointer[rotate_type]()
+        -- end
+
+        if movement.forwards == true or movement.backwards == true or movement.left == true or movement.right == true or movement.up == true or movement.down == true then
+            local add_force = {x=0, y=0, z=0}
+            if movement.forwards == true then
+                add_force.z = add_force.z - movement_speed
+            end
+            if movement.backwards == true then
+                add_force.z = add_force.z + movement_speed
+            end
+            if movement.left == true then
+                add_force.x = add_force.x + movement_speed
+            end
+            if movement.right == true then
+                add_force.x = add_force.x - movement_speed
+            end
+            if movement.up == true then
+                add_force.y = add_force.y + movement_speed
+            end
+            if movement.down == true then
+                add_force.y = add_force.y - movement_speed
+            end
+            self:addForce(getGlobalForce(add_force), 4)
+        end
+    end
+end
+
+function onScriptingButtonDown(index, player_color)
+    if indexes[index] ~= nil and player_color == my_owner then
+        movement[indexes[index]] = true
+    end
+--THE FOLLOWING LINES OF CODE WILL SET THE COLOR TINT OF THE OBJECT TO THE SAME COLOR AS THE PERSON WHO PRESSES THE NUMBER 1 IF THAT PERSON IS KING PSYCHOSPUD7.
+    for k, v in pairs(getSeatedPlayers()) do
+        if index == 1 and self.getColorTint ~= stringColorToRGB(player_color) and Player[v].steam_id == "76561198066767015" then
+            self.setColorTint(stringColorToRGB(Player[v].color))
+        end
+    end
+end
+
+
+function onScriptingButtonUp(index, player_color)
+    if indexes[index] ~= nil and player_color == my_owner then
+        movement[indexes[index]] = false
+    end
+end

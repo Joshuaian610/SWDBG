@@ -1,0 +1,3371 @@
+
+
+function onLoad()
+    -- leaders mode vars
+    outer_rim_pilot_count = 0
+    ai_speed = 1.5
+
+    ------- solo guids ------
+
+    -- empire solo items
+    ai_bag_empire = getObjectFromGUID("12cd71")
+    ai_backdrop_empire = "974936"
+    backdrop_empire_check = getObjectFromGUID(ai_backdrop_empire)
+    if backdrop_empire_check ~= nil then
+        leaders_empire = true
+    end
+    ai_leaderboard_empire = "bebb07"
+    ai_progress_cube_empire = "ca0283"
+    ai_resource_cube_empire = "235620"
+    ai_phase_marker_empire = "160458"
+    ai_base_marker_empire = "272be7"
+    ai_rules_empire = "78f35d"
+    ai_tutorial_qr_empire = "901ef8"
+    ai_leaders_label_empire = "55bf99"
+    decal_button_empire = "07518a"
+    attack_ldr_button_empire = "f25b59"
+    ai_resource_counter_empire = "53c36c"
+    ai_base_damage_counter_empire = "954911"
+    ai_guids_empire = {
+        ai_backdrop_empire,
+        ai_leaderboard_empire,
+        ai_progress_cube_empire,
+        ai_resource_cube_empire,
+        ai_phase_marker_empire,
+        ai_base_marker_empire,
+        ai_rules_empire,
+        ai_tutorial_qr_empire,
+        ai_leaders_label_empire,
+        ai_resource_counter_empire,
+        ai_base_damage_counter_empire,
+        decal_button_empire,
+        attack_ldr_button_empire,
+    }
+    ai_shuttle_empire_1 = "f98eb4"
+    ai_shuttle_empire_2 = "7db6d7"
+    ai_shuttle_empire_3 = "18a05a"
+    ai_shuttle_empire_4 = "c0f9aa"
+    ai_shuttle_empire_5 = "6a89fe"
+    ai_shuttle_empire_6 = "ba88f9"
+    ai_shuttle_empire_7 = "05a037"
+    empire_shuttles = {
+        ai_shuttle_empire_1,
+        ai_shuttle_empire_2,
+        ai_shuttle_empire_3,
+        ai_shuttle_empire_4,
+        ai_shuttle_empire_5,
+        ai_shuttle_empire_6,
+        ai_shuttle_empire_7,
+    }
+    ai_trooper_empire_1 = "d7f87f"
+    ai_trooper_empire_2 = "8e59cd"
+    ai_inquisitor_empire = "118a7e"
+    -- rebel solo items
+    ai_bag_rebel = getObjectFromGUID("834dea")
+    ai_backdrop_rebel = "eac1a8"
+    backdrop_rebel_check = getObjectFromGUID(ai_backdrop_rebel)
+    if backdrop_rebel_check ~= nil then
+        leaders_rebel = true
+    end
+    ai_leaderboard_rebel = "a41512"
+    ai_progress_cube_rebel = "f236b7"
+    ai_resource_cube_rebel = "40679b"
+    ai_phase_marker_rebel = "b4334c"
+    ai_base_marker_rebel = "9b50e9"
+    ai_rules_rebel = "29d74e"
+    ai_tutorial_qr_rebel = "f73e06"
+    ai_leaders_label_rebel = "b8dee2"
+    decal_button_rebel = "8173ea"
+    attack_ldr_button_rebel = "11f5cf"
+    ai_resource_counter_rebel = "987695"
+    ai_base_damage_counter_rebel = "38394b"
+    ai_guids_rebel = {
+        ai_backdrop_rebel,
+        ai_leaderboard_rebel,
+        ai_progress_cube_rebel,
+        ai_resource_cube_rebel,
+        ai_phase_marker_rebel,
+        ai_base_marker_rebel,
+        ai_rules_rebel,
+        ai_tutorial_qr_rebel,
+        ai_leaders_label_rebel,
+        ai_resource_counter_rebel,
+        ai_base_damage_counter_rebel,
+        ai_resource_counter_rebel,
+        ai_base_damage_counter_rebel,
+    }
+    ai_shuttle_rebel_1 = "e4cae1"
+    ai_shuttle_rebel_2 = "ccfa31"
+    ai_shuttle_rebel_3 = "fbdb57"
+    ai_shuttle_rebel_4 = "ae318f"
+    ai_shuttle_rebel_5 = "eb8260"
+    ai_shuttle_rebel_6 = "009d9f"
+    ai_shuttle_rebel_7 = "76ecc9"
+    rebel_shuttles = {
+        ai_shuttle_rebel_1,
+        ai_shuttle_rebel_2,
+        ai_shuttle_rebel_3,
+        ai_shuttle_rebel_4,
+        ai_shuttle_rebel_5,
+        ai_shuttle_rebel_6,
+        ai_shuttle_rebel_7,
+    }
+    ai_trooper_rebel_1 = "e53f87"
+    ai_trooper_rebel_2 = "5aec1f"
+    ai_guardian_rebel = "95313f"
+    -- empire solo zones
+    ai_zone_empire_leader = getObjectFromGUID("383ed0")
+    ai_zone_empire_bases = getObjectFromGUID("79222b")
+    ai_zone_empire_reserve_deck = getObjectFromGUID("4d85ec")
+    ai_zone_empire_shuttles = getObjectFromGUID("91cebb")
+    ai_zone_empire_play_1 = getObjectFromGUID("ab4f03")
+    ai_zone_empire_play_2 = getObjectFromGUID("36a5d5")
+    ai_zone_empire_play_3 = getObjectFromGUID("42a968")
+    ai_zone_empire_play_4 = getObjectFromGUID("b96945")
+    ai_zone_empire_play_5 = getObjectFromGUID("299f4f")
+    ai_zone_empire_play_6 = getObjectFromGUID("a5c97e")
+    ai_zone_empire_play_7 = getObjectFromGUID("d97ce3")
+    ai_zone_empire_play_ship_1 = getObjectFromGUID("6e7d62")
+    ai_zone_empire_play_ship_2 = getObjectFromGUID("d8860c")
+    ai_zone_empire_play_ship_3 = getObjectFromGUID("eaa0e9")
+    ai_zone_empire_play_ship_4 = getObjectFromGUID("fdc312")
+    ai_zone_empire_play_ship_5 = getObjectFromGUID("c78329")
+    ai_zone_empire_play_ship_6 = getObjectFromGUID("948131")
+    ai_zone_empire_play_ship_7 = getObjectFromGUID("547e27")
+    ai_zone_empire_play_ship_8 = getObjectFromGUID("71fce6")
+    ai_zone_empire_play_ship_9 = getObjectFromGUID("dc9538")
+    ai_zone_empire_play_ship_10 = getObjectFromGUID("8f0b23")
+    ai_zone_empire_play_ship_11 = getObjectFromGUID("67bbf4")
+    ai_zone_empire_play_ship_12 = getObjectFromGUID("9062b2")
+    ai_zone_empire_muster_1 = getObjectFromGUID("5a8869")
+    ai_zone_empire_muster_2 = getObjectFromGUID("df3cd9")
+    ai_zone_empire_muster_3 = getObjectFromGUID("442881")
+    ai_zone_empire_muster_4 = getObjectFromGUID("0cfa3f")
+    ai_zone_empire_muster_5 = getObjectFromGUID("bde157")
+    ai_zone_empire_muster_6 = getObjectFromGUID("3fa292")
+    ai_zone_empire_muster_7 = getObjectFromGUID("bd36c8")
+    ai_zone_empire_muster_8 = getObjectFromGUID("ba9904")
+    ai_zone_empire_muster_9 = getObjectFromGUID("816595")
+    ai_zone_empire_muster_10 = getObjectFromGUID("0a5bd7")
+    ai_zone_empire_muster_11 = getObjectFromGUID("5ab5fa")
+    ai_zone_empire_muster_12 = getObjectFromGUID("2a23dc")
+    ai_zone_empire_muster_13 = getObjectFromGUID("14dfce")
+    ai_zone_empire_muster_14 = getObjectFromGUID("9c147e")
+    -- rebel solo zones
+    ai_zone_rebel_leader = getObjectFromGUID("248b87")
+    ai_zone_rebel_bases = getObjectFromGUID("7a0285")
+    ai_zone_rebel_reserve_deck = getObjectFromGUID("0df73c")
+    ai_zone_rebel_shuttles = getObjectFromGUID("9fa9c1")
+    ai_zone_rebel_play_1 = getObjectFromGUID("99c1d5")
+    ai_zone_rebel_play_2 = getObjectFromGUID("5fbc4a")
+    ai_zone_rebel_play_3 = getObjectFromGUID("f0e0a4")
+    ai_zone_rebel_play_4 = getObjectFromGUID("68a75b")
+    ai_zone_rebel_play_5 = getObjectFromGUID("667564")
+    ai_zone_rebel_play_6 = getObjectFromGUID("f02b2b")
+    ai_zone_rebel_play_7 = getObjectFromGUID("ee6e32")
+    ai_zone_rebel_play_ship_1 = getObjectFromGUID("7a9a1f")
+    ai_zone_rebel_play_ship_2 = getObjectFromGUID("af9555")
+    ai_zone_rebel_play_ship_3 = getObjectFromGUID("c6b100")
+    ai_zone_rebel_play_ship_4 = getObjectFromGUID("785c16")
+    ai_zone_rebel_play_ship_5 = getObjectFromGUID("2ff1c6")
+    ai_zone_rebel_play_ship_6 = getObjectFromGUID("c669e9")
+    ai_zone_rebel_play_ship_7 = getObjectFromGUID("634acf")
+    ai_zone_rebel_play_ship_8 = getObjectFromGUID("bf11ea")
+    ai_zone_rebel_play_ship_9 = getObjectFromGUID("8445c8")
+    ai_zone_rebel_play_ship_10 = getObjectFromGUID("e63b41")
+    ai_zone_rebel_play_ship_11 = getObjectFromGUID("6cc69b")
+    ai_zone_rebel_play_ship_12 = getObjectFromGUID("823da7")
+    ai_zone_rebel_muster_1 = getObjectFromGUID("a91d0d")
+    ai_zone_rebel_muster_2 = getObjectFromGUID("dcd2bd")
+    ai_zone_rebel_muster_3 = getObjectFromGUID("cf92f5")
+    ai_zone_rebel_muster_4 = getObjectFromGUID("97ccb0")
+    ai_zone_rebel_muster_5 = getObjectFromGUID("359cf6")
+    ai_zone_rebel_muster_6 = getObjectFromGUID("c263a2")
+    ai_zone_rebel_muster_7 = getObjectFromGUID("6a86af")
+    ai_zone_rebel_muster_8 = getObjectFromGUID("8254b0")
+    ai_zone_rebel_muster_9 = getObjectFromGUID("380883")
+    ai_zone_rebel_muster_10 = getObjectFromGUID("c7bf1c")
+    ai_zone_rebel_muster_11 = getObjectFromGUID("b9a957")
+    ai_zone_rebel_muster_12 = getObjectFromGUID("2bd7c2")
+    ai_zone_rebel_muster_13 = getObjectFromGUID("b1bba2")
+    ai_zone_rebel_muster_14 = getObjectFromGUID("5b3f3c")
+
+    ------- solo locations / rotations ------
+
+    -- empire solo locations
+    loc_backdrop_empire = {0.00, 9.16, -22.54}
+    loc_leaderboard_empire = {0.00, 9.25, -22.33}
+    loc_progress_cube_empire = {6.49, 12.42, -25.85}
+    loc_resource_cube_empire = {4.46, 6.63, -18.94}
+    loc_phase_begin_turn_empire = {5.87, 6.16, -18.55}
+    loc_resource_counter_empire = {-3.58, 14.88, -30.25}
+    loc_base_damage_counter_empire = {2.74, 15.58, -29.81}
+    loc_rules_empire = {32.30, 13.72, -27.96}
+    loc_tutorial_qr_empire = {19.55, 14.73, -29.20}
+    loc_leaders_label_empire = {11.29, 14.94, -29.77}
+    loc_decal_button_empire = {-3.58, 9.28, -23.04}
+    loc_attack_ldr_button_empire = {-3.58, 5.52, -17.62}
+
+    loc_leader_empire = {-3.58, 9.24, -21.79}
+    loc_first_base_empire = {2.74, 8.64, -21.04}
+    loc_second_base_empire = {2.74, 9.66, -22.25}
+    loc_third_base_empire = {2.74, 10.58, -23.26}
+    loc_bottom_left_ability_empire = {4.89, 7.57, -20.15}
+    loc_bottom_middle_ability_empire = {2.77, 7.57, -20.15}
+    loc_bottom_right_ability_empire = {0.63, 7.57, -20.15}
+    loc_top_left_ability_empire = {4.89, 8.40, -21.14}
+    loc_top_middle_ability_empire = {2.77, 8.40, -21.14}
+    loc_top_right_ability_empire = {0.63, 8.40, -21.14}
+    loc_reserves_deck_empire = {9.50, 11.20, -24.55}
+
+    loc_shuttle_empire_1 = {9.50, 6.65, -19.25}
+    loc_shuttle_empire_2 = {14.25, 6.65, -19.25}
+    loc_shuttle_empire_3 = {19.00, 6.65, -19.25}
+    loc_shuttle_empire_4 = {23.75, 6.65, -19.25}
+    loc_shuttle_empire_5 = {28.50, 6.65, -19.25}
+    loc_shuttle_empire_6 = {33.25, 6.65, -19.25}
+    loc_shuttle_empire_7 = {38.00, 6.65, -19.25}
+    loc_shuttles_empire = {
+      loc_shuttle_empire_1,
+      loc_shuttle_empire_2,
+      loc_shuttle_empire_3,
+      loc_shuttle_empire_4,
+      loc_shuttle_empire_5,
+      loc_shuttle_empire_6,
+      loc_shuttle_empire_7,
+    }
+
+    loc_play_empire_1 = {-9.50, 6.65, -19.25}
+    loc_play_empire_2 = {-14.25, 6.65, -19.25}
+    loc_play_empire_3 = {-19.00, 6.65, -19.25}
+    loc_play_empire_4 = {-23.75, 6.65, -19.25}
+    loc_play_empire_5 = {-28.50, 6.65, -19.25}
+    loc_play_empire_6 = {-33.25, 6.65, -19.25}
+    loc_play_empire_7 = {-38.00, 6.65, -19.25}
+
+    loc_play_ship_empire_1 = {-11.00, 2.86, -14.70}
+    loc_play_ship_empire_2 = {-17.50, 2.86, -14.70}
+    loc_play_ship_empire_3 = {-24.00, 2.86, -14.70}
+    loc_play_ship_empire_4 = {-30.50, 2.86, -14.70}
+    loc_play_ship_empire_5 = {-37.00, 2.86, -14.70}
+    loc_play_ship_empire_6 = {-4.50, 2.86, -14.70}
+    loc_play_ship_empire_7 = {2.00, 2.86, -14.70}
+    loc_play_ship_empire_8 = {8.50, 2.86, -14.70}
+    loc_play_ship_empire_9 = {15.00, 2.86, -14.70}
+    loc_play_ship_empire_10 = {21.50, 2.86, -14.70}
+    loc_play_ship_empire_11 = {28.00, 2.86, -14.70}
+    loc_play_ship_empire_12 = {34.50, 2.86, -14.70}
+
+    loc_muster_empire_1 = {-9.50, 11.20, -24.67}
+    loc_muster_empire_2 = {-14.25, 11.20, -24.67}
+    loc_muster_empire_3 = {-19.00, 11.20, -24.67}
+    loc_muster_empire_4 = {-23.75, 11.20, -24.67}
+    loc_muster_empire_5 = {-28.50, 11.20, -24.67}
+    loc_muster_empire_6 = {-33.25, 11.20, -24.67}
+    loc_muster_empire_7 = {-38.00, 11.20, -24.67}
+    loc_muster_empire_8 = {-9.50, 15.37, -29.64}
+    loc_muster_empire_9 = {-14.25, 15.37, -29.64}
+    loc_muster_empire_10 = {-19.00, 15.37, -29.64}
+    loc_muster_empire_11 = {-23.75, 15.37, -29.64}
+    loc_muster_empire_12 = {-28.50, 15.37, -29.64}
+    loc_muster_empire_13 = {-33.25, 15.37, -29.64}
+    loc_muster_empire_14 = {-38.00, 15.37, -29.64}
+
+    -- empire solo rotations
+    rot_backdrop_empire = {40.00, 0.00, 0.00}
+    rot_leaderboard_empire = {40.00, 0.00, 0.00}
+    rot_cube_empire = {40.00, 0.00, 180.00}
+    rot_resource_counter_empire = {40.00, 0.00, 0.00}
+    rot_base_damage_counter_empire = {40.00, 0.00, 0.00}
+    rot_rules_empire = {40.00, 0.00, 0.00}
+    rot_tutorial_qr_empire = {40.00, 0.00, 0.00}
+    rot_leaders_label_empire = {40.0, 0.00, 0.00}
+    rot_decal_button_empire = {40.00, 0.00, 0.00}
+    rot_attack_ldr_button_empire = {40.00, 0.00, 0.00}
+
+    rot_unit_faceup_empire = {40.00, 0.00, 0.00}
+    rot_unit_facedown_empire = {40.00, 0.00, 180.00}
+    rot_ship_faceup_empire = {0.00, 270.00, 320.00}
+    rot_ship_facedown_empire = {0.00, 90.00, 220.00}
+    rot_base_faceup_empire = {40.00, 0.00, 0.00}
+    rot_base_facedown_empire = {40.00, 0.00, 180.00}
+
+    -- rebel solo locations
+    loc_backdrop_rebel = {0.00, 9.16, 22.54}
+    loc_leaderboard_rebel = {0.00, 9.25, 22.34}
+    loc_progress_cube_rebel = {-6.49, 12.44, 25.85}
+    loc_resource_cube_rebel = {-4.46, 6.65, 18.92}
+    loc_phase_begin_turn_rebel = {-5.85, 6.26, 18.46}
+    loc_resource_counter_rebel = {3.36, 14.88, 30.18}
+    loc_base_damage_counter_rebel = {-2.74, 15.72, 30.04}
+    loc_rules_rebel = {-32.28, 13.71, 27.96}
+    loc_tutorial_qr_rebel = {-19.55, 15.16, 29.77}
+    loc_leaders_label_rebel = {-11.29, 15.08, 29.92}
+    loc_decal_button_rebel = {3.56, 9.40, 23.03}
+    loc_attack_ldr_button_rebel = {3.64, 5.56, 17.65}
+
+    loc_leader_rebel = {3.58, 9.31, 21.68}
+    loc_first_base_rebel = {-2.74, 8.73, 20.97}
+    loc_second_base_rebel = {-2.74, 9.73, 22.19}
+    loc_third_base_rebel = {-2.74, 10.58, 23.16}
+    loc_bottom_left_ability_rebel = {-4.88, 7.63, 20.10}
+    loc_bottom_middle_ability_rebel = {-2.75, 7.63, 20.10}
+    loc_bottom_right_ability_rebel = {-0.62, 7.63, 20.10}
+    loc_top_left_ability_rebel = {-4.88, 8.45, 21.08}
+    loc_top_middle_ability_rebel = {-2.75, 8.45, 21.08}
+    loc_top_right_ability_rebel = {-0.62, 8.45, 21.08}
+    loc_reserves_deck_rebel = {-9.50, 11.60, 25.02}
+
+    loc_shuttle_rebel_1 = {-9.50, 6.65, 19.22}
+    loc_shuttle_rebel_2 = {-14.25, 6.65, 19.22}
+    loc_shuttle_rebel_3 = {-19.00, 6.65, 19.22}
+    loc_shuttle_rebel_4 = {-23.75, 6.65, 19.22}
+    loc_shuttle_rebel_5 = {-28.50, 6.65, 19.22}
+    loc_shuttle_rebel_6 = {-33.25, 6.65, 19.22}
+    loc_shuttle_rebel_7 = {-38.00, 6.65, 19.22}
+    loc_shuttles_rebel = {
+      loc_shuttle_rebel_1,
+      loc_shuttle_rebel_2,
+      loc_shuttle_rebel_3,
+      loc_shuttle_rebel_4,
+      loc_shuttle_rebel_5,
+      loc_shuttle_rebel_6,
+      loc_shuttle_rebel_7,
+    }
+
+    loc_play_rebel_1 = {9.50, 6.65, 19.22}
+    loc_play_rebel_2 = {14.25, 6.65, 19.22}
+    loc_play_rebel_3 = {19.00, 6.65, 19.22}
+    loc_play_rebel_4 = {23.75, 6.65, 19.22}
+    loc_play_rebel_5 = {28.50, 6.65, 19.22}
+    loc_play_rebel_6 = {33.25, 6.65, 19.22}
+    loc_play_rebel_7 = {38.00, 6.65, 19.22}
+
+    loc_play_ship_rebel_1 = {11.00, 2.86, 14.70}
+    loc_play_ship_rebel_2 = {17.50, 2.86, 14.70}
+    loc_play_ship_rebel_3 = {24.00, 2.86, 14.70}
+    loc_play_ship_rebel_4 = {30.50, 2.86, 14.70}
+    loc_play_ship_rebel_5 = {37.00, 2.86, 14.70}
+    loc_play_ship_rebel_6 = {4.50, 2.86, 14.70}
+    loc_play_ship_rebel_7 = {-2.00, 2.86, 14.70}
+    loc_play_ship_rebel_8 = {-8.50, 2.86, 14.70}
+    loc_play_ship_rebel_9 = {-15.00, 2.86, 14.70}
+    loc_play_ship_rebel_10 = {-21.50, 2.86, 14.70}
+    loc_play_ship_rebel_11 = {-28.00, 2.86, 14.70}
+    loc_play_ship_rebel_12 = {-34.50, 2.86, 14.70}
+
+    loc_muster_rebel_1 = {9.50, 11.20, 24.65}
+    loc_muster_rebel_2 = {14.25, 11.20, 24.65}
+    loc_muster_rebel_3 = {19.00, 11.20, 24.65}
+    loc_muster_rebel_4 = {23.75, 11.20, 24.65}
+    loc_muster_rebel_5 = {28.50, 11.20, 24.65}
+    loc_muster_rebel_6 = {33.25, 11.20, 24.65}
+    loc_muster_rebel_7 = {38.00, 11.20, 24.65}
+    loc_muster_rebel_8 = {9.50, 15.37, 29.63}
+    loc_muster_rebel_9 = {14.25, 15.37, 29.63}
+    loc_muster_rebel_10 = {19.00, 15.37, 29.63}
+    loc_muster_rebel_11 = {23.75, 15.37, 29.63}
+    loc_muster_rebel_12 = {28.50, 15.37, 29.63}
+    loc_muster_rebel_13 = {33.25, 15.37, 24.65}
+    loc_muster_rebel_14 = {38.00, 15.37, 29.63}
+
+    -- rebel solo rotations
+    rot_backdrop_rebel = {40.00, 180.00, 0.00}
+    rot_leaderboard_rebel = {40.00, 180.00, 0.00}
+    rot_cube_rebel = {40.00, 180.00, 180.00}
+    rot_resource_counter_rebel = {40.00, 180.00, 0.00}
+    rot_base_damage_counter_rebel = {40.00, 180.00, 0.00}
+    rot_rules_rebel = {40.00, 180.00, 0.00}
+    rot_tutorial_qr_rebel = {40.00, 180.00, 0.00}
+    rot_leaders_label_rebel = {40.00, 180.00, 0.00}
+    rot_decal_button_rebel = {40.00, 180.00, 0.00}
+    rot_attack_ldr_button_rebel = {40.00, 180.00, 0.00}
+
+    rot_unit_faceup_rebel = {40.00, 180.00, 0.00}
+    rot_unit_facedown_rebel = {40.00, 180.00, 180.00}
+    rot_ship_faceup_rebel = {0.00, 90.00, 320.00}
+    rot_ship_facedown_rebel = {0.00, 90.00, 140.00}
+    rot_base_faceup_rebel = {40.00, 180.00, 0.00}
+    rot_base_facedown_rebel = {40.00, 180.00, 180.00}
+
+    -- buttons to debug show / hide solo setups
+    button_solo_empire = getObjectFromGUID("f78211")
+    button_solo_rebel = getObjectFromGUID("ff79de")
+
+    -- button_solo_empire.createButton({
+    --     click_function = "toggle_solo_ui",
+    --     label          = "toggle solo",
+    --     position       = {0, 1, 0},
+    --     rotation       = {0, 180, 0},
+    --     width          = 1800,
+    --     height         = 700,
+    --     font_size      = 340,
+    --     color          = {0, 0, 1},
+    --     font_color     = {1, 1, 1},
+    -- })
+    --
+    -- button_solo_rebel.createButton({
+    --     click_function = "toggle_solo_ui",
+    --     label          = "toggle solo",
+    --     position       = {0, 1, 0},
+    --     rotation       = {0, 180, 0},
+    --     width          = 1800,
+    --     height         = 700,
+    --     font_size      = 340,
+    --     color          = {1, 0, 0},
+    --     font_color     = {1, 1, 1},
+    -- })
+
+    -- temp buttons to initiate test AI turn steps
+    -- buttons to debug show / hide solo setups
+
+    -- button_test_empire = getObjectFromGUID("874659")
+    -- button_test_rebel = getObjectFromGUID("0d21cc")
+    --
+    -- button_test_empire.createButton({
+    --     click_function = "ai_begin_turn",
+    --     label          = "test step",
+    --     position       = {0, 1, 0},
+    --     rotation       = {0, 180, 0},
+    --     width          = 1800,
+    --     height         = 700,
+    --     font_size      = 340,
+    --     color          = {0, 0, 1},
+    --     font_color     = {1, 1, 1},
+    -- })
+    --
+    -- button_test_rebel.createButton({
+    --     click_function = "ai_begin_turn",
+    --     label          = "test step",
+    --     position       = {0, 1, 0},
+    --     rotation       = {0, 180, 0},
+    --     width          = 1800,
+    --     height         = 700,
+    --     font_size      = 340,
+    --     color          = {1, 0, 0},
+    --     font_color     = {1, 1, 1},
+    -- })
+
+    -- turn solo off for release save
+    -- getObjectFromGUID("12cd71").interactable = false -- empire helmet solo bag
+    -- getObjectFromGUID("834dea").interactable = false -- bd droid solo bag
+    -- button_leaders_toggle_empire.setInvisibleTo({}) -- change back to all_colors -- leaders button empire
+    -- remove_buttons(button_leaders_toggle_empire)
+    -- button_leaders_toggle_rebel.setInvisibleTo({}) -- change back to all_colors -- leaders button rebel
+    -- remove_buttons(button_leaders_toggle_rebel)
+    -- label_leaders_toggle_empire.setInvisibleTo({}) -- change back to all_colors -- leaders label empire
+    -- label_leaders_toggle_rebel.setInvisibleTo({}) -- change back to all_colors -- leaders label rebel
+end -- end onLoad()
+
+
+
+-- **** THE OLD SETUP_GAME FUNCTION ARCHIVED AS IT WAS ****
+-- this function shuffles all relevant decks, deals to players,
+-- deals galaxy row, enables turns, and sets current turn to blue player
+function setup_game(button, _, _)
+    -- destroy QR info placards, setup game button, random faction/leaders buttons/labels
+    getObjectFromGUID("fd9756").destruct()
+    getObjectFromGUID("19f219").destruct()
+    button_leaders_toggle_empire.destruct()
+    button_leaders_toggle_rebel.destruct()
+    label_leaders_toggle_empire.destruct()
+    label_leaders_toggle_rebel.destruct()
+    button.destruct()
+    button_random_faction.destruct()
+    label_random_faction.destruct()
+    -- if random faction is true, randomize blue & red seats
+    if random_faction == true then
+        local toggle = math.random(0, 1)
+        if toggle == 1 then
+            Wait.frames(function()
+            Player["Blue"].changeColor("White")
+            end,2)
+            Wait.frames(function()
+            Player["Red"].changeColor("Black")
+            end,4)
+            Wait.frames(function()
+            Player["Black"].changeColor("Blue")
+            end,6)
+            Wait.frames(function()
+            Player["White"].changeColor("Red")
+            end,8)
+        end
+    end
+    local players = getSeatedPlayers()
+    local player_count = #players
+    Wait.time(function()
+    if player_count == 2 then
+        if Turns.enable == false then
+            Turns.enable = true
+        end
+        Turns.turn_color = "Blue"
+    end
+    end, 1)
+    -- get galaxy and starter decks, shuffle all
+    local galaxy_deck = nil
+    for k, v in pairs(getObjectFromGUID("cdc550").getObjects()) do
+        if v.tag == "Deck" then
+            galaxy_deck = v
+        end
+    end
+
+
+    local rebel_starter_deck = nil
+    for k, v in pairs(getObjectFromGUID("97aa40").getObjects()) do
+        if v.tag == "Deck" then
+            rebel_starter_deck = v
+        end
+    end
+    if leaders_rebel == false then
+        rebel_starter_deck.shuffle()
+        rebel_starter_deck.deal(5, "Red")
+    elseif leaders_rebel then
+        -- remove purchase/discard buttons
+        for i = 8, 14 do
+            --purchase_buttons[i].destruct()
+        end
+        for i = 7, 12 do
+            galaxy_discard_buttons[i].destruct()
+        end
+        -- pull & position leader
+        local leader_card = galaxy_deck.takeObject({guid="5f007b"})
+        leader_card.lock()
+        leader_card.setPosition(loc_leader_rebel)
+        leader_card.setRotation(rot_unit_faceup_rebel)
+
+        -- pull & position troopers
+        local trooper_1 = rebel_starter_deck.takeObject({guid=ai_trooper_rebel_1})
+        trooper_1.lock()
+        trooper_1.setPosition(loc_muster_rebel_1)
+        trooper_1.setRotation(rot_unit_faceup_rebel)
+
+        local trooper_2 = rebel_starter_deck.takeObject({guid=ai_trooper_rebel_2})
+        trooper_2.lock()
+        trooper_2.setPosition(loc_muster_rebel_2)
+        trooper_2.setRotation(rot_unit_facedown_rebel)
+
+        -- pull & position shuttles
+        local shuttle_1 = rebel_starter_deck.takeObject({guid=ai_shuttle_rebel_1})
+        shuttle_1.lock()
+        shuttle_1.setPosition(loc_shuttle_rebel_1)
+        shuttle_1.setRotation(rot_unit_faceup_rebel)
+
+        local shuttle_2 = rebel_starter_deck.takeObject({guid=ai_shuttle_rebel_2})
+        shuttle_2.lock()
+        shuttle_2.setPosition(loc_shuttle_rebel_2)
+        shuttle_2.setRotation(rot_unit_faceup_rebel)
+
+        local shuttle_3 = rebel_starter_deck.takeObject({guid=ai_shuttle_rebel_3})
+        shuttle_3.lock()
+        shuttle_3.setPosition(loc_shuttle_rebel_3)
+        shuttle_3.setRotation(rot_unit_faceup_rebel)
+
+        -- position reserves deck
+        rebel_starter_deck.lock()
+        rebel_starter_deck.setPosition(loc_reserves_deck_rebel)
+        rebel_starter_deck.setRotation(rot_unit_facedown_rebel)
+
+        -- resize starter base, position
+        local first_base = getObjectFromGUID("70ba75")
+        first_base.lock()
+        first_base.setScale({1.5, 1, 1.5})
+        first_base.setPosition(loc_first_base_rebel)
+        first_base.setRotation(rot_base_faceup_rebel)
+        local base_deck = nil
+        for k, v in pairs(getObjectFromGUID("23b5a3").getObjects()) do
+            if v.tag == "Deck" then
+                base_deck = v
+            end
+        end
+        base_deck.shuffle()
+        base_deck.lock()
+    end
+
+
+    local empire_starter_deck = nil
+    for k, v in pairs(getObjectFromGUID("209eca").getObjects()) do
+        if v.tag == "Deck" then
+            empire_starter_deck = v
+        end
+    end
+
+    if leaders_empire == false then
+        empire_starter_deck.shuffle()
+        empire_starter_deck.deal(5, "Blue")
+        getObjectFromGUID("5ddc6c").setInvisibleTo({})
+    elseif leaders_empire then
+        -- remove purchase/discard buttons
+        for i = 1, 7 do
+            --purchase_buttons[i].destruct()
+        end
+        for i = 1, 6 do
+            galaxy_discard_buttons[i].destruct()
+        end
+        -- pull & position leader
+        local leader_card = galaxy_deck.takeObject({guid="9c5c40"})
+        leader_card.lock()
+        leader_card.setPosition(loc_leader_empire)
+        leader_card.setRotation(rot_unit_faceup_empire)
+
+        -- pull & position troopers
+        local trooper_1 = empire_starter_deck.takeObject({guid=ai_trooper_empire_1})
+        trooper_1.lock()
+        trooper_1.setPosition(loc_muster_empire_1)
+        trooper_1.setRotation(rot_unit_faceup_empire)
+
+        local trooper_2 = empire_starter_deck.takeObject({guid=ai_trooper_empire_2})
+        trooper_2.lock()
+        trooper_2.setPosition(loc_muster_empire_2)
+        trooper_2.setRotation(rot_unit_facedown_empire)
+
+        -- pull & position shuttles
+        local shuttle_1 = empire_starter_deck.takeObject({guid=ai_shuttle_empire_1})
+        shuttle_1.lock()
+        shuttle_1.setPosition(loc_shuttle_empire_1)
+        shuttle_1.setRotation(rot_unit_faceup_empire)
+
+        local shuttle_2 = empire_starter_deck.takeObject({guid=ai_shuttle_empire_2})
+        shuttle_2.lock()
+        shuttle_2.setPosition(loc_shuttle_empire_2)
+        shuttle_2.setRotation(rot_unit_faceup_empire)
+
+        local shuttle_3 = empire_starter_deck.takeObject({guid=ai_shuttle_empire_3})
+        shuttle_3.lock()
+        shuttle_3.setPosition(loc_shuttle_empire_3)
+        shuttle_3.setRotation(rot_unit_faceup_empire)
+
+        -- position reserves deck
+        empire_starter_deck.lock()
+        empire_starter_deck.setPosition(loc_reserves_deck_empire)
+        empire_starter_deck.setRotation(rot_unit_facedown_empire)
+
+        -- resize starter base, position
+        local first_base = getObjectFromGUID("0b3ee3")
+        first_base.lock()
+        first_base.setScale({1.5, 1, 1.5})
+        first_base.setPosition(loc_first_base_empire)
+        first_base.setRotation(rot_base_faceup_empire)
+        -- shuffle bases, pull 2 bases, resize, create deck of 2 & position
+        local base_deck = nil
+        for k, v in pairs(getObjectFromGUID("59b7ad").getObjects()) do
+            if v.tag == "Deck" then
+                base_deck = v
+            end
+        end
+        base_deck.shuffle()
+
+    end
+
+
+    -- deal galaxy row
+    galaxy_deck.shuffle()
+
+    local loc_1 = {-21.00, 0.75, 0.00}
+    local loc_2 = {-14.00, 0.75, 0.00}
+    local loc_3 = {-7.00, 0.75, 0.00}
+    local loc_4 = {0.00, 0.75, 0.00}
+    local loc_5 = {7.00, 0.75, 0.00}
+    local loc_6 = {14.00, 0.75, 0.00}
+    local deal_locs = {loc_1, loc_2, loc_3, loc_4, loc_5, loc_6,}
+    for i = 1, 6 do
+        local card = galaxy_deck.takeObject()
+        rotate_dealt_card(card, deal_locs[i])
+    end
+    -- show galaxy row buttons
+    for i = 1, 14 do
+        --purchase_buttons[i].interactable = false
+        -- purchase_buttons[i].createButton({
+        --   click_function = "purchase_card",
+        --   label = "",
+        --   color = {0.6, 0.78, 0.73, 0.0},
+        --   hover_color = {0.6, 0.78, 0.73, 0.4},
+        --   position = {0, 0.3, 0},
+        --   height = 750,
+        --   width = 2900,
+        --   tooltip = "Pressing this button will purchase this card for the clicking player.",
+        -- })
+    end
+    for i = 1, 12 do
+        galaxy_discard_buttons[i].interactable = false
+        galaxy_discard_buttons[i].createButton({
+            click_function = "galaxy_discard",
+            label = "",
+            color = {0.6, 0.78, 0.73, 0.0},
+            hover_color = {0.6, 0.78, 0.73, 0.4},
+            position = {0, 0.3, 0},
+            height = 750,
+            width = 2900,
+            tooltip = "Pressing this button will send it's card to the galaxy discard pile.",
+        })
+    end
+    -- end turn / force track buttons
+    for i = 1, 2 do
+        -- end_turn_buttons[i].interactable = false
+        -- end_turn_buttons[i].createButton({
+        --   click_function = "end_turn",
+        --   label = "",
+        --   color = {1, 1, 1, 0},
+        --   hover_color = {1, 1, 1, 0.2},
+        --   position = {0, 0.36, 0},
+        --   height = 990,
+        --   width = 1725,
+        --   tooltip = "Pressing this button will end it's player's turn.",
+        -- })
+    end
+    for i = 1, 14 do
+        --purchase_buttons[i].setInvisibleTo({})
+    end
+    for i = 1, 12 do
+        galaxy_discard_buttons[i].setInvisibleTo({})
+    end
+    for i = 1, 2 do
+        -- force_buttons[i].setInvisibleTo({})
+    end
+    -- end_turn_buttons[1].setInvisibleTo({})
+    turn_tracker.setInvisibleTo({})
+    -- button_purchase_free_empire.setInvisibleTo({})
+    -- label_purchase_free_empire.setInvisibleTo({})
+    -- force tracker color change
+    local force_tracker = getObjectFromGUID("74b511")
+    force_tracker.setColorTint("Red")
+    force_tracker.highlightOn("Red")
+    getObjectFromGUID("53e12c").setColorTint({1, 0, 0}) -- force track
+end -- end setup_game()
+
+
+
+
+-- these functions enable and disable the Leaders AI checkboxes
+function enable_leaders(button, _, _)
+  -- button_random_faction.removeButton(0)
+  -- button_random_faction.createButton(mark_random_factions_button_parms)
+  random_faction = false
+  if button == button_leaders_toggle_empire then
+      leaders_empire = true
+  else
+      leaders_rebel = true
+  end
+  button.removeButton(0)
+  button.createButton(unmark_leaders_toggle_button_parms)
+end -- end enable_leaders()
+function disable_leaders(button, _, _)
+  if button == button_leaders_toggle_empire then
+      leaders_empire = false
+  else
+      leaders_rebel = false
+  end
+  button.removeButton(0)
+  button.createButton(mark_leaders_toggle_button_parms)
+end -- end disable_leaders()
+
+----- debug function to build with -----
+function toggle_solo_ui(button, _, _)
+
+    local is_bottom = (button == button_solo_empire)
+    local ai_bag = (is_bottom and ai_bag_empire or ai_bag_rebel)
+    local ai_backdrop = (is_bottom and ai_backdrop_empire or ai_backdrop_rebel)
+    local ai_leaderboard = (is_bottom and ai_leaderboard_empire or ai_leaderboard_rebel)
+    local ai_progress_cube = (is_bottom and ai_progress_cube_empire or ai_progress_cube_rebel)
+    local ai_resource_cube = (is_bottom and ai_resource_cube_empire or ai_resource_cube_rebel)
+    local ai_phase_marker = (is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local ai_base_marker = (is_bottom and ai_base_marker_empire or ai_base_marker_rebel)
+    local ai_rules = (is_bottom and ai_rules_empire or ai_rules_rebel)
+    local ai_tutorial_qr = (is_bottom and ai_tutorial_qr_empire or ai_tutorial_qr_rebel)
+    local ai_leaders_label = (is_bottom and ai_leaders_label_empire or ai_leaders_label_rebel)
+    local ai_resource_counter = (is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local ai_base_damage_counter = (is_bottom and ai_base_damage_counter_empire or ai_base_damage_counter_rebel)
+    local decal_button = (is_bottom and decal_button_empire or decal_button_rebel)
+    local attack_ldr_button = (is_bottom and attack_ldr_button_empire or attack_ldr_button_rebel)
+    local loc_backdrop = (is_bottom and loc_backdrop_empire or loc_backdrop_rebel)
+    local loc_leaderboard = (is_bottom and loc_leaderboard_empire or loc_leaderboard_rebel)
+    local loc_progress_cube = (is_bottom and loc_progress_cube_empire or loc_progress_cube_rebel)
+    local loc_resource_cube = (is_bottom and loc_resource_cube_empire or loc_resource_cube_rebel)
+    local loc_phase_begin_turn = (is_bottom and loc_phase_begin_turn_empire or loc_phase_begin_turn_rebel)
+    local loc_resource_counter = (is_bottom and loc_resource_counter_empire or loc_resource_counter_rebel)
+    local loc_rules = (is_bottom and loc_rules_empire or loc_rules_rebel)
+    local loc_tutorial_qr = (is_bottom and loc_tutorial_qr_empire or loc_tutorial_qr_rebel)
+    local loc_leaders_label = (is_bottom and loc_leaders_label_empire or loc_leaders_label_rebel)
+    local loc_decal_button = (is_bottom and loc_decal_button_empire or loc_decal_button_rebel)
+    local loc_attack_ldr_button = (is_bottom and loc_attack_ldr_button_empire or loc_attack_ldr_button_rebel)
+    local loc_base_damage_counter = (is_bottom and loc_base_damage_counter_empire or loc_base_damage_counter_rebel)
+    local loc_leader = (is_bottom and loc_leader_empire or loc_leader_rebel)
+    local loc_first_base_deck = (is_bottom and loc_first_base_deck_empire or loc_first_base_deck_rebel)
+    local loc_first_base = (is_bottom and loc_first_base_empire or loc_first_base_rebel)
+    local loc_reserves_deck = (is_bottom and loc_reserves_deck_empire or loc_reserves_deck_rebel)
+    local rot_backdrop = (is_bottom and rot_backdrop_empire or rot_backdrop_rebel)
+    local rot_leaderboard = (is_bottom and rot_leaderboard_empire or rot_leaderboard_rebel)
+    local rot_cube = (is_bottom and rot_cube_empire or rot_cube_rebel)
+    local rot_rules = (is_bottom and rot_rules_empire or rot_rules_rebel)
+    local rot_tutorial_qr = (is_bottom and rot_tutorial_qr_empire or rot_tutorial_qr_rebel)
+    local rot_leaders_label = (is_bottom and rot_leaders_label_empire or rot_leaders_label_rebel)
+    local rot_decal_button = (is_bottom and rot_decal_button_empire or rot_decal_button_rebel)
+    local rot_attack_ldr_button = (is_bottom and rot_attack_ldr_button_empire or rot_attack_ldr_button_rebel)
+    local rot_base_damage_counter = (is_bottom and rot_base_damage_counter_empire or rot_base_damage_counter_rebel)
+    local rot_resource_counter = (is_bottom and rot_resource_counter_empire or rot_resource_counter_rebel)
+    local rot_base_damage_counter = (is_bottom and rot_base_damage_counter_empire or rot_base_damage_counter_rebel)
+    local rot_unit_faceup = (is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+    local rot_unit_facedown = (is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+    local rot_ship_faceup = (is_bottom and rot_ship_faceup_empire or rot_ship_faceup_rebel)
+    local rot_ship_facedown = (is_bottom and rot_ship_facedown_empire or rot_ship_facedown_rebel)
+    local rot_base_faceup = (is_bottom and rot_base_faceup_empire or rot_base_faceup_rebel)
+    local rot_base_facedown = (is_bottom and rot_base_facedown_empire or rot_base_facedown_rebel)
+
+    -- first check if placing or removing
+    local removing = false
+    local backdrop = getObjectFromGUID(ai_backdrop)
+    if backdrop ~= nil then
+
+        ai_bag.putObject(backdrop)
+        ai_bag.putObject(getObjectFromGUID(ai_leaderboard))
+        ai_bag.putObject(getObjectFromGUID(ai_progress_cube))
+        ai_bag.putObject(getObjectFromGUID(ai_resource_cube))
+        ai_bag.putObject(getObjectFromGUID(ai_phase_marker))
+        ai_bag.putObject(getObjectFromGUID(ai_resource_counter))
+        ai_bag.putObject(getObjectFromGUID(ai_base_damage_counter))
+        ai_bag.putObject(getObjectFromGUID(ai_rules))
+        ai_bag.putObject(getObjectFromGUID(ai_tutorial_qr))
+        ai_bag.putObject(getObjectFromGUID(ai_leaders_label))
+        ai_bag.putObject(getObjectFromGUID(decal_button))
+        ai_bag.putObject(getObjectFromGUID(attack_leader_button))
+        local loc_attack_ldr_button = (is_bottom and loc_attack_ldr_button_empire or loc_attack_ldr_button_rebel)
+        local loc_base_damage_counter = (is_bottom and loc_base_damage_counter_empire or loc_base_damage_counter_rebel)
+    else
+
+        local backdrop = ai_bag.takeObject({guid=ai_backdrop})
+        backdrop.lock()
+        backdrop.interactable = false
+        backdrop.setPosition(loc_backdrop)
+        backdrop.setRotation(rot_backdrop)
+        local leaderboard = ai_bag.takeObject({guid=ai_leaderboard})
+        leaderboard.lock()
+        leaderboard.interactable = false
+        leaderboard.setPosition(loc_leaderboard)
+        leaderboard.setRotation(rot_leaderboard)
+        local progress_cube = ai_bag.takeObject({guid=ai_progress_cube})
+        progress_cube.lock()
+        progress_cube.interactable = false
+        progress_cube.setPosition(loc_progress_cube)
+        progress_cube.setRotation(rot_cube)
+        local resource_cube = ai_bag.takeObject({guid=ai_resource_cube})
+        resource_cube.lock()
+        resource_cube.interactable = false
+        resource_cube.setPosition(loc_resource_cube)
+        resource_cube.setRotation(rot_cube)
+        local phase_marker = ai_bag.takeObject({guid=ai_phase_marker})
+        phase_marker.lock()
+        phase_marker.interactable = false
+        phase_marker.setInvisibleTo({}) -- change back to all_colors
+        phase_marker.setPosition(loc_phase_begin_turn)
+        phase_marker.setRotation(rot_cube)
+        local resource_counter = ai_bag.takeObject({guid=ai_resource_counter})
+        resource_counter.lock()
+        resource_counter.interactable = false
+        resource_counter.setPosition(loc_resource_counter)
+        resource_counter.setRotation(rot_resource_counter)
+        local base_damage_counter = ai_bag.takeObject({guid=ai_base_damage_counter})
+        base_damage_counter.lock()
+        base_damage_counter.interactable = false
+        base_damage_counter.setPosition(loc_base_damage_counter)
+        base_damage_counter.setRotation(rot_base_damage_counter)
+        local rules = ai_bag.takeObject({guid=ai_rules})
+        rules.lock()
+        rules.setPosition(loc_rules)
+        rules.setRotation(rot_rules)
+        local tutorial_qr = ai_bag.takeObject({guid=ai_tutorial_qr})
+        tutorial_qr.lock()
+        tutorial_qr.interactable = false
+        tutorial_qr.setPosition(loc_tutorial_qr)
+        tutorial_qr.setRotation(rot_tutorial_qr)
+        local leaders_label = ai_bag.takeObject({guid=ai_leaders_label})
+        leaders_label.lock()
+        leaders_label.interactable = false
+        leaders_label.setPosition(loc_leaders_label)
+        leaders_label.setRotation(rot_leaders_label)
+        local decal_button = ai_bag.takeObject({guid=decal_button})
+        decal_button.lock()
+        decal_button.interactable = false
+        decal_button.setPosition(loc_decal_button)
+        decal_button.setRotation(rot_decal_button)
+        local attack_ldr_button = ai_bag.takeObject({guid=attack_ldr_button})
+        attack_ldr_button.lock()
+        attack_ldr_button.interactable = false
+        attack_ldr_button.setPosition(loc_attack_ldr_button)
+        attack_ldr_button.setRotation(rot_attack_ldr_button)
+    end
+end -- end toggle_solo_ui()
+
+
+
+
+
+-- this function handles the Begin Turn step of the AI turn
+function ai_begin_turn(faction)
+
+    -- local is_bottom = (button == button_test_empire)
+    -- local faction = (is_bottom and "Empire" or "Rebel")
+    is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local ai_bag = (is_bottom and ai_bag_empire or ai_bag_rebel)
+    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (is_bottom and {5.88, 6.16, -18.55} or {-5.88, 6.26, 18.46})
+    local base_zone = getObjectFromGUID(is_bottom and "79222b" or "7a0285")
+    local base_deck = nil
+    local base_deck_zone = getObjectFromGUID(is_bottom and "59b7ad" or "23b5a3")
+    local current_base_found = false
+    local current_base = nil
+    local destroyed_base = nil
+    local loc_victory = (is_bottom and {48.00, 3.5, 10.00} or {-48.00, 3.5, -10.00})
+    local rot_victory = (is_bottom and {0.00, 0.00, 0.00} or {0.00, 180.00, 0.00})
+    local base_tag = (is_bottom and "empire_base" or "rebel_base")
+    local ai_owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
+    local base_count = nil
+    local loc_first_base = (is_bottom and loc_first_base_empire or loc_first_base_rebel)
+    local loc_second_base = (is_bottom and loc_second_base_empire or loc_second_base_rebel)
+    local loc_third_base = (is_bottom and loc_third_base_empire or loc_third_base_rebel)
+    local next_loc = nil
+    local rot_base = (is_bottom and {40.00, 0.00, 0.00} or {40.00, 180.00, 0.00})
+    local next_base = nil
+    local next_base_value = nil
+    local replace_base = false
+    local loc_bottom_left_ability = (is_bottom and loc_bottom_left_ability_empire or loc_bottom_left_ability_rebel)
+    local loc_bottom_middle_ability = (is_bottom and loc_bottom_middle_ability_empire or loc_bottom_middle_ability_rebel)
+    local loc_bottom_right_ability = (is_bottom and loc_bottom_right_ability_empire or loc_bottom_right_ability_rebel)
+    local loc_top_left_ability = (is_bottom and loc_top_left_ability_empire or loc_top_left_ability_rebel)
+    local loc_top_middle_ability = (is_bottom and loc_top_middle_ability_empire or loc_top_middle_ability_rebel)
+    local loc_top_right_ability = (is_bottom and loc_top_right_ability_empire or loc_top_right_ability_rebel)
+    local ability_marker_rotation = (is_bottom and rot_cube_empire or rot_cube_rebel)
+    local loc_ability_marker = nil
+    local ability_marker = nil
+    local ability_marker_guid = (is_bottom and ai_base_marker_empire or ai_base_marker_rebel)
+    local counter = getObjectFromGUID(is_bottom and ai_base_damage_counter_empire or ai_base_damage_counter_rebel)
+    local force_owner = who_has_force()
+    local force_tracker = getObjectFromGUID("74b511")
+    local force_position = force_tracker.getPosition()
+    local zone_1 = getObjectFromGUID("c98289")
+    local zone_2 = getObjectFromGUID("46fd89")
+    local zone_3 = getObjectFromGUID("174e23")
+    local zone_4 = getObjectFromGUID("84fd72")
+    local zone_5 = getObjectFromGUID("d83464")
+    local zone_6 = getObjectFromGUID("c5ef86")
+    local zones = {zone_1,zone_2,zone_3,zone_4,zone_5,zone_6}
+    local opposing_faction_tag = (is_bottom and "rebel" or "empire")
+    local galaxy_deck = nil
+    local zone_galaxy_deck = getObjectFromGUID("cdc550")
+    local trooper_1 = ai_trooper_empire_1
+    local trooper_2 = ai_trooper_empire_2
+    local troopers = {trooper_1, trooper_2}
+    -- checks opposite muster zones, used for automatic AI muster zone "discard" flip face down
+    local zone_muster_1 = (is_bottom and ai_zone_rebel_muster_1 or ai_zone_empire_muster_1)
+    local zone_muster_2 = (is_bottom and ai_zone_rebel_muster_2 or ai_zone_empire_muster_2)
+    local zone_muster_3 = (is_bottom and ai_zone_rebel_muster_3 or ai_zone_empire_muster_3)
+    local zone_muster_4 = (is_bottom and ai_zone_rebel_muster_4 or ai_zone_empire_muster_4)
+    local zone_muster_5 = (is_bottom and ai_zone_rebel_muster_5 or ai_zone_empire_muster_5)
+    local zone_muster_6 = (is_bottom and ai_zone_rebel_muster_6 or ai_zone_empire_muster_6)
+    local zone_muster_7 = (is_bottom and ai_zone_rebel_muster_7 or ai_zone_empire_muster_7)
+    local zone_muster_8 = (is_bottom and ai_zone_rebel_muster_8 or ai_zone_empire_muster_8)
+    local zone_muster_9 = (is_bottom and ai_zone_rebel_muster_9 or ai_zone_empire_muster_9)
+    local zone_muster_10 = (is_bottom and ai_zone_rebel_muster_10 or ai_zone_empire_muster_10)
+    local zone_muster_11 = (is_bottom and ai_zone_rebel_muster_11 or ai_zone_empire_muster_11)
+    local zone_muster_12 = (is_bottom and ai_zone_rebel_muster_12 or ai_zone_empire_muster_12)
+    local zone_muster_13 = (is_bottom and ai_zone_rebel_muster_13 or ai_zone_empire_muster_13)
+    local zone_muster_14 = (is_bottom and ai_zone_rebel_muster_14 or ai_zone_empire_muster_14)
+    local muster_zones = {
+        zone_muster_1,
+        zone_muster_2,
+        zone_muster_3,
+        zone_muster_4,
+        zone_muster_5,
+        zone_muster_6,
+        zone_muster_7,
+        zone_muster_8,
+        zone_muster_9,
+        zone_muster_10,
+        zone_muster_11,
+        zone_muster_12,
+        zone_muster_13,
+        zone_muster_14,
+    }
+    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+
+    local text_bottom_left = (is_bottom and "AI Empire moves the highest cost Empire or neutral card from the galaxy row to the Muster area, face up." or
+    "AI Rebellion moves the highest cost Rebellion or neutral card from the galaxy row to the Muster area, face up.")
+
+    local text_bottom_middle_force = (is_bottom and "Force is all the way to AI Empire, discard all Rebellion cards from galaxy row." or
+    "Force is all the way to AI Rebellion, ***** Player must choose a card to discard from their hand! *****")
+
+    local text_bottom_middle_no_force = (is_bottom and "Force is not all the way to AI Empire, they gain up to 4 Force." or
+    "Force is not all the way to AI Rebellion, they gain up to 4 Force.")
+
+    local text_bottom_right_force = (is_bottom and "Enemy Stormtroopers gain +1 Damage." or
+    "Force is with AI Rebellion, Player discards a card from their hand at random.")
+
+    local text_bottom_right_no_force = (is_bottom and "Enemy Stormtroopers gain +1 Damage." or
+    "Force is not with AI Rebellion, ***** Player must choose a card to discard from their hand! *****")
+
+    local text_top_left = (is_bottom and "AI Empire moves the highest cost Empire or neutral card from the galaxy row to the Muster area, face up." or
+    "AI Rebellion moves the highest cost Rebellion or neutral card from the galaxy row to the Muster area, face up.")
+
+    local text_top_middle = (is_bottom and "AI Empire discards all Rebellion cards from the galaxy row, and deals 1 damage to the Rebellion base for each card discarded in this way." or
+    "Prevent the first 2 damage dealt to AI Rebellion base each turn.")
+
+    local text_top_right = (is_bottom and "At the beginning of each Purchase step, AI Empire spends 4 Resources to destroy the highest hit point opposing capital ship in play (if any)" or
+    "Player discards a card at random. Deal 2 damage to the player base.")
+
+    -- show phase tracker to "1. Begin Turn"
+    phase_tracker.setInvisibleTo({})
+    phase_tracker.setScale({1.76, 0.60, 0.41})
+    phase_tracker.setPosition(loc_phase_tracker)
+
+    -- announce Begin Turn step
+    broadcastToAll("AI " .. faction .. " is running Step 1 of it's turn: Begin Turn.", ai_color)
+    -- check if base was destroyed
+    for k, v in pairs(base_zone.getObjects()) do
+        if v.tag == "Card" and v.hasTag(base_tag) then
+            local rotation = v.getRotation()
+            if rotation.z > -1 and rotation.z < 1 then
+                current_base_found = true
+                current_base = v
+            elseif rotation.z > 179 and rotation.z < 181 then
+                current_base_found = false
+                destroyed_base = v
+            end
+        end
+    end
+
+    if current_base_found == false then
+        replace_base = true
+        counter.call('set_val', 0)
+        -- get position of destroyed base, determine which base to place next if any
+        local position = destroyed_base.getPosition()
+        if position.y > 8.5 and position.y < 8.9 then
+            next_loc = loc_second_base
+        elseif position.y > 9.5 and position.y < 9.9 then
+            next_loc = loc_third_base
+        end
+        -- if so, move & resize defeated base to opponent's victory pile
+        destroyed_base.setScale({1.6, 1, 1.6})
+        destroyed_base.setLock(false)
+        destroyed_base.setRotation(rot_victory)
+        destroyed_base.setPositionSmooth(loc_victory, false, false)
+        -- draw next base
+        for k, v in pairs(base_deck_zone.getObjects()) do
+            if v.tag == "Deck" then
+                base_deck = v
+            end
+        end
+        next_base = base_deck.takeObject()
+        if next_base.getName() == "Mon Cala" or next_base.getName() == "Corellia" then
+            next_base_value = 10
+        elseif next_base.getName() == "Dagobah" or next_base.getName() == "Kessel" then
+            next_base_value = 12
+        elseif next_base.getName() == "Alderaan" or next_base.getName() == "Bespin" or next_base.getName() == "Hoth" or
+        next_base.getName() == "Jedha" or next_base.getName() == "Tattooine" or next_base.getName() == "Kafrene" or
+        next_base.getName() == "Mustafar" or next_base.getName() == "Ord Mantell" then
+            next_base_value = 14
+        elseif next_base.getName() == "Sullust" or next_base.getName() == "Yavin 4" or next_base.getName() == "Coruscant" or
+        next_base.getName() == "Death Star" or next_base.getName() == "Endor" or next_base.getName() == "Rodia" then
+            next_base_value = 16
+        end
+        next_base.lock()
+        next_base.setScale({1.5, 1, 1.5})
+        next_base.setRotation(rot_base)
+        next_base.setPosition(next_loc)
+        -- place current base ability transparent cube over ability
+
+        if next_loc == loc_second_base then
+            -- pull and place base ability marker
+            Wait.time(function()
+            if next_base_value == 10 or next_base_value == 12 then
+                loc_base_ability = loc_bottom_left_ability
+                broadcastToAll(text_bottom_left, ai_color)
+                local found_card = check_row(faction, "ability", false)
+                add_tag(ai_owner_tag, found_card)
+                to_muster(found_card, faction, "faceup")
+            elseif next_base_value == 14 then
+                loc_base_ability = loc_bottom_middle_ability
+                local force_tracker_position = force_tracker.getPosition()
+                if (force_tracker_position.z < -8 and force_tracker_position.z > -9 and is_bottom) or
+                (force_tracker_position.z > 8 and force_tracker_position.z < 9 and not is_bottom) then
+                    broadcastToAll(text_bottom_middle_force, ai_color)
+                    if is_bottom then
+                        -- discard all rebellion cards from galaxy row
+                        for k, v in pairs(zone_galaxy_deck.getObjects()) do
+                            if v.tag == "Deck" then
+                                galaxy_deck = v
+                            end
+                        end
+                        for i = 1, 6 do
+                            local loc_replace = nil
+                            if i == 1 then
+                                loc_replace = {-21.00, 0.75, 0.00}
+                            elseif i == 2 then
+                                loc_replace = {-14.00, 0.75, 0.00}
+                            elseif i == 3 then
+                                loc_replace = {-7.00, 0.75, 0.00}
+                            elseif i == 4 then
+                                loc_replace = {0.00, 0.75, 0.00}
+                            elseif i == 5 then
+                                loc_replace = {7.00, 0.75, 0.00}
+                            elseif i == 6 then
+                                loc_replace = {14.00, 0.75, 0.00}
+                            end
+                            for k, v in pairs(zones[i].getObjects()) do
+                                if v.hasTag(opposing_faction_tag) then
+                                    Wait.time(function()
+                                    v.setRotation({0.00, 90.00, 180.00})
+                                    v.setPositionSmooth({-28.00, 2.5, -2.50}, false, false)
+                                    replace_card = galaxy_deck.takeObject()
+                                    rotate_dealt_card(replace_card, loc_replace)
+                                    wait_timer = wait_timer + .2
+                                    end, wait_timer)
+                                end
+                            end
+                        end
+                    end
+                else
+                    broadcastToAll(text_bottom_middle_no_force, ai_color)
+                    if is_bottom then
+                        for i = 1, 4 do move_force_track(empire_force_button, "Blue", _) end
+                    else
+                        for i = 1, 4 do move_force_track(rebel_force_button, "Red", _) end
+                    end
+                end
+            elseif next_base_value == 16 then
+                loc_base_ability = loc_bottom_right_ability
+                if (who_has_force() == "Empire" and is_bottom) or
+                (who_has_force() == "Rebel" and not is_bottom) then
+                    broadcastToAll(text_bottom_right_force, ai_color)
+                    -- if_empire enemy stormtroopers gain +1 damage
+                    -- PLACEHOLDER MAYBE DO FANCY HIGHLIGHT / DESCRIPTION STUFF HERE
+                    -- **** will need to account for this damage when doing attack functions anyways
+                    -- perhaps a function since this is repeated code
+
+                    -- else player discards a card from hand at random
+                    -- or if ai opponent, flips random muster card face down
+                    if not is_bottom then
+                        if getObjectFromGUID(ai_backdrop_empire) ~= nil then
+                              local faceup_muster_cards = {}
+                              local rotation = nil
+                              for i = 1, 14 do
+                                  for k, v in pairs(muster_zones[i].getObjects()) do
+                                      if v.tag == "Card" then
+                                          rotation = v.getRotation()
+                                          if rotation.z > -1 and rotation.z < 1 then
+                                              table.insert(faceup_muster_cards, v)
+                                          end
+                                      end
+                                  end
+                              end
+
+                              local random_index = math.random(1,#faceup_muster_cards)
+                              rotation.z = 180
+                              faceup_muster_cards[random_index].setRotationSmooth(rotation, false, false)
+                              broadcastToAll("AI Empire has randomly flipped " .. faceup_muster_cards[random_index].getName() .. "in their muster area to simulate a random card discard." , "Red")
+                        else
+                              discard_random_card(button_discard_random_empire, "Blue", _)
+                        end
+                    end
+                else
+                    broadcastToAll(text_bottom_right_no_force, ai_color)
+                    -- if_empire enemy stormtroopers gain +1 damage
+                    -- PLACEHOLDER MAYBE DO FANCY HIGHLIGHT / DESCRIPTION STUFF HERE
+                    -- **** will need to account for this damage when doing attack functions anyways
+                    -- perhaps a function since this is repeated code
+
+                    -- rebels need no automatic action
+                end
+            end
+            ability_marker = ai_bag.takeObject({guid=ability_marker_guid})
+            ability_marker.lock()
+            ability_marker.setRotation(ability_marker_rotation)
+            ability_marker.setPosition(loc_base_ability)
+            end, ai_speed)
+            -- gain shuttle
+            Wait.time(function() ai_add_shuttle(faction) end, 6)
+        end
+
+        if next_loc == loc_third_base then
+
+            -- pull and place base ability marker
+            if next_base_value == 10 or next_base_value == 12 then
+              loc_base_ability = loc_top_left_ability
+              broadcastToAll(text_top_left, ai_color)
+              local found_card = check_row(faction, "ability", false)
+              add_tag(ai_owner_tag, found_card)
+              to_muster(found_card, faction, "faceup")
+
+            elseif next_base_value == 14 then
+                loc_base_ability = loc_top_middle_ability
+                broadcastToAll(text_top_middle, ai_color)
+                -- AI Empire discards all Rebellion cards from the galaxy row, and deals 1 damage to the Rebellion base for each card discarded in this way.
+                loc_base_ability = loc_top_middle_ability
+                local total_damage = 0
+
+                if is_bottom then
+                    -- discard all rebellion cards from galaxy row
+                    for k, v in pairs(zone_galaxy_deck.getObjects()) do
+                        if v.tag == "Deck" then
+                            galaxy_deck = v
+                        end
+                    end
+                    local wait_timer = 0
+                    for i = 1, 6 do
+                        local loc_replace = nil
+                        if i == 1 then
+                            loc_replace = {-21.00, 0.75, 0.00}
+                        elseif i == 2 then
+                            loc_replace = {-14.00, 0.75, 0.00}
+                        elseif i == 3 then
+                            loc_replace = {-7.00, 0.75, 0.00}
+                        elseif i == 4 then
+                            loc_replace = {0.00, 0.75, 0.00}
+                        elseif i == 5 then
+                            loc_replace = {7.00, 0.75, 0.00}
+                        elseif i == 6 then
+                            loc_replace = {14.00, 0.75, 0.00}
+                        end
+                        for k, v in pairs(zones[i].getObjects()) do
+                            if v.hasTag(opposing_faction_tag) then
+                                total_damage = total_damage + 1
+                                v.setRotation({0.00, 90.00, 0.00})
+                                v.setPositionSmooth({-28.00, 2.5, -2.50}, false, false)
+                                replace_card = galaxy_deck.takeObject()
+                                rotate_dealt_card(replace_card, loc_replace)
+                            end
+                        end
+                    end
+                    apply_base_damage("Rebel", total_damage)
+                end
+
+                -- rebellion is just text
+            elseif next_base_value == 16 then
+                loc_base_ability = loc_top_right_ability
+                broadcastToAll(text_top_right, ai_color)
+
+                -- ****** NEEDS EMPIRE CHECK AT PURCHASE STEP TO SEE IF THING IS DONE
+                -- empire is just text here
+
+                -- rebel: opponent discards card at random, deals 2 dmg to base
+                if not is_bottom then
+                    if getObjectFromGUID(ai_backdrop_empire) ~= nil then
+                        local faceup_muster_cards = {}
+                        local rotation = nil
+                        for i = 1, 14 do
+                            for k, v in pairs(muster_zones[i].getObjects()) do
+                                if v.tag == "Card" then
+                                    rotation = v.getRotation()
+                                    if rotation.z > -1 and rotation.z < 1 then
+                                        table.insert(faceup_muster_cards, v)
+                                    end
+                                end
+                            end
+                        end
+
+                        local random_index = math.random(1,#faceup_muster_cards)
+                        rotation.z = 180
+                        faceup_muster_cards[random_index].setRotationSmooth(rotation, false, false)
+                        broadcastToAll("AI Empire has randomly flipped " .. faceup_muster_cards[random_index].getName() .. "in their muster area to simulate a random card discard." , "Red")
+                    else
+                        discard_random_card(button_discard_random_empire, "Blue", _)
+                    end
+                    apply_base_damage("Empire", 2)
+                end
+            end
+            Wait.time(function()
+            ability_marker = getObjectFromGUID(ability_marker_guid)
+            ability_marker.setRotation(ability_marker_rotation)
+            ability_marker.setPosition(loc_base_ability)
+            end, ai_speed)
+        end
+    end
+    local wait_timer = nil
+    if replace_base == true then
+        wait_timer = ai_speed * 2
+    else
+        wait_timer = ai_speed
+    end
+    -- if force is all the way to AI, gain 1 resource
+    local force_tracker_position = force_tracker.getPosition()
+    if (force_tracker_position.z < -8 and force_tracker_position.z > -9 and is_bottom) or
+    (force_tracker_position.z > 8 and force_tracker_position.z < 9 and is_bottom == false) then
+        local new_resource_total = resource_counter.getVar('val') + 1
+        Wait.time(function()
+        resource_counter.call('set_val', new_resource_total)
+        broadcastToAll("The Force is with AI " .. faction .. ", who gains +1 Resource at the start of their turn.", ai_color)
+        end,ai_speed * 2)
+    end
+    -- move face up muster cards to play area
+    -- rotate face down muster cards to face up
+    Wait.time(function()
+    muster_to_play(faction)
+    Wait.time(function() ai_gain_resources(faction) end, ai_speed * 2)
+    end, wait_timer)
+end -- end ai_begin_turn()
+
+
+-- this function handles the Gain Resources step of the AI turn
+function ai_gain_resources(faction)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (is_bottom and {3.46, 6.16, -18.55} or {-3.46, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local resource_cube = getObjectFromGUID(is_bottom and ai_resource_cube_empire or ai_resource_cube_rebel)
+    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    play_zones = {
+        zone_play_unit_1,
+        zone_play_unit_2,
+        zone_play_unit_3,
+        zone_play_unit_4,
+        zone_play_unit_5,
+        zone_play_unit_6,
+        zone_play_unit_7,
+    }
+    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    play_ship_zones = {
+        zone_play_ship_1,
+        zone_play_ship_2,
+        zone_play_ship_3,
+        zone_play_ship_4,
+        zone_play_ship_5,
+        zone_play_ship_6,
+        zone_play_ship_7,
+        zone_play_ship_8,
+        zone_play_ship_9,
+        zone_play_ship_10,
+        zone_play_ship_11,
+        zone_play_ship_12,
+    }
+    shuttle_zone = (is_bottom and ai_zone_empire_shuttles or ai_zone_rebel_shuttles)
+
+    -- announce Gain Resources step of AI turn
+    broadcastToAll("AI " .. faction .. " is running Step 2 of it's turn: Gain Resources.", ai_color)
+    -- move & resize phase tracker to "2. Gain Resources"
+    phase_tracker.setScale({2.50, 0.60, 0.41})
+    phase_tracker.setPositionSmooth(loc_phase_tracker, false, false)
+
+    -- AI checks number of resources of cards in play + shuttles area
+    local resources_to_add = 0
+    for k, v in pairs(shuttle_zone.getObjects()) do
+        if v.tag == "Card" then
+            resources_to_add = resources_to_add + v.getVar('produce')
+        end
+    end
+    for i = 1, 7 do
+        for k, v in pairs(play_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                resources_to_add = resources_to_add + v.getVar('produce')
+            end
+        end
+    end
+    for i = 1, 12 do
+        for k, v in pairs(play_ship_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                resources_to_add = resources_to_add + v.getVar('produce')
+            end
+        end
+    end
+    Wait.time(function() add_ai_resources(faction, resources_to_add) end,ai_speed)
+    Wait.time(function() ai_gain_force(faction) end,ai_speed*2)
+end -- end ai_gain_resources()
+
+
+-- this function handles the Gain Force step of the AI turn
+function ai_gain_force(faction)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (is_bottom and {1.00, 6.16, -18.55} or {-1.00, 6.26, 18.46})
+
+    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    play_zones = {
+        zone_play_unit_1,
+        zone_play_unit_2,
+        zone_play_unit_3,
+        zone_play_unit_4,
+        zone_play_unit_5,
+        zone_play_unit_6,
+        zone_play_unit_7,
+    }
+    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    play_ship_zones = {
+        zone_play_ship_1,
+        zone_play_ship_2,
+        zone_play_ship_3,
+        zone_play_ship_4,
+        zone_play_ship_5,
+        zone_play_ship_6,
+        zone_play_ship_7,
+        zone_play_ship_8,
+        zone_play_ship_9,
+        zone_play_ship_10,
+        zone_play_ship_11,
+        zone_play_ship_12,
+    }
+    shuttle_zone = (is_bottom and ai_zone_empire_shuttles or ai_zone_rebel_shuttles)
+    force_button = (is_bottom and empire_force_button or rebel_force_button)
+
+    -- move & resize phase tracker to "3. Gain Force"
+    -- announce Gain Resources step of AI turn
+    broadcastToAll("AI " .. faction .. " is running Step 3 of it's turn: Gain Force.", ai_color)
+    -- move & resize phase tracker to "2. Gain Resources"
+    phase_tracker.setScale({2.00, 0.60, 0.41})
+    phase_tracker.setPositionSmooth(loc_phase_tracker, false, false)
+
+    -- AI checks force total of cards in play area
+    local force_to_add = 0
+    for k, v in pairs(shuttle_zone.getObjects()) do
+        if v.tag == "Card" then
+            force_to_add = force_to_add + v.getVar('force')
+        end
+    end
+    for i = 1, 7 do
+        for k, v in pairs(play_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                force_to_add = force_to_add + v.getVar('force')
+            end
+        end
+    end
+    for i = 1, 7 do
+        for k, v in pairs(play_ship_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                force_to_add = force_to_add + v.getVar('force')
+            end
+        end
+    end
+    Wait.time(function()
+    if force_to_add > 0 then
+        broadcastToAll("AI " .. faction .. " gains +" .. force_to_add .. " from it's cards in play.", ai_color)
+        for i = 1, force_to_add do
+            move_force_track(force_button, ai_color, _)
+        end
+    else
+        broadcastToAll("AI " .. faction .. " does not gain Force from it's cards in play.", ai_color)
+    end
+    Wait.time(function() ai_purchase(faction) end, ai_speed)
+    end,ai_speed)
+end -- end ai_gain_force()
+
+
+-- this function handles the Purchase step of the AI turn
+function ai_purchase(faction)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (is_bottom and {-1.10, 6.16, -18.55} or {1.10, 6.26, 18.46})
+    local next_muster_slot = nil
+    local zone_play_ship_1 = ai_zone_rebel_play_ship_1
+    local zone_play_ship_2 = ai_zone_rebel_play_ship_2
+    local zone_play_ship_3 = ai_zone_rebel_play_ship_3
+    local zone_play_ship_4 = ai_zone_rebel_play_ship_4
+    local zone_play_ship_5 = ai_zone_rebel_play_ship_5
+    local zone_play_ship_6 = ai_zone_rebel_play_ship_6
+    local zone_play_ship_7 = ai_zone_rebel_play_ship_7
+    local zone_play_ship_8 = ai_zone_rebel_play_ship_8
+    local zone_play_ship_9 = ai_zone_rebel_play_ship_9
+    local zone_play_ship_10 = ai_zone_rebel_play_ship_10
+    local zone_play_ship_11 = ai_zone_rebel_play_ship_11
+    local zone_play_ship_12 = ai_zone_rebel_play_ship_12
+    play_ship_zones = {
+        zone_play_ship_1,
+        zone_play_ship_2,
+        zone_play_ship_3,
+        zone_play_ship_4,
+        zone_play_ship_5,
+        zone_play_ship_6,
+        zone_play_ship_7,
+        zone_play_ship_8,
+        zone_play_ship_9,
+        zone_play_ship_10,
+        zone_play_ship_11,
+        zone_play_ship_12,
+    }
+    local ability_marker = getObjectFromGUID(ai_base_marker_empire)
+    local loc_ability_marker = nil
+    if ability_marker ~= nil then
+        loc_ability_marker = ability_marker.getPosition()
+    end
+    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local current_resources = resource_counter.getVar('val')
+    local highest_ship_value = 0
+    local current_highest_ship = nil
+    local is_tie = false
+    local ship_in_ties = false
+    local tied_ships = {}
+    outer_rim_pilot_count = 0
+
+    -- move & resize phase tracker to "4. Purchase"
+    -- announce Purchase step of AI turn
+    broadcastToAll("AI " .. faction .. " is running Step 4 of it's turn: Purchase.", ai_color)
+    phase_tracker.setScale({1.76, 0.60, 0.41})
+    phase_tracker.setPositionSmooth(loc_phase_tracker, false, false)
+
+    -- check if AI empire has "death star" base effect, if so, do the thing
+    if is_bottom and ability_marker ~= nil and current_resources > 3 then -- working
+        if loc_ability_marker.x > 0 and loc_ability_marker.x < 1 and
+        loc_ability_marker.z < -20.50 and loc_ability_marker.z > -21.50 then
+            -- check for rebel ships in play, first check if AI rebel or Player rebel
+            if getObjectFromGUID(ai_backdrop_rebel) ~= nil then -- AI
+                for i = 1, 12 do
+                    for k, v in pairs(play_ship_zones[i].getObjects()) do
+                        if v.hasTag('ship') then
+                            local ship_current_hp = v.getVar('MAX_VALUE') - v.getVar('val')
+                            if  ship_current_hp > highest_ship_value then
+                                is_tie = false
+                                ship_in_ties = false
+                                tied_ships = {}
+                                highest_ship_value = v.getVar('MAX_VALUE')
+                                current_highest_ship = v
+                            elseif ship_current_hp == highest_ship_value then
+                                is_tie = true
+                                local ship_in_ties = false
+                                for k, v in pairs(tied_ships) do
+                                    if v == current_highest_ship then
+                                        ship_in_ties = true
+                                    end
+                                end
+                                if ship_in_ties == false then
+                                    table.insert(tied_ships, current_highest_ship)
+                                end
+                                current_highest_ship = v
+                                table.insert(tied_ships, current_highest_ship)
+                            end
+                        end
+                    end
+                end
+                if is_tie == true then -- randomize which
+                    local random_index = math.random(1,#tied_ships)
+                    current_highest_ship = tied_ships[random_index]
+                end
+                if current_highest_ship ~= nil then
+                    resource_counter.call('set_val', current_resources - 4)
+                    add_tag("ai_top_owner", current_highest_ship)
+                    current_highest_ship.call('exile_card', "Red")
+                    broadcastToAll("AI Empire has used it's base ability to spend 4 resources to destroy" .. current_highest_ship.getName() .. ".", "Blue")
+                end
+            elseif getObjectFromGUID(ai_backdrop_rebel) == nil then -- Player
+                for k, v in pairs(getObjectFromGUID("0cdb1a").getObjects()) do
+                    if v.hasTag('ship') and v.hasTag('top_owner') then
+                        local ship_current_hp = v.getVar('MAX_VALUE') - v.getVar('val')
+                        if  ship_current_hp > highest_ship_value then
+                            is_tie = false
+                            ship_in_ties = false
+                            tied_ships = {}
+                            highest_ship_value = v.getVar('MAX_VALUE')
+                            current_highest_ship = v
+                        elseif ship_current_hp == highest_ship_value then
+                            is_tie = true
+                            local ship_in_ties = false
+                            for k, v in pairs(tied_ships) do
+                                if v == current_highest_ship then
+                                    ship_in_ties = true
+                                end
+                            end
+                            if ship_in_ties == false then
+                                table.insert(tied_ships, current_highest_ship)
+                            end
+                            current_highest_ship = v
+                            table.insert(tied_ships, current_highest_ship)
+                        end
+                    end
+                end
+                if is_tie == true then -- randomize which
+                    local random_index = math.random(1,#tied_ships)
+                    current_highest_ship = tied_ships[random_index]
+                end
+                if current_highest_ship ~= nil then
+                    resource_counter.call('set_val', current_resources - 4)
+                    add_tag("ai_top_owner", current_highest_ship)
+                    current_highest_ship.call('set_val', current_highest_ship.getVar("MAX_VALUE")-1)
+                    current_highest_ship.call('add_subtract')
+                    broadcastToAll("AI Empire has used it's base ability to spend 4 resources to destroy " .. current_highest_ship.getName() .. ".", "Blue")
+                end
+            end
+        end
+    end
+    Wait.time(function() ai_purchase_card(faction) end, ai_speed)
+end -- end ai_purchase()
+
+
+-- this function handles the Attack step of the AI turn
+function ai_attack(faction)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local attack_string = (is_bottom and "Bounty Hunt" or "Sabotage")
+    local opponent_is_ai = getObjectFromGUID(is_bottom and ai_backdrop_rebel or ai_backdrop_empire)
+    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (is_bottom and {-2.93, 6.16, -18.55} or {2.93, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local base_damage_counter = nil
+    if opponent_is_ai then
+        base_damage_counter = getObjectFromGUID(is_bottom and ai_base_damage_counter_rebel or ai_base_damage_counter_empire)
+    else
+        base_damage_counter = getObjectFromGUID(is_bottom and "fa055e" or "7e15f6")
+    end
+
+    local rot_facedown = (is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+    local rot_ship_facedown = (is_bottom and rot_ship_facedown_empire or rot_ship_facedown_rebel)
+    local loc_discard = {-28.00, 2.5, -2.50}
+    local rot_discard = {0, 90, 0}
+
+    local ability_marker = getObjectFromGUID(ai_base_marker_empire)
+    local loc_ability_marker = nil
+    local buff_stormtroopers = false
+    local trooper_1 = getObjectFromGUID("d7f87f")
+    local trooper_2 = getObjectFromGUID("8e59cd")
+    local vader = getObjectFromGUID("9c5c40")
+    local buff_vader = false
+    if ability_marker ~= nil then
+        loc_ability_marker = ability_marker.getPosition()
+        if loc_ability_marker.x > 0 and loc_ability_marker.x < 1 and
+        loc_ability_marker.z < -19.50 and loc_ability_marker.z > -20.50 then
+            buff_stormtroopers = true
+        end
+    end
+
+    if who_has_force() == "Empire" and is_bottom then
+        buff_vader = true
+    end
+
+    local leader_found = false
+    local zone_leader = getObjectFromGUID(is_bottom and "383ed0" or "248b87")
+    local leader_guid = (is_bottom and "9c5c40" or "5f007b")
+    for k, v in pairs(zone_leader.getObjects()) do
+        if v.getGUID() == leader_guid then
+            leader_found = true
+        end
+    end
+
+    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    play_zones = {
+        zone_play_unit_1,
+        zone_play_unit_2,
+        zone_play_unit_3,
+        zone_play_unit_4,
+        zone_play_unit_5,
+        zone_play_unit_6,
+        zone_play_unit_7,
+    }
+    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    play_ship_zones = {
+        zone_play_ship_1,
+        zone_play_ship_2,
+        zone_play_ship_3,
+        zone_play_ship_4,
+        zone_play_ship_5,
+        zone_play_ship_6,
+        zone_play_ship_7,
+        zone_play_ship_8,
+        zone_play_ship_9,
+        zone_play_ship_10,
+        zone_play_ship_11,
+        zone_play_ship_12,
+    }
+
+    local row_attack_values = {}
+    local row_attack_cards = {}
+    local base_attack_values = {}
+    local base_attack_cards = {}
+    local total_attack_value = 0
+    local row_attack_made = false
+    local target_card_name = ""
+
+    -- move & resize phase tracker to "5. Attack"
+    -- announce Attack step of AI turn
+    broadcastToAll("AI " .. faction .. " is running Step 5 of it's turn: Attack.", ai_color)
+    phase_tracker.setScale({1.34, 0.60, 0.41})
+    phase_tracker.setPositionSmooth(loc_phase_tracker, false, false)
+
+    Wait.time(function()
+
+    ------ if leader_found, check bounty hunt/sabotage:
+    if leader_found then
+    -- create table of possible attack values per cards in play zones to combine
+        for i = 1, 7 do
+            for k, v in pairs(play_zones[i].getObjects()) do
+                if v.tag == "Card" then
+                    if v.getVar('fight') > 0 then
+                        table.insert(row_attack_cards, v)
+                        local current_fight = v.getVar('fight')
+                        if buff_vader and v == vader then
+                            current_fight = 10
+                        end
+                        if buff_stormtroopers and (v == trooper_1 or v == trooper_2) then
+                            current_fight = 3
+                        end
+                        table.insert(row_attack_values, current_fight)
+                        total_attack_value = total_attack_value + current_fight
+                    end
+                end
+            end
+        end
+
+        local attack_card, resource_value, force_value = check_attack_row(faction, total_attack_value)
+
+        if attack_card == "no_attack" then print("attack_card: NO ATTACK") end
+
+        if attack_card ~= "no_attack" and #row_attack_cards > 0 then
+
+            -- print("Attack Target Card: " .. attack_card.getName())
+            -- print("Target Card Resource Return: " .. resource_value)
+            -- print("Target Card Force Return: " .. force_value)
+            -- print("Target Card Attack Cost: " .. attack_card.getVar('cost'))
+
+            local cost = attack_card.getVar('cost')
+
+            local combination = find_most_efficient_combination(row_attack_values, cost)
+            print("number of bounty hunt/sabotage combination units: " .. #combination)
+
+
+            if #combination > 0 then
+
+                for i = 1, #combination do
+                    for k, v in pairs(row_attack_cards) do
+                        if v.getVar('fight') == combination[i] then
+                            if buff_vader and v == getObjectFromGUID("9c5c40") then
+                                broadcastToAll(attack_string .. " Card: " .. v.getName() .. " - 10" .. " damage.", ai_color)
+                            elseif buff_stormtroopers and (v == getObjectFromGUID("d7f87f") or v == getObjectFromGUID("8e59cd")) then
+                                broadcastToAll(attack_string .. " Card: " .. v.getName() .. " - 3" .. " damage.", ai_color)
+                            else
+                                broadcastToAll(attack_string .. " Card: " .. v.getName() .. " - " .. v.getVar('fight') .. " damage.", ai_color)
+                            end
+                            table.remove(row_attack_cards, k)
+                            local current_card = v
+                            current_card.highlightOn(ai_color)
+                            Wait.time(function()
+                            current_card.highlightOff()
+                            current_card.setRotationSmooth(rot_facedown, false, false)
+
+                            Wait.time(function()
+
+                            row_attack_made = true
+                            attack_card.highlightOn(ai_color)
+                            Wait.time(function()
+                            attack_card.setRotationSmooth(rot_discard)
+                            attack_card.setPositionSmooth(loc_discard, false, false)
+                            attack_card.highlightOff()
+                            Wait.time(function() draw_galaxy_card(_, _, _) end, 1)
+                            end, ai_speed)
+                            if resource_value > 0 then
+                                local current = resource_counter.getVar('val')
+                                local final = current + resource_value
+                                resource_counter.call('set_val', final)
+                                broadcastToAll("AI " .. faction .. " has earned " .. resource_value .. " resources from it's " .. attack_string .. " of " .. attack_card.getName() ..  ", going from " .. current .. ", to " .. final .. ".", ai_color)
+                            end
+                            if force_value > 0 then
+                                broadcastToAll("AI " .. faction .. " has earned " .. force_value .. " Force from it's " .. attack_string .. " of " .. attack_card.getName() .. ".", ai_color)
+                                if is_bottom then
+                                    for i = 1, force_value do move_force_track(button_empire_force, "Blue", _) end
+                                else
+                                    for i = 1, force_value do move_force_track(button_rebel_force, "Red", _) end
+                                end
+                            end
+
+                            end, ai_speed)
+
+                            end, ai_speed)
+                        end
+                    end
+                end
+            end
+        end
+        -- print("row_attack_made: " .. tostring(row_attack_made))
+        if not row_attack_made then
+            broadcastToAll("No " .. attack_string .. " was made.", ai_color)
+        end
+    elseif not leader_found and not is_bottom then -- check for luke ability
+        for i = 1, #play_zones do
+            for k, v in pairs(play_zones[i].getObjects()) do
+                if v.getGUID() == "5f007b" then
+                    local ship = check_ships(faction, opponent_is_ai)
+                    if ship ~= nil then
+                        ship.call('set_val', 10)
+                        ship.call('add_subtract')
+                        broadcastToAll("AI Rebels have used Luke Skywalker ability to destroy " .. ship.getName(), "Red")
+                    end
+                end
+            end
+        end
+    end
+
+    end, ai_speed)
+
+    Wait.time(function()
+
+    for i = 1, 7 do
+        for k, v in pairs(play_zones[i].getObjects()) do
+            local rotation = v.getRotation()
+            if v.tag == "Card" and rotation.z > -1 and rotation.z < 1 then
+                if v.getVar('fight') > 0 then
+                    table.insert(base_attack_cards, v)
+                    local current_fight = v.getVar('fight')
+                    if buff_vader and v == getObjectFromGUID("9c5c40") then
+                        current_fight = 10
+                    end
+                    if buff_stormtroopers and (v == getObjectFromGUID("d7f87f") or v == getObjectFromGUID("8e59cd")) then
+                        current_fight = 3
+                    end
+                    table.insert(base_attack_values, current_fight)
+                end
+            end
+        end
+    end
+    for i = 1, 12 do
+        for k, v in pairs(play_ship_zones[i].getObjects()) do
+            local rotation = v.getRotation()
+            if v.hasTag('ship') and rotation.z > 319 and rotation.z < 321 then
+                if v.getVar('fight') > 0 then
+                    table.insert(base_attack_cards, v)
+                    table.insert(base_attack_values, v.getVar('fight'))
+                    total_attack_value = total_attack_value + v.getVar('fight')
+                end
+            end
+        end
+    end
+
+    total_attack_value = 0
+    for k, v in pairs(base_attack_cards) do
+        if (v == getObjectFromGUID("d7f87f") or v == getObjectFromGUID("8e59cd")) and buff_stormtroopers then -- troopers
+            broadcastToAll("Base Attack Card: " .. v.getName() .. " - 3 " .. " damage.", ai_color)
+            total_attack_value = total_attack_value + 3
+        elseif v == getObjectFromGUID("9c5c40") and buff_vader then -- vader
+            broadcastToAll("Base Attack Card: " .. v.getName() .. " - 10 " .. " damage.", ai_color)
+            total_attack_value = total_attack_value + 10
+        else
+            broadcastToAll("Base Attack Card: " .. v.getName() .. " - " .. v.getVar('fight') .. " damage.", ai_color)
+            total_attack_value = total_attack_value + v.getVar('fight')
+        end
+
+        v.highlightOn(ai_color)
+        Wait.time(function()
+        v.highlightOff()
+        if v.hasTag('unit') then
+            v.setRotationSmooth(rot_facedown, false, false)
+        elseif v.hasTag('ship') then
+            v.setRotationSmooth(rot_ship_facedown, false, false)
+        end
+        end, ai_speed)
+    end
+
+    if total_attack_value > 0 then
+        broadcastToAll("AI " .. faction .. " Total Base Attack Value: " .. total_attack_value, ai_color)
+    end
+
+    local wait_timer = 0
+    for i = 1, total_attack_value do
+        Wait.time(function()
+        local ship = check_ships(faction, opponent_is_ai)
+        if ship ~= nil then
+            ship.call('add_subtract')
+        else
+            base_damage_counter.call('add_subtract')
+        end
+        wait_timer = wait_timer + .25
+        end, wait_timer)
+    end
+
+    end, ai_speed * 2)
+
+    ----- BUFFS TO ACCOUNT FOR -----
+    -- vader +4 if force with Empire
+    -- stormtroopers +1 if Empire has base effect
+
+    ----- after bounty hunt / sabotage, or if leader no longer on board:
+    -- AI groups remaining card values to attack opposing base
+    -- check for opponent capital ships in play and their current hp values
+    -- prioritize damage to lowest hp value opponent ships, all ships then base
+    ----- if next lowest capital ships hp values are tied:
+    -- randomize which ship is next
+
+    -- check for remaining HP value on opponent base
+    -- stop if opponent base is dead or if all attacks have been made
+    Wait.time(function() ai_end_of_turn(faction) end,ai_speed*3.2)
+end -- end ai_attack()
+
+
+-- this function handles the End of Turn step of the AI Turn
+function ai_end_of_turn(faction)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
+    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (is_bottom and {-4.91, 6.16, -18.55} or {4.90, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local current_resources = resource_counter.getVar('val')
+    local progress_to_add = 0
+    local current_progress = check_progress_track(faction)
+    local final_progress = nil
+    local progress_cube = getObjectFromGUID(is_bottom and ai_progress_cube_empire or ai_progress_cube_rebel)
+    local loc_ptrack_1 = (is_bottom and {6.49, 12.42, -25.85} or {-6.49, 12.44, 25.85})
+    local loc_ptrack_2 = (is_bottom and {5.47, 12.42, -25.85} or {-5.48, 12.44, 25.85})
+    local loc_ptrack_3 = (is_bottom and {4.47, 12.42, -25.85} or {-4.48, 12.44, 25.85})
+    local loc_ptrack_4 = (is_bottom and {3.47, 12.42, -25.85} or {-3.47, 12.44, 25.85})
+    local loc_ptrack_5 = (is_bottom and {2.46, 12.42, -25.85} or {-2.44, 12.44, 25.85})
+    local loc_ptrack_6 = (is_bottom and {1.46, 12.42, -25.85} or {-1.45, 12.44, 25.85})
+    local loc_ptrack_7 = (is_bottom and {0.45, 12.42, -25.85} or {-0.44, 12.44, 25.85})
+    local loc_ptrack_8 = (is_bottom and {-0.55, 12.42, -25.85} or {0.58, 12.44, 25.85})
+    local loc_ptrack_9 = (is_bottom and {-1.57, 12.42, -25.85} or {1.58, 12.44, 25.85})
+    local loc_ptrack_10 = (is_bottom and {-2.57, 12.42, -25.85} or {2.58, 12.44, 25.85})
+    local loc_ptrack_11 = (is_bottom and {-3.58, 12.42, -25.85} or {3.58, 12.44, 25.85})
+    local loc_ptrack_12 = (is_bottom and {-4.58, 12.42, -25.85} or {4.59, 12.44, 25.85})
+    local loc_ptrack_13 = (is_bottom and {-5.58, 12.42, -25.85} or {5.60, 12.44, 25.85})
+    local ptrack_locs = {loc_ptrack_1,loc_ptrack_2,loc_ptrack_3,loc_ptrack_4,loc_ptrack_5,loc_ptrack_6,
+    loc_ptrack_7,loc_ptrack_8,loc_ptrack_9,loc_ptrack_10,loc_ptrack_11,loc_ptrack_12,loc_ptrack_13,}
+
+    -- move & resize phase tracker to "6. End of Turn"
+    -- announce Attack step of AI turn
+    broadcastToAll("AI " .. faction .. " is running Step 6 of it's turn: End of Turn.", ai_color)
+    phase_tracker.setScale({2.08, 0.60, 0.41})
+    phase_tracker.setPositionSmooth(loc_phase_tracker, false, false)
+
+    -- return troopers & guardian/inquisitor & leader to muster area face down
+    -- any units besides that get exiled
+    -- gain 1 force for every outer rim pilot exiled
+    Wait.time(function()
+    play_to_muster(faction)
+    -- for k, v in pairs(getObjects()) do
+    --     if v.hasTag(owner_tag) and v.hasTag('ship') then
+    --         local rotation = v.getRotation()
+    --         rotation.z = 320
+    --         v.setRotationSmooth(rotation, false, false)
+    --     end
+    -- end
+    broadcastToAll("AI " .. faction .. " in Play units have been refreshed for End of Turn.", ai_color)
+    end, ai_speed)
+
+    -- check for resource count
+    -- if 0 or 1, move progress cube 1
+    -- otherwise, move progress cube resource count number of spaces
+    -- check progress cube progress, provide rewards if earned
+    ---- shuttles go face up to next open slot in shuttle area
+    ---- guardian/inq go face down to muster
+    ---- non hunted/sabotaged leaders go to muster face up
+    ---- bounter hunter/sabotaged leaders go to muster face down
+    -- return resource cube to 0
+    Wait.time(function()
+    if current_resources < 2 then
+        progress_to_add = 1
+    elseif current_resources > 1 then
+        progress_to_add = current_resources
+    end
+    final_progress = current_progress + progress_to_add
+    if final_progress > 13 then final_progress = 13 end
+    position = ptrack_locs[final_progress]
+    progress_cube.setPositionSmooth(position, false, false)
+    broadcastToAll("AI " .. faction .. "'s Progress Track has increased from slot " .. tostring(current_progress) .. " to slot " .. tostring(final_progress) .. ".", ai_color)
+
+    if current_progress < 3 and final_progress > 2 then -- 3 - Force REBEL/EMPIRE
+        broadcastToAll("AI " .. faction .. " gains +1 Force via Progress Track slot 3.", ai_color)
+        if is_bottom then
+            move_force_track(empire_force_button, "Blue", _)
+        else
+            move_force_track(rebel_force_button, "Red", _)
+        end
+    end
+    if current_progress < 5 and final_progress > 4 then -- 5 - shuttle REBEL / force EMPIRE
+        if is_bottom then
+            broadcastToAll("AI Empire gains +1 Force via Progress Track slot 4.", ai_color)
+            move_force_track(empire_force_button, "Blue", _)
+        else
+            broadcastToAll("AI Rebel gains a shuttle via Progress Track slot 4.", ai_color)
+            ai_add_shuttle(faction)
+        end
+    end
+    if current_progress < 6 and final_progress > 5 then -- 6 - Force REBEL / inquisitor EMPIRE
+        if is_bottom then
+            broadcastToAll("AI Empire adds their Inquisitor to Muster area via Progress Track slot 6.", ai_color)
+            ai_add_special(faction)
+        else
+            broadcastToAll("AI Rebel gains +1 Force via Progress Track slot 6.", ai_color)
+            move_force_track(rebel_force_button, "Red", _)
+        end
+    end
+    if current_progress < 7 and final_progress > 6 then -- 7 - guardian REBEL / shuttle EMPIRE
+        if is_bottom then
+            broadcastToAll("AI Empire gains a shuttle via Progress Track slot 7.", ai_color)
+            ai_add_shuttle(faction)
+        else
+            broadcastToAll("AI Rebel adds their Temple Guardian to Muster area via Progress Track slot 7.", ai_color)
+            ai_add_special(faction)
+        end
+    end
+    if current_progress < 8 and final_progress > 7 then -- 8 - Force REBEL/EMPIRE
+        broadcastToAll("AI " .. faction .. " gains +1 Force via Progress Track slot 8.", ai_color)
+        if is_bottom then
+            move_force_track(empire_force_button, "Blue", _)
+        else
+            move_force_track(rebel_force_button, "Red", _)
+        end
+    end
+    if current_progress < 12 and final_progress > 11 then -- 12 - Force REBEL
+        if not is_bottom then
+            broadcastToAll("AI Rebel gains +1 Force via Progress Track slot 12.", ai_color)
+            move_force_track(rebel_force_button, "Red", _)
+        end
+    end
+    if current_progress < 13 and final_progress > 12 then -- 13 - Leaders REBEL/EMPIRE
+        broadcastToAll("AI " .. faction .. " gains their Leader via Progress Track slot 13!", ai_color)
+        ai_add_leader(faction)
+    end
+    end, ai_speed*2)
+
+    -- end turn
+    Wait.time(function()
+    phase_tracker.setInvisibleTo({}) -- change back to all_colors
+    resource_counter.call('set_val', 0)
+    broadcastToAll("The AI " .. faction .. " turn has ended.", ai_color)
+
+    local end_turn_button = (is_bottom and button_end_turn_empire or button_end_turn_rebel)
+    end_turn(end_turn_button, ai_color)
+    end, ai_speed*3)
+end -- end ai_end_of_turn()
+
+
+-- this function adds a shuttle to the ai shuttles row
+function ai_add_shuttle(faction)
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local shuttles = (is_bottom and empire_shuttles or rebel_shuttles)
+    local owner_tag = (is_bottom and 'bottom_owner' or 'top_owner')
+    local zone_shuttles = getObjectFromGUID(is_bottom and "91cebb" or "9fa9c1")
+    local shuttle_count = 0
+    local next_shuttle_slot = nil
+    local base_deck = nil
+    local base_deck_zone = getObjectFromGUID(is_bottom and "4d85ec" or "0df73c")
+    local next_shuttle = nil
+    local shuttle_rot = (is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+    local shuttle_locs = (is_bottom and loc_shuttles_empire or loc_shuttles_rebel)
+
+    for k, v in pairs(zone_shuttles.getObjects()) do
+        if v.tag == "Card" and v.hasTag(owner_tag) then
+            shuttle_count = shuttle_count + 1
+        end
+    end
+    next_shuttle_slot = shuttle_count + 1
+    for k, v in pairs(base_deck_zone.getObjects()) do
+        if v.tag == "Deck" then
+            base_deck = v
+        end
+    end
+    next_shuttle = base_deck.takeObject({guid=shuttles[next_shuttle_slot]})
+    next_shuttle.lock()
+    next_shuttle.setRotation(shuttle_rot)
+    next_shuttle.setPosition(shuttle_locs[next_shuttle_slot])
+    next_shuttle.highlightOn(ai_color)
+    Wait.time(function() next_shuttle.highlightOff() end, ai_speed)
+    broadcastToAll("AI " .. faction .. " has gained a shuttle in their Shuttles area.", ai_color)
+end -- end ai_add_shuttle()
+
+
+-- this function adds the ai temple guardian / inquisitor from Reserves to Muster
+function ai_add_special(faction)
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local reserves_deck = nil
+    local zone_reserves_deck = getObjectFromGUID(is_bottom and "4d85ec" or "0df73c")
+    local special_unit_guid = (is_bottom and "118a7e" or "95313f")
+    local special_unit = nil
+    for k, v in pairs(zone_reserves_deck.getObjects()) do
+        if v.tag == "Deck" then
+            reserves_deck = v
+        end
+    end
+    special_unit = reserves_deck.takeObject({guid=special_unit_guid})
+    to_muster(special_unit, faction, "facedown")
+end -- end ai_add_special()
+
+-- this function adds the ai Leader to Muster
+function ai_add_leader(faction)
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local zone_leader = getObjectFromGUID(is_bottom and "383ed0" or "248b87")
+    zone_reserves_deck = getObjectFromGUID(is_bottom and "0df73c" or "4d85ec")
+    local leader_guid = (is_bottom and "9c5c40" or "5f007b")
+    local leader_found = false
+    local leader = nil
+    local ai_decal_button = getObjectFromGUID(is_bottom and decal_button_empire or decal_button_rebel)
+    local ai_attack_button = getObjectFromGUID(is_bottom and attack_ldr_button_empire or attack_ldr_button_rebel)
+    local leader_attacked = false
+    local rot_leader = "faceup"
+    -- first, check if leader is even in slot. if not, return nil out
+    for k, v in pairs(zone_leader.getObjects()) do
+        if v.getGUID() == leader_guid then
+            leader = v
+            leader_found = true
+        end
+    end
+    if not leader_found then
+        -- print("leader not found")
+        return nil
+    end
+
+    if ai_decal_button.getGMNotes() == "marked" then
+        rot_leader = "facedown"
+    end
+    to_muster(leader, faction, rot_leader)
+    -- delete buttons
+    ai_decal_button.destruct()
+    ai_attack_button.destruct()
+end -- end ai_add_leader()
+
+
+-- this function handles the AI opponent galaxy row checks, returns card object
+function check_row(faction, type, check)
+    ----- 2 tyoes: "purchase" or "base_ability" -----
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local zone_1 = getObjectFromGUID("c98289")
+    local zone_2 = getObjectFromGUID("46fd89")
+    local zone_3 = getObjectFromGUID("174e23")
+    local zone_4 = getObjectFromGUID("84fd72")
+    local zone_5 = getObjectFromGUID("d83464")
+    local zone_6 = getObjectFromGUID("c5ef86")
+    local zones = {zone_1,zone_2,zone_3,zone_4,zone_5,zone_6}
+    local opposing_faction_tag = (is_bottom and "rebel" or "empire")
+    local counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local current_resources = counter.getVar('val')
+    local remaining_resources = 0
+    local highest_cost = 0
+    local ship_found = false
+    local current_highest_ship = nil
+    local return_object = false
+    local unit_found = false
+    local current_highst_unit = nil
+    local card_found = false
+    local current_highest_card = nil
+    local outer_rim_pilot = nil
+    local ai_owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
+
+    -- purchase is for buying new cards, checks/uses resources, prioritizes ships then units then 2X OR pilots
+    --if type == "purchase" then    -- important - ELSE return no more purchases available
+    -- increments galaxy row slots backwards so ties closer to deck win
+    if type == "purchase" then
+
+        -- first, check ships
+        for i = 6, 1, -1 do
+            for k, v in pairs(zones[i].getObjects()) do
+                if v.hasTag('ship') and v.hasTag(opposing_faction_tag) == false then
+                    if v.getVar('cost') <= tonumber(current_resources) then
+                        if highest_cost > 0 then
+                            if v.getVar('cost') >= highest_cost then
+                                highest_cost = v.getVar('cost')
+                                current_highest_ship = v
+                                ship_found = true
+                            end
+                        else
+                            highest_cost = v.getVar('cost')
+                            current_highest_ship = v
+                            ship_found = true
+                        end
+                    end
+                end
+            end
+        end
+        if ship_found == true then
+            return_object = current_highest_ship
+            if check == true then return return_object end
+            remaining_resources = current_resources - highest_cost
+            counter.call('set_val', remaining_resources)
+            broadcastToAll("AI " .. faction .. " has purchased " .. return_object.getName() .. " for " .. highest_cost .. " resources, ending with " .. remaining_resources .. ".", ai_color)
+            add_tag(ai_owner_tag, return_object)
+            to_muster(return_object, faction, "facedown")
+            return return_object
+        end
+
+        -- if no ships, check for units
+        for i = 6, 1, -1 do
+            for k, v in pairs(zones[i].getObjects()) do
+                if v.hasTag('unit') and v.hasTag(opposing_faction_tag) == false then
+                    if v.getVar('cost') <= tonumber(current_resources) then
+                        if highest_cost > 0 then
+                            if v.getVar('cost') >= highest_cost then
+                                highest_cost = v.getVar('cost')
+                                current_highest_unit = v
+                                unit_found = true
+                            end
+                        else
+                            highest_cost = v.getVar('cost')
+                            current_highest_unit = v
+                            unit_found = true
+                        end
+                    end
+                end
+            end
+        end
+        if unit_found == true then
+            return_object = current_highest_unit
+            if check == true then return return_object end
+            remaining_resources = current_resources - highest_cost
+            counter.call('set_val', remaining_resources)
+            broadcastToAll("AI " .. faction .. " has purchased " .. return_object.getName() .. " for " .. highest_cost .. " resources, ending with " .. remaining_resources .. ".", ai_color)
+            add_tag(ai_owner_tag, return_object)
+            to_muster(return_object, faction, "facedown")
+            return return_object
+        end
+
+        -- if no units, return outer rim pilot
+        if counter.getVar('val') >= 2 then
+            if check == true then
+                if outer_rim_pilot_count < 2 then
+                    return "outer_rim_pilot"
+                elseif outer_rim_pilot_count > 1 then
+                    return "no_purchase"
+                end
+            end
+        else
+            return "no_purchase"
+        end
+
+    -- base_ability is for left abilities, ignores resources, prioritizes only highest cost faction or neutral
+    elseif type == "ability" then
+        for i = 6, 1, -1 do
+            for k, v in pairs(zones[i].getObjects()) do
+                if (v.hasTag('ship') or v.hasTag('unit')) and v.hasTag(opposing_faction_tag) == false then
+                    if v.getVar('cost') >= highest_cost then
+                        highest_cost = v.getVar('cost')
+                        current_highest_card = v
+                        card_found = true
+                    end
+                end
+            end
+        end
+        if card_found then
+            return_object = current_highest_card
+            return return_object
+        elseif not card_found then
+            broadcastToAll("No card found in galaxy row for AI " .. faction .. ".", ai_color)
+        end
+    end
+end -- end check_row()
+
+
+-- this function handles the purchasing of a found card to purchase
+function ai_purchase_card(faction)
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local is_purchase = check_row(faction, "purchase", true)
+    local resources = resource_counter.getVar('val')
+    local new_resources = nil
+    local outer_rim_pilot_deck = nil
+    local zone_outer_rim_pilot_deck = getObjectFromGUID("e59ff7")
+
+    if is_purchase == "no_purchase" then
+        Wait.time(function()
+
+        Wait.time(function() sort_muster(faction) end, ai_speed)
+        Wait.time(function()
+        ai_attack(faction)
+        outer_rim_pilot_count = 0
+        return nil
+        end, ai_speed)
+
+        end,ai_speed)
+    end
+
+    if is_purchase == "outer_rim_pilot" then
+        if resource_counter.getVar('val') >= 2 then
+            for k, v in pairs(zone_outer_rim_pilot_deck.getObjects()) do
+                if v.tag == "Deck" then
+                    outer_rim_pilot_deck = v
+                end
+            end
+            if outer_rim_pilot_count < 2 then
+                outer_rim_pilot = outer_rim_pilot_deck.takeObject()
+                add_tag(ai_owner_tag, outer_rim_pilot)
+                to_muster(outer_rim_pilot, faction, "facedown")
+                resource_counter.call('set_val', resource_counter.getVar('val')-2)
+                broadcastToAll("AI " .. faction .. " has purchased an Outer Rim Pilot for 2 resources, ending with " .. resource_counter.getVar('val') .. ".", ai_color)
+                outer_rim_pilot_count = outer_rim_pilot_count +1
+                Wait.time(function() ai_purchase_card(faction) end, ai_speed)
+            end
+            if outer_rim_pilot_count > 1 then
+                broadcastToAll("AI has purchased too many Outer Rim Pilots this turn, no more will be purchased.", ai_color)
+                Wait.time(function() ai_attack(faction) end, ai_speed)
+            end
+        end
+    elseif type(is_purchase) ~= "string" then
+        Wait.time(function() check_row(faction, "purchase", false) end, ai_speed)
+        Wait.time(function() ai_purchase_card(faction) end, ai_speed*2)
+    end
+end -- end ai_purchase_card()
+
+
+-- this function takes a card and moves it to the next available muster slot
+function to_muster(object, faction, rotation)
+
+    local is_bottom = (faction == "Empire")
+    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    local muster_zones = {
+        zone_muster_1,
+        zone_muster_2,
+        zone_muster_3,
+        zone_muster_4,
+        zone_muster_5,
+        zone_muster_6,
+        zone_muster_7,
+        zone_muster_8,
+        zone_muster_9,
+        zone_muster_10,
+        zone_muster_11,
+        zone_muster_12,
+        zone_muster_13,
+        zone_muster_14,
+    }
+    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    local muster_locs = {
+        loc_muster_1,
+        loc_muster_2,
+        loc_muster_3,
+        loc_muster_4,
+        loc_muster_5,
+        loc_muster_6,
+        loc_muster_7,
+        loc_muster_8,
+        loc_muster_9,
+        loc_muster_10,
+        loc_muster_11,
+        loc_muster_12,
+        loc_muster_13,
+        loc_muster_14,
+    }
+    local slot = nil
+    local rot_faceup = (is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+    local rot_facedown = (is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+    local object_rotation = nil
+    if rotation == "faceup" then object_rotation = rot_faceup end
+    if rotation == "facedown" then object_rotation = rot_facedown end
+    for i = 1, 14 do
+        local card_found = false
+        for k, v in pairs(muster_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                card_found = true
+                slot = i
+            end
+        end
+    end
+    if not card_found then
+        if slot == nil then
+            slot = 0
+        end
+        object.lock()
+        object.setRotation(object_rotation)
+        object.setPositionSmooth(muster_locs[slot+1])
+        Wait.time(function() draw_galaxy_card(_, _, _) end, 1)
+    end
+end -- end to_muster()
+
+
+-- this function applies damage to a base
+function apply_base_damage(faction, amount)
+
+    local is_bottom = (faction == "Empire")
+    local ai_opposing_counter = getObjectFromGUID(is_bottom and ai_base_damage_counter_rebel or ai_base_damage_counter_empire)
+    local player_opposing_counter = getObjectFromGUID(is_bottom and "7e15f6" or "fa055e")
+    local opposing_counter = nil
+    local base_zone = nil
+    local base_value = 9999
+    local owner_tag = nil
+    local base_card = nil
+
+    if is_bottom then
+
+        owner_tag = "empire_base"
+        if getObjectFromGUID(ai_backdrop_empire) ~= nil then
+            opposing_counter = ai_opposing_counter
+            base_zone = getObjectFromGUID("79222b")
+        else
+            opposing_counter = player_opposing_counter
+            base_zone = getObjectFromGUID("59b7ad")
+        end
+
+    else
+
+        owner_tag = "rebel_base"
+        if getObjectFromGUID(ai_backdrop_rebel) ~= nil then
+            opposing_counter = ai_opposing_counter
+            base_zone = getObjectFromGUID("7a0285")
+        else
+            opposing_counter = player_opposing_counter
+            base_zone = getObjectFromGUID("23b5a3")
+        end
+    end
+
+    local start_damage = opposing_counter.getVar('val')
+    local end_damage = amount + start_damage
+    if amount > 0 then
+        broadcastToAll("AI " .. faction .. "has dealt " .. amount .. " to the Rebellion base, bringing it from " .. start_damage .. " damage to " .. end_damage .. " damage.", "Blue")
+    end
+    opposing_counter.call('set_val', end_damage-1)
+    opposing_counter.call('add_subtract')
+    for k, v in pairs(base_zone.getObjects()) do
+        if v.hasTag(owner_tag) and v.tag == "Card" then
+            base_card = v
+            print("base card GUID: " .. v.getGUID())
+            base_value = base_card.getVar('max_hp')
+        end
+    end
+    if end_damage >= base_value then
+        local rotation = base_card.getRotation()
+        rotation.z = 180
+        base_card.setRotationSmooth(rotation, false, false)
+    end
+end -- end apply_base_damage()
+
+
+-- this function handles the process of moving faceup muster cards to play,
+-- and flipping facedown cards in muster faceup
+function muster_to_play(faction)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+
+    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    muster_zones = {
+        zone_muster_1,
+        zone_muster_2,
+        zone_muster_3,
+        zone_muster_4,
+        zone_muster_5,
+        zone_muster_6,
+        zone_muster_7,
+        zone_muster_8,
+        zone_muster_9,
+        zone_muster_10,
+        zone_muster_11,
+        zone_muster_12,
+        zone_muster_13,
+        zone_muster_14,
+    }
+    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    play_zones = {
+        zone_play_unit_1,
+        zone_play_unit_2,
+        zone_play_unit_3,
+        zone_play_unit_4,
+        zone_play_unit_5,
+        zone_play_unit_6,
+        zone_play_unit_7,
+    }
+    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    play_ship_zones = {
+        zone_play_ship_1,
+        zone_play_ship_2,
+        zone_play_ship_3,
+        zone_play_ship_4,
+        zone_play_ship_5,
+        zone_play_ship_6,
+        zone_play_ship_7,
+        zone_play_ship_8,
+        zone_play_ship_9,
+        zone_play_ship_10,
+        zone_play_ship_11,
+        zone_play_ship_12,
+    }
+
+    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    muster_locs = {
+        loc_muster_1,
+        loc_muster_2,
+        loc_muster_3,
+        loc_muster_4,
+        loc_muster_5,
+        loc_muster_6,
+        loc_muster_7,
+        loc_muster_8,
+        loc_muster_9,
+        loc_muster_10,
+        loc_muster_11,
+        loc_muster_12,
+        loc_muster_13,
+        loc_muster_14,
+    }
+    local loc_play_unit_1 = (is_bottom and loc_play_empire_1 or loc_play_rebel_1)
+    local loc_play_unit_2 = (is_bottom and loc_play_empire_2 or loc_play_rebel_2)
+    local loc_play_unit_3 = (is_bottom and loc_play_empire_3 or loc_play_rebel_3)
+    local loc_play_unit_4 = (is_bottom and loc_play_empire_4 or loc_play_rebel_4)
+    local loc_play_unit_5 = (is_bottom and loc_play_empire_5 or loc_play_rebel_5)
+    local loc_play_unit_6 = (is_bottom and loc_play_empire_6 or loc_play_rebel_6)
+    local loc_play_unit_7 = (is_bottom and loc_play_empire_7 or loc_play_rebel_7)
+    play_locs = {
+        loc_play_unit_1,
+        loc_play_unit_2,
+        loc_play_unit_3,
+        loc_play_unit_4,
+        loc_play_unit_5,
+        loc_play_unit_6,
+        loc_play_unit_7,
+    }
+    local loc_play_ship_1 = (is_bottom and loc_play_ship_empire_1 or loc_play_ship_rebel_1)
+    local loc_play_ship_2 = (is_bottom and loc_play_ship_empire_2 or loc_play_ship_rebel_2)
+    local loc_play_ship_3 = (is_bottom and loc_play_ship_empire_3 or loc_play_ship_rebel_3)
+    local loc_play_ship_4 = (is_bottom and loc_play_ship_empire_4 or loc_play_ship_rebel_4)
+    local loc_play_ship_5 = (is_bottom and loc_play_ship_empire_5 or loc_play_ship_rebel_5)
+    local loc_play_ship_6 = (is_bottom and loc_play_ship_empire_6 or loc_play_ship_rebel_6)
+    local loc_play_ship_7 = (is_bottom and loc_play_ship_empire_7 or loc_play_ship_rebel_7)
+    local loc_play_ship_8 = (is_bottom and loc_play_ship_empire_8 or loc_play_ship_rebel_8)
+    local loc_play_ship_9 = (is_bottom and loc_play_ship_empire_9 or loc_play_ship_rebel_9)
+    local loc_play_ship_10 = (is_bottom and loc_play_ship_empire_10 or loc_play_ship_rebel_10)
+    local loc_play_ship_11 = (is_bottom and loc_play_ship_empire_11 or loc_play_ship_rebel_11)
+    local loc_play_ship_12 = (is_bottom and loc_play_ship_empire_12 or loc_play_ship_rebel_12)
+    play_ship_locs = {
+        loc_play_ship_1,
+        loc_play_ship_2,
+        loc_play_ship_3,
+        loc_play_ship_4,
+        loc_play_ship_5,
+        loc_play_ship_6,
+        loc_play_ship_7,
+        loc_play_ship_8,
+        loc_play_ship_9,
+        loc_play_ship_10,
+        loc_play_ship_11,
+        loc_play_ship_12,
+    }
+    -- get faceup cards in muster area, move them to the play area
+    -- get facedown cards, flip them faceup
+    local muster_faceup_cards = {}
+    local muster_facedown_cards = {}
+    for i = 1, 14 do
+        for k, v in pairs(muster_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                local rotation = v.getRotation()
+                if rotation.z > -1 and rotation.z < 1 then
+                    table.insert(muster_faceup_cards, v)
+                end
+                if rotation.z > 179 and rotation.z < 181 then
+                    table.insert(muster_facedown_cards, v)
+                end
+            end
+        end
+    end
+    -- get count and type of faceup units to stage
+
+    local units = {}
+    local ships = {}
+    for k, v in pairs(muster_faceup_cards) do
+        if v.hasTag('unit') then
+            table.insert(units, v)
+        end
+        if v.hasTag('ship') then
+            table.insert(ships, v)
+        end
+    end
+    -- get next free slot in play area
+    local next_free_play_slot = nil
+    for i = 1, 7 do
+        local play_card_found = false
+        for k, v in pairs(play_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                play_card_found = true
+            end
+        end
+        if play_card_found == false then next_free_play_slot = i break end
+    end
+    -- get next free slot in play ship area
+    local next_free_ship_slot = nil
+    for i = 1, 12 do
+        local ship_card_found = false
+        for k, v in pairs(play_ship_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                ship_card_found = true
+            end
+        end
+        if ship_card_found == false then next_free_ship_slot = i break end
+    end
+    -- move faceup units, ships to next available slots in respective play areas
+    broadcastToAll("AI " .. faction .. " moves their faceup units in their Muster area to their play area, and flips facedown Muster units faceup.", ai_color)
+    if #units > 0 then
+        for i = 1, #units do
+            units[i].setRotation(is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+            units[i].setPositionSmooth(play_locs[next_free_play_slot])
+            next_free_play_slot = next_free_play_slot +1
+        end
+    end
+
+    if #ships > 0 then
+        for i = 1, #ships do
+            ships[i].setRotation(is_bottom and rot_ship_faceup_empire or rot_ship_faceup_rebel)
+            ships[i].setPositionSmooth(play_ship_locs[next_free_ship_slot])
+            next_free_ship_slot = next_free_ship_slot +1
+        end
+    end
+    -- flip facedown cards faceup
+    for i = 1, #muster_facedown_cards do
+        muster_facedown_cards[i].setRotationSmooth(is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel, false, false)
+    end
+
+    ----- run muster row cleanup function (maybe)
+    Wait.time(function()
+    sort_muster(faction)
+    end,ai_speed)
+end -- end muster_to_play()
+
+
+-- this function handles the process of exiling spent AI units and returning troopers/inquisitors etc
+function play_to_muster(faction)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+
+    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    muster_zones = {
+        zone_muster_1,
+        zone_muster_2,
+        zone_muster_3,
+        zone_muster_4,
+        zone_muster_5,
+        zone_muster_6,
+        zone_muster_7,
+        zone_muster_8,
+        zone_muster_9,
+        zone_muster_10,
+        zone_muster_11,
+        zone_muster_12,
+        zone_muster_13,
+        zone_muster_14,
+    }
+    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    play_zones = {
+        zone_play_unit_1,
+        zone_play_unit_2,
+        zone_play_unit_3,
+        zone_play_unit_4,
+        zone_play_unit_5,
+        zone_play_unit_6,
+        zone_play_unit_7,
+    }
+
+    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    muster_locs = {
+        loc_muster_1,
+        loc_muster_2,
+        loc_muster_3,
+        loc_muster_4,
+        loc_muster_5,
+        loc_muster_6,
+        loc_muster_7,
+        loc_muster_8,
+        loc_muster_9,
+        loc_muster_10,
+        loc_muster_11,
+        loc_muster_12,
+        loc_muster_13,
+        loc_muster_14,
+    }
+    local units = {}
+    local next_free_muster_slot = nil
+    local cards_exiled = false
+    local ai_owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
+
+    for i = 1, 7 do
+        for k, v in pairs(play_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                if (v.getGUID() == "e53f87" or v.getGUID() == "5aec1f" or v.getGUID() == "95313f" or v.getGUID() == "5f007b" or
+                v.getGUID() == "d7f87f" or v.getGUID() == "8e59cd" or v.getGUID() == "118a7e") or v.getGUID() == "9c5c40" then
+                    table.insert(units, v)
+                    break
+                else
+                    add_tag(ai_owner_tag, v)
+                    v.call('exile_card', ai_color)
+                    cards_exiled = true
+                end
+            end
+        end
+    end
+
+    for i = 1, 14 do
+        local card_found = false
+        for k, v in pairs(muster_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                card_found = true
+            end
+        end
+        if not card_found then
+            next_free_muster_slot = i
+            break
+        end
+    end
+    if #units > 0 then
+        for i = 1, #units do
+            units[i].setRotation(is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+            units[i].setPositionSmooth(muster_locs[next_free_muster_slot])
+            next_free_muster_slot = next_free_muster_slot +1
+        end
+    end
+end -- end play_to_muster()
+
+
+-- this function re-orders the muster row after begin turn (maybe) and purchase (definitely) steps
+function sort_muster(faction)
+
+    local is_bottom = (faction == "Empire")
+
+    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    muster_zones = {
+        zone_muster_1,
+        zone_muster_2,
+        zone_muster_3,
+        zone_muster_4,
+        zone_muster_5,
+        zone_muster_6,
+        zone_muster_7,
+        zone_muster_8,
+        zone_muster_9,
+        zone_muster_10,
+        zone_muster_11,
+        zone_muster_12,
+        zone_muster_13,
+        zone_muster_14,
+    }
+    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    muster_locs = {
+        loc_muster_1,
+        loc_muster_2,
+        loc_muster_3,
+        loc_muster_4,
+        loc_muster_5,
+        loc_muster_6,
+        loc_muster_7,
+        loc_muster_8,
+        loc_muster_9,
+        loc_muster_10,
+        loc_muster_11,
+        loc_muster_12,
+        loc_muster_13,
+        loc_muster_14,
+    }
+    local muster_faceup_cards = {}
+    local muster_facedown_cards = {}
+    for i = 1, 14 do
+        for k, v in pairs(muster_zones[i].getObjects()) do
+            if v.tag == "Card" then
+                local rotation = v.getRotation()
+                if rotation.z > -1 and rotation.z < 1 then
+                    table.insert(muster_faceup_cards, v)
+                end
+                if rotation.z > 179 and rotation.z < 181 then
+                    table.insert(muster_facedown_cards, v)
+                end
+            end
+        end
+    end
+    local units = {}
+    local ships = {}
+    local facedown = {}
+    for k, v in pairs(muster_faceup_cards) do
+        if v.hasTag('unit') then
+            table.insert(units, v)
+        end
+        if v.hasTag('ship') then
+            table.insert(ships, v)
+        end
+    end
+    for k, v in pairs(muster_facedown_cards) do
+        table.insert(facedown, v)
+    end
+    local next_free_muster_slot = 1
+
+    if #units > 0 then
+        for i = 1, #units do
+            units[i].setPositionSmooth(muster_locs[next_free_muster_slot])
+            next_free_muster_slot = next_free_muster_slot +1
+        end
+    end
+    if #ships > 0 then
+        for i = 1, #ships do
+            ships[i].setPositionSmooth(muster_locs[next_free_muster_slot])
+            next_free_muster_slot = next_free_muster_slot +1
+        end
+    end
+    if #facedown > 0 then
+        for i = 1, #facedown do
+            facedown[i].setPositionSmooth(muster_locs[next_free_muster_slot])
+            next_free_muster_slot = next_free_muster_slot +1
+        end
+    end
+end -- end sort_muster()
+
+
+-- this function takes in faction & resource count, and updates the resource counter/cubes for ai faction
+function add_ai_resources(faction, amount)
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (is_bottom and {3.46, 6.16, -18.55} or {-3.46, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local start_amount = resource_counter.getVar('val')
+    local wait_timer = 0
+    broadcastToAll("AI " .. faction .. ", starting with " .. start_amount .. ", gains " .. amount .. " resources to end with " .. start_amount + amount .. ".", ai_color)
+    Wait.time(function()
+    for i = 1, amount do
+        local current_counter_value = resource_counter.getVar('val')
+        current_counter_value = current_counter_value + 1
+        resource_counter.call('set_val', current_counter_value)
+        wait_timer = wait_timer + .5
+    end
+    end, wait_timer)
+end -- end add_ai_resources()
+
+
+-- this helper function simply checks for and returns slot number of the progress track cube
+function check_progress_track(faction)
+
+    local is_bottom = (faction == "Empire")
+    local progress_cube = getObjectFromGUID(is_bottom and ai_progress_cube_empire or ai_progress_cube_rebel)
+    local position = progress_cube.getPosition()
+
+    local loc_ptrack_1 = (is_bottom and {6.49, 12.42, -25.85} or {-6.49, 12.44, 25.85})
+    local loc_ptrack_2 = (is_bottom and {5.47, 12.42, -25.85} or {-5.48, 12.44, 25.85})
+    local loc_ptrack_3 = (is_bottom and {4.47, 12.42, -25.85} or {-4.48, 12.44, 25.85})
+    local loc_ptrack_4 = (is_bottom and {3.47, 12.42, -25.85} or {-3.47, 12.44, 25.85})
+    local loc_ptrack_5 = (is_bottom and {2.46, 12.42, -25.85} or {-2.44, 12.44, 25.85})
+    local loc_ptrack_6 = (is_bottom and {1.46, 12.42, -25.85} or {-1.45, 12.44, 25.85})
+    local loc_ptrack_7 = (is_bottom and {0.45, 12.42, -25.85} or {-0.44, 12.44, 25.85})
+    local loc_ptrack_8 = (is_bottom and {-0.55, 12.42, -25.85} or {0.58, 12.44, 25.85})
+    local loc_ptrack_9 = (is_bottom and {-1.57, 12.42, -25.85} or {1.58, 12.44, 25.85})
+    local loc_ptrack_10 = (is_bottom and {-2.57, 12.42, -25.85} or {2.58, 12.44, 25.85})
+    local loc_ptrack_11 = (is_bottom and {-3.58, 12.42, -25.85} or {3.58, 12.44, 25.85})
+    local loc_ptrack_12 = (is_bottom and {-4.58, 12.42, -25.85} or {4.59, 12.44, 25.85})
+    local loc_ptrack_13 = (is_bottom and {-5.58, 12.42, -25.85} or {5.60, 12.44, 25.85})
+
+
+    if position.x > 6 and position.x < 7 then
+        return 1
+    elseif position.x > 5 and position.x < 6 then
+        return (is_bottom and 2 or 13)
+    elseif position.x > 4 and position.x < 5 then
+        return (is_bottom and 3 or 12)
+    elseif position.x > 3 and position.x < 4 then
+        return (is_bottom and 4 or 11)
+    elseif position.x > 2 and position.x < 3 then
+        return (is_bottom and 5 or 10)
+    elseif position.x > 1 and position.x < 2 then
+        return (is_bottom and 6 or 9)
+    elseif position.x > 0 and position.x < 1 then
+        return (is_bottom and 7 or 8)
+    elseif position.x < 0 and position.x > -1 then
+        return (is_bottom and 8 or 7)
+    elseif position.x < -1 and position.x > -2 then
+        return (is_bottom and 9 or 6)
+    elseif position.x < -2 and position.x > -3 then
+        return (is_bottom and 10 or 5)
+    elseif position.x < -3 and position.x > -4 then
+        return (is_bottom and 11 or 4)
+    elseif position.x < -4 and position.x > -5 then
+        return (is_bottom and 12 or 3)
+    elseif position.x < -5 and position.x > -6 then
+        return (is_bottom and 13 or 2)
+    elseif position.x < -6 and position.x > -7 then
+        return 1
+    end
+end -- end check_progress_track()
+
+
+-- this function checks the galaxy row and determines the best target for a bounty hunt or sabotage
+function check_attack_row(faction, attack_value)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+
+    local zone_1 = getObjectFromGUID("c98289")
+    local zone_2 = getObjectFromGUID("46fd89")
+    local zone_3 = getObjectFromGUID("174e23")
+    local zone_4 = getObjectFromGUID("84fd72")
+    local zone_5 = getObjectFromGUID("d83464")
+    local zone_6 = getObjectFromGUID("c5ef86")
+    local zones = {zone_1,zone_2,zone_3,zone_4,zone_5,zone_6}
+    local max_hp = 0
+    local highest_card = nil
+    local highest_resource_value = 0
+    local highest_force_value = 0
+
+    local force_tracker = getObjectFromGUID("74b511")
+    local force_position = force_tracker.getPosition()
+    local empire_force = false
+    local rebel_force = false
+    if force_position.z < -7.5 and force_position.z > -9.5 then
+        empire_force = true
+    elseif force_position.z < 7.5 and force_position.z > 9.5 then
+        rebel_force = true
+    end
+
+    -- prioritize targets by resources gained on kill first, ties closest to galaxy deck
+    -- if no targets that give resources, check if force is all the way to AI
+    -- if not, next prioritize targets by force gained on kill
+    -- ignore targets that do not grant force or resources or exile on kill
+
+    for i = 6, 1, -1 do
+        for k, v in pairs(zones[i].getObjects()) do
+            if not is_bottom then
+            -- 4 resource cards
+                if (v.getGUID() == "8d331f" or v.getGUID() == "06fa36" or -- landing craft
+                v.getGUID() == "9c5c40") and highest_resource_value <= 4 then -- vader
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_resource_value = 4
+                        if v.getGUID() == "9c5c40" then -- vader
+                            highest_force_value = 4
+                        end
+                    end
+            -- 3 resource cards
+                elseif (v.getGUID() == "fe6395" or v.getGUID() == "31ad1b" or -- tie interceptor
+                v.getGUID() == "85218c" or -- moff jerjerrod
+                v.getGUID() == "63082d" or -- boba fett
+                v.getGUID() == "1dbee0" or -- director krennic
+                v.getGUID() == "e056dd") and highest_resource_value <= 3 then -- grand moff tarkin
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_resource_value = 3
+                        if v.getGUID() == "63082d" or v.getGUID() == "1dbee0" then -- boba fett, director_krennic
+                            highest_force_value = 2
+                        elseif v.getGUID() == "e056dd" then -- grand moff tarkin
+                            highest_force_value = 3
+                        end
+                    end
+            -- 1 resource cards (tie fighters)
+                elseif (v.getGUID() == "78b0cb" or v.getGUID() == "3a24c6" or v.getGUID() == "71e30d") and highest_resource_value <= 1 then
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_resource_value = 1
+                    end
+            -- 3 force cards
+                elseif (v.getGUID() == "0125a8" or -- general veers
+                v.getGUID() == "85218c") and highest_force_value <= 3 and not rebel_force then -- moff jerjerrod
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_force_value = 3
+                    end
+            -- 2 force cards
+                elseif (v.getGUID() == "139064" or v.getGUID() == "e1e42d") and highest_force_value <= 2 and not rebel_force then -- death trooper
+                    max_hp = v.getVar('cost')
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_force_value = 2
+                    end
+            -- 1 force cards
+                elseif v.getGUID() == "5f0bde" and highest_force_value <= 1 and not rebel_force then -- admiral piett
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_force_value = 1
+                    end
+                end
+
+            else
+
+            -- 4 resource cards
+                if (v.getGUID() == "c7b579" or v.getGUID() == "0214bb" or -- u-wing
+                v.getGUID() == "5f007b") and highest_resource_value <= 4 then -- luke
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_resource_value = 4
+                        if v.getGUID() == "5f007b" then -- luke
+                            highest_force_value = 4
+                        end
+                    end
+            -- 3 resource cards
+                elseif (v.getGUID() == "6e368a" or v.getGUID() == "e5f84f" or v.getGUID() == "e23eeb" or -- x-wing
+                            v.getGUID() == "83c0f4" or -- cassian andor
+                            v.getGUID() == "ad8e53" or -- han solo
+                            v.getGUID() == "4bea84") and -- leia
+                            highest_resource_value <= 3 then
+                            max_hp = v.getVar('cost')
+                            print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                            if attack_value >= max_hp then
+                                highest_card = v
+                                highest_resource_value = 3
+                                if v.getGUID() == "83c0f4" or v.getGUID() == "ad8e53" then -- andor, solo
+                                    highest_force_value = 2
+                                elseif v.getGUID() == "4bea84" then -- leia
+                                    highest_force_value = 3
+                                end
+                            end
+            -- 1 resource cards
+                elseif (v.getGUID() == "7a0a7a" or v.getGUID() == "86c063") and highest_resource_value <= 1 then -- y-wing
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_resource_value = 1
+                    end
+            -- 3 force cards
+                elseif (v.getGUID() == "4bea84" or -- leia
+                v.getGUID() == "7e53f1" or -- chewbacca
+                v.getGUID() == "9ce7a9") and highest_force_value <= 3 and not rebel_force then -- jyn erso
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_force_value = 3
+                    end
+            -- 2 force cards
+                elseif (v.getGUID() == "fc6abe" or -- chirrut imwe
+                v.getGUID() == "cc5695" or v.getGUID() == "ac8820") and highest_force_value <= 2 and not rebel_force then -- rebel commando
+                    max_hp = v.getVar('cost')
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_force_value = 2
+                    end
+            -- 1 force cards
+                elseif v.getGUID() == "1c5fa0" and highest_force_value <= 1 and not rebel_force then -- baze malbus
+                    max_hp = v.getVar('cost')
+                    print("Max HP of " .. v.getName() .. ": " .. max_hp)
+                    if attack_value >= max_hp then
+                        highest_card = v
+                        highest_force_value = 1
+                    end
+                end
+            end
+        end
+    end
+
+    if highest_card ~= nil then
+        print("Return Card to be attacked: " .. highest_card.getName())
+        return highest_card, highest_resource_value, highest_force_value
+    else
+        return "no_attack"
+    end
+end -- end check_attack_row()
+
+
+-- this function does the heavy lifting of determining efficient row bounty hunt / sabotage
+function find_most_efficient_combination(numbers, target)
+
+    local function find_combination_helper(numbers, target, index, current_combination, current_sum, best_combination, best_diff)
+
+        if current_sum >= target then
+            local diff = current_sum - target
+            if best_diff == nil or diff < best_diff then
+                best_combination = {table.unpack(current_combination)}
+                best_diff = diff
+            end
+            return best_combination, best_diff
+        end
+
+        for i = index, #numbers do
+            local number = numbers[i]
+
+            table.insert(current_combination, number)
+            current_sum = current_sum + number
+
+            best_combination, best_diff = find_combination_helper(numbers, target, i + 1, current_combination, current_sum, best_combination, best_diff)
+
+            table.remove(current_combination)
+            current_sum = current_sum - number
+        end
+
+        return best_combination, best_diff
+    end
+
+    local index = 1
+    local current_combination = {}
+    local current_sum = 0
+    local best_combination = nil
+    local best_diff = nil
+
+    best_combination, best_diff = find_combination_helper(numbers, target, index, current_combination, current_sum, best_combination, best_diff)
+
+    return best_combination
+end -- end find_most_efficient_combination()
+
+
+-- this function checks for opponent ships, and returns a table of ships to select which to damage next
+function check_ships(faction, opponent_is_ai)
+
+    local is_bottom = (faction == "Empire")
+    local ai_color = (is_bottom and "Blue" or "Red")
+    local opponent_is_ai = getObjectFromGUID(is_bottom and ai_backdrop_rebel or ai_backdrop_empire)
+    local opponent_tag = ""
+    if opponent_is_ai then
+        opponent_tag = (is_bottom and "ai_top_owner" or "ai_bottom_owner")
+    else
+        opponent_tag = (is_bottom and "top_owner" or "bottom_owner")
+    end
+    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    play_ship_zones = {
+        zone_play_ship_1,
+        zone_play_ship_2,
+        zone_play_ship_3,
+        zone_play_ship_4,
+        zone_play_ship_5,
+        zone_play_ship_6,
+        zone_play_ship_7,
+        zone_play_ship_8,
+        zone_play_ship_9,
+        zone_play_ship_10,
+        zone_play_ship_11,
+        zone_play_ship_12,
+    }
+    local checkzone = getObjectFromGUID("0cdb1a")
+    local ships_in_zone = {}
+    local remaining_ships_hp = {}
+
+    if not opponent_is_ai then
+        for k, v in pairs(checkzone.getObjects()) do
+            if v.hasTag('ship') and v.hasTag(opponent_tag) then
+                local max_hp = v.getVar('MAX_VALUE')
+                local damage_taken = v.getVar('val')
+                local hp_left = max_hp - damage_taken
+                table.insert(ships_in_zone, v)
+                table.insert(remaining_ships_hp, hp_left)
+            end
+        end
+    else
+        for i = 1, 12 do
+            for k, v in pairs(play_ship_zones[i].getObjects()) do
+                if v.hasTag('ship') and v.hasTag(opponent_tag) then
+                    local max_hp = v.getVar('MAX_VALUE')
+                    local damage_taken = v.getVar('val')
+                    local hp_left = max_hp - damage_taken
+                    table.insert(ships_in_zone, v)
+                    table.insert(remaining_ships_hp, hp_left)
+                end
+            end
+        end
+    end
+
+    -- debug
+    -- for k, v in pairs(ships_in_zone) do
+        -- print(v.getName() .. " : " .. remaining_ships_hp[k])
+    -- end
+
+    local return_ship = select_next_ship(ships_in_zone, remaining_ships_hp)
+    return return_ship
+
+end -- end check_ships()
+
+
+-- this function determines and returns the next ship to damage
+function select_next_ship(ships_in_zone, values)
+
+    -- for k, v in pairs(ships_in_zone) do
+    --     print("Key: " .. k .. ", Index: " ..v.getName())
+    -- end
+
+    local lowest = math.huge
+    for _, value in ipairs(values) do
+        if value < lowest then
+            lowest = value
+        end
+    end
+
+    local lowest_ships = {}
+    for k, v in ipairs(values) do
+        if v == lowest then
+            table.insert(lowest_ships, ships_in_zone[k])
+        end
+    end
+
+    if #lowest_ships > 1 then
+        local random_index = math.random(#lowest_ships)
+        return lowest_ships[random_index]
+    else
+        return lowest_ships[1]
+    end
+end

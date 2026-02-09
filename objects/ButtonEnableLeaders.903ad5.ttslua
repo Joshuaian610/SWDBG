@@ -1,0 +1,52 @@
+leaders_rebellion = false
+
+function onLoad()
+    disable_leaders()
+end -- end onLoad()
+
+function remove_buttons()
+    local buttons = self.getButtons()
+    if buttons ~= nil then
+        for i = #buttons, 1, -1 do
+            self.removeButton(buttons[i].index)
+        end
+        table.remove(buttons)
+    end
+end -- end remove_buttons()
+
+
+function enable_leaders()
+    remove_buttons()
+    self.createButton({
+        click_function = 'disable_leaders',
+        function_owner = self,
+        label = '✔',
+        color = {1, 1, 1, .1},
+        hover_color = {1, 1, 1, .3},
+        position = {0,0.21,0},
+        rotation = {0,0,0},
+        width = 1300,
+        height = 1000,
+        font_size = 2500,
+        font_color = {1,1,1,255},
+        tooltip = "This button, if unchecked, will disable the setup of the top player area for the Leaders AI bot, and enable the setup of the top player area for Multiplayer.",
+    })
+    Global.setVar('enable_leaders', true)
+end -- end enable_leaders()
+
+function disable_leaders()
+    remove_buttons()
+    self.createButton({
+        click_function = 'enable_leaders',
+        function_owner = self,
+        label = '',
+        color = {1, 1, 1, .1},
+        hover_color = {1, 1, 1, .3},
+        position = {0,0.21,0},
+        rotation = {0,0,0},
+        width = 1300,
+        height = 1000,
+        tooltip = "This button, if checked, will enable the setup of the top player area for the Leaders AI bot, and disable the setup of the top player area for Multiplayer.",
+    })
+    Global.setVar('enable_leaders', false)
+end -- end disable_leaders()

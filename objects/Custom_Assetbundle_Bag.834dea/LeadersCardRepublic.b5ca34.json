@@ -1,0 +1,234 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "AttachedSnapPoints": [
+    {
+      "Position": {
+        "x": -0.688,
+        "y": 0.451,
+        "z": 0.091
+      }
+    },
+    {
+      "Position": {
+        "x": 0.539,
+        "y": 0.451,
+        "z": 0.238
+      }
+    },
+    {
+      "Position": {
+        "x": 0.54,
+        "y": 0.451,
+        "z": -0.067
+      }
+    },
+    {
+      "Position": {
+        "x": 0.54,
+        "y": 0.451,
+        "z": -0.312
+      }
+    },
+    {
+      "Position": {
+        "x": 0.858,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.665,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.472,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.276,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 0.087,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.109,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.302,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.495,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.691,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -0.883,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": -1.079,
+        "y": 0.451,
+        "z": 0.825
+      }
+    },
+    {
+      "Position": {
+        "x": 1.246,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": 0.995,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": 0.736,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": 0.472,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": 0.216,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": -0.045,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": -0.3,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": -0.561,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": -0.82,
+        "y": 0.451,
+        "z": -0.917
+      }
+    },
+    {
+      "Position": {
+        "x": -1.077,
+        "y": 0.451,
+        "z": -0.917
+      }
+    }
+  ],
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.09398,
+    "g": 0.09998,
+    "r": 0.856
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.450887173,
+      "Type": 0
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667292968466/264A145FE6B78625864895699B5953E5C2EB3970/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667292968466/264A145FE6B78625864895699B5953E5C2EB3970/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "b5ca34",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Leaders Card Republic",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": 103.254,
+    "posY": 19.026,
+    "posZ": 39.156,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 5.2,
+    "scaleY": 1,
+    "scaleZ": 5.2
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

@@ -1,0 +1,104 @@
+<Panel
+    id                = "ability_button_blue"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(9719e5)" image="Exile Blue"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_purple"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(9719e5)" image="Exile Purple"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_red"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(9719e5)" image="Exile Red"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_orange"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(9719e5)" image="Exile Orange"></Button>
+</Panel>
+
+
+<Panel
+    id                = "force_button_blue"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(9719e5)" image="Force Blue"></Button>
+</Panel>
+
+<Panel
+    id                = "force_button_purple"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(9719e5)" image="Force Purple"></Button>
+</Panel>
+
+<Panel
+    id                = "force_button_red"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(9719e5)" image="Force Red"></Button>
+</Panel>
+
+<Panel
+    id                = "force_button_orange"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(9719e5)" image="Force Orange"></Button>
+</Panel>

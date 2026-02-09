@@ -1,0 +1,52 @@
+leaders_empire = false
+
+function onLoad()
+    disable_leaders()
+end -- end onLoad()
+
+function remove_buttons()
+    local buttons = self.getButtons()
+    if buttons ~= nil then
+        for i = #buttons, 1, -1 do
+            self.removeButton(buttons[i].index)
+        end
+        table.remove(buttons)
+    end
+end -- end remove_buttons()
+
+
+function enable_leaders()
+    remove_buttons()
+    self.createButton({
+        click_function = 'disable_leaders',
+        function_owner = self,
+        label = '✔',
+        color = {0.6, 0.78, 0.73, 0.5},
+        hover_color = {0.6, 0.78, 0.73, 0.8},
+        position = {0,0.36,0},
+        rotation = {0,0,0},
+        width = 1300,
+        height = 1000,
+        font_size = 2500,
+        font_color = {1,1,1,255},
+        tooltip = "This button, if checked, will disable this faction's side for human player use, and will enable the Leaders solo mode for this faction on game setup. Checking this button disables Random Factions.",
+    })
+    print("enabled random faction placeholder - move function from global to object")
+end -- end enable_leaders()
+
+function disable_leaders()
+    remove_buttons()
+    self.createButton({
+        click_function = 'enable_leaders',
+        function_owner = self,
+        label = '',
+        color = {0.6, 0.78, 0.73, 0.5},
+        hover_color = {0.6, 0.78, 0.73, 0.8},
+        position = {0,0.36,0},
+        rotation = {0,0,0},
+        width = 1300,
+        height = 1000,
+        tooltip = "This button, if checked, will disable this faction's side for human player use, and will enable the Leaders solo mode for this faction on game setup. Checking this button disables Random Factions.",
+    })
+    print("disabled random faction placeholder - move function from global to object")
+end -- end disable_leaders()

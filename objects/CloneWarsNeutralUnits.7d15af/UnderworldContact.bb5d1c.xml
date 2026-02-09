@@ -1,0 +1,117 @@
+<Panel
+    id                = "ability_button_blue"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bb5d1c)" image="Ability Blue Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_purple"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bb5d1c)" image="Ability Purple Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_red"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bb5d1c)" image="Ability Red Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_orange"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(bb5d1c)" image="Ability Orange Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_cancel"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "0 175 -20"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/cancel_card_action_ui(bb5d1c)" image="Ability Cancel"></Button>
+</Panel>
+
+
+<Panel
+    id                = "force_button_blue"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Blue"></Button>
+</Panel>
+
+<Panel
+    id                = "force_button_purple"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Purple"></Button>
+</Panel>
+
+<Panel
+    id                = "force_button_red"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Red"></Button>
+</Panel>
+
+<Panel
+    id                = "force_button_orange"
+    active            = "false"
+    height            = "35"
+    width             = "35"
+    position          = "40 -43 -30"
+    rotation          = "0 0 180"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Orange"></Button>
+</Panel>

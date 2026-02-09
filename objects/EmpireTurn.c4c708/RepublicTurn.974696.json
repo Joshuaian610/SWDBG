@@ -1,0 +1,61 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.094,
+    "g": 0.1,
+    "r": 0.856
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.2,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939850702/5098275228518DF8DC865366F8FD689659107CDA/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939850702/5098275228518DF8DC865366F8FD689659107CDA/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "974696",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Republic Turn",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable",
+    "turn_tracker"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -46.005,
+    "posY": 0.124,
+    "posZ": -21.005,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 7.24,
+    "scaleY": 1,
+    "scaleZ": 7.24
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

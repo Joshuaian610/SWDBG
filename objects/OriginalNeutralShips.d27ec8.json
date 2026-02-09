@@ -1,0 +1,80 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "C-RocCruiser.170544",
+    "C-RocCruiser.0380fa",
+    "BlockadeRunner.5fa92c",
+    "BlockadeRunner.b2fa3c",
+    "BlockadeRunner.f8ab9e",
+    "Nebulon-BFrigate.150063",
+    "Nebulon-BFrigate.176223"
+  ],
+  "ContainedObjects_path": "OriginalNeutralShips.d27ec8",
+  "CustomDeck": {
+    "128": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129064757972/45D7FCCBA9A8C5DEC85253613B9F21A932A70321/",
+      "NumHeight": 2,
+      "NumWidth": 4,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    12800,
+    12801,
+    12802,
+    12804,
+    12803,
+    12805,
+    12806
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "d27ec8",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Original Neutral Ships",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "neutral",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -13.999,
+    "posY": 0.195,
+    "posZ": 0.001,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

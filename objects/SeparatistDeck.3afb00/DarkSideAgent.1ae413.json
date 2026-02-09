@@ -1,0 +1,93 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 7009,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "70": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094933221970/FAF0257728646389F39D03DDBDDA4D18ACD41813/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Ability Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098020635/CBAC1A3BE3DC97CD70BB5378757A484BFAE07F15/"
+    },
+    {
+      "Name": "Ability Purple",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098022943/EC866655AA1787D09DF2F98006899409E69D0CC5/"
+    },
+    {
+      "Name": "Ability Gold",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098021684/4F63BB5AAB161DB6C1ED62C896AF4050EA7747A7/"
+    },
+    {
+      "Name": "Force Blue",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086174365/A65556DB7C107631AE894811FD3A315B927CBE24/"
+    },
+    {
+      "Name": "Force Purple",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086175592/5E499E4478784CF279356E6F018E52B2283B9E6A/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "1ae413",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "SeparatistDeck.3afb00/DarkSideAgent.1ae413.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Dark Side Agent",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button_sec",
+    "add_force_button",
+    "outcast",
+    "separatist",
+    "separatist_owner",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -7.77,
+    "posY": 0.352,
+    "posZ": -12.5,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 359,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "SeparatistDeck.3afb00/DarkSideAgent.1ae413.xml"
+}

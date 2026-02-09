@@ -1,0 +1,90 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 12806,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "128": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129064757972/45D7FCCBA9A8C5DEC85253613B9F21A932A70321/",
+      "NumHeight": 2,
+      "NumWidth": 4,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Repair Blue Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098674484/36364E4B4080035D8E63D3265601D8561A60D7F0/"
+    },
+    {
+      "Name": "Repair Purple Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098675709/9DAB7260C1D3F7F34F4BC2D3B88CB85E4D90C31E/"
+    },
+    {
+      "Name": "Repair Orange Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098676648/CAF1A0C0C6B55B370759BC190A3DB50FB749BDA1/"
+    },
+    {
+      "Name": "Repair Red Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098677516/5B2A174FFDCC0BCF69F760409D3B2B184F18C6FD/"
+    },
+    {
+      "Name": "Resource Gold Large",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098345554/8C9C31A2B4CC4690F79F86D06A2BEC331305D802/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "176223",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "OriginalNeutralShips.d27ec8/Nebulon-BFrigate.176223.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Nebulon-B Frigate",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button_sec",
+    "neutral",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -14,
+    "posY": 0.258,
+    "posZ": 0,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "OriginalNeutralShips.d27ec8/Nebulon-BFrigate.176223.xml"
+}

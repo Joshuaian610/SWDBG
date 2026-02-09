@@ -1,0 +1,28 @@
+cost           = 2
+produce        = 0
+force          = 0
+fight          = 2
+faction        = "separatist"
+attack_tooltip = 'May Manually Exile 1 Card'
+
+function onLoad()
+    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
+    pad_galaxy_discard = getObjectFromGUID("a03936")
+    pad_outer_rim      = getObjectFromGUID("606e92")
+    self.addContextMenuItem("Exile Card", exile_card)
+end
+
+function exile_card(player_area, position, object)
+    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+end
+
+
+function ability_button_create_ui()
+    pad_galaxy_deck.call('ability_button_create_ui', {card=self})
+end -- end ability_button_create_ui()
+
+
+function bh_create()
+    pad_galaxy_deck.call('bh_create', {card=self, tooltip=attack_tooltip, faction=faction})
+end -- end bh_create()
+

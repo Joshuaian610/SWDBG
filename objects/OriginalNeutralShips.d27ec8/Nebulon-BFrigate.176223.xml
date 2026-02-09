@@ -1,0 +1,64 @@
+<Panel
+    id                = "ability_button_blue"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 -75 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(176223)" image="Repair Blue Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_purple"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 -75 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(176223)" image="Repair Purple Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_red"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 -75 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(176223)" image="Repair Red Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_orange"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 -75 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action(176223)" image="Repair Orange Large"></Button>
+</Panel>
+
+<Panel
+    id                = "ability_button_gold"
+    active            = "false"
+    height            = "40"
+    width             = "150"
+    position          = "133 75 -30"
+    rotation          = "0 0 90"
+    showAnimation     = "Grow"
+    hideAnimation     = "Shrink"
+    animationDuration = ".25">
+    <Button onClick   = "a03936/ui_button_action_sec(176223)" image="Resource Gold Large"></Button>
+</Panel>

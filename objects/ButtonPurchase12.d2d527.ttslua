@@ -1,0 +1,28 @@
+player_area   = "top"
+checkzone     = getObjectFromGUID("174e23")
+
+
+function onLoad()
+    pad_galaxy_deck = getObjectFromGUID("83b3ce")
+    pad_outer_rim   = getObjectFromGUID("606e92")
+    create_button()
+end -- end onLoad()
+
+
+function create_button()
+    self.createButton({
+      click_function = "purchase_card",
+      function_owner = self,
+      label          = "",
+      color          = {0.6, 0.78, 0.73, 0.0},
+      hover_color    = {0.6, 0.78, 0.73, 0.4},
+      position       = {0, 0.2, 0},
+      height         = 750,
+      width          = 2900,
+      tooltip        = "Pressing this button will purchase this card for the clicking player.\n\nRight clicking this button will purchase the card for free.",
+    })
+end
+
+function purchase_card(button, playercolor, alt_click)
+    pad_outer_rim.call('purchase_card', {btn=button, player_color=playercolor, altclick=alt_click, playerarea=player_area})
+end -- end purchase_card()

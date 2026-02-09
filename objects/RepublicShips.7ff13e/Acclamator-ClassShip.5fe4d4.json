@@ -1,0 +1,80 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 12703,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "127": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760129064594737/9692FA7F4A3409188DF76EB31ABDD06D7F7040CF/",
+      "NumHeight": 2,
+      "NumWidth": 3,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "CustomUIAssets": [
+    {
+      "Name": "Ability Red",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086754931/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
+    },
+    {
+      "Name": "Ability Orange",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086753415/7058ECC9C3A8CEB53EC411223B8C11B9EC7B0093/"
+    },
+    {
+      "Name": "Ability Cancel",
+      "Type": 0,
+      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492087450051/E22B9555C97FBDF989BA28A92D56C267120D0728/"
+    }
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "5fe4d4",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "RepublicShips.7ff13e/Acclamator-ClassShip.5fe4d4.ttslua",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Acclamator-Class Ship",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "ability_button",
+    "republic",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 83.49,
+    "posY": 1.985,
+    "posZ": 33.157,
+    "rotX": 0,
+    "rotY": 270,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI_path": "RepublicShips.7ff13e/Acclamator-ClassShip.5fe4d4.xml"
+}
