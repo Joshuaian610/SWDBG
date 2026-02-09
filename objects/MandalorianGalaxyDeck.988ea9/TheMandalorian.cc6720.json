@@ -1,0 +1,64 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 13416,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "134": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/16519766786646648971/6C34651B60D6CB1E8C4C715F3B5A0F9796448724/",
+      "NumHeight": 3,
+      "NumWidth": 6,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "cc6720",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "The Mandalorian",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "bounty_hunter",
+    "mandalorian",
+    "unique",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 41.893,
+    "posY": 0.514,
+    "posZ": -13.015,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 176,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

@@ -29,16 +29,16 @@
       "normalized": "ship"
     },
     {
-      "displayed": "",
-      "normalized": ""
+      "displayed": "mandalorian_base",
+      "normalized": "mandalorian_base"
     },
     {
       "displayed": "to_delete",
       "normalized": "to_delete"
     },
     {
-      "displayed": "bottom_owner",
-      "normalized": "bottom_owner"
+      "displayed": "",
+      "normalized": ""
     },
     {
       "displayed": "rebel_owner",
@@ -69,8 +69,8 @@
       "normalized": "unique"
     },
     {
-      "displayed": "",
-      "normalized": ""
+      "displayed": "mandalorian",
+      "normalized": "mandalorian"
     },
     {
       "displayed": "or_pilot",
@@ -117,8 +117,8 @@
       "normalized": "jedi"
     },
     {
-      "displayed": "",
-      "normalized": ""
+      "displayed": "mandalorian_owner",
+      "normalized": "mandalorian_owner"
     },
     {
       "displayed": "droid",

@@ -1,0 +1,88 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "MandalorianShuttle.7c9111",
+    "MandalorianShuttle.977b4e",
+    "MandalorianShuttle.fb5fe8",
+    "MandalorianShuttle.7c9111",
+    "MandalorianShuttle.a6a56a",
+    "MandalorianShuttle.7c9111",
+    "MandalorianShuttle.ff55a8",
+    "MandalorianSoldier.dab8d2",
+    "MandalorianSoldier.17ceb7",
+    "ChildoftheWatch.575b62"
+  ],
+  "ContainedObjects_path": "MandalorianDeck.660d1f",
+  "CustomDeck": {
+    "140": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/12849929001312559686/89AFA0E6AC30BD02B4BC134FF015AABB3C624E14/",
+      "NumHeight": 2,
+      "NumWidth": 3,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    14000,
+    14000,
+    14000,
+    14000,
+    14000,
+    14000,
+    14000,
+    14001,
+    14001,
+    14002
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "660d1f",
+  "Grid": false,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Mandalorian Deck",
+  "SidewaysCard": false,
+  "Snap": false,
+  "Sticky": true,
+  "Tags": [
+    "mandalorian",
+    "mandalorian_owner",
+    "transport",
+    "unit"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -20.097,
+    "posY": 0.21,
+    "posZ": -12.472,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

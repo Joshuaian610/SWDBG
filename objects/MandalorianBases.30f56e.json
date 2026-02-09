@@ -1,0 +1,85 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "Kalevala.6f201e",
+    "GlavisRingworld.60f027",
+    "ArvalaVII.086a52",
+    "Tython.db87a1",
+    "Trask.107f1b",
+    "Tatooine.a5b8de",
+    "Nevarro.a2c124",
+    "Concordia.53c76a",
+    "Mandalore.1642b4",
+    "ConcordDawn.017e33"
+  ],
+  "ContainedObjects_path": "MandalorianBases.30f56e",
+  "CustomDeck": {
+    "132": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/17981238707209412004/88C4731667887A0F77236A029FF1D1680FF048C5/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/9828589972255627707/7D6457E30B5D4D96B1F3CEAEDAD1CEEA516E1A40/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    13209,
+    13208,
+    13207,
+    13206,
+    13205,
+    13204,
+    13203,
+    13202,
+    13201,
+    13200
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "30f56e",
+  "Grid": false,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Mandalorian Bases",
+  "SidewaysCard": false,
+  "Snap": false,
+  "Sticky": true,
+  "Tags": [
+    "mandalorian_base"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -31.274,
+    "posY": 0.413,
+    "posZ": -15.096,
+    "rotX": 5,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1.6,
+    "scaleY": 1,
+    "scaleZ": 1.6
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

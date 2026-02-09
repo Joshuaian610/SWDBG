@@ -1,0 +1,61 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 13205,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "132": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/17981238707209412004/88C4731667887A0F77236A029FF1D1680FF048C5/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/9828589972255627707/7D6457E30B5D4D96B1F3CEAEDAD1CEEA516E1A40/",
+      "NumHeight": 2,
+      "NumWidth": 5,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "107f1b",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Trask",
+  "SidewaysCard": false,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "mandalorian_base"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 48.331,
+    "posY": 0.222,
+    "posZ": 2.78,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1.6,
+    "scaleY": 1,
+    "scaleZ": 1.6
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

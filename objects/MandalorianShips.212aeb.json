@@ -1,0 +1,76 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "ContainedObjects_order": [
+    "CapturedGozantiCruiser.55af8a",
+    "CapturedGozantiCruiser.78a781",
+    "CapturedGozantiCruiser.55af8a",
+    "ArqquitensCommandCruiser.f9efff",
+    "ArqquitensCommandCruiser.de495b"
+  ],
+  "ContainedObjects_path": "MandalorianShips.212aeb",
+  "CustomDeck": {
+    "139": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/14308348299499297684/B18640BF594017FCAAEA0A1A56BD555EF58DB013/",
+      "NumHeight": 2,
+      "NumWidth": 2,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "DeckIDs": [
+    13901,
+    13901,
+    13901,
+    13900,
+    13900
+  ],
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "212aeb",
+  "Grid": false,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Deck",
+  "Nickname": "Mandalorian Ships",
+  "SidewaysCard": true,
+  "Snap": false,
+  "Sticky": true,
+  "Tags": [
+    "mandalorian",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": -31.219,
+    "posY": 0.505,
+    "posZ": -9.928,
+    "rotX": 0,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

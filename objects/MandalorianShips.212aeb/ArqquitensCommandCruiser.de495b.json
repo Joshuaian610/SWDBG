@@ -1,0 +1,61 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "CardID": 13900,
+  "ColorDiffuse": {
+    "b": 0.71324,
+    "g": 0.71324,
+    "r": 0.71324
+  },
+  "CustomDeck": {
+    "139": {
+      "BackIsHidden": true,
+      "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
+      "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/14308348299499297684/B18640BF594017FCAAEA0A1A56BD555EF58DB013/",
+      "NumHeight": 2,
+      "NumWidth": 2,
+      "Type": 0,
+      "UniqueBack": false
+    }
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "de495b",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": true,
+  "HideWhenFaceDown": true,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "MeasureMovement": false,
+  "Name": "Card",
+  "Nickname": "Arqquitens Command Cruiser",
+  "SidewaysCard": true,
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "mandalorian",
+    "ship"
+  ],
+  "Tooltip": true,
+  "Transform": {
+    "posX": 43.034,
+    "posY": 0.186,
+    "posZ": 19.905,
+    "rotX": 0,
+    "rotY": 90,
+    "rotZ": 0,
+    "scaleX": 2.1,
+    "scaleY": 1,
+    "scaleZ": 2.1
+  },
+  "Value": 0,
+  "XmlUI": ""
+}
