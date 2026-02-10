@@ -56,7 +56,7 @@
   "HideWhenFaceDown": true,
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
-  "Locked": false,
+  "Locked": true,
   "LuaScript": "",
   "LuaScriptState": "",
   "MeasureMovement": false,
