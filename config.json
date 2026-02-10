@@ -13,8 +13,8 @@
     "Hiding": 0
   },
   "Lighting_path": "Lighting.json",
+  "LuaScript": "require(\"Global\")",
   "LuaScriptState": "",
-  "LuaScript_path": "LuaScript.ttslua",
   "Note": "",
   "ObjectStates_order": [
     "Custom_Assetbundle.3a3ed9",
