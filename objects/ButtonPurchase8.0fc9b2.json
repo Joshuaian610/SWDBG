@@ -24,7 +24,7 @@
   },
   "Description": "",
   "DragSelectable": true,
-  "GMNotes": "",
+  "GMNotes": "8",
   "GUID": "0fc9b2",
   "Grid": true,
   "GridProjection": false,
@@ -37,7 +37,7 @@
   "LuaScript_path": "ButtonPurchase8.0fc9b2.ttslua",
   "MeasureMovement": false,
   "Name": "Custom_Token",
-  "Nickname": "Button Purchase 8",
+  "Nickname": "Button Purchase8",
   "Snap": true,
   "Sticky": true,
   "Tags": [

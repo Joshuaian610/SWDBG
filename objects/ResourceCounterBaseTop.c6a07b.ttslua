@@ -47,11 +47,11 @@ end -- end function reloadAll()
 
 function add_subtract(_obj, _color, alt_click)
     local is_ai                       = getObjectFromGUID("83b3ce").call('check_is_ai')
-    local bottom_faction, top_faction = getObjectFromGUID("83b3ce").call('get_playerareas')
-    local bottom_color, top_color     = getObjectFromGUID("83b3ce").call('get_playercolors')
-    local faction                     = top_faction
+    local bottomFaction, topFaction = getObjectFromGUID("83b3ce").call('get_playerareas')
+    local bottomColor, topColor     = getObjectFromGUID("83b3ce").call('get_playercolors')
+    local faction                     = topFaction
     local faction                     = (faction:gsub("^%l", string.upper))
-    local color                       = top_color
+    local color                       = topColor
     mod                               = alt_click and -1 or 1
     new_value = math.min(math.max(val + mod, MIN_VALUE), MAX_VALUE)
     if val ~= new_value then

@@ -4,10 +4,10 @@ force=0
 fight=0
 
 function onLoad()
-    self.addContextMenuItem("Exile Card", exile_card)
+    self.addContextMenuItem("Exile Card", exileCard)
 end
 
-function exile_card(player_color, position, object)
+function exileCard(player_color, position, object)
     local exile_bag = nil
     if player_color == "Blue" then
         exile_bag = getObjectFromGUID("96e6ce")

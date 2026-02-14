@@ -24,7 +24,7 @@
   ],
   "ContainedObjects_path": "SeparatistDeck.3afb00",
   "CustomDeck": {
-    "70": {
+    "2996": {
       "BackIsHidden": true,
       "BackURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465330532070569/ABD27CB67122C80E4B40DF419BEBEDFB60702FC3/",
       "FaceURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094933221970/FAF0257728646389F39D03DDBDDA4D18ACD41813/",
@@ -35,16 +35,16 @@
     }
   },
   "DeckIDs": [
-    7000,
-    7001,
-    7002,
-    7004,
-    7003,
-    7005,
-    7006,
-    7007,
-    7008,
-    7009
+    299600,
+    299601,
+    299602,
+    299604,
+    299603,
+    299605,
+    299606,
+    299607,
+    299608,
+    299609
   ],
   "Description": "",
   "DragSelectable": true,

@@ -1,5 +1,5 @@
 function onLoad()
-    pad_galaxy_deck     = getObjectFromGUID("83b3ce")
+    padGalaxyDeck     = getObjectFromGUID("83b3ce")
     pad_republic_reveal = getObjectFromGUID("2abc18")
     create_button()
 end -- end onLoad()

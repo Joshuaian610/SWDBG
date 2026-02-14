@@ -5,17 +5,17 @@ fight          = 0
 faction        = "neutral"
 
 function onLoad()
-    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
-    pad_galaxy_discard = getObjectFromGUID("a03936")
-    pad_outer_rim      = getObjectFromGUID("606e92")
-    self.addContextMenuItem("Exile Card", exile_card)
+    padGalaxyDeck    = getObjectFromGUID("83b3ce")
+    padGalaxyDiscard = getObjectFromGUID("a03936")
+    padOuterRim     = getObjectFromGUID("606e92")
+    self.addContextMenuItem("Exile Card", exileCard)
 end
 
-function exile_card(player_area, position, object)
-    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+function exileCard(playerArea, position, object)
+    padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
 end
 
 
 function ability_button_create_ui()
-    pad_galaxy_deck.call('ability_button_create_ui', {card=self})
+    padGalaxyDeck.call('ability_button_create_ui', {card=self})
 end -- end ability_button_create()

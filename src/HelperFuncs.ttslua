@@ -1,0 +1,191 @@
+function drawGalaxyCard()
+  -- determine leftmost free slot
+  local slots = {
+    zoneGalaxyRow1,
+    zoneGalaxyRow2,
+    zoneGalaxyRow3,
+    zoneGalaxyRow4,
+    zoneGalaxyRow5,
+    zoneGalaxyRow6,
+  }
+  local posSlots = {
+    { -21.00, 0.75, 0.00 },
+    { -14.00, 0.75, 0.00 },
+    { -7.00, 0.75, 0.00 },
+    { 0.00, 0.75, 0.00 },
+    { 7.00, 0.75, 0.00 },
+    { 14.00, 0.75, 0.00 }
+  }
+  local posDeal = nil
+
+  for i = 1, 6 do
+    local card_in_zone = false
+    for _, object in pairs(slots[i].getObjects()) do
+        if object.tag == "Card" then
+          card_in_zone = true
+        end
+    end    
+    if card_in_zone == false then
+      -- determine position to deal card to via slot number
+      posDeal = posSlots[i]
+
+      -- determine galaxy deck, deal card
+      local deckGalaxy = nil
+      local card = nil
+      local deck_or_card_found = false
+      for _, obj in pairs(zoneGalaxyDeck.getObjects()) do
+        if obj.tag == "Deck" then
+          deck_or_card_found = true
+          deckGalaxy = obj
+          card = deckGalaxy.takeObject()
+          rotateDealtCard(card, posDeal)
+          return nil
+        end
+        if obj.tag == "Card" then
+          deck_or_card_found = true
+          card = obj
+          rotateDealtCard(card, posDeal)
+          return nil
+        end
+      end
+
+      -- handle galaxy deck refresh from discard if required
+      if deck_or_card_found == false then
+        for _, obj in pairs(zoneGalaxyDiscard.getObjects()) do
+          if obj.tag == "Deck" then
+            deckGalaxy = obj
+            deckGalaxy.setName('Galaxy Deck')
+            deckGalaxy.flip()
+            deckGalaxy.shuffle()
+            deckGalaxy.setPositionSmooth(posDeckGalaxy, false, true)
+            card = deckGalaxy.takeObject()
+            -- rotateDealtCard() will rotate card to correct orientation and physically positionSmooth card to position
+            Wait.frames(function() rotateDealtCard(card, posDeal) end)
+          end
+        end
+      end
+    end
+  end
+end -- end drawGalaxyCard()
+
+
+function rotateDealtCard(card, position)
+  -- first need to determine which faction is on which side
+  local bottomFaction, topFaction = getPlayerAreas()
+  local rotNeutralUnit = { 0.00, 270.00, 0.00 }
+  local rotNeutralShip = { 0.00, 180.00, 0.00 }
+  local rotBottomUnit = { 0.00, 180.00, 0.00 }
+  local rotBottomShip = { 0.00, 0.00, 0.00 }
+  local rotTopUnit = { 0.00, 90.00, 0.00 }
+  local rotTopShip = { 0.00, 270.00, 0.00 }
+
+  if bottomFaction == "rebellion" then bottomFaction = "rebel" end
+  if topFaction == "rebellion" then topFaction = "rebel" end
+
+  if card.hasTag('neutral') and not card.hasTag('ship') then
+    card.setRotation(rotNeutralUnit)
+
+  elseif card.hasTag('neutral') and card.hasTag('ship') then
+    card.setRotation(rotNeutralShip)
+
+  elseif card.hasTag('empire') or card.hasTag('rebel') or
+  card.hasTag('republic') or card.hasTag('separatist') then
+    local tags = card.getTags()
+    if card.hasTag('unit') then
+      for _, tag in ipairs(tags) do
+        if string.find(tag, bottomFaction) then
+          card.setRotation(rotBottomUnit)
+
+        elseif string.find(tag, topFaction) then
+          card.setRotation(rotBottomShip)
+        end
+      end
+
+    elseif card.hasTag('ship') then
+      for _, tag in ipairs(tags) do
+        if string.find(tag, bottomFaction) then
+          card.setRotation(rotTopUnit)
+
+        elseif string.find(tag, topFaction) then
+          card.setRotation(rotTopShip)
+        end
+      end
+    end
+  end
+
+  card.setPositionSmooth(position, false, true)
+end -- end rotateDealtCard()
+
+
+function exileCard(playerArea, obj)
+  -- handles the exiling of a card, called via hotkey or context menu
+  local bottomColor, topColor = getPlayerColors()
+  local exileBag = (obj.hasTag('bottom_owner') and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
+  local playerColor = (playerArea == bottomColor and bottomColor or topColor)
+  if not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') then
+    exileBag = (playerArea == bottomColor and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
+  end
+  local tags = obj.getTags()
+  table.insert(tags, 'exiled')
+  obj.setTags(tags)
+
+  -- check if card is in galaxy row
+  local checkZones = {zoneGalaxyRow1, zoneGalaxyRow2, zoneGalaxyRow3, zoneGalaxyRow4, zoneGalaxyRow5, zoneGalaxyRow6}
+  local cardInRow = false
+  for i = 1, 6 do
+    for _, zoneObj in pairs(checkZones[i].getObjects()) do
+      if zoneObj == obj then
+        cardInRow = true
+      end
+    end
+  end
+  exileBag.putObject(obj)
+
+  Wait.time(function()
+
+    -- handle Nute Gunray
+    if nextCardNute then
+      cardInRow = false
+      padGalaxyDiscard.call('handle_nute_gunray', {exileBag=exileBag, color=color}) -- NEED REQUIRE
+    end
+
+    -- replace card with galaxy row card if needed
+    if cardInRow then drawGalaxyCard() end
+
+  end, 1)
+end -- end exileCard()
+
+
+function getPlayerAreas()
+    local bottomFaction = artAssetBottom.getDescription()
+    local topFaction = artAssetTop.getDescription()
+    return bottomFaction, topFaction
+end -- end getPlayerAreas()
+
+
+function getPlayerColors()
+  -- checks current playerColors associated with bottom and top player areas respectively
+  local bottomColor =  artAssetBottom.getDescription()
+  local topColor =  artAssetTop.getDescription()
+  return bottomColor, topColor
+end -- end getPlayerColors()
+
+
+function getTurn()
+  -- checks position of turn tracker obj to determine current turn
+  local zoneBottom = getObjectbyName("Zone Active Faction Bottom")
+  local zoneTop = getObjectbyName("Zone Active Faction Top")
+  local checkZones = {zoneBottom, zoneTop}
+  for i = 1, 2 do
+    for k, v in ipairs(checkZones[i].getObjects()) do
+      if v.hasTag('turnTracker') then
+        if i == 1 then
+          return "Bottom"
+        elseif i == 2 then
+          return "Top"
+        end
+      end
+    end
+  end
+  return nil
+end -- end getTurn()

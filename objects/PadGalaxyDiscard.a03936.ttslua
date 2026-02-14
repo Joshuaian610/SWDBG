@@ -1,12 +1,12 @@
 function onLoad()
-    pad_galaxy_deck         = getObjectFromGUID("83b3ce")
-    pad_galaxy_discard      = getObjectFromGUID("a03936")
-    pad_outer_rim           = getObjectFromGUID("606e92")
+    padGalaxyDeck         = getObjectFromGUID("83b3ce")
+    padGalaxyDiscard      = getObjectFromGUID("a03936")
+    padOuterRim          = getObjectFromGUID("606e92")
     pad_republic_reveal     = getObjectFromGUID("2abc18")
-    play_zone               = getObjectFromGUID("0cdb1a")
-    galaxy_deck_zone        = getObjectFromGUID("cdc550")
-    galaxy_purchase_buttons = Global.getTable('galaxy_purchase_buttons')
-    galaxy_discard_buttons  = Global.getTable('galaxy_discard_buttons')
+    play_zone               = zoneInPlay
+    galaxy_deck_zone        = zoneGalaxyDeck
+    buttonsGalaxyPurchase = Global.getTable('buttonsGalaxyPurchase')
+    buttonsGalaxyDiscard  = Global.getTable('buttonsGalaxyDiscard')
 end -- end onLoad()
 
 function ui_button_action(player, value, id)
@@ -32,23 +32,23 @@ function handle_nute_gunray(parms)
         exile_bag.Container.search(color)
     else
         broadcastToAll("Nute Gunray ability applied on card leaving galaxy row, but there are no valid Separatist cards in their exile to replace. Drawing new card from galaxy deck.", color)
-        pad_galaxy_deck.call('draw_galaxy_card')
+        padGalaxyDeck.call('draw_galaxy_card')
     end
-    pad_galaxy_deck.call('remove_buttons', {object=getObjectFromGUID("abe644")})
-    Global.setVar('next_card_nute', false)
+    padGalaxyDeck.call('remove_buttons', {object=getObjectFromGUID("abe644")})
+    Global.setVar('nextCardNute', false)
 end -- end handle_nute_gunray()
 
 
 function handle_protocol_droid(match_tag, button, capitalized_faction, color)
     local is_bottom = button.hasTag('bottom_owner')
     local galaxy_deck = nil
-    for k, v in pairs(getObjectFromGUID("cdc550").getObjects()) do
+    for k, v in pairs(zoneGalaxyDeck.getObjects()) do
         if v.tag == "Deck" then
             galaxy_deck = v
         end
     end
     if galaxy_deck == nil then
-        for _, object in ipairs(getObjectFromGUID("3971c5").getObjects()) do
+        for _, object in ipairs(zoneGalaxyDiscard.getObjects()) do
             if object.tag == "Deck" then
                 galaxy_deck = object
                 galaxy_deck.setRotation({0.00, 90.00, 180.00})
@@ -81,14 +81,14 @@ end -- end obi_wan_repeat_action()
 
 
 function kenobi_mace(button, playercolor)
-    pad_galaxy_deck.call('remove_buttons', {object=getObjectFromGUID("006ecf")})
+    padGalaxyDeck.call('remove_buttons', {object=getObjectFromGUID("006ecf")})
     pad_republic_reveal.call('return_revealed')
     broadcastToAll("Republic has chosen to return Obi-Wan Kenobi for +5 Attack to Mace Windu.", playercolor)
 end -- end kenobi_mace()
 
 
 function kenobi_hand(button, playercolor)
-    pad_galaxy_deck.call('remove_buttons', {object=getObjectFromGUID("006ecf")})
+    padGalaxyDeck.call('remove_buttons', {object=getObjectFromGUID("006ecf")})
     Wait.frames(function()
     pad_republic_reveal.call('draw_revealed')
     broadcastToAll("Republic has chosen to draw Obi-Wan Kenobi via his ability, and will reveal another card for Mace Windu.", playercolor)
@@ -100,39 +100,39 @@ end -- end kenobi_hand()
 function primary_button_action(button, playercolor, _)
     local is_bottom                    = button.hasTag('bottom_owner')
     local is_top                       = button.hasTag('top_owner')
-    local bottom_color, top_color      = pad_galaxy_deck.call('get_playercolors')
-    if playercolor == bottom_color then
+    local bottomColor, topColor      = padGalaxyDeck.call('get_playercolors')
+    if playercolor == bottomColor then
         is_bottom = true
     else
         is_top = true
     end
-    local is_ai                        = pad_galaxy_deck.call('check_is_ai')
+    local is_ai                        = padGalaxyDeck.call('check_is_ai')
     local opponent_discard_rot         = (is_bottom and {0.00, 0.00, 0.00} or {0.00, 180.00, 0.00})
     local counter                      = (is_bottom and getObjectFromGUID("79146f") or getObjectFromGUID("34be5a"))
     local board_counter                = (is_bottom and getObjectFromGUID("5ddc6c") or getObjectFromGUID("c6a07b"))
     local current_resource_count       = counter.getVar('val')
     local opponent_discard_loc         = (is_bottom and {8.50, 1.50, 31.00} or {-8.50, 1.50, -31.00})
-    local force_owner                  = pad_galaxy_deck.call('get_force_owner')
-    local bottom_faction, top_faction  = pad_galaxy_deck.call('get_playerareas')
-    local faction                      = (is_bottom and bottom_faction or top_faction)
-    local opponent_faction             = (is_bottom and top_faction or bottom_faction)
+    local force_owner                  = padGalaxyDeck.call('get_force_owner')
+    local bottomFaction, topFaction  = padGalaxyDeck.call('get_playerareas')
+    local faction                      = (is_bottom and bottomFaction or topFaction)
+    local opponent_faction             = (is_bottom and topFaction or bottomFaction)
     local capitalized_faction          = (faction:gsub("^%l", string.upper))
     local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
-    local capitalized_bottom_faction   = (bottom_faction:gsub("^%l", string.upper))
-    local capitalized_top_faction      = (top_faction:gsub("^%l", string.upper))
-    local color                        = (is_bottom and bottom_color or top_color)
-    local opponent_color               = (is_bottom and top_color or bottom_color)
-    local all_colors                   = Global.getVar('all_colors')
+    local capitalized_bottomFaction   = (bottomFaction:gsub("^%l", string.upper))
+    local capitalized_topFaction      = (topFaction:gsub("^%l", string.upper))
+    local color                        = (is_bottom and bottomColor or topColor)
+    local opponent_color               = (is_bottom and topColor or bottomColor)
+    local allColors                  = Global.getVar('all_colors')
     local bottom_force_button          = getObjectFromGUID("d586db")
     local top_force_button             = getObjectFromGUID("817b24")
     local force_button                 = (is_bottom and bottom_force_button or top_force_button)
     local name                         = button.getName()
     local attack_action                = ((faction == "empire" or faction == "separatist") and "Bounty Hunt" or "Sabotage")
     local area                         = (is_bottom and "bottom" or "top")
-    local base_zone                    = (is_bottom and getObjectFromGUID("59b7ad") or getObjectFromGUID("23b5a3"))
-    local galaxy_deck                  = pad_galaxy_deck.call('get_galaxy_deck')
+    local base_zone                    = (is_bottom and zoneBasesBottom or zoneBasesTop)
+    local galaxy_deck                  = padGalaxyDeck.call('get_galaxy_deck')
     local owner_tag                    = nil
-    local exile_bag                    = (bottom_faction == "separatist") and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249")
+    local exile_bag                    = (bottomFaction == "separatist") and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249")
     local galaxy_row_zones             = {
         getObjectFromGUID("c98289"),
         getObjectFromGUID("46fd89"),
@@ -160,13 +160,13 @@ function primary_button_action(button, playercolor, _)
         ----- ORIGINAL NEUTRAL PRIMARY ACTION BUTTONS -----
         if name == "Outer Rim Pilot" then
             broadcastToAll(capitalized_faction .. " Outer Rim Pilot ability used to self exile.", color)
-            pad_galaxy_deck.call('move_force_track', {button=force_button, count=1})
-            pad_galaxy_deck.call('exile_card', {p_area=color, obj=button})
-            Global.setVar('droideka_condition_met', true)
+            padGalaxyDeck.call('move_force_track', {button=force_button, count=1})
+            padGalaxyDeck.call('exileCard', {p_area=color, obj=button})
+            Global.setVar('metConditionDroideka', true)
         elseif name == "Jawa Scavenger" then
             broadcastToAll("Jawa Scavenger ability used to self exile, " .. capitalized_faction .. " may purchase from the discard.", color)
-            Global.setVar('droideka_condition_met', true)
-            pad_galaxy_deck.call('exile_card', {p_area=color, obj=button})
+            Global.setVar('metConditionDroideka', true)
+            padGalaxyDeck.call('exileCard', {p_area=color, obj=button})
         elseif name == "Z-95 Headhunter" then
             local opponent_tag = nil
             local ship_in_play = false
@@ -185,41 +185,41 @@ function primary_button_action(button, playercolor, _)
             end
             if ship_in_play then
                 broadcastToAll("Z-95 Headhunter ability used while " .. capitalized_opponent_faction .. " has ship in play, " .. capitalized_faction .. " has drawn a card.", color)
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             else
                 broadcastToAll("Z-95 Headhunter ability used while " .. capitalized_opponent_faction .. " has no ships in play, no card drawn.", color)
             end
         elseif name == "Kel Dor Mystic" then
             broadcastToAll("Kel Dor Mystic ability used to self exile, " .. capitalized_faction .. " may manually exile a card from hand or discard.", color)
-            pad_galaxy_deck.call('exile_card', {p_area=color, obj=button})
+            padGalaxyDeck.call('exileCard', {p_area=color, obj=button})
         elseif name == "Bossk" then
             broadcastToAll("Bossk ability used after " .. attack_action .. ", " .. capitalized_faction .. " has gained a Force.", color)
-            pad_galaxy_deck.call('move_force_track', {button=force_button, count=1})
+            padGalaxyDeck.call('move_force_track', {button=force_button, count=1})
         elseif name == "C-Roc Cruiser" then
             broadcastToAll("C-Roc Cruiser ability used to discard a card, " .. capitalized_faction .. " removed 3 damage from their base.", color)
-            pad_galaxy_deck.call('repair_base', {player_area=color, count=3, tags=button.getTags()})
+            padGalaxyDeck.call('repair_base', {playerArea=color, count=3, tags=button.getTags()})
         elseif name == "Lobot" then
             broadcastToAll("Lobot has gained +2 Attack from it's ability.", color)
         elseif name == "Twi'lek Smuggler" then
             broadcastToAll("Twi'lek Smuggler ability used, " .. capitalized_faction .. "'s next purchased card will go to top of their deck.", color)
             if is_bottom then
-                Global.setVar('next_card_to_deck_bottom', true)
+                Global.setVar('nextCardToDeckBottom', true)
             elseif is_top then
-                Global.setVar('next_card_to_deck_top', true)
+                Global.setVar('nextCardToDeckTop', true)
             end
             button.addTag('twilek_ability')
         elseif name == "Dengar" then
             broadcastToAll("Dengar ability used after ".. attack_action .. ", " .. capitalized_faction .. " has gained 2 resources.", color)
-            pad_galaxy_deck.call('add_resource', {area=area, count=2})
+            padGalaxyDeck.call('add_resource', {area=area, count=2})
         elseif name == "HWK-290" then
             broadcastToAll("HWK-290 ability used to self exile, and 4 damage has been repaired from " .. capitalized_faction .. "'s base.", color)
-            pad_galaxy_deck.call('repair_base', {player_area=color, count=4, tags=button.getTags()})
-            pad_galaxy_deck.call('exile_card', {p_area=color, obj=button})
+            padGalaxyDeck.call('repair_base', {playerArea=color, count=4, tags=button.getTags()})
+            padGalaxyDeck.call('exileCard', {p_area=color, obj=button})
         elseif name == "IG-88" then
             broadcastToAll("IG-88 ability used after " .. attack_action .. ", " .. capitalized_faction .. " may manually exile a card from hand or discard.", color)
         elseif name == "Nebulon-B Frigate" then
             broadcastToAll("Nebulon-B Frigate ability used, " .. capitalized_faction .. " has repaired 3 base damage.", color)
-            pad_galaxy_deck.call('repair_base', {player_area=color, count=3, tags=button.getTags()})
+            padGalaxyDeck.call('repair_base', {playerArea=color, count=3, tags=button.getTags()})
         elseif name == "Lando Calrissian" then
             if (((is_bottom and force_owner == "Bottom") or (is_top and force_owner == "Top")) and not is_ai) then
                 broadcastToAll("The Force is with the " .. capitalized_faction .. " while Lando Calrissian ability used. " .. capitalized_faction .. " has drawn a card, and " .. capitalized_opponent_faction .. " must discard a card.", color)
@@ -228,7 +228,7 @@ function primary_button_action(button, playercolor, _)
             else
                 broadcastToAll("The Force is not with the " .. capitalized_faction .. " while Lando Calrissian ability used, " .. capitalized_faction .. " has drawn a card.", color)
             end
-            pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+            padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
         elseif name == "Jabba's Sail Barge" then
             broadcastToAll("Jabba's Sail Barge ability used, " .. capitalized_faction .. " may manually add a 'Bounty Hunter' from discard to hand.", color)
             -- check if discard pile exists
@@ -254,18 +254,18 @@ function primary_button_action(button, playercolor, _)
             if is_bottom then
                 if force_owner == "Bottom" then
                     broadcastToAll(capitalized_faction .. " has manually exiled a card from hand, and drawn 2 cards from Jabba the Hutt ability.", color)
-                    pad_galaxy_deck.call('deal_card', {player_area=area, count=2})
+                    padGalaxyDeck.call('deal_card', {playerArea=area, count=2})
                 else
                     broadcastToAll(capitalized_faction .. " has manually exiled a card from hand, and drawn a card from Jabba the Hutt ability.", color)
-                    pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                    padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
                 end
             elseif is_top then
                 if force_owner == "Top" then
                     broadcastToAll(capitalized_faction .. " has manually exiled a card from hand, and drawn 2 cards from Jabba the Hutt ability.", color)
-                    pad_galaxy_deck.call('deal_card', {player_area=area, count=2})
+                    padGalaxyDeck.call('deal_card', {playerArea=area, count=2})
                 else
                     broadcastToAll(capitalized_faction .. " has manually exiled a card from hand, and drawn a card from Jabba the Hutt ability.", color)
-                    pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                    padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
                 end
             else
                 return nil
@@ -282,7 +282,7 @@ function primary_button_action(button, playercolor, _)
                 local discard_location = is_ai and "muster" or "discard"
                 broadcastToAll("Jar Jar Binks ability used by " .. capitalized_faction .. " to place Jar Jar Binks in " .. capitalized_opponent_faction .. " " .. discard_location .. ".", color)
                 -- gain force for purchaser
-                pad_galaxy_deck.call('move_force_track', {button=force_button, count=1})
+                padGalaxyDeck.call('move_force_track', {button=force_button, count=1})
                 -- place jar jar in purchaser's opponent's discard
                 if is_ai then
                     opponent_discard_rot = {0.00, 0.00, 180.00}
@@ -295,7 +295,7 @@ function primary_button_action(button, playercolor, _)
                 board_counter.call('set_val', new_resource_count)
                 -- if used from row, draw replacement row card
                 if not button.hasTag('bottom_owner') and not button.hasTag('top_owner') then
-                    Wait.time(function() pad_galaxy_deck.call('draw_galaxy_card') end, 1)
+                    Wait.time(function() padGalaxyDeck.call('draw_galaxy_card') end, 1)
                 end
                 if button.hasTag('bottom_owner') then button.removeTag('bottom_owner') end
                 if button.hasTag('top_owner') then button.removeTag('top_owner') end
@@ -316,7 +316,7 @@ function primary_button_action(button, playercolor, _)
             else
                 broadcastToAll("Protocol Droid ability used by " .. capitalized_faction .. ".", color)
                 -- exile self
-                pad_galaxy_deck.call('exile_card', {p_area=color, obj=button})
+                padGalaxyDeck.call('exileCard', {p_area=color, obj=button})
                 -- discard cards from top of galaxy deck one by one until a faction card is drawn
                 local faction_tag = faction
                 if faction == "rebellion" then faction_tag = "rebel" end
@@ -335,19 +335,19 @@ function primary_button_action(button, playercolor, _)
                 broadcastToAll("No other owned neutral cards are in play, no card drawn by Weequay Pirate ability.", color)
             else
                 broadcastToAll("Weequay Pirate ability used by " .. capitalized_faction .. ", a card has been drawn.", color)
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             end
         -- elseif name == "Aurra Sing" then
             -- check row for bounty hunter, modify effective fight counter
         elseif name == "Underworld Contact" then
             -- check force owner, if force give -2 discount
-            if (not (force_owner == "Bottom" and bottom_faction == faction)) and
-            (not (force_owner == "Top" and top_faction == faction)) then
+            if (not (force_owner == "Bottom" and bottomFaction == faction)) and
+            (not (force_owner == "Top" and topFaction == faction)) then
                 broadcastToAll("Force is not with " .. capitalized_faction .. ", Underworld Contact discount not applied", color)
             else
-                Global.setVar('next_card_contact', true)
+                Global.setVar('nextCardContact', true)
                 broadcastToAll("Underworld Contact ability used, 2 Resource discount to next Neutral card purchase.", color)
-                button.addTag('next_card_contact')
+                button.addTag('nextCardContact')
             end
         elseif name == "Hutt Fighter" then
             -- check for 2 owned resources
@@ -367,7 +367,7 @@ function primary_button_action(button, playercolor, _)
                 end
             end
             broadcastToAll("Latts Razzi ability used for " .. capitalized_faction .. " after " .. attack_action .. ", " .. capitalized_faction .. " gains " .. bh_count .. " resources.", color)
-            pad_galaxy_deck.call('add_resource', {area=area, count=bh_count})
+            padGalaxyDeck.call('add_resource', {area=area, count=bh_count})
         -- elseif name == "Super Commando" then
             -- no button actions, action happens when purchasing
         elseif name == "Zam Wesell" then
@@ -385,7 +385,7 @@ function primary_button_action(button, playercolor, _)
             broadcastToAll("Embo ability used, they gain +" .. neutral_in_play_count .. " Attack this turn.", color)
         elseif name == "Gauntlet Starfighter" then
             -- check if discard pile exists
-            local discard_zone  = getObjectFromGUID("3971c5")
+            local discard_zone  = zoneGalaxyDiscard
             local discard_found = false
             local discard_pile  = nil
             for _, object in ipairs(discard_zone.getObjects()) do
@@ -396,7 +396,7 @@ function primary_button_action(button, playercolor, _)
             end
             -- exile self, broadcast to manually purchase
             broadcastToAll("Gauntlet Starfighter ability used to self exile, " .. capitalized_faction .. " may manually pull card from galaxy discard, pay for it, and place it in hand.", color)
-            pad_galaxy_deck.call('exile_card', {p_area=color, obj=button})
+            padGalaxyDeck.call('exileCard', {p_area=color, obj=button})
             if not discard_found then
                 broadcastToAll("No galaxy discard pile available, Gauntlet Starfighter ability is ineffective.", color)
             end
@@ -408,7 +408,7 @@ function primary_button_action(button, playercolor, _)
             end
         elseif name == "Jango Fett" then
             broadcastToAll("Jango Fett ability used by " .. capitalized_faction .. " after " .. attack_action .. ", " .. capitalized_faction .. " draws a card.", color)
-            pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+            padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
         elseif name == "Cad Bane" then
             -- check for 3 owned neutrals in play
             local neutral_count = 0
@@ -449,11 +449,11 @@ function primary_button_action(button, playercolor, _)
                 end
             end
         elseif name == "Hondo Onaka" then
-            local hondo_condition_met = Global.getVar('hondo_condition_met')
-            if hondo_condition_met then
+            local metConditionHondo = Global.getVar('metConditionHondo')
+            if metConditionHondo then
                 broadcastToAll(capitalized_faction .." has met Hondo Onaka ability condition, and draws a card.", color)
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
-                Global.setVar('hondo_condition_met', false)
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
+                Global.setVar('metConditionHondo', false)
                 button.highlightOff()
             else
                 broadcastToAll(capitalized_faction .. " has not met Hondo Onaka ability condition, no card drawn.", color)
@@ -472,7 +472,7 @@ function primary_button_action(button, playercolor, _)
             end
             if ship_found then
                 broadcastToAll("Tie Fighter ability used while ship in play, Empire has drawn a card.", "Blue")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             else
                 broadcastToAll("Tie Fighter ability used while ship not in play, no card drawn.", "Blue")
             end
@@ -484,11 +484,11 @@ function primary_button_action(button, playercolor, _)
                 end
             end
             local top_card = galaxy_deck.takeObject()
-            for i = 1, #galaxy_purchase_buttons do
-                galaxy_purchase_buttons[i].setInvisibleTo(all_colors)
+            for i = 1, #buttonsGalaxyPurchase do
+                buttonsGalaxyPurchase[i].setInvisibleTo(all_colors)
             end
-            for i = 1, #galaxy_discard_buttons do
-                galaxy_discard_buttons[i].setInvisibleTo(all_colors)
+            for i = 1, #buttonsGalaxyDiscard do
+                buttonsGalaxyDiscard[i].setInvisibleTo(all_colors)
             end
             top_card.setRotation({0.00, 90.00, 0.00})
             top_card.setPosition({-28.00, 1.4, 2.50})
@@ -506,7 +506,7 @@ function primary_button_action(button, playercolor, _)
                 end,3)
             elseif top_card.hasTag('empire') then
                 broadcastToAll("Scout Trooper ability used to reveal Empire card " .. top_card.getName() .. ", +1 Force has been gained.", "Blue")
-                pad_galaxy_deck.call('move_force_track', {button=force_button, count=1})
+                padGalaxyDeck.call('move_force_track', {button=force_button, count=1})
                 Wait.time(function()
                 broadcastToAll("Returning Empire card " .. top_card.getName() .. " to top of galaxy deck.", "Blue")
                 top_card.setLock(false)
@@ -526,18 +526,18 @@ function primary_button_action(button, playercolor, _)
                 end,3)
             end
             Wait.time(function()
-            for i = 1, #galaxy_purchase_buttons do
-                galaxy_purchase_buttons[i].setInvisibleTo({})
+            for i = 1, #buttonsGalaxyPurchase do
+                buttonsGalaxyPurchase[i].setInvisibleTo({})
             end
-            for i = 1, #galaxy_discard_buttons do
-                galaxy_discard_buttons[i].setInvisibleTo({})
+            for i = 1, #buttonsGalaxyDiscard do
+                buttonsGalaxyDiscard[i].setInvisibleTo({})
             end
             end,3)
         elseif name == "Tie Bomber" then
             broadcastToAll("Tie Bomber ability used to discard a card from the galaxy row, Empire may manually do so now.", "Blue")
         elseif name == "Gozanti Cruiser" then
             broadcastToAll("Gozanti Cruiser ability used for Empire after manually discarding a card, and another card was drawn.", "Blue")
-            pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+            padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
         elseif name == "Tie Interceptor" then
             local galaxy_deck = nil
             for k, v in pairs(galaxy_deck_zone.getObjects()) do
@@ -546,11 +546,11 @@ function primary_button_action(button, playercolor, _)
                 end
             end
             local top_card = galaxy_deck.takeObject()
-            for i = 1, #galaxy_purchase_buttons do
-                galaxy_purchase_buttons[i].setInvisibleTo(all_colors)
+            for i = 1, #buttonsGalaxyPurchase do
+                buttonsGalaxyPurchase[i].setInvisibleTo(all_colors)
             end
-            for i = 1, #galaxy_discard_buttons do
-                galaxy_discard_buttons[i].setInvisibleTo(all_colors)
+            for i = 1, #buttonsGalaxyDiscard do
+                buttonsGalaxyDiscard[i].setInvisibleTo(all_colors)
             end
             top_card.setRotation({0.00, 90.00, 0.00})
             top_card.setPosition({-28.00, 1.4, 2.50})
@@ -568,7 +568,7 @@ function primary_button_action(button, playercolor, _)
                 end,3)
             elseif top_card.hasTag('empire') then
                 broadcastToAll("Tie Interceptor ability used to reveal Empire card " .. top_card.getName() .. ", a card has been drawn.", "Blue")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
                 Wait.time(function()
                 broadcastToAll("Returning Empire card " .. top_card.getName() .. " to top of galaxy deck.", "Blue")
                 top_card.setLock(false)
@@ -588,11 +588,11 @@ function primary_button_action(button, playercolor, _)
                 end,3)
             end
             Wait.time(function()
-            for i = 1, #galaxy_purchase_buttons do
-                galaxy_purchase_buttons[i].setInvisibleTo({})
+            for i = 1, #buttonsGalaxyPurchase do
+                buttonsGalaxyPurchase[i].setInvisibleTo({})
             end
-            for i = 1, #galaxy_discard_buttons do
-                galaxy_discard_buttons[i].setInvisibleTo({})
+            for i = 1, #buttonsGalaxyDiscard do
+                buttonsGalaxyDiscard[i].setInvisibleTo({})
             end
             end,3)
         elseif name == "AT-ST" then
@@ -608,14 +608,14 @@ function primary_button_action(button, playercolor, _)
                 broadcastToAll("General Veers ability used while no Troopers or Vehicles in play, no card drawn.", "Blue")
             else
                 broadcastToAll("General Veers ability used while Trooper and / or Vehicle in play, Empire has drawn a card.", "Blue")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             end
         elseif name == "Landing Craft" then
             broadcastToAll("Landing Craft ability used, Empire has repaired 4 base damage.", "Blue")
-            pad_galaxy_deck.call('repair_base', {player_area=color, count=4, tags=button.getTags()})
+            padGalaxyDeck.call('repair_base', {playerArea=color, count=4, tags=button.getTags()})
         elseif name == "Moff Jerjerrod" then
             -- check if galaxy deck exists
-            local deck_zone  = getObjectFromGUID("cdc550")
+            local deck_zone  = zoneGalaxyDeck
             local deck_found = false
             local deck_pile  = nil
             for _, object in ipairs(deck_zone.getObjects()) do
@@ -633,7 +633,7 @@ function primary_button_action(button, playercolor, _)
                     end
                 end
             end
-            if (force_owner == "Bottom" and bottom_faction == "empire") or (force_owner == "Top" and top_faction == "empire") then
+            if (force_owner == "Bottom" and bottomFaction == "empire") or (force_owner == "Top" and topFaction == "empire") then
                 broadcastToAll("The Force is with the Empire while Moff Jerjerrod ability used, Empire searches the top card of the galaxy deck.", "Blue")
                 Wait.time(function() broadcastToAll("Then, Empire may manually swap that card with a card in the galaxy row.", "Blue") end, 1)
             else
@@ -647,10 +647,10 @@ function primary_button_action(button, playercolor, _)
             end
         elseif name == "Boba Fett" then
             broadcastToAll("Boba Fett ability used for Empire after Bounty Hunting, Empire draws a card.", "Blue")
-            pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+            padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
         elseif name == "Director Krennic" then
             local death_star_found = false
-            local base_zone = (is_bottom and getObjectFromGUID("59b7ad") or getObjectFromGUID("23b5a3"))
+            local base_zone = (is_bottom and zoneBasesBottom or zoneBasesTop)
             for k, v in pairs(base_zone.getObjects()) do
                 if v.getName() == "Death Star" then
                     death_star_found = true
@@ -658,10 +658,10 @@ function primary_button_action(button, playercolor, _)
             end
             if death_star_found then
                 broadcastToAll("Director Krennic ability used, Empire has drawn 2 cards with Death Star in play.", "Blue")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=2})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=2})
             else
                 broadcastToAll("Director Krennic ability used, Empire has only drawn 1 card without Death Star in play.", "Blue")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             end
         elseif name == "AT-AT" then
             broadcastToAll("AT-AT ability used, Empire may manually add a Trooper from discard pile to hand.", "Blue")
@@ -685,7 +685,7 @@ function primary_button_action(button, playercolor, _)
                 end
             end
         elseif name == "Grand Moff Tarkin" then
-            Global.setVar('next_card_tarkin', true)
+            Global.setVar('nextCardTarkin', true)
             broadcastToAll("Grand Moff Tarkin ability used. Empire may right click purchase button to add an Empire card in the galaxy row to hand.", "Blue")
             Wait.time(function()
             broadcastToAll("Next purchased card will be purchased for free, added to Empire's hand, and exiled at the end of the turn.", "Blue")
@@ -697,7 +697,7 @@ function primary_button_action(button, playercolor, _)
             broadcastToAll("Temple Guardian has gained +1 Attack from it's ability.", "Red")
         elseif name == "Y-Wing" then
             broadcastToAll("Y-Wing ability used to self exile, Rebellion may manually do 2 damage to " .. capitalized_opponent_faction .. " base or ship.", "Red")
-            pad_galaxy_deck.call('exile_card', {p_area="Red", obj=button})
+            padGalaxyDeck.call('exileCard', {p_area="Red", obj=button})
         elseif name == "Duros Spy" then
             if not is_ai then
                 broadcastToAll("Duros Spy ability used, " .. capitalized_opponent_faction .. " must choose: Choose a card to discard, or Rebellion gains a Force.", "Red")
@@ -705,45 +705,45 @@ function primary_button_action(button, playercolor, _)
                 local tracker_pos   = getObjectFromGUID("74b511").getPosition()
                 if tracker_pos.z < 9.5 and tracker_pos.z > 7.5 then
                     broadcastToAll("Duros Spy ability used: AI " .. capitalized_opponent_faction .. " chooses to discard.", color)
-                    pad_galaxy_deck.call('discard_ai_card', {is_random=false})
+                    padGalaxyDeck.call('discard_ai_card', {is_random=false})
                 else
                     broadcastToAll("Duros Spy ability used: AI " .. capitalized_opponent_faction .. " chooses for you to gain +1 Force.", color)
-                    pad_galaxy_deck.call('move_force_track', {button=getObjectFromGUID("d586db"), count=1})
+                    padGalaxyDeck.call('move_force_track', {button=getObjectFromGUID("d586db"), count=1})
                 end
             end
         elseif name == "Rebel Transport" then
             broadcastToAll("Rebel Transport ability used, Rebellion has repaired 2 base damage.", "Red")
-            pad_galaxy_deck.call('repair_base', {player_area=color, count=2, tags=button.getTags()})
+            padGalaxyDeck.call('repair_base', {playerArea=color, count=2, tags=button.getTags()})
         elseif name == "Snowspeeder" then
             if not is_ai then
                 broadcastToAll("Snowspeeder ability used, " .. capitalized_opponent_faction .. " must choose a card to discard.", "Red")
             else
                 broadcastToAll("Snowspeeder ability used, AI " .. capitalized_opponent_faction .. " must choose a card to discard.", "Red")
-                pad_galaxy_deck.call('discard_ai_card', {is_random=false})
+                padGalaxyDeck.call('discard_ai_card', {is_random=false})
             end
         elseif name == "Rebel Commando" then
             if not is_ai then
                 local discard_button       = (is_bottom and getObjectFromGUID("ded0c2") or getObjectFromGUID("bfc82c"))
                 local discard_button_color = discard_button.getColorTint()
-                if (force_owner == "Bottom" and bottom_faction == "rebellion") or (force_owner == "Top" and top_faction == "rebellion") then
+                if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
                     broadcastToAll("The Force is with the Rebellion while Rebel Commando ability used, " .. capitalized_opponent_faction .. " discards a random card.", "Red")
                     discard_button.call('discard_random_card')
                 else
                     broadcastToAll("The Force is not with the Rebellion while Rebel Commando ability used, " .. capitalized_opponent_faction .. "  must choose a card to discard.", "Red")
                 end
             else
-                if (force_owner == "Bottom" and bottom_faction == "rebellion") or (force_owner == "Top" and top_faction == "rebellion") then
+                if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
                     broadcastToAll("The Force is with the Rebellion while Rebel Commando ability used, AI " .. capitalized_opponent_faction .. " discards a random card.", "Red")
-                    pad_galaxy_deck.call('discard_ai_card', {is_random=true})
+                    padGalaxyDeck.call('discard_ai_card', {is_random=true})
                 else
                     broadcastToAll("The Force is not with the Rebellion while Rebel Commando ability used, AI " .. capitalized_opponent_faction .. "  must choose a card to discard.", "Red")
-                    pad_galaxy_deck.call('discard_ai_card', {is_random=false})
+                    padGalaxyDeck.call('discard_ai_card', {is_random=false})
                 end
             end
         elseif name == "X-Wing" then
-            if (force_owner == "Bottom" and bottom_faction == "rebellion") or (force_owner == "Top" and top_faction == "rebellion") then
+            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
                 broadcastToAll("The Force is with the Rebellion while X-Wing ability used, Rebellion draws a card.", "Red")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             else
                 broadcastToAll("The Force is not with the Rebellion while X-Wing ability used, no card drawn.", "Red")
             end
@@ -756,15 +756,15 @@ function primary_button_action(button, playercolor, _)
             end
             if unique_found then
                 broadcastToAll("Chewbacca ability used while 'Unique' in play, Rebellion draws a card.", "Red")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             else
                 broadcastToAll("Chewbacca ability used while no other 'Unique' in play, no card drawn.", "Red")
             end
         elseif name == "Hammerhead Corvette" then
             broadcastToAll("Hammerhead Corvette ability used to self exile, Rebellion may manually destroy an enemy ship in play or row.", "Red")
-            pad_galaxy_deck.call('exile_card', {p_area="Red", obj=button})
+            padGalaxyDeck.call('exileCard', {p_area="Red", obj=button})
         elseif name == "Jyn Erso" then
-            if (force_owner == "Bottom" and bottom_faction == "rebellion") or (force_owner == "Top" and top_faction == "rebellion") then
+            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
                 if not is_ai then
                     broadcastToAll("The Force is with the Rebellion while Jyn Erso ability used, Rebellion may look at " .. capitalized_opponent_faction .. " hand, and then place one card on top of " .. capitalized_opponent_faction .. " deck.", "Red")
                 else
@@ -779,9 +779,9 @@ function primary_button_action(button, playercolor, _)
             end
             Wait.time(function() broadcastToAll("Hint: " .. capitalized_opponent_faction .. " may right click on one of their cards in hand and select 'Show Hand' to easily do so.", color) end, 1)
         elseif name == "U-Wing" then
-            if (force_owner == "Bottom" and bottom_faction == "rebellion") or (force_owner == "Top" and top_faction == "rebellion") then
+            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
                 broadcastToAll("The Force is with the Rebellion while U-Wing ability used, Rebellion repairs 3 base damage.", "Red")
-                pad_galaxy_deck.call('repair_base', {player_area="Red", count=3, tags=button.getTags()})
+                padGalaxyDeck.call('repair_base', {playerArea="Red", count=3, tags=button.getTags()})
             else
                 broadcastToAll("The Force is not with the Rebellion while U-Wing ability used, Rebellion did not repair base damage.", "Red")
             end
@@ -801,7 +801,7 @@ function primary_button_action(button, playercolor, _)
                 else
                     if base_pos.z > 18.25 and base_pos.z < 19.25 then
                         broadcastToAll("B-Wing ability used, AI " .. capitalized_opponent_faction .. " decides to discard a card.", "Red")
-                        pad_galaxy_deck.call('discard_ai_card', {is_random=false})
+                        padGalaxyDeck.call('discard_ai_card', {is_random=false})
                     else
                         broadcastToAll("B-Wing ability used, AI " .. capitalized_opponent_faction .. " decides to allow +2 Attack to B-Wing..", "Red")
                     end
@@ -812,7 +812,7 @@ function primary_button_action(button, playercolor, _)
                 broadcastToAll("Cassian Andor ability used for Rebellion after Sabotaging, " .. capitalized_opponent_faction .. " must discard a card from hand.", "Red")
             else
                 broadcastToAll("Cassian Andor ability used for Rebellion after Sabotaging, AI " .. capitalized_opponent_faction .. " must discard a card from hand.", "Red")
-                pad_galaxy_deck.call('discard_ai_card', {is_random=false})
+                padGalaxyDeck.call('discard_ai_card', {is_random=false})
             end
         elseif name == "Han Solo" then
             local falcon_in_play = false
@@ -821,16 +821,16 @@ function primary_button_action(button, playercolor, _)
             end
             if falcon_in_play then
                 broadcastToAll("Han Solo ability used while Millennium Falcon in play, 2 cards drawn.", "Red")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=2})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=2})
             else
                 broadcastToAll("Han Solo ability used while Millennium Falcon not in play, 1 card drawn.", "Red")
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             end
         elseif name == "Princess Leia" then
-            Global.setVar('next_card_leia', true)
+            Global.setVar('nextCardLeia', true)
             broadcastToAll("Princess Leia ability used, right click purchase button to purchase next Rebel card for free.", "Red")
-            if (force_owner == "Bottom" and bottom_faction == "rebellion") or (force_owner == "Top" and top_faction == "rebellion") then
-                pad_galaxy_deck.call('next_card_to_deck', {faction="rebellion"})
+            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
+                padGalaxyDeck.call('next_card_to_deck', {faction="rebellion"})
                 Wait.time(function()
                 broadcastToAll("The Force is with the Rebellion while Princess Leia ability used, the purchased Rebellion card will go to top of deck.", "Red")
                 end,1)
@@ -855,7 +855,7 @@ function primary_button_action(button, playercolor, _)
                 end
             end
         elseif name == "Luke Skywalker" then
-            if (force_owner == "Bottom" and bottom_faction == "rebellion") or (force_owner == "Top" and top_faction == "rebellion") then
+            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
                 broadcastToAll("The Force is with the Rebellion while Luke Skywalker ability used, Rebellion may choose " .. capitalized_opponent_faction .. " ship to manually destroy.", "Red")
             else
                 broadcastToAll("The Force is not with the Rebellion while Luke Skywalker ability used, no " .. capitalized_opponent_faction .. " ships destroyed.", "Red")
@@ -898,7 +898,7 @@ function primary_button_action(button, playercolor, _)
                 broadcastToAll("AT-RT ability used while no Troopers in play, Republic base not repaired.", color)
             else
                 broadcastToAll("AT-RT ability used while Trooper in play, Republic has repaired 2 base damage.", color)
-                pad_galaxy_deck.call('repair_base', {player_area=color, count=2, tags=button.getTags()})
+                padGalaxyDeck.call('repair_base', {playerArea=color, count=2, tags=button.getTags()})
             end
         -- elseif name == "BARC Trooper" then ***bench this until effective HP tracker
         --    -- check for other trooper in play
@@ -945,7 +945,7 @@ function primary_button_action(button, playercolor, _)
                 broadcastToAll("ARC Trooper ability used while no other Troopers or Jedis in play, ARC Trooper does not deal +2 Damage to " .. capitalized_opponent_faction .. " base.", color)
             else
                 broadcastToAll("ARC Trooper ability used while other Trooper or Jedi in play, ARC Trooper deals +2 Damage to " .. capitalized_opponent_faction .. " base.", color)
-                pad_galaxy_deck.call('damage_base', {is_bottom=is_bottom, count=2, color=color, faction=opponent_faction})
+                padGalaxyDeck.call('damage_base', {is_bottom=is_bottom, count=2, color=color, faction=opponent_faction})
             end
         elseif name == "Captain Rex" then
             -- check for owned and galaxy row unique count
@@ -989,7 +989,7 @@ function primary_button_action(button, playercolor, _)
             end
         elseif name == "Ahsoka Tano" then
             local function ahsoka_reveal(reveal_card)
-                if (force_owner == "Bottom" and bottom_faction == "republic") or (force_owner == "Top" and top_faction == "republic") then
+                if (force_owner == "Bottom" and bottomFaction == "republic") or (force_owner == "Top" and topFaction == "republic") then
                     if reveal_card.getName() ~= "Obi-Wan Kenobi" then
                         broadcastToAll(name .. " ability used to reveal " .. reveal_card.getName() .. " while the Force is with them. " .. reveal_card.getName() .. " may be returned or swapped with card in discard.", color)
                     end
@@ -1076,7 +1076,7 @@ function primary_button_action(button, playercolor, _)
                 end
             end
             -- broadcast to manually do the thing
-            if (force_owner == "Bottom" and bottom_faction == "republic") or (force_owner == "Top" and top_faction == "republic") then
+            if (force_owner == "Bottom" and bottomFaction == "republic") or (force_owner == "Top" and topFaction == "republic") then
                 broadcastToAll(name .. " ability used while the Force is with them, and may manually place a 'Trooper' from discard to hand.", color)
             else
                 broadcastToAll(name .. " ability used while the Force is with them, and may manually place a 'Trooper' from discard to top of deck.", color)
@@ -1117,9 +1117,9 @@ function primary_button_action(button, playercolor, _)
         elseif name == "Acclamator-Class Ship" then
             broadcastToAll("Acclamator-Class Ship ability used, " .. capitalized_faction .. "'s next purchased card will go to top of their deck.", color)
             if is_bottom then
-                Global.setVar('next_card_to_deck_bottom', true)
+                Global.setVar('nextCardToDeckBottom', true)
             elseif is_top then
-                Global.setVar('next_card_to_deck_top', true)
+                Global.setVar('nextCardToDeckTop', true)
             end
         --elseif name == "Anakin Skywalker" then
             -- check force_owner, modify effective damage counter
@@ -1133,10 +1133,10 @@ function primary_button_action(button, playercolor, _)
             end
             if naboo_found then
                 broadcastToAll("Padmé Amidala ability used, Republic has drawn 2 cards with Naboo in play.", color)
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=2})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=2})
             else
                 broadcastToAll("Padmé Amidala ability used, Republic has only drawn 1 card without Naboo in play.", color)
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             end
         elseif name == "AT-TE" then
             -- broadcast to manually place unit in play back on top of deck
@@ -1151,14 +1151,14 @@ function primary_button_action(button, playercolor, _)
                 plus_attack = reveal_card.getVar('cost')
                 if plus_attack > 5 then plus_attack = 5 end
                 end,1)
-                if (force_owner == "Bottom" and bottom_faction == "republic") or (force_owner == "Top" and top_faction == "republic") then
+                if (force_owner == "Bottom" and bottomFaction == "republic") or (force_owner == "Top" and topFaction == "republic") then
                     if reveal_card.getName() == "Obi-Wan Kenobi" then
                         broadcastToAll("Mace Windu ability used to reveal Obi-Wan Kenobi while the Force is with the Republic, and may choose to return Obi-Wan Kenobi for +5 Attack to Mace Windu, or, draw Obi-Wan Kenobi via his ability.", color)
                         -- hide standard return button
                         local return_button = getObjectFromGUID("82a57b")
                         Wait.time(function()
-                        return_button.setRotation((bottom_faction == "republic") and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
-                        return_button.setPosition((bottom_faction == "republic") and {-17.50, -1.00, -35.00} or {17.50, -1.00, 35.00})
+                        return_button.setRotation((bottomFaction == "republic") and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
+                        return_button.setPosition((bottomFaction == "republic") and {-17.50, -1.00, -35.00} or {17.50, -1.00, 35.00})
                         reveal_card.createButton({
                             click_function = "kenobi_hand",
                             function_owner = self,
@@ -1230,10 +1230,10 @@ function primary_button_action(button, playercolor, _)
             broadcastToAll("Dark Side Agent has gained +1 Attack from it's ability.", color)
         elseif name == "B2 Battle Droid" then
             -- set exile row buttons (but only for separatist cards)
-            pad_galaxy_deck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
+            padGalaxyDeck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
             broadcastToAll("B2 Battle Droid ability used, Separatist may select a Separatist card in galaxy row to exile: draw a card.", color)
         elseif name == "Nute Gunray" then
-            Global.setVar('next_card_nute', true)
+            Global.setVar('nextCardNute', true)
             broadcastToAll("Nute Gunray ability used, next card to leave row will be replaced by non-starter card from Separatist exile.", color)
         elseif name == "STAP" then
             -- check if more enemy than separatist cards in row, +1 force if so
@@ -1252,32 +1252,32 @@ function primary_button_action(button, playercolor, _)
             end
             if enemy_count > sep_count then
                 broadcastToAll("STAP ability used: " .. sep_count .. " Separatist, " .. enemy_count .. " " .. capitalized_opponent_faction .. " cards in galaxy row. Separatist gains +1 Force.", color)
-                pad_galaxy_deck.call('move_force_track', {button=force_button, count=1})
+                padGalaxyDeck.call('move_force_track', {button=force_button, count=1})
             else
                 broadcastToAll("STAP ability used: " .. sep_count .. " Separatist, " .. enemy_count .. " " .. capitalized_opponent_faction .. " cards in galaxy row. Separatist does not gain Force.", color)
             end
         elseif name == "Vulture Droid" then
             -- button to exile initially
             broadcastToAll("After manually attacking, Vulture Droid has exiled itself via it's ability.", color)
-            pad_galaxy_deck.call('exile_card', {p_area=color, obj=button})
+            padGalaxyDeck.call('exileCard', {p_area=color, obj=button})
             -- but eventually, go off whatever button I use to modify eventual fight counter
         elseif name == "Droideka" then
-            if Global.getVar('droideka_condition_met') then
+            if Global.getVar('metConditionDroideka') then
                 broadcastToAll("Droideka ability used after card has been exiled by Separatist this turn. Droideka gains +2 Attack.", color)
             else
                 broadcastToAll("Droideka ability used, but no card has been exiled by Separatist this turn. Droideka does not gain Attack.", color)
             end
             -- broadcast / modify effective damage counter
         elseif name == "Munificent-Class Frigate" then
-            pad_galaxy_deck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
+            padGalaxyDeck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
             broadcastToAll("Munificent-Class Frigate ability used, Separatist may select a Separatist card in galaxy row to exile: repair 2 base damage.", color)
         elseif name == "Tri-Fighter" then
             -- if card exiled, broadcast to do damage to capital ship
-            pad_galaxy_deck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
+            padGalaxyDeck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
             broadcastToAll("Tri-Fighter ability used. Separatist may select a Separatist card in galaxy row to exile: do 3 damage to " .. capitalized_opponent_faction .. " ship.", color)
         elseif name == "Wat Tambor" then
             broadcastToAll("Wat Tambor ability used, Separatist must choose a Neutral row card to discard.", color)
-            Global.setVar('wat_condition_met', true)
+            Global.setVar('metConditionWat', true)
         elseif name == "Droid Control Ship" then
             broadcastToAll("Droid Control Ship ability used, Separatist may purchase a droid from exile.", color)
             exile_bag.Container.search(color)
@@ -1287,16 +1287,16 @@ function primary_button_action(button, playercolor, _)
             broadcastToAll("MTT ability used, manually place next purchased 'Droid' to top of Separatist deck.", color)
         elseif name == "AAT" then
             -- give 2 force if card exiled
-            pad_galaxy_deck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
+            padGalaxyDeck.call('exile_row_deploy', {calling_card=button.getGUID(), is_bottom=is_bottom})
             broadcastToAll("AAT ability used. Separatist may select a Separatist card in galaxy row to exile: gain 2 Force.", color)
         elseif name == "Admiral Trench" then
-            if Global.getVar('trench_condition_met') then
+            if Global.getVar('metConditionTrench') then
                 broadcastToAll("Admiral Trench ability used after ship in play at turn start, Separatist draws 2 cards.", color)
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=2})
-                Global.getVar('trench_condition_met', false)
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=2})
+                Global.getVar('metConditionTrench', false)
             else
                 broadcastToAll("Admiral Trench ability used after ship not in play at turn start, Separatist draws 1 card.", color)
-                pad_galaxy_deck.call('deal_card', {player_area=area, count=1})
+                padGalaxyDeck.call('deal_card', {playerArea=area, count=1})
             end
         elseif name == "General Grievous" then
             broadcastToAll("General Grievous ability used after Bounty Hunting, may manually exile 'Droid' from hand, and manually receive Bounty Hunt reward a second time.", color)
@@ -1340,7 +1340,7 @@ function primary_button_action(button, playercolor, _)
                 local button = getObjectFromGUID(button_guid)
                 for _, v in pairs(getObjectFromGUID(zones[i]).getObjects()) do
                     if v.hasTag('neutral') and v.hasTag('unit') then
-                        pad_galaxy_deck.call('galaxy_discard', {button=button, card_zone=getObjectFromGUID(zones[i]), alt_click=true})
+                        padGalaxyDeck.call('galaxy_discard', {button=button, card_zone=getObjectFromGUID(zones[i]), alt_click=true})
                         neutral_count = neutral_count + 1
                     end
                 end
@@ -1370,11 +1370,11 @@ function primary_button_action(button, playercolor, _)
                 end
             end
             for i = 1, #free_slots do
-                pad_galaxy_deck.call('draw_galaxy_card_to_slot', {slot=free_slots[i]})
+                padGalaxyDeck.call('draw_galaxy_card_to_slot', {slot=free_slots[i]})
             end
             end, .5)
             Wait.time(function()
-            if (force_owner == "Bottom" and bottom_faction == "separatist") or (force_owner == "Top" and top_faction == "separatist") then
+            if (force_owner == "Bottom" and bottomFaction == "separatist") or (force_owner == "Top" and topFaction == "separatist") then
                 if #opponent_cards == 0 then
                     broadcastToAll("The force is with Separatist, however there are no enemy cards in row to discard with Asajj Ventress ability.", color)
                 elseif #opponent_cards == 1 then
@@ -1395,7 +1395,7 @@ function primary_button_action(button, playercolor, _)
             end
             end, 1)
         elseif name == "Count Dooku" then
-            if (force_owner == "Bottom" and bottom_faction == "separatist") or (force_owner == "Top" and top_faction == "separatist") then
+            if (force_owner == "Bottom" and bottomFaction == "separatist") or (force_owner == "Top" and topFaction == "separatist") then
                 local exile_valid = false
                 for _, object in ipairs(exile_bag.getObjects()) do
                     if object.name ~= "B1 Battle Droid" and object.name ~= "Separatist Shuttle" and object.name ~= "Dark Side Agent" then
@@ -1416,14 +1416,14 @@ function primary_button_action(button, playercolor, _)
     end
     if name ~= "Hondo Onaka" then
         if button.hasTag('buttons') then
-            pad_galaxy_deck.call('remove_buttons', {object=button})
+            padGalaxyDeck.call('remove_buttons', {object=button})
         elseif button.hasTag('ability_button') or button.hasTag('ability_button_sec') then
-            pad_galaxy_deck.call('remove_ability_buttons', {object=button})
+            padGalaxyDeck.call('remove_ability_buttons', {object=button})
         end
     end
     if name == "Temple Guardian" or name == "Inquisitor" or name == "Jedi Knight" or
     name == "Dark Side Agent" or name == "Lobot" or name == "Zam Wesell" then
-        pad_galaxy_deck.call('remove_force_buttons', {object=button})
+        padGalaxyDeck.call('remove_force_buttons', {object=button})
     end
     if button.hasTag('ship') then button.call('ship_counter_create') end
     -- create cancel buttons on requiring cards
@@ -1433,7 +1433,7 @@ function primary_button_action(button, playercolor, _)
     name == 'B2 Battle Droid' or name == 'Munificent-Class Frigate' or
     name == 'Tri-Fighter' or name == 'AAT' or name == "Nute Gunray" or
     name == 'Wat Tambor' then
-        pad_galaxy_deck.call('cancel_create', {button=button})
+        padGalaxyDeck.call('cancel_create', {button=button})
     end
 end -- end primary_button_action()
 
@@ -1441,24 +1441,24 @@ end -- end primary_button_action()
 function secondary_button_action(button, playercolor, _)
     local is_bottom                    = button.hasTag('bottom_owner')
     local is_top                       = button.hasTag('top_owner')
-    local force_owner                  = pad_galaxy_deck.call('get_force_owner')
-    local bottom_faction, top_faction  = pad_galaxy_deck.call('get_playerareas')
-    local faction                      = (is_bottom and bottom_faction or top_faction)
-    local opponent_faction             = (is_bottom and top_faction or bottom_faction)
+    local force_owner                  = padGalaxyDeck.call('get_force_owner')
+    local bottomFaction, topFaction  = padGalaxyDeck.call('get_playerareas')
+    local faction                      = (is_bottom and bottomFaction or topFaction)
+    local opponent_faction             = (is_bottom and topFaction or bottomFaction)
     local capitalized_faction          = (faction:gsub("^%l", string.upper))
     local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
-    local capitalized_bottom_faction   = (bottom_faction:gsub("^%l", string.upper))
-    local capitalized_top_faction      = (top_faction:gsub("^%l", string.upper))
-    local bottom_color, top_color      = pad_galaxy_deck.call('get_playercolors')
-    local color                        = (is_bottom and bottom_color or top_color)
-    local all_colors                   = Global.getVar('all_colors')
+    local capitalized_bottomFaction   = (bottomFaction:gsub("^%l", string.upper))
+    local capitalized_topFaction      = (topFaction:gsub("^%l", string.upper))
+    local bottomColor, topColor      = padGalaxyDeck.call('get_playercolors')
+    local color                        = (is_bottom and bottomColor or topColor)
+    local allColors                  = Global.getVar('all_colors')
     local bottom_force_button          = getObjectFromGUID("d586db")
     local top_force_button             = getObjectFromGUID("817b24")
     local force_button                 = (is_bottom and bottom_force_button or top_force_button)
     local name                         = button.getName()
     local attack_action                = ((faction == "empire" or faction == "separatist") and "Bounty Hunt" or "Sabotage")
     local area                         = (is_bottom and "bottom" or "top")
-    local base_zone                    = (is_bottom and getObjectFromGUID("59b7ad") or getObjectFromGUID("23b5a3"))
+    local base_zone                    = (is_bottom and zoneBasesBottom or zoneBasesTop)
     local owner_tag                    = nil
     if button.hasTag('bottom_owner') then
         owner_tag = 'bottom_owner'
@@ -1469,47 +1469,47 @@ function secondary_button_action(button, playercolor, _)
     ----- ORIGINAL NEUTRAL SECONDARY ACTION BUTTONS -----
         if name == "Lobot" then
             broadcastToAll("Lobot ability used, " .. capitalized_faction .. " has gained 2 resources.", color)
-            pad_galaxy_deck.call('add_resource', {area=area, count=2})
+            padGalaxyDeck.call('add_resource', {area=area, count=2})
         elseif name == "Nebulon-B Frigate" then
             broadcastToAll("Nebulon-B Frigate ability used, " .. capitalized_faction .. " has gained 3 resources.", color)
-            pad_galaxy_deck.call('add_resource', {area=area, count=3})
+            padGalaxyDeck.call('add_resource', {area=area, count=3})
     ----- EXPANSION NEUTRAL SECONDARY ACTION BUTTONS -----
         elseif name == "Zam Wesell" then
             broadcastToAll("Zam Wesell ability used, " .. capitalized_faction .. " has gained 2 resources.", color)
-            pad_galaxy_deck.call('add_resource', {area=area, count=2})
+            padGalaxyDeck.call('add_resource', {area=area, count=2})
     ----- EMPIRE SECONDARY ACTION BUTTONS -----
         elseif name == "Inquisitor" then
             broadcastToAll("Inquisitor ability used, Empire has gained a resource.", "Blue")
-            pad_galaxy_deck.call('add_resource', {area=area, count=1})
+            padGalaxyDeck.call('add_resource', {area=area, count=1})
         elseif name == "Landing Craft" then
             broadcastToAll("Landing Craft ability used, Empire has gained 4 resources.", "Blue")
-            pad_galaxy_deck.call('add_resource', {area=area, count=4})
+            padGalaxyDeck.call('add_resource', {area=area, count=4})
     ----- REBELLION SECONDARY ACTION BUTTONS -----
         elseif name == "Temple Guardian" then
             broadcastToAll("Temple Guardian ability used, Rebellion has gained a resource.", "Red")
-            pad_galaxy_deck.call('add_resource', {area=area, count=1})
+            padGalaxyDeck.call('add_resource', {area=area, count=1})
         elseif name == "Rebel Transport" then
             broadcastToAll("Rebel Transport ability used, Rebellion has gained a resource.", "Red")
-            pad_galaxy_deck.call('add_resource', {area=area, count=1})
+            padGalaxyDeck.call('add_resource', {area=area, count=1})
     ----- REPUBLIC SECONDARY ACTION BUTTONS -----
         elseif name == "Jedi Knight" then
             broadcastToAll("Jedi Knight ability used, Republic has gained a resource.", color)
-            pad_galaxy_deck.call('add_resource', {area=area, count=1})
+            padGalaxyDeck.call('add_resource', {area=area, count=1})
     ----- SEPARATIST SECONDARY ACTION BUTTONS -----
         elseif name == "Dark Side Agent" then
             broadcastToAll("Dark Side Agent ability used, Republic has gained a resource.", color)
-            pad_galaxy_deck.call('add_resource', {area=area, count=1})
+            padGalaxyDeck.call('add_resource', {area=area, count=1})
         end
     end
     if button.hasTag('buttons_sec') then
-         pad_galaxy_deck.call('remove_buttons', {object=button})
+         padGalaxyDeck.call('remove_buttons', {object=button})
     elseif button.hasTag('ability_button_sec') then
-        pad_galaxy_deck.call('remove_ability_buttons', {object=button})
+        padGalaxyDeck.call('remove_ability_buttons', {object=button})
     end
     if button.hasTag('add_force_button') then
-        pad_galaxy_deck.call('remove_force_buttons', {object=button})
+        padGalaxyDeck.call('remove_force_buttons', {object=button})
     end
-    -- pad_galaxy_deck.call('card_exhaust', {card=button})
+    -- padGalaxyDeck.call('card_exhaust', {card=button})
     if button.hasTag('ship') then button.call('ship_counter_create') end
 end -- end secondary_button_action()
 
@@ -1517,17 +1517,17 @@ end -- end secondary_button_action()
 function bh_action(button, _, _)
     local name                         = button.getName()
     local target_faction               = button.getVar('faction')
-    local bottom_faction, top_faction  = pad_galaxy_deck.call('get_playerareas')
-    local bottom_color, top_color      = pad_galaxy_deck.call('get_playercolors')
-    local attack_faction               = ((bottom_faction ~= target_faction) and bottom_faction or top_faction)
-    local opponent_faction             = ((bottom_faction ~= target_faction) and top_faction or bottom_faction)
-    local is_bottom                    = (attack_faction == bottom_faction)
-    local is_top                       = (attack_faction == top_faction)
+    local bottomFaction, topFaction  = padGalaxyDeck.call('get_playerareas')
+    local bottomColor, topColor      = padGalaxyDeck.call('get_playercolors')
+    local attack_faction               = ((bottomFaction ~= target_faction) and bottomFaction or topFaction)
+    local opponent_faction             = ((bottomFaction ~= target_faction) and topFaction or bottomFaction)
+    local is_bottom                    = (attack_faction == bottomFaction)
+    local is_top                       = (attack_faction == topFaction)
     local button_force_track           = (is_bottom and getObjectFromGUID("d586db") or getObjectFromGUID("817b24"))
-    local attack_faction_color         = (is_bottom and bottom_color or top_color)
+    local attack_faction_color         = (is_bottom and bottomColor or topColor)
     local capitalized_attack_faction   = (attack_faction:gsub("^%l", string.upper))
     local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
-    local enemy_faction                = (is_bottom and top_faction or bottom_faction)
+    local enemy_faction                = (is_bottom and topFaction or bottomFaction)
     local area                         = (is_bottom and "bottom" or "top")
     local attack_action                = nil
     local button_zone                  = nil
@@ -1556,290 +1556,290 @@ function bh_action(button, _, _)
     -- EMPIRE TARGETS
     if name == "Tie Fighter" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Tie Fighter: gained 1 Resource", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "Admiral Piett" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Admiral Piett: gained 1 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=1})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=1})
     elseif name == "Scout Trooper" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Scout Trooper: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "Tie Bomber" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Tie Bomber: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "Death Trooper" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Death Trooper: gained 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Tie Interceptor" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Tie Interceptor: gained 3 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "AT-ST" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " AT-ST: may manually exile up to 2 cards from hand or discard", attack_faction_color)
     elseif name == "General Veers" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " General Veers: gained 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "Landing Craft" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Landing Craft: gained 4 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "Moff Jerjerrod" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Moff Jerjerrod: gained 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "Boba Fett" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Boba Fett: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Director Krennic" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Director Krennic: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "AT-AT" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " AT-AT: may purchase " .. capitalized_attack_faction ..  " card for free", attack_faction_color)
-        Global.setVar('next_card_atat', true)
+        Global.setVar('nextCardATAT', true)
     elseif name == "Grand Moff Tarkin" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Grand Moff Tarkin: gained 3 Resources, 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "Darth Vader" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Darth Vader: gained 4 Resources, 4 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=4})
     end
 
 
     -- REBEL TARGETS
     if name == "Y-Wing" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Y-Wing: gained 1 Resource", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "Baze Malbus" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Baze Malbus: gained 1 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=1})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=1})
     elseif name == "Duros Spy" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Duros Spy: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "Snowspeeder" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Snowspeeder: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "Chirrut Imwe" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Chirrut Imwe: gained 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Rebel Commando" then
       broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Rebel Commando: gained 2 Force", attack_faction_color)
-      pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+      padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "X-Wing" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " X-Wing: gained 3 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Chewbacca" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Chewbacca: gained 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "Jyn Erso" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Jyn Erso: gained 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "U-Wing" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " U-Wing: gained 4 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "B-Wing" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " B-Wing: may manually exile up to 2 cards from hand or discard", attack_faction_color)
     elseif name == "Cassian Andor" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Cassian Andor: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Han Solo" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Han Solo: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Princess Leia" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Princess Leia: gained 3 Resources, 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "Millenium Falcon" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Millenium Falcon: may purchase " .. capitalized_attack_faction .. " card for free", attack_faction_color)
-        Global.setVar('next_card_falcon', true)
+        Global.setVar('nextCardFalcon', true)
     elseif name == "Luke Skywalker" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Luke Skywalker: gained 4 Resources, 4 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=4})
     end
 
 
     -- REPUBLIC TARGETS
     if name == "V-19 Torrent" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " V-19 Torrent: gained 1 Resource", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "AT-RT" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " AT-RT: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "BARC Trooper" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " BARC Trooper: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "ARC Trooper" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " ARC Trooper: gained 3 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Aayla Secura" then
       broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Aayla Secura: gained 2 Force", attack_faction_color)
-      pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+      padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Captain Rex" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Captain Rex: gained 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Delta-7B" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Delta-7B: gained 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Ahsoka Tano" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Ahsoka Tano: gained 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "ARC-170" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " ARC-170: may manually exile up to 2 cards from hand or discard", attack_faction_color)
     elseif name == "Clone Commander Cody" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Clone Commander Cody: gained 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "LAAT Gunship" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " LAAT Gunship: gained 4 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "Anakin Skywalker" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Anakin Skywalker: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Padmé Amidala" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Padmé Amidala: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "AT-TE" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " AT-TE: may right click to purchase " .. capitalized_attack_faction .. " card for free", attack_faction_color)
-        Global.setVar('next_card_atte', true)
+        Global.setVar('nextCardATTE', true)
     elseif name == "Obi-Wan Kenobi" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Obi-Wan Kenobi: gained 3 Resources, 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "Mace Windu" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Mace Windu: gained 4 Resources, 4 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=4})
     end
 
 
     -- SEPARATIST TARGETS
     if name == "B2 Battle Droid" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " B2 Battle Droid: gained 1 Resource", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "Nute Gunray" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Nute Gunray: gained 1 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=1})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=1})
     elseif name == "STAP" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " STAP: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "Vulture Droid" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Vulture Droid: may manually exile a card from hand or discard", attack_faction_color)
     elseif name == "Droideka" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Droideka: gained 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Tri-Fighter" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Tri-Fighter: gained 3 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Wat Tambor" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Wat Tambor: gained 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Magnaguard" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Magnaguard: gained 3 Force", attack_faction_color)
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=3})
     elseif name == "MTT" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " MTT: gained 4 Resources", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "AAT" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " AAT: may manually exile up to 2 cards from hand or discard", attack_faction_color)
     elseif name == "Admiral Trench" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Admiral Trench: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "General Grievous" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " General Grievous: gained 3 Resources, 2 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=2})
     elseif name == "Asajj Ventress" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Asajj Ventress: may purchase " .. capitalized_attack_faction .. "card for free", attack_faction_color)
-        Global.setVar('next_card_asajj', true)
+        Global.setVar('nextCardAsajj', true)
     elseif name == "Count Dooku" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Count Dooku: gained 4 Resources, 4 Force", attack_faction_color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
-        pad_galaxy_deck.call('move_force_track', {button=button_force_track, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('move_force_track', {button=button_force_track, count=4})
     end
 
 
     -- NEUTRAL TARGETS IF ORD MANTELL OR ASSASSIN DROID IN PLAY
     if name == "Jawa Scavenger" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Jawa Scavenger: gained 1 Resource", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "Z-95 Headhunter" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Z-95 Headhunter: gained 1 Resource", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "Kel-Dor Mystic" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Kel Dor Mystic: gained 2 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=2})
     elseif name == "Rodian Gunslinger" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Rodian Gunslinger: gained 2 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=2})
     elseif name == "Bossk" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Bossk: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Fang Fighter" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Fang Fighter: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Lobot"  then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Lobot: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Twi'Lek Smuggler" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Twi'lek Smuggler: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Dengar" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Dengar: gained 4 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "HWK 290" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " HWK 290: gained 4 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "Quarren Mercenary" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Quarren Mercenary: gained 4 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "IG-88" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " IG-88: gained 5 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=5})
+        padGalaxyDeck.call('add_resource', {area=area, count=5})
     elseif name == "Lando Calrissian" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Lando Calrissian: gained 6 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=6})
+        padGalaxyDeck.call('add_resource', {area=area, count=6})
     elseif name == "Jabba's Sail Barge" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Jabba's Sail Barge: gained 7 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=7})
+        padGalaxyDeck.call('add_resource', {area=area, count=7})
     elseif name == "Jabba the Hutt" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Jabba the Hutt: gained 8 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=8})
+        padGalaxyDeck.call('add_resource', {area=area, count=8})
     elseif name == "Protocol Droid" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Protocol Droid: gained 1 Resource", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "Weequay Pirate" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Weequay Pirate: gained 1 Resource", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=1})
+        padGalaxyDeck.call('add_resource', {area=area, count=1})
     elseif name == "Underworld Contact" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Underworld Contact: gained 2 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=2})
+        padGalaxyDeck.call('add_resource', {area=area, count=2})
     elseif name == "Hutt Fighter" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Hutt Fighter: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Super Commando" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Super Commando: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Zam Wesell" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Zem Wesell: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Latts Razzi"  then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Latts Razzi: gained 3 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=3})
+        padGalaxyDeck.call('add_resource', {area=area, count=3})
     elseif name == "Assassin Droid" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Assassin Droid: gained 4 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "Gauntlet Starfighter" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Gauntlet Starfighter: gained 4 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=4})
+        padGalaxyDeck.call('add_resource', {area=area, count=4})
     elseif name == "Jango Fett" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Jango Fett: gained 5 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=5})
+        padGalaxyDeck.call('add_resource', {area=area, count=5})
     elseif name == "Cad Bane" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Cad Bane: gained 6 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=6})
+        padGalaxyDeck.call('add_resource', {area=area, count=6})
     elseif name == "Fett's Firespray" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Fett's Firespray: gained 7 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=7})
+        padGalaxyDeck.call('add_resource', {area=area, count=7})
     elseif name == "Hondo Onaka" then
         broadcastToAll(capitalized_attack_faction .. " has " .. attack_action .. " Hondo Onaka: gained 8 Resources", color)
-        pad_galaxy_deck.call('add_resource', {area=area, count=8})
+        padGalaxyDeck.call('add_resource', {area=area, count=8})
     end
     local card_destination = {-28.00, 2.5, -2.50}
     local card_rotation = {0, 90, 0}
@@ -1850,12 +1850,12 @@ function bh_action(button, _, _)
             discard_card.setRotationSmooth(card_rotation)
             discard_card.setPositionSmooth(card_destination, false, false)
             Wait.time(function()
-            if Global.getVar('next_card_nute') then
-                local exile_bag  = (bottom_color == "Blue" or bottom_color == "Purple") and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249")
-                local nute_color = (bottom_color == "Blue" or bottom_color == "Purple") and bottom_color or top_color
+            if Global.getVar('nextCardNute') then
+                local exile_bag  = (bottomColor == "Blue" or bottomColor == "Purple") and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249")
+                local nute_color = (bottomColor == "Blue" or bottomColor == "Purple") and bottomColor or topColor
                 handle_nute_gunray({exile_bag=exile_bag, color=nute_color})
             else
-                pad_galaxy_deck.call('draw_galaxy_card')
+                padGalaxyDeck.call('draw_galaxy_card')
             end
             end, 1)
         end

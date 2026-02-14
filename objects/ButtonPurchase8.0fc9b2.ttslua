@@ -1,10 +1,10 @@
-player_area   = "top"
+playerArea   = "top"
 checkzone     = getObjectFromGUID("e59ff7")
 
 
 function onLoad()
-    pad_galaxy_deck = getObjectFromGUID("83b3ce")
-    pad_outer_rim   = getObjectFromGUID("606e92")
+    padGalaxyDeck = getObjectFromGUID("83b3ce")
+    padOuterRim  = getObjectFromGUID("606e92")
     create_button()
 end -- end onLoad()
 
@@ -24,5 +24,5 @@ function create_button()
 end
 
 function purchase_card(button, playercolor, alt_click)
-    pad_outer_rim.call('purchase_card', {btn=button, player_color=playercolor, altclick=alt_click, playerarea=player_area})
+    pad_outer_rim.call('purchase_card', {btn=button, player_color=playercolor, altclick=alt_click, playerarea=playerArea})
 end -- end purchase_card()

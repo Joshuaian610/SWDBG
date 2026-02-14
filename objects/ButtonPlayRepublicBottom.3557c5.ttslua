@@ -1,11 +1,11 @@
 faction          = "republic"
-player_area      = "bottom"
+playerArea      = "bottom"
 backdrop         = "17e255"
 b_color          = {1, 0, 0, .4}
 h_color          = {1, 0, 0, .1}
 color            = "Red"
 deck_starter     = getObjectFromGUID("fb6a32")
-deck_galaxy      = getObjectFromGUID("0503ab")
+deckGalaxy      = getObjectFromGUID("0503ab")
 deck_bases       = getObjectFromGUID("389e30")
 deck_ships       = getObjectFromGUID("7ff13e")
 counterpart      = getObjectFromGUID("16cb03")
@@ -103,14 +103,14 @@ function setup_faction(_, playercolor, _)
     local rot_base        = nil
     local rot_initial     = nil
     local loc_base_galaxy = {-28.00, 1.50, 2.50}
-    if player_area == "bottom" then
+    if playerArea == "bottom" then
         loc_starter    = {-3.50, 1.00, -31.00}
         rot_starter    = {0.00, 180.00, 180.00}
         loc_bases      = {8.00, 0.44, -31.00}
         loc_initial    = {8.00, 3.00, -31.00}
         rot_base       = {0.00, 180.00, 180.00}
         rot_initial    = {0.00, 180.00, 0.00}
-    elseif player_area == "top" then
+    elseif playerArea == "top" then
         loc_starter    = {3.50, 1.00, 31.00}
         rot_starter    = {0.00, 0.00, 180.00}
         loc_bases      = {-8.00, 0.45, 31.00}
@@ -154,9 +154,9 @@ function setup_faction(_, playercolor, _)
     initial_base.setRotation(rot_initial)
     initial_base.setPosition(loc_initial)
     -- galaxy deck
-    deck_galaxy.setLock(false)
-    deck_galaxy.setRotation({0.00, 90.00, 180.00})
-    deck_galaxy.setPosition({-28.00, 3.00, 2.50})
+    deckGalaxy.setLock(false)
+    deckGalaxy.setRotation({0.00, 90.00, 180.00})
+    deckGalaxy.setPosition({-28.00, 3.00, 2.50})
     -- ships deck
     deck_ships.setLock(false)
     deck_ships.setRotation({0.00, 90.00, 180.00})
@@ -179,7 +179,7 @@ function setup_faction(_, playercolor, _)
     end
     -- mark object for detection functions
     -- bottom, so, uses stormtrooper helmet
-    getObjectFromGUID("12cd71").setName(faction)
+    getObjectFromGUID("12cd71").setDescription(faction)
     -- broadcast
     if playercolor ~= nil then
         broadcastToAll(Player[playercolor].steam_name .. " will play as " .. capitalized_faction .. ".", color)

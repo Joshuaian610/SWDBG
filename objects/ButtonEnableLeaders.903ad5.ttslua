@@ -15,7 +15,7 @@ function remove_buttons()
 end -- end remove_buttons()
 
 
-function enable_leaders()
+function enableLeaders()
     remove_buttons()
     self.createButton({
         click_function = 'disable_leaders',
@@ -31,13 +31,13 @@ function enable_leaders()
         font_color = {1,1,1,255},
         tooltip = "This button, if unchecked, will disable the setup of the top player area for the Leaders AI bot, and enable the setup of the top player area for Multiplayer.",
     })
-    Global.setVar('enable_leaders', true)
-end -- end enable_leaders()
+    Global.setVar('enableLeaders', true)
+end -- end enableLeaders()
 
 function disable_leaders()
     remove_buttons()
     self.createButton({
-        click_function = 'enable_leaders',
+        click_function = 'enableLeaders',
         function_owner = self,
         label = '',
         color = {1, 1, 1, .1},
@@ -48,5 +48,5 @@ function disable_leaders()
         height = 1000,
         tooltip = "This button, if checked, will enable the setup of the top player area for the Leaders AI bot, and disable the setup of the top player area for Multiplayer.",
     })
-    Global.setVar('enable_leaders', false)
+    Global.setVar('enableLeaders', false)
 end -- end disable_leaders()

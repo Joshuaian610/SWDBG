@@ -37,16 +37,16 @@
       "normalized": "to_delete"
     },
     {
-      "displayed": "",
-      "normalized": ""
+      "displayed": "turnTracker",
+      "normalized": "turntracker"
     },
     {
       "displayed": "rebel_owner",
       "normalized": "rebel_owner"
     },
     {
-      "displayed": "turn_tracker",
-      "normalized": "turn_tracker"
+      "displayed": "turnTracker",
+      "normalized": "turnTracker"
     },
     {
       "displayed": "unit",

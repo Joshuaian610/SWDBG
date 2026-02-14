@@ -449,12 +449,12 @@ function onLoad()
     -- turn solo off for release save
     -- getObjectFromGUID("12cd71").interactable = false -- empire helmet solo bag
     -- getObjectFromGUID("834dea").interactable = false -- bd droid solo bag
-    -- button_leaders_toggle_empire.setInvisibleTo({}) -- change back to all_colors -- leaders button empire
+    -- button_leaders_toggle_empire.setInvisibleTo({}) -- change back to allColors-- leaders button empire
     -- remove_buttons(button_leaders_toggle_empire)
-    -- button_leaders_toggle_rebel.setInvisibleTo({}) -- change back to all_colors -- leaders button rebel
+    -- button_leaders_toggle_rebel.setInvisibleTo({}) -- change back to allColors-- leaders button rebel
     -- remove_buttons(button_leaders_toggle_rebel)
-    -- label_leaders_toggle_empire.setInvisibleTo({}) -- change back to all_colors -- leaders label empire
-    -- label_leaders_toggle_rebel.setInvisibleTo({}) -- change back to all_colors -- leaders label rebel
+    -- label_leaders_toggle_empire.setInvisibleTo({}) -- change back to allColors-- leaders label empire
+    -- label_leaders_toggle_rebel.setInvisibleTo({}) -- change back to allColors-- leaders label rebel
 end -- end onLoad()
 
 
@@ -503,7 +503,7 @@ function setup_game(button, _, _)
     end, 1)
     -- get galaxy and starter decks, shuffle all
     local galaxy_deck = nil
-    for k, v in pairs(getObjectFromGUID("cdc550").getObjects()) do
+    for k, v in pairs(zoneGalaxyDeck.getObjects()) do
         if v.tag == "Deck" then
             galaxy_deck = v
         end
@@ -525,7 +525,7 @@ function setup_game(button, _, _)
             --purchase_buttons[i].destruct()
         end
         for i = 7, 12 do
-            galaxy_discard_buttons[i].destruct()
+            buttonsGalaxyDiscard[i].destruct()
         end
         -- pull & position leader
         local leader_card = galaxy_deck.takeObject({guid="5f007b"})
@@ -572,7 +572,7 @@ function setup_game(button, _, _)
         first_base.setPosition(loc_first_base_rebel)
         first_base.setRotation(rot_base_faceup_rebel)
         local base_deck = nil
-        for k, v in pairs(getObjectFromGUID("23b5a3").getObjects()) do
+        for k, v in pairs(zoneBasesTop.getObjects()) do
             if v.tag == "Deck" then
                 base_deck = v
             end
@@ -599,7 +599,7 @@ function setup_game(button, _, _)
             --purchase_buttons[i].destruct()
         end
         for i = 1, 6 do
-            galaxy_discard_buttons[i].destruct()
+            buttonsGalaxyDiscard[i].destruct()
         end
         -- pull & position leader
         local leader_card = galaxy_deck.takeObject({guid="9c5c40"})
@@ -647,7 +647,7 @@ function setup_game(button, _, _)
         first_base.setRotation(rot_base_faceup_empire)
         -- shuffle bases, pull 2 bases, resize, create deck of 2 & position
         local base_deck = nil
-        for k, v in pairs(getObjectFromGUID("59b7ad").getObjects()) do
+        for k, v in pairs(zoneBasesBottom.getObjects()) do
             if v.tag == "Deck" then
                 base_deck = v
             end
@@ -686,8 +686,8 @@ function setup_game(button, _, _)
         -- })
     end
     for i = 1, 12 do
-        galaxy_discard_buttons[i].interactable = false
-        galaxy_discard_buttons[i].createButton({
+        buttonsGalaxyDiscard[i].interactable = false
+        buttonsGalaxyDiscard[i].createButton({
             click_function = "galaxy_discard",
             label = "",
             color = {0.6, 0.78, 0.73, 0.0},
@@ -716,13 +716,13 @@ function setup_game(button, _, _)
         --purchase_buttons[i].setInvisibleTo({})
     end
     for i = 1, 12 do
-        galaxy_discard_buttons[i].setInvisibleTo({})
+        buttonsGalaxyDiscard[i].setInvisibleTo({})
     end
     for i = 1, 2 do
         -- force_buttons[i].setInvisibleTo({})
     end
     -- end_turn_buttons[1].setInvisibleTo({})
-    turn_tracker.setInvisibleTo({})
+    turnTracker.setInvisibleTo({})
     -- button_purchase_free_empire.setInvisibleTo({})
     -- label_purchase_free_empire.setInvisibleTo({})
     -- force tracker color change
@@ -736,7 +736,7 @@ end -- end setup_game()
 
 
 -- these functions enable and disable the Leaders AI checkboxes
-function enable_leaders(button, _, _)
+function enableLeaders(button, _, _)
   -- button_random_faction.removeButton(0)
   -- button_random_faction.createButton(mark_random_factions_button_parms)
   random_faction = false
@@ -747,7 +747,7 @@ function enable_leaders(button, _, _)
   end
   button.removeButton(0)
   button.createButton(unmark_leaders_toggle_button_parms)
-end -- end enable_leaders()
+end -- end enableLeaders()
 function disable_leaders(button, _, _)
   if button == button_leaders_toggle_empire then
       leaders_empire = false
@@ -950,7 +950,7 @@ function ai_begin_turn(faction)
     local zones = {zone_1,zone_2,zone_3,zone_4,zone_5,zone_6}
     local opposing_faction_tag = (is_bottom and "rebel" or "empire")
     local galaxy_deck = nil
-    local zone_galaxy_deck = getObjectFromGUID("cdc550")
+    local zone_galaxy_deck = zoneGalaxyDeck
     local trooper_1 = ai_trooper_empire_1
     local trooper_2 = ai_trooper_empire_2
     local troopers = {trooper_1, trooper_2}
@@ -1127,7 +1127,7 @@ function ai_begin_turn(faction)
                     if is_bottom then
                         for i = 1, 4 do move_force_track(empire_force_button, "Blue", _) end
                     else
-                        for i = 1, 4 do move_force_track(rebel_force_button, "Red", _) end
+                        for i = 1, 4 do move_force_track(buttonForceTop, "Red", _) end
                     end
                 end
             elseif next_base_value == 16 then
@@ -1162,7 +1162,7 @@ function ai_begin_turn(faction)
                               faceup_muster_cards[random_index].setRotationSmooth(rotation, false, false)
                               broadcastToAll("AI Empire has randomly flipped " .. faceup_muster_cards[random_index].getName() .. "in their muster area to simulate a random card discard." , "Red")
                         else
-                              discard_random_card(button_discard_random_empire, "Blue", _)
+                              discard_random_card(buttonDiscardRandomBottom, "Blue", _)
                         end
                     end
                 else
@@ -1266,7 +1266,7 @@ function ai_begin_turn(faction)
                         faceup_muster_cards[random_index].setRotationSmooth(rotation, false, false)
                         broadcastToAll("AI Empire has randomly flipped " .. faceup_muster_cards[random_index].getName() .. "in their muster area to simulate a random card discard." , "Red")
                     else
-                        discard_random_card(button_discard_random_empire, "Blue", _)
+                        discard_random_card(buttonDiscardRandomBottom, "Blue", _)
                     end
                     apply_base_damage("Empire", 2)
                 end
@@ -1439,7 +1439,7 @@ function ai_gain_force(faction)
         zone_play_ship_12,
     }
     shuttle_zone = (is_bottom and ai_zone_empire_shuttles or ai_zone_rebel_shuttles)
-    force_button = (is_bottom and empire_force_button or rebel_force_button)
+    force_button = (is_bottom and empire_force_button or buttonForceTop)
 
     -- move & resize phase tracker to "3. Gain Force"
     -- announce Gain Resources step of AI turn
@@ -1577,11 +1577,11 @@ function ai_purchase(faction)
                 if current_highest_ship ~= nil then
                     resource_counter.call('set_val', current_resources - 4)
                     add_tag("ai_top_owner", current_highest_ship)
-                    current_highest_ship.call('exile_card', "Red")
+                    current_highest_ship.call('exileCard', "Red")
                     broadcastToAll("AI Empire has used it's base ability to spend 4 resources to destroy" .. current_highest_ship.getName() .. ".", "Blue")
                 end
             elseif getObjectFromGUID(ai_backdrop_rebel) == nil then -- Player
-                for k, v in pairs(getObjectFromGUID("0cdb1a").getObjects()) do
+                for k, v in pairs(zoneInPlay.getObjects()) do
                     if v.hasTag('ship') and v.hasTag('top_owner') then
                         local ship_current_hp = v.getVar('MAX_VALUE') - v.getVar('val')
                         if  ship_current_hp > highest_ship_value then
@@ -2015,7 +2015,7 @@ function ai_end_of_turn(faction)
         if is_bottom then
             move_force_track(empire_force_button, "Blue", _)
         else
-            move_force_track(rebel_force_button, "Red", _)
+            move_force_track(buttonForceTop, "Red", _)
         end
     end
     if current_progress < 5 and final_progress > 4 then -- 5 - shuttle REBEL / force EMPIRE
@@ -2033,7 +2033,7 @@ function ai_end_of_turn(faction)
             ai_add_special(faction)
         else
             broadcastToAll("AI Rebel gains +1 Force via Progress Track slot 6.", ai_color)
-            move_force_track(rebel_force_button, "Red", _)
+            move_force_track(buttonForceTop, "Red", _)
         end
     end
     if current_progress < 7 and final_progress > 6 then -- 7 - guardian REBEL / shuttle EMPIRE
@@ -2050,13 +2050,13 @@ function ai_end_of_turn(faction)
         if is_bottom then
             move_force_track(empire_force_button, "Blue", _)
         else
-            move_force_track(rebel_force_button, "Red", _)
+            move_force_track(buttonForceTop, "Red", _)
         end
     end
     if current_progress < 12 and final_progress > 11 then -- 12 - Force REBEL
         if not is_bottom then
             broadcastToAll("AI Rebel gains +1 Force via Progress Track slot 12.", ai_color)
-            move_force_track(rebel_force_button, "Red", _)
+            move_force_track(buttonForceTop, "Red", _)
         end
     end
     if current_progress < 13 and final_progress > 12 then -- 13 - Leaders REBEL/EMPIRE
@@ -2458,7 +2458,7 @@ function apply_base_damage(faction, amount)
             base_zone = getObjectFromGUID("79222b")
         else
             opposing_counter = player_opposing_counter
-            base_zone = getObjectFromGUID("59b7ad")
+            base_zone = zoneBasesBottom
         end
 
     else
@@ -2469,7 +2469,7 @@ function apply_base_damage(faction, amount)
             base_zone = getObjectFromGUID("7a0285")
         else
             opposing_counter = player_opposing_counter
-            base_zone = getObjectFromGUID("23b5a3")
+            base_zone = zoneBasesTop
         end
     end
 
@@ -2824,7 +2824,7 @@ function play_to_muster(faction)
                     break
                 else
                     add_tag(ai_owner_tag, v)
-                    v.call('exile_card', ai_color)
+                    v.call('exileCard', ai_color)
                     cards_exiled = true
                 end
             end
@@ -3302,7 +3302,7 @@ function check_ships(faction, opponent_is_ai)
         zone_play_ship_11,
         zone_play_ship_12,
     }
-    local checkzone = getObjectFromGUID("0cdb1a")
+    local checkzone = zoneInPlay
     local ships_in_zone = {}
     local remaining_ships_hp = {}
 

@@ -1,6 +1,6 @@
 function onLoad()
     create_button()
-    pad_galaxy_deck = getObjectFromGUID("83b3ce")
+    padGalaxyDeck = getObjectFromGUID("83b3ce")
 end -- end onLoad()
 
 
@@ -31,9 +31,9 @@ function setup_solo()
     snap_board_solo.setPosition(snap_board_solo_pos)
     bag.putObject(snap_board_top_mp)
     -- get top player color, drop cubes to leader board *** WILL ONLY WORK WHEN RUNNING OFF MAIN SETUP FUNCTION ***
-    -- bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    -- bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     -- so, declare var instead to test
-    top_color = "Blue"
+    topColor = "Blue"
     -- faction vars
     -- [1]      = inq/jedi etc
     -- [2],[3]  = troopers
@@ -160,7 +160,7 @@ function setup_solo()
     local galaxy_deck       = getObjectFromGUID(faction_guids[15])
     -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
     if galaxy_deck == nil then
-        for _, object in pairs(getObjectFromGUID("cdc550").getObjects()) do
+        for _, object in pairs(zoneGalaxyDeck.getObjects()) do
             if object.tag == "Deck" then
                 galaxy_deck = object
             end
@@ -275,7 +275,7 @@ function setup_solo()
     -- rotate, tint purchase buttons
     for i = 7, 13 do
         manipulate_objects[i].setRotation({0.00, 180.00, 0.00})
-        manipulate_objects[i].setColorTint(top_color)
+        manipulate_objects[i].setColorTint(topColor)
     end
     -- destroy no longer required UI objects
     for i = 1, #destroy_objects do
@@ -284,17 +284,17 @@ function setup_solo()
     -- pull leader board marker cubes
     local cube_progress = bag.takeObject({
         guid        =
-        ((top_color == "Blue" and "4863a8") or
-        (top_color  == "Purple" and "59278f") or
-        (top_color  == "Red" and "4fd77b") or
-        (top_color  == "Orange" and "fa5ca7")),
+        ((topColor == "Blue" and "4863a8") or
+        (topColor  == "Purple" and "59278f") or
+        (topColor  == "Red" and "4fd77b") or
+        (topColor  == "Orange" and "fa5ca7")),
         rotation    = {0.00, 180.00, 0.00}
     })
     cube_progress.setPosition({-17.76, 0.85, 21.88})
     local cube_resource = bag.takeObject({guid="590c7d", rotation={0.00, 180.00, 0.00}})
     cube_resource.setPosition({-15.74, 0.85, 12.85})
     -- tint leaderboard
-    getObjectFromGUID(faction_guids[12]).setColorTint(top_color)
+    getObjectFromGUID(faction_guids[12]).setColorTint(topColor)
 
     -- A FEW MOMENTS LATER...
     -- wait 3 seconds, unlock starter base, ### NEED TO MAKE ZONES ETC > name reserves, shuttle, muster

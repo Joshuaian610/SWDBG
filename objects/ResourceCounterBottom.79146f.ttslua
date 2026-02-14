@@ -46,11 +46,11 @@ function reloadAll()
 end -- end function reloadAll()
 
 function add_subtract(_obj, _color, alt_click)
-    local bottom_faction, top_faction = getObjectFromGUID("83b3ce").call('get_playerareas')
-    local bottom_color, top_color     = getObjectFromGUID("83b3ce").call('get_playercolors')
-    local faction                     = bottom_faction
+    local bottomFaction, topFaction = getObjectFromGUID("83b3ce").call('get_playerareas')
+    local bottomColor, topColor     = getObjectFromGUID("83b3ce").call('get_playercolors')
+    local faction                     = bottomFaction
     local faction                     = (faction:gsub("^%l", string.upper))
-    local color                       = bottom_color
+    local color                       = bottomColor
     mod = alt_click and -1 or 1
     new_value = math.min(math.max(val + mod, MIN_VALUE), MAX_VALUE)
     if val ~= new_value then

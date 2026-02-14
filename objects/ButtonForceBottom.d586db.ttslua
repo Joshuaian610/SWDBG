@@ -1,5 +1,5 @@
 function onLoad()
-    pad_galaxy_deck = getObjectFromGUID("83b3ce")
+    padGalaxyDeck = getObjectFromGUID("83b3ce")
     self.createButton({
         click_function = "move_force_track",
         function_owner = self,
@@ -14,5 +14,5 @@ function onLoad()
 end -- end onLoad()
 
 function move_force_track(button, playercolor)
-    pad_galaxy_deck.call('move_force_track', {button=button, count=1})
+    padGalaxyDeck.call('move_force_track', {button=button, count=1})
 end -- end move_force_track()

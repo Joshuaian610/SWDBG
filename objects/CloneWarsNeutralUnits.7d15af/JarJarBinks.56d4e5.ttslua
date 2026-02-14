@@ -6,27 +6,27 @@ faction = "neutral"
 attack_tooltip = 'Gain 0 Resources'
 
 function onLoad()
-    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
-    pad_galaxy_discard = getObjectFromGUID("a03936")
-    pad_outer_rim      = getObjectFromGUID("606e92")
-    self.addContextMenuItem("Exile Card", exile_card)
+    padGalaxyDeck    = getObjectFromGUID("83b3ce")
+    padGalaxyDiscard = getObjectFromGUID("a03936")
+    padOuterRim     = getObjectFromGUID("606e92")
+    self.addContextMenuItem("Exile Card", exileCard)
 end
 
-function exile_card(player_area, position, object)
-    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+function exileCard(playerArea, position, object)
+    padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
 end
 
 
 function ability_button_create_ui()
-    pad_galaxy_deck.call('ability_button_create_ui', {card=self})
+    padGalaxyDeck.call('ability_button_create_ui', {card=self})
 end -- end ability_button_create()
 
 
 function sec_ability_button_create_ui()
-    local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     local tags                    = self.getTags()
     local is_bottom               = (self.hasTag('bottom_owner') and true or false)
-    local button_color            = (is_bottom and bottom_color or top_color)
+    local button_color            = (is_bottom and bottomColor or topColor)
     if not self.hasTag('bottom_owner') and not self.hasTag('top_owner') then -- only create if card is owned
         self.UI.show('ability_button_white')
     end
@@ -38,5 +38,5 @@ function bh_create()
 end -- end bh_create()
 
 function bh_neutral_create()
-    pad_galaxy_deck.call('bh_neutral_create', {card=self, tooltip=attack_tooltip, faction=faction})
+    padGalaxyDeck.call('bh_neutral_create', {card=self, tooltip=attack_tooltip, faction=faction})
 end -- end bh_neutral_create()

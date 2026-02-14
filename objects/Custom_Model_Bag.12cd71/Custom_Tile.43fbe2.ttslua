@@ -15,7 +15,7 @@ function remove_buttons()
 end -- end remove_buttons()
 
 
-function enable_leaders()
+function enableLeaders()
     remove_buttons()
     self.createButton({
         click_function = 'disable_leaders',
@@ -32,12 +32,12 @@ function enable_leaders()
         tooltip = "This button, if checked, will disable this faction's side for human player use, and will enable the Leaders solo mode for this faction on game setup. Checking this button disables Random Factions.",
     })
     print("enabled random faction placeholder - move function from global to object")
-end -- end enable_leaders()
+end -- end enableLeaders()
 
 function disable_leaders()
     remove_buttons()
     self.createButton({
-        click_function = 'enable_leaders',
+        click_function = 'enableLeaders',
         function_owner = self,
         label = '',
         color = {0.6, 0.78, 0.73, 0.5},

@@ -1,10 +1,10 @@
 function onLoad()
-    pad_galaxy_deck = getObjectFromGUID("83b3ce")
-    play_zone       = getObjectFromGUID("0cdb1a")
-    all_colors      = Global.getTable('all_colors')
+    padGalaxyDeck = getObjectFromGUID("83b3ce")
+    play_zone       = zoneInPlay
+    allColors     = Global.getTable('all_colors')
     self.createButton({
         click_function = "end_turn",
-        function_owner = pad_galaxy_deck,
+        function_owner = padGalaxyDeck,
         label          = "",
         color          = {1, 1, 1, 0},
         hover_color    = {1, 1, 1, 0.2},
@@ -16,5 +16,5 @@ function onLoad()
 end -- end onLoad()
 
 function end_turn(button, _, _)
-    pad_galaxy_deck.call('end_turn')
+    padGalaxyDeck.call('end_turn')
 end -- end end_turn()

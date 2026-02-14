@@ -6,27 +6,27 @@ faction        = "separatist"
 attack_tooltip = 'Gain 4 Resources, 4 Force'
 
 function onLoad()
-    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
-    pad_galaxy_discard = getObjectFromGUID("a03936")
-    pad_outer_rim      = getObjectFromGUID("606e92")
-    self.addContextMenuItem("Exile Card", exile_card)
+    padGalaxyDeck    = getObjectFromGUID("83b3ce")
+    padGalaxyDiscard = getObjectFromGUID("a03936")
+    padOuterRim     = getObjectFromGUID("606e92")
+    self.addContextMenuItem("Exile Card", exileCard)
 end
 
-function exile_card(player_area, position, object)
-    pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=object})
+function exileCard(playerArea, position, object)
+    padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
 end
 
 
 function ability_button_create_ui()
-    pad_galaxy_deck.call('ability_button_create_ui', {card=self})
+    padGalaxyDeck.call('ability_button_create_ui', {card=self})
 end -- end ability_button_create()
 
 
 function force_button_create()
-    pad_galaxy_deck.call('force_button_create', {card=self})
+    padGalaxyDeck.call('force_button_create', {card=self})
 end -- end ability_button_create()
 
 
 function bh_create()
-    pad_galaxy_deck.call('bh_create', {card=self, tooltip=attack_tooltip, faction=faction})
+    padGalaxyDeck.call('bh_create', {card=self, tooltip=attack_tooltip, faction=faction})
 end -- end bh_create()

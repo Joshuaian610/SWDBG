@@ -12,188 +12,254 @@
 -- purchase functions are located on outer rim deck pad object
 
 
-function onLoad()
-    math.randomseed(os.time())
-    Turns.enable    = false
-    all_colors      = {"Blue", "Red", "Grey", "Black", "Orange", "Purple", "White", "Green"}
-    -- GUID ASSIGNMENTS
-    pad_galaxy_deck      = getObjectFromGUID("83b3ce")
-    pad_galaxy_discard   = getObjectFromGUID("a03936")
-    pad_outer_rim        = getObjectFromGUID("606e92")
-    -- galaxy deck
-    for k, v in pairs(getObjectFromGUID("cdc550").getObjects()) do
-        if v.tag == "Deck" then
-            deck_galaxy = v
-        end
-    end
-    -- turn tracker
-    all_objects = getObjects()
-    turn_tracker = nil
-    for k, v in pairs(all_objects) do
-        if v.hasTag('turn_tracker') then
-            turn_tracker = v
-        end
-        if v.hasTag('non_interactable') then
-            v.interactable = false
-        end
-    end
-    -- INVIS
-    turn_tracker.setInvisibleTo(all_colors)
-    getObjectFromGUID("5ddc6c").setInvisibleTo(all_colors) -- resource counter bottom board
-    getObjectFromGUID("c6a07b").setInvisibleTo(all_colors) -- resource counter top board
+require("HelperFuncs")
 
-    -- perm global vars
-    enable_leaders           = false
-    next_card_to_deck_bottom = false
-    next_card_to_deck_top    = false
-    next_card_to_hand_bottom = false
-    next_card_to_hand_top    = false
-    next_card_tarkin         = false
-    next_card_leia           = false
-    next_card_atat           = false
-    next_card_falcon         = false
-    next_card_contact        = false
-    next_card_atte           = false
-    next_card_asajj          = false
-    next_card_nute           = false
-    droideka_condition_met   = false
-    wat_condition_met        = false
-    hondo_condition_met      = false
-    trench_condition_met     = false
-    -- BUTTON GUID DEFINITIONS
-    -- galaxy purchase buttons
-    -- starts at player area 1 (bottom) left, runs counter clockwise
-    galaxy_purchase_buttons = { -- was formerly purchase_buttons
-        getObjectFromGUID("4acc8d"), -- 1
-        getObjectFromGUID("5c0091"), -- 2
-        getObjectFromGUID("c1a3ec"), -- 3
-        getObjectFromGUID("88068b"), -- 4
-        getObjectFromGUID("dda7b0"), -- 5
-        getObjectFromGUID("79fbd8"), -- 6
-        getObjectFromGUID("8f5030"), -- 7
-        getObjectFromGUID("0fc9b2"), -- 8
-        getObjectFromGUID("d6ff12"), -- 9
-        getObjectFromGUID("65f0e5"), -- 10
-        getObjectFromGUID("e3da81"), -- 11
-        getObjectFromGUID("d2d527"), -- 12
-        getObjectFromGUID("123425"), -- 13
-        getObjectFromGUID("b282b4"), -- 14
-    }
-    -- galaxy discard (bounty hunt / sabotage)
-    -- oriented same as purchase buttons - starts at player area 1 left, runs counter clockwise
-    galaxy_discard_buttons = {
-        getObjectFromGUID("64b1c3"), -- 1
-        getObjectFromGUID("859a1a"), -- 2
-        getObjectFromGUID("96be63"), -- 3
-        getObjectFromGUID("b205d2"), -- 4
-        getObjectFromGUID("7fc7d3"), -- 5
-        getObjectFromGUID("8cf6b7"), -- 6
-        getObjectFromGUID("5534ea"), -- 7
-        getObjectFromGUID("8ce5e3"), -- 8
-        getObjectFromGUID("f371cf"), -- 9
-        getObjectFromGUID("5f79fd"), -- 10
-        getObjectFromGUID("14443b"), -- 11
-        getObjectFromGUID("2db9de"), -- 12
-    }
-    -- end turn buttons
-    button_end_turn_bottom = getObjectFromGUID("d2864e")
-    button_end_turn_top    = getObjectFromGUID("b6d068")
-    -- force track buttons
-    force_button_bottom = getObjectFromGUID("d586db")
-    rebel_force_button  = getObjectFromGUID("817b24")
-    -- discard random buttons
-    button_discard_random_empire = getObjectFromGUID("bfc82c")
-    button_discard_random_rebel  = getObjectFromGUID("ded0c2")
-    -- hide exile button bag
-    getObjectFromGUID("c20af0").setInvisibleTo(all_colors)
-    -- setup stuff
-    button_setup_game = getObjectFromGUID("ada5ae")
-    if button_setup_game ~= nil then
-        broadcastToAll("Welcome to Star Wars: The Deckbuilding Game!", "Green")
-        button_end_turn_bottom.setInvisibleTo(all_colors)
-        button_end_turn_top.setInvisibleTo(all_colors)
-        local all_objects = getObjects()
-        for _, object in ipairs(all_objects) do
-            if object.hasTag('row_button') then
-                object.setInvisibleTo(all_colors)
-            end
-        end
-    elseif button_setup_game == nil then
-        -- create counters on ship cards when reloaded
-        for k, v in pairs(getObjectFromGUID("0cdb1a").getObjects()) do
-            if v.hasTag('ship') and (v.hasTag('bottom_owner') or v.hasTag('top_owner')) or
-            v.hasTag('republic_owner') or v.hasTag('separatist_owner') then
-                v.call('createAll')
-            end
-        end
-        local all_objects = getObjects()
-        for _, object in ipairs(all_objects) do
-            if object.hasTag('row_button') then
-                object.setInvisibleTo({})
-            end
-        end
-        -- end turn buttons
-        turn_tracker.setInvisibleTo({})
-        current_turn = get_turn() -- check for location of turn tracker, set end_turn buttons
-        if current_turn == 1 then
-            button_end_turn_bottom.setInvisibleTo({})
-            button_end_turn_top.setInvisibleTo(all_colors)
-            getObjectFromGUID("5ddc6c").setInvisibleTo({}) -- bottom board counter
-        elseif current_turn == 2 then
-            button_end_turn_top.setInvisibleTo({})
-            button_end_turn_bottom.setInvisibleTo(all_colors)
-            getObjectFromGUID("c6a07b").setInvisibleTo({}) -- top board counter
-        end
+
+function onLoad()
+
+  math.randomseed(os.time())
+  Turns.enable = false
+
+  local interactable = false
+  local invis = true
+
+  -- set non interactables
+  if interactable then
+    for _, obj in pairs(getObjects()) do
+      if obj.hasTag('non_interactable') then
+        obj.interactable = false
+      end
     end
-    -- ensure players 1 & 2 are seated at correct handzones on reload
-    local bottom_load_handzone = getObjectFromGUID("dcb1f5")
-    local bottom_load_color    = bottom_load_handzone.getData()["FogColor"]
-    local top_load_handzone    = getObjectFromGUID("f27d6d")
-    local top_load_color       = top_load_handzone.getData()["FogColor"]
-    Wait.frames(function()
-    local load_players         = getSeatedPlayers()
-    if load_players[1] ~= nil then
-        Player[load_players[1]].changeColor(bottom_load_color)
+  end
+
+  -- set always invisibles (rest need to see if game is in progress and will use game state to determine visibility)
+  if invis then
+    getObjectbyName("Resource Counter Base Bottom").setInvisibleTo(allColors)
+    getObjectbyName("Resource Counter Base Top").setInvisibleTo(allColors)
+    getObjectbyName("Bag Button Exile").setInvisibleTo(allColors)
+  end
+
+  -- global toggle vars
+  enableLeaders = false
+  nextCardToDeckBottom = false
+  nextCardToDeckTop = false
+  nextCardToHandBottom = false
+  nextCardToHandBottom = false
+  nextCardTarkin = false
+  nextCardLeia = false
+  nextCardATAT = false
+  nextCardFalcon = false
+  nextCardContact = false
+  nextCardATTE = false
+  nextCardAsajj = false
+  nextCardNute = false
+  metConditionDroideka = false
+  metConditionWat = false
+  metConditionHondo = false
+  metConditionTrench = false
+
+  -- global var assignments
+  allColors = { "Blue", "Red", "Grey", "Black", "Orange", "Purple", "White", "Green" }
+
+  padGalaxyDeck = getObjectbyName("Pad Galaxy Deck")
+  padGalaxyDiscard = getObjectbyName("Pad Galaxy Discard")
+  padOuterRim = getObjectbyName("Pad Outer Rim")
+
+  zoneInPlay = getObjectbyName("Zone In Play")
+  zoneGalaxyDeck = getObjectbyName("Zone Row Deck")
+  zoneGalaxyDiscard = getObjectbyName("Zone Row Discard")
+  zoneOuterRim = getObjectbyName("Zone Outer Rim")
+  zoneGalaxyRow1 = getObjectbyName("Zone Row 1")
+  zoneGalaxyRow2 = getObjectbyName("Zone Row 2")
+  zoneGalaxyRow3 = getObjectbyName("Zone Row 3")
+  zoneGalaxyRow4 = getObjectbyName("Zone Row 4")
+  zoneGalaxyRow5 = getObjectbyName("Zone Row 5")
+  zoneGalaxyRow6 = getObjectbyName("Zone Row 6")
+  zoneHandzoneBottom = getObjectbyName("Handzone Bottom")
+  zoneHandzoneTop = getObjectbyName("Handzone Top")
+  zoneRepublicRevealBottom = getObjectbyName("Zone Republic Reveal Bottom")
+  zoneRepublicRevealTop = getObjectbyName("Zone Republic Reveal Top")
+  zoneDeckBottom = getObjectbyName("Zone Deck Bottom")
+  zoneDeckTop = getObjectbyName("Zone Deck Top")
+  zoneDiscardBottom = getObjectbyName("Zone Discard Bottom")
+  zoneDiscardTop = getObjectbyName("Zone Discard Top")
+  zoneBasesBottom = getObjectbyName("Zone Bases Bottom")
+  zoneBasesTop = getObjectbyName("Zone Bases Top")
+  zoneFactionSelectBottom = getObjectbyName("Zone Faction Select Bottom")
+  zoneFactionSelectTop = getObjectbyName("Zone Faction Select Top")
+
+  buttonEndTurnBottom = getObjectbyName("Button End Turn Bottom")
+  buttonEndTurnTop = getObjectbyName("Button End Turn Top")
+  buttonForceBottom = getObjectbyName("Button Force Bottom")
+  buttonForceTop = getObjectbyName("Button Force Top")
+  buttonDiscardRandomBottom = getObjectbyName("Button Discard Bottom")
+  buttonDiscardRandomTop = getObjectbyName("Button Discard Top")
+
+  counterResourceBoardBottom = getObjectbyName("Resource Counter Base Bottom")
+  counterResourceBottom = getObjectbyName("Resource Counter Bottom")
+  counterResourceBoardTop = getObjectbyName("Resource Counter Base Top")
+  counterResourceTop = getObjectbyName("Resource Counter Bottom")
+
+  artAssetBottom = getObjectbyName("Art Asset Bottom")
+  artAssetTop = getObjectbyName("Art Asset Top")
+
+  posDeckGalaxy = { -28.00, 1.00, 2.50 }
+  posDiscardGalaxy = { -28.00, 1.00, -2.50 }
+
+
+  -- get, assign galaxy deck
+  deckGalaxy = nil
+  for k, v in pairs(zoneGalaxyDeck.getObjects()) do
+    if v.tag == "Deck" then
+      deckGalaxy = v
     end
-    if load_players[2] ~= nil then
-        Player[load_players[2]].changeColor(top_load_color)
+  end
+  
+  -- get, assign turn tracker
+  turnTracker = nil
+  for k, v in pairs(getObjects()) do
+    if v.hasTag('turnTracker') then
+      turnTracker = v
     end
-    end, 1)
-    addHotkey("Exile Card", function(playercolor, hover_object, _, _)
-        local color = nil
-        if hover_object ~= nil then
-            if hover_object.tag == "Card" then
-                local player_area = nil
-                if hover_object.hasTag('bottom_owner') then
-                    player_area = getObjectFromGUID("12cd71").getDescription()
-                elseif hover_object.hasTag('top_owner') then
-                    player_area = getObjectFromGUID("834dea").getDescription()
-                else
-                    bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
-                    if bottom_color == "" or top_color == "" then
-                        return nil
-                    else
-                        player_area = (playercolor == bottom_color and bottom_color or top_color)
-                    end
-                end
-                pad_galaxy_deck.call('exile_card', {p_area=player_area, obj=hover_object})
-            end
+  end
+
+  -- galaxy purchase buttons
+  -- starts at player area 1 (bottom) left, runs counter clockwise
+  buttonsGalaxyPurchase = {
+    getObjectbyNameAndNotes("Button Purchase", "1"),
+    getObjectbyNameAndNotes("Button Purchase", "2"),
+    getObjectbyNameAndNotes("Button Purchase", "3"),
+    getObjectbyNameAndNotes("Button Purchase", "4"),
+    getObjectbyNameAndNotes("Button Purchase", "5"),
+    getObjectbyNameAndNotes("Button Purchase", "6"),
+    getObjectbyNameAndNotes("Button Purchase", "7"),
+    getObjectbyNameAndNotes("Button Purchase", "8"),
+    getObjectbyNameAndNotes("Button Purchase", "9"),
+    getObjectbyNameAndNotes("Button Purchase", "10"),
+    getObjectbyNameAndNotes("Button Purchase", "11"),
+    getObjectbyNameAndNotes("Button Purchase", "12"),
+    getObjectbyNameAndNotes("Button Purchase", "13"),
+    getObjectbyNameAndNotes("Button Purchase", "14"),
+    getObjectbyNameAndNotes("Button Purchase", "15"),
+    getObjectbyNameAndNotes("Button Purchase", "16"),
+  }
+  -- galaxy discard (bounty hunt / sabotage)
+  -- oriented same as purchase buttons - starts at player area 1 left, runs counter clockwise
+  buttonsGalaxyDiscard = {
+    getObjectbyNameAndNotes("Button Discard", "1"),
+    getObjectbyNameAndNotes("Button Discard", "2"),
+    getObjectbyNameAndNotes("Button Discard", "3"),
+    getObjectbyNameAndNotes("Button Discard", "4"),
+    getObjectbyNameAndNotes("Button Discard", "5"),
+    getObjectbyNameAndNotes("Button Discard", "6"),
+    getObjectbyNameAndNotes("Button Discard", "7"),
+    getObjectbyNameAndNotes("Button Discard", "8"),
+    getObjectbyNameAndNotes("Button Discard", "9"),
+    getObjectbyNameAndNotes("Button Discard", "10"),
+    getObjectbyNameAndNotes("Button Discard", "11"),
+    getObjectbyNameAndNotes("Button Discard", "12"),
+  }
+
+  -- setup stuff
+  buttonSetupGame = getObjectbyName("Button Setup Game")
+
+  -- using the existence of buttonSetupGame as a check to see if game has started:
+  -- game has not yet started:
+  if buttonSetupGame ~= nil then
+    -- broadcast pregame welcome message
+    broadcastToAll("Welcome to Star Wars: The Deckbuilding Game!", "White")
+
+    -- set pregame invisibles
+    if invis then
+      buttonEndTurnBottom.setInvisibleTo(allColors)
+      buttonEndTurnTop.setInvisibleTo(allColors)    
+      for _, object in pairs(getObjects()) do
+        if object.hasTag('row_button') then
+          object.setInvisibleTo(allColors)
         end
-    end, false)
-    ------- SOLO STUFF ------
-    -- all solo stuff in onLoad has been moved to Empire Leaders card object for now
-    -- all functions related solely to AI leaders mode have also been moved to Empire Leaders card
-    snap_board_bottom_mp = getObjectFromGUID("29298e")
-    snap_board_top_mp    = getObjectFromGUID("9a3962")
-    snap_board_top_solo   = getObjectFromGUID("41cfbf")
-    snap_board_top_mp_pos = {-5.59, -0.50, 14.50}
-    snap_board_solo_pos   = {-5.25, -0.50, 14.50}
-    snap_board_mp_rot     = {0.00, 0.00, 0.00}
-    snap_board_solo_rot   = {0.00, 180.00, 0.00}
+      end
+    end
+
+  -- game has started:
+  elseif buttonSetupGame == nil then
+    -- create counters on ship cards when reloaded
+    for _, obj in pairs(zoneInPlay.getObjects()) do
+      -- *** DO WE REALLY NEED REPUBLIC / SEPARATIST CHECKS
+      -- if v.hasTag('ship') and (v.hasTag('bottom_owner') or v.hasTag('top_owner')) or
+      -- v.hasTag('republic_owner') or v.hasTag('separatist_owner') then
+      if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+        obj.call('createAll')
+      end
+    end
+    
+    -- show row purchase/discard buttons
+    for _, object in ipairs(getObjects()) do
+      if object.hasTag('row_button') then
+        object.setInvisibleTo({})
+      end
+    end
+
+    -- detect turn, show correct end turn button
+    turnTracker.setInvisibleTo({})
+    currentTurn = getTurn() -- check for location of turn tracker, set end_turn buttons
+    if currentTurn == "Bottom" then
+      buttonEndTurnBottom.setInvisibleTo({})
+      if invis then buttonEndTurnTop.setInvisibleTo(allColors) end
+      counterResourceBoardBottom.setInvisibleTo({}) -- bottom board counter
+    elseif currentTurn == "Top" then
+      buttonEndTurnTop.setInvisibleTo({})
+      if invis then buttonEndTurnBottom.setInvisibleTo(allColors) end
+      counterResourceBoardTop.setInvisibleTo({}) -- top board counter
+    end
+  end
+
+  -- ensure players 1 & 2 are seated at correct handzones on reload  
+  local colorLoadBottom = zoneHandzoneBottom.getData()["FogColor"]
+  local colorLoadTop = zoneHandzoneTop.getData()["FogColor"]
+  Wait.frames(function()
+    local loadPlayers = getSeatedPlayers()
+    if loadPlayers[1] ~= nil then
+      Player[loadPlayers[1]].changeColor(colorLoadBottom)
+    end
+    if loadPlayers[2] ~= nil then
+      Player[loadPlayers[2]].changeColor(colorLoadTop)
+    end
+  end, 1)
+
+  -- hotkey to exile card
+  addHotkey("Exile Card", function(playerColor, hoverObject, _, _)
+    if hoverObject ~= nil and hoverObject.type == "Card" then
+      local playerArea = nil
+      if hoverObject.hasTag('bottom_owner') then
+        playerArea = artAssetBottom.getDescription()
+      elseif hoverObject.hasTag('top_owner') then
+        playerArea = artAssetTop.getDescription()
+      else
+        colorBottom, colorTop = getPlayerColors()
+        if colorBottom == "" or colorTop == "" then
+          return
+        else
+          playerArea = (playerColor == colorBottom and colorBottom or colorTop)
+        end
+      end
+      exileCard(playerArea, hoverObject)
+    end
+  end, false)
+  
+  ------- SOLO STUFF ------
+  -- all solo stuff in onLoad has been moved to Empire Leaders card object for now
+  -- all functions related solely to AI leaders mode have also been moved to Empire Leaders card
+  snapBoardBottomMP = getObjectFromGUID("29298e")
+  snapBoardTopMP = getObjectFromGUID("9a3962")
+  snapBoardTopSolo = getObjectFromGUID("41cfbf")
+  posSnapBoardTopMP = { -5.59, -0.50, 14.50 }
+  posSnapBoardSolo = { -5.25, -0.50, 14.50 }
+  rotSnapBoardMP = { 0.00, 0.00, 0.00 }
+  rotSnapBoardSolo = { 0.00, 180.00, 0.00 }
 end -- end onLoad()
 
 
-function getObjectFromName(name)
+function getObjectbyName(name)
   -- simply search all objects for an object named a particular string
   for _, object in pairs(getObjects()) do
     if object.getName() == name then
@@ -202,293 +268,309 @@ function getObjectFromName(name)
   end
   log("getObjectFromName() object not found via " .. name)
   return nil
-end
+end -- end getObjectFromName()
 
 
-function getObjectFromNameAndTag(name, gmNotes)
+function getObjectbyNameAndNotes(name, gmNotes)
   -- simply search all objects for an object named a particular string that have a particular GMnotes string
   for _, object in pairs(getObjects()) do
     if object.getName() == name and object.getGMNotes() == gmNotes then
       return object
     end
   end
-  log("getObjectFromNameAndTag() object not found via " .. name .. ", " .. tag)
+  log("getObjectFromNameAndTag() object not found via " .. name .. ", " .. gmNotes)
   return nil
-end
+end -- end getObjectFromNameAndNotes()
 
 
--- this function handles the discard operations,
--- and the rotation of ship cards while in hand zones
-function onObjectEnterZone(zone, object)
-    -- top hand zone ship straighten
-    if zone == getObjectFromGUID("dcb1f5") then
-        if object.hasTag('ship') then
-            object.setRotation({0, 180, 0})
+function onObjectEnterZone(zone, obj)
+  -- this function handles the discard operations, card button creation, resource management,
+  -- adding ownership tags, and the rotation of ship cards while in hand zones
+
+  -- bottom hand zone ship straighten
+  if zone == zoneHandzoneBottom then
+    if obj.hasTag('ship') then
+      local rotShip = { 0, 180, 0 }
+      obj.setRotation(rotShip)
+    end
+  end
+
+  -- top hand zone ship straighten
+  if zone == zoneHandzoneTop then
+    if obj.hasTag('ship') then
+      local rotShip = { 0, 0, 0 }
+      obj.setRotation(rotShip)
+    end
+  end
+
+  -- add _owner tags if card obtained by means other than purchase button  
+  if zone == zoneDiscardBottom or zone == zoneDeckBottom or zone == zoneHandzoneBottom then
+    if not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') then
+      obj.addTag('bottom_owner')
+    end
+  end
+
+  if zone == zoneDiscardTop or zone == zoneDeckTop or zone == zoneHandzoneTop then
+    if not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') then
+      obj.addTag('top_owner')
+    end
+  end
+
+  -- automatic resource counter updates
+  local counterPlayer = nil
+  local counterBoard = nil
+  local toAddResource = nil
+
+  if zone == zoneInPlay then
+
+    toAddResource = obj.getVar('produce')
+
+    if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and not obj.hasTag('just_bought') then
+
+      if obj.hasTag('bottom_owner') then
+        counterPlayer = counterResourceBottom
+        counterBoard = counterResourceBoardBottom
+
+      elseif obj.hasTag('top_owner') then
+        counterPlayer = counterResourceTop
+        counterBoard = counterResourceBoardTop
+      end
+
+      -- get counter value
+      local currentValue = counterPlayer.getVar('val')
+      if toAddResource ~= nil then
+        currentValue = currentValue + toAddResource
+      end
+
+      counterPlayer.call('set_val', currentValue)
+      counterBoard.call('set_val', currentValue)
+    end
+
+    -- create ship counters
+    if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) then
+      obj.call('ship_counter_create') -- NEED REQUIRE
+    end
+  end
+
+  -- remove ownership tags on cards placed back into galaxy row
+  if zone.getName():find("Zone Row") then
+    -- padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEED REQUIRE... maybe?
+    if obj.hasTag('bottom_owner') then
+      obj.removeTag('bottom_owner')
+    end
+    if obj.hasTag('top_owner') then
+      obj.removeTag('top_owner')
+    end
+    nextCardNute = false
+  end
+
+  -- ability button creation
+  if zone == zoneInPlay and obj.hasTag('buttons') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    obj.call('ability_button_create', {card=obj}) -- NEED REQUIRE
+  end
+  if zone == zoneInPlay and obj.hasTag('buttons_sec') and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    obj.call('sec_ability_button_create', {card=obj}) -- NEED REQUIRE
+  end
+
+  -- ui ability button creation creation
+  if zone == zoneInPlay and obj.hasTag('ability_button') and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    obj.call('ability_button_create_ui', {card=obj}) -- NEED REQUIRE
+  end
+  
+  -- dual ui ability buttons creation
+  if zone == zoneInPlay and obj.hasTag('ability_button_sec') and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and obj.getName() ~= "Jar Jar Binks" then
+    obj.call('sec_ability_button_create_ui', {card=obj}) -- NEED REQUIRE
+  end
+
+  -- ui force buttons creation
+  if zone == zoneInPlay and obj.hasTag('add_force_button') and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    obj.call('force_button_create', {card=obj}) -- NEED REQUIRE
+  end
+
+  -- jar jar row button creation
+  if (zone.getName():find("Zone Row")) and
+  (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
+    obj.call('sec_ability_button_create_ui', {card=obj}) -- NEED REQUIRE
+  end
+
+  -- bounty hunt / sabotage button creation
+  if zone.getName():find("Zone Row") then
+
+    if obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
+    not obj.hasTag('republic_owner') and not obj.hasTag('separatist_owner') and not obj.hasTag('neutral')) then
+        obj.call('bh_create') -- NEED REQUIRE
+    end
+
+    -- neutral bh /sabotage button creation if required  IS THIS BLOCK ACTUALLY NEEDED
+    -- if obj.hasTag('unit') and not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and obj.hasTag('neutral') then
+    --   -- check for ord mantell
+    --   local zones = {zoneBasesBottom, zoneBasesTop}
+    --   for i = 1, 2 do
+    --     for _, zoneObj in pairs(zones[i].getObjects()) do
+    --       if zoneObj.getName() == "Ord Mantell" then
+    --         -- object.call('bh_neutral_create') -- NEED REQUIRE
+    --       end
+    --     end
+    --   end
+
+    --   -- check for assassin droids      
+    --   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+    --     if zoneObj.getName() == "Assassin Droid" and (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then
+    --       -- object.call('bh_neutral_create') -- NEED REQUIRE
+    --     end
+    --   end
+    end
+
+  -- neutral BH / sabotage buttons when ord mantell enters or leaves play -- REVISIT : needs removal functions
+  local function createBHbuttons()
+    local zones = {zoneGalaxyRow1, zoneGalaxyRow2, zoneGalaxyRow3, zoneGalaxyRow4, zoneGalaxyRow5, zoneGalaxyRow6}
+    for i = 1, 6 do
+      for _, zoneObj in pairs(zones[i].getObjects()) do
+        if zoneObj.hasTag('neutral') and (not zoneObj.hasTag('bottom_owner') and not zoneObj.hasTag('top_owner'))then
+          zoneObj.call('bh_neutral_create') -- NEED REQUIRE
         end
+      end
     end
-    -- bottom hand zone ship straighten
-    if zone == getObjectFromGUID("f27d6d") then
-        if object.hasTag('ship') then
-            object.setRotation({0, 0, 0})
-        end
-    end
-    -- add _owner tags if card obtained by means other than purchase button
-    if zone == getObjectFromGUID("61dacf") or zone == getObjectFromGUID("dcb1f5") then
-        if object.hasTag('bottom_owner') == false and
-        object.hasTag('top_owner') == false then
-            pad_galaxy_deck.call('add_tag', {tag='bottom_owner', object=object})
-        end
-    end
-    if zone == getObjectFromGUID("3ebaef") or zone == getObjectFromGUID("f27d6d") then
-        if object.hasTag('bottom_owner') == false and
-        object.hasTag('top_owner') == false then
-            pad_galaxy_deck.call('add_tag', {tag='top_owner', object=object})
-        end
-    end
-    -- RESOURCE COUNTERS
-    local counter = nil
-    local board_counter = nil
-    local owner = nil
-    local to_add_resource = nil
-    if zone == getObjectFromGUID("0cdb1a") then
-        to_add_resource = object.getVar('produce')
-        if (object.hasTag('bottom_owner') or object.hasTag('top_owner')) and object.hasTag('just_bought') == false then
-            if object.hasTag('bottom_owner') then
-                counter = getObjectFromGUID("79146f")
-                board_counter = getObjectFromGUID("5ddc6c")
-            elseif object.hasTag('top_owner') then
-                counter = getObjectFromGUID("34be5a")
-                board_counter = getObjectFromGUID("c6a07b")
-            end
-            -- get counter value
-            local current_value = counter.getVar('val')
-            if to_add_resource ~= nil then
-              current_value = current_value + to_add_resource
-            end
-            counter.call('set_val', current_value)
-            board_counter.call('set_val', current_value)
-        end
-        -- create ship counters
-        if object.hasTag('ship') and (object.hasTag('bottom_owner') or object.hasTag('top_owner') or object.hasTag('ai_owner')) then
-            object.call('ship_counter_create')
-        end
-    end
-    -- REMOVE OWNER TAGS FROM CARDS PLACED BACK INTO GALAXY ROW
-    if zone == getObjectFromGUID("c98289") or zone == getObjectFromGUID("46fd89") or zone == getObjectFromGUID("174e23") or
-    zone == getObjectFromGUID("84fd72") or zone == getObjectFromGUID("d83464") or zone == getObjectFromGUID("c5ef86") then
-        --pad_galaxy_deck.call('remove_ability_buttons', {object=object})
-        if object.hasTag('bottom_owner') then
-            object.removeTag('bottom_owner')
-        end
-        if object.hasTag('top_owner') then
-            object.removeTag('top_owner')
-        end
-        next_card_nute = false
-    end
-    -- ABILITY BUTTONS
-    if zone == getObjectFromGUID("0cdb1a") and object.hasTag('buttons') and (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        object.call('ability_button_create', {card=object})
-    end
-    if zone == getObjectFromGUID("0cdb1a") and object.hasTag('buttons_sec') and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        object.call('sec_ability_button_create', {card=object})
-    end
-    -- UI ABILITY BUTTONS
-    if zone == getObjectFromGUID("0cdb1a") and object.hasTag('ability_button') and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        object.call('ability_button_create_ui', {card=object})
-    end
-    -- DUAL UI ABILITY BUTTONS
-    if zone == getObjectFromGUID("0cdb1a") and object.hasTag('ability_button_sec') and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) and object.getName() ~= "Jar Jar Binks" then
-        object.call('sec_ability_button_create_ui', {card=object})
-    end
-    -- UI FORCE BUTTONS
-    if zone == getObjectFromGUID("0cdb1a") and object.hasTag('add_force_button') and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        object.call('force_button_create', {card=object})
-    end
-    -- JAR JAR ROW BUTTON
-    if (zone == getObjectFromGUID("c98289") or zone == getObjectFromGUID("46fd89") or zone == getObjectFromGUID("174e23") or
-    zone == getObjectFromGUID("84fd72") or zone == getObjectFromGUID("d83464") or zone == getObjectFromGUID("c5ef86")) and
-    (not object.hasTag('bottom_owner') and not object.hasTag('top_owner')) and object.getName() == "Jar Jar Binks" then
-        object.call('sec_ability_button_create_ui', {card=object})
-    end
-    -- BOUNTY HUNT / SABOTAGE BUTTONS
-    if zone == getObjectFromGUID("c98289") or zone == getObjectFromGUID("46fd89") or zone == getObjectFromGUID("174e23") or
-    zone == getObjectFromGUID("84fd72") or zone == getObjectFromGUID("d83464") or zone == getObjectFromGUID("c5ef86") then
-        if object.hasTag('unit') and (not object.hasTag('bottom_owner') and not object.hasTag('top_owner') and
-        not object.hasTag('republic_owner') and not object.hasTag('separatist_owner') and not object.hasTag('neutral')) then
-            object.call('bh_create')
-        end
-        if object.hasTag('unit') and object.hasTag('bottom_owner') == false and object.hasTag('top_owner') == false and
-        object.hasTag('neutral') then
-            local bounty_hunt_neutral = false
-            -- check for ord mantell
-            local zones = {getObjectFromGUID("59b7ad"), getObjectFromGUID("23b5a3")}
-            for i = 1, 2 do
-                for k, v in pairs(zones[i].getObjects()) do
-                    if v.getName() == "Ord Mantell" then
-                        -- object.call('bh_neutral_create')
-                    end
-                end
-            end
-            -- check for assassin droids
-            local play_zone = getObjectFromGUID("0cdb1a")
-            for _, object in pairs(play_zone.getObjects()) do
-                if object.getName() == "Assassin Droid" and (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-                    -- object.call('bh_neutral_create')
-                end
-            end
-        end
-    end
-    -- NEUTRAL BOUNTY HUNT / SABOTAGE BUTTONS WHEN ORD MANTELL IN OR OUT OF PLAY
-    local function create_bh_buttons()
-        local zone_1 = getObjectFromGUID("c98289")
-        local zone_2 = getObjectFromGUID("46fd89")
-        local zone_3 = getObjectFromGUID("174e23")
-        local zone_4 = getObjectFromGUID("84fd72")
-        local zone_5 = getObjectFromGUID("d83464")
-        local zone_6 = getObjectFromGUID("c5ef86")
-        local zones = {zone_1, zone_2, zone_3, zone_4, zone_5, zone_6,}
-        for i = 1, 6 do
-            for k, v in pairs(zones[i].getObjects()) do
-                if v.hasTag('neutral') and (not v.hasTag('bottom_owner') and not v.hasTag('top_owner'))then
-                    v.call('bh_neutral_create')
-                end
-            end
-        end
-    end
-    if (zone == getObjectFromGUID("59b7ad") or zone == getObjectFromGUID("23b5a3")) and object.getGUID() == "4327a2" then
-        -- create_bh_buttons()
-    end
-    -- NEUTRAL BOUNTY HUNT / SABOTAGE BUTTONS WHEN ASSASSIN DROID IN OR OUT OF PLAY
-    if zone == getObjectFromGUID("0cdb1a") and object.getName() == "Assassin Droid" and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        -- create_bh_buttons()
-    end
+  end -- end createBHbuttons() (local)
+
+  if (zone == zoneBasesBottom or zone == zoneBasesTop) and obj.getName() == "Ord Mantell" then
+    -- createBHbuttons() -- REVISIT
+  end
+
+  -- NEUTRAL BOUNTY HUNT / SABOTAGE BUTTONS WHEN ASSASSIN DROID IN OR OUT OF PLAY
+  if zone == zoneInPlay and obj.getName() == "Assassin Droid" and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    -- createBHbuttons() -- REVISIT
+  end
 end -- end onObjectEnterZone()
 
 
--- this function handles objects leaving the play zone and reducing counters
-function onObjectLeaveZone(zone, object)
-    if object == nil then
-      return nil
+function onObjectLeaveZone(zone, obj)
+  -- this function handles objects leaving the play zone, button removal, reducing counters
+  if obj == nil then
+    return
+  end
+
+  if zone == zoneInPlay then
+
+    -- remove just_bought tag
+    local counter = nil
+    local counterBoard = nil
+    local toRemove = nil
+    if obj.hasTag('just_bought') then
+      obj.removeTag('just_bought')
+      return
     end
-    if zone == getObjectFromGUID("0cdb1a") then
-        local counter = nil
-        local board_counter = nil
-        local owner = nil
-        local to_remove = nil
-        if object.hasTag('just_bought') then
-            object.removeTag('just_bought')
-            for_free = false
-            return nil
+
+    if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
+    not obj.hasTag('just_bought') and not obj.hasTag('exiled') then
+
+      if obj.hasTag('bottom_owner') then
+        counter = counterResourceBottom
+        counterBoard = counterResourceBoardBottom
+        toRemove = obj.getVar('produce')
+
+      elseif obj.hasTag('top_owner') then
+        counter = counterResourceTop
+        counterBoard = counterResourceBoardTop
+        toRemove = obj.getVar('produce')
+      end
+
+      -- get counter value
+      local currentValue = counter.getVar('val')
+      if toRemove ~= nil then
+        currentValue = currentValue - toRemove
+      end
+      if currentValue < 0 then currentValue = 0 end
+
+      counter.call('set_val', currentValue)
+      counterBoard.call('set_val', currentValue)
+    end
+
+    -- remove ship counter
+    if obj.hasTag('ship') then
+      obj.clearButtons()
+    end
+  end
+
+  -- remove lua ability buttons
+  if zone == zoneInPlay and obj.hasTag('buttons') and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    obj.clearButtons()
+  end
+
+  -- remove xml ability / force etc buttons
+  if zone == zoneInPlay and (obj.hasTag('ability_button') or obj.hasTag('ability_button_sec') or obj.hasTag('force_button')) and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEED REQUIRE
+    padGalaxyDeck.call('remove_force_buttons', {object=obj}) -- NEED REQUIRE
+  end
+
+  -- remove jar jar row ability
+  if zone.getName():find("Zone Row") and
+  obj.getName() == "Jar Jar Binks" then
+    padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEED REQUIRE
+  end
+
+  -- remove bounty hunt / sabotage buttons
+  if obj.hasTag('unit') and zone.getName():find("Zone Row") then
+    obj.clearButtons()
+  end
+
+  -- remove neutral BH / sabotage buttons when Ord Mantell in or out of play
+  local function removeBHbuttons()
+    local zones = {zoneGalaxyRow1, zoneGalaxyRow2, zoneGalaxyRow3, zoneGalaxyRow4, zoneGalaxyRow5, zoneGalaxyRow6}
+    for i = 1, 6 do
+      for _, zoneObj in pairs(zones[i].getObjects()) do
+        if zoneObj.hasTag('neutral') and (not zoneObj.hasTag('bottom_owner') and not zoneObj.hasTag('top_owner')) then
+          zoneObj.clearButtons()
         end
-        if (object.hasTag('bottom_owner') or object.hasTag('top_owner')) and
-        object.hasTag('just_bought') == false and object.hasTag('exiled') == false then
-            if object.hasTag('bottom_owner') then
-                counter       = getObjectFromGUID("79146f")
-                board_counter = getObjectFromGUID("5ddc6c")
-                to_remove     = object.getVar('produce')
-            elseif object.hasTag('top_owner') then
-                counter       = getObjectFromGUID("34be5a")
-                board_counter = getObjectFromGUID("c6a07b")
-                to_remove     = object.getVar('produce')
-            end
-            -- get counter value
-            local current_value = counter.getVar('val')
-            if to_remove ~= nil then
-              current_value = current_value - to_remove
-            end
-            if current_value < 0 then current_value = 0 end
-            counter.call('set_val', current_value)
-            board_counter.call('set_val', current_value)
-        end
-        -- remove ship counter
-        if object.hasTag('ship') then
-            local buttons = object.getButtons()
-            if buttons ~= nil then
-                for k = #buttons, 1, -1 do
-                    -- remove the button and pop from the table
-                    object.removeButton(buttons[k].index)
-                    table.remove(buttons)
-                end
-            end
-        end
+      end
     end
-    -- LUA ABILITY BUTTONS
-    if zone == getObjectFromGUID("0cdb1a") and object.hasTag('buttons') and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        pad_galaxy_deck.call('remove_buttons', {object=object})
-    end
-    -- XML UI ABILITY/FORCE BUTTONS
-    if zone == getObjectFromGUID("0cdb1a") and (object.hasTag('ability_button') or object.hasTag('ability_button_sec') or object.hasTag('force_button')) and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        pad_galaxy_deck.call('remove_ability_buttons', {object=object})
-        pad_galaxy_deck.call('remove_force_buttons', {object=object})
-    end
-    -- JAR JAR ROW ABILITY
-    if (zone == getObjectFromGUID("c98289") or zone == getObjectFromGUID("46fd89") or zone == getObjectFromGUID("174e23") or
-    zone == getObjectFromGUID("84fd72") or zone == getObjectFromGUID("d83464") or zone == getObjectFromGUID("c5ef86")) and
-    object.getName() == "Jar Jar Binks" then
-        pad_galaxy_deck.call('remove_ability_buttons', {object=object})
-    end
-    -- BOUNTY HUNT / SABOTAGE BUTTONS
-    if object.hasTag('unit') and (zone == getObjectFromGUID("c98289") or zone == getObjectFromGUID("46fd89") or zone == getObjectFromGUID("174e23") or
-    zone == getObjectFromGUID("84fd72") or zone == getObjectFromGUID("d83464") or zone == getObjectFromGUID("c5ef86")) then
-        pad_galaxy_deck.call('remove_buttons', {object=object})
-    end
-    -- NEUTRAL BOUNTY HUNT / SABOTAGE BUTTONS WHEN ORD MANTELL IN OR OUT OF PLAY
-    local function remove_bh_buttons()
-        local zone_1 = getObjectFromGUID("c98289")
-        local zone_2 = getObjectFromGUID("46fd89")
-        local zone_3 = getObjectFromGUID("174e23")
-        local zone_4 = getObjectFromGUID("84fd72")
-        local zone_5 = getObjectFromGUID("d83464")
-        local zone_6 = getObjectFromGUID("c5ef86")
-        local zones = {zone_1,zone_2, zone_3, zone_4, zone_5, zone_6,}
-        for i = 1, 6 do
-            for k, v in pairs(zones[i].getObjects()) do
-                if v.hasTag('neutral') and (not v.hasTag('bottom_owner') and not v.hasTag('top_owner')) then
-                    pad_galaxy_deck.call('remove_buttons', {object=v})
-                end
-            end
-        end
-    end
-    if (zone == getObjectFromGUID("59b7ad") or zone == getObjectFromGUID("23b5a3")) and object.getGUID() == "4327a2" then
-        remove_bh_buttons()
-    end
-    if zone == getObjectFromGUID("0cdb1a") and object.getName() == "Assassin Droid" and
-    (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
-        remove_bh_buttons()
-    end
+  end -- end removeBHButtons() (local)
+
+  if (zone == zoneBasesBottom or zone == zoneBasesTop) and obj.getName() == "Ord Mantell" then
+    -- removeBHbuttons()
+  end
+  if zone == zoneInPlay and obj.getName() == "Assassin Droid" and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+    -- removeBHbuttons()
+  end
 end -- end onObjectLeaveZone()
 
 
--- this function handles the broadcast of exiled cards
-function onObjectEnterContainer(container, object)
-    if (container.getGUID() == "051249" or container.getGUID() == "96e6ce") and
-    object.tag == "Card" then
-        local bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
-        local is_bottom               = object.hasTag('bottom_owner')
-        local is_top                  = object.hasTag('top_owner')
-        local is_ai                   = object.hasTag('ai_owner')
-        local owner_color             = (is_bottom and bottom_color or top_color)
-        if object.hasTag('bottom_owner') or object.hasTag('top_owner') then
-            broadcastToAll("The card " .. object.getName() .. " owned by " .. Player[owner_color].steam_name .. " has been exiled.", owner_color)
-        elseif not object.hasTag('bottom_owner') and not object.hasTag('top_owner') and not object.hasTag('ai_owner') then
-            broadcastToAll("The card " .. object.getName() .. " owned by nobody, has been exiled.", container.getColorTint())
-        end
-        local container_is_bottom    = container == getObjectFromGUID("96e6ce") and true or false
-        local separatist_bottom      = (bottom_color == "Blue" or bottom_color == "Purple") and true or false
-        if (container_is_bottom and separatist_bottom) or (not container_is_bottom and not separatist_bottom) then
-            Global.setVar('droideka_condition_met', true)
-        end
+function onObjectEnterContainer(container, obj)
+  -- this function handles the broadcast of exiled cards
+  -- done via onObjectEnterContainer to not miss manual drops into exile bag
+  if container.getName() == "Exiled!" and obj.type == "Card" then
+    local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')    
+    local ownerColor = (obj.hasTag('bottom_owner') and bottomColor or topColor)
+    local cardName = obj.getName()
+
+    if obj.hasTag('bottom_owner') or obj.hasTag('top_owner') then
+      if Player[ownerColor].steam_name then
+        broadcastToAll("The card " .. cardName .. " owned by [" .. Color.fromString(ownerColor):toHex() .. "]" .. Player[ownerColor].steam_name .. "[-] has been exiled.", "White")
+      else
+        broadcastToAll("The card " .. cardName .. " owned by [" .. Color.fromString(ownerColor):toHex() .. "]" .. ownerColor .. " Player[-] has been exiled.", "White")
+      end
+
+    elseif not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and not obj.hasTag('ai_owner') then
+      broadcastToAll("The card " .. cardName .. " owned by nobody, has been exiled.", "White")
     end
+
+    local posContainer = container.getPosition()
+    local containerIsBottom = posContainer.z < 0 and true or false
+    local separatistBottom = (bottomColor == "Blue" or bottomColor == "Purple") and true or false
+
+    -- check if Droideka condition should be met
+    if (containerIsBottom and separatistBottom) or (not containerIsBottom and not separatistBottom) then
+      metConditionDroideka = true
+    end
+  end
 end -- end onObjectEnterContainer()
-
-
-
 
 -- AI FUNCTIONS HAVE BEEN MOVED TO EMPIRE AI LEADER CARD

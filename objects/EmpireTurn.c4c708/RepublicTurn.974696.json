@@ -42,7 +42,7 @@
   "Sticky": true,
   "Tags": [
     "non_interactable",
-    "turn_tracker"
+    "turnTracker"
   ],
   "Tooltip": false,
   "Transform": {

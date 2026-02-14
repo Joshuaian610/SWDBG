@@ -3,7 +3,7 @@ MAX_VALUE = 20
 
 function onload(saved_data)
     val = 0
-    pad_galaxy_deck = getObjectFromGUID("83b3ce")
+    padGalaxyDeck = getObjectFromGUID("83b3ce")
     if saved_data ~= 0 then
         local loaded_data = JSON.decode(saved_data)
         if loaded_data ~= nil then
@@ -37,7 +37,7 @@ end -- end function updateSave()
 
 
 function createAll()
-    pad_galaxy_deck.call('remove_buttons', {object=self})
+    padGalaxyDeck.call('remove_buttons', {object=self})
     f_color = {1, 1, 1, 255}
     self.createButton({
         click_function = "add_subtract",
@@ -75,22 +75,22 @@ function add_subtract(_obj, _color, alt_click)
         local base_max_hp                 = 999
         local faction                     = nil
         local color                       = nil
-        local bottom_faction, top_faction = pad_galaxy_deck.call('get_playerareas')
-        local bottom_color, top_color     = pad_galaxy_deck.call('get_playercolors')
+        local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
+        local bottomColor, topColor     = padGalaxyDeck.call('get_playercolors')
         local base_found                  = false
         local found_base                  = nil
-        if bottom_faction == 'rebellion' then bottom_faction = 'rebel' end
-        if top_faction == 'rebellion' then top_faction = 'rebel' end
+        if bottomFaction == 'rebellion' then bottomFaction = 'rebel' end
+        if topFaction == 'rebellion' then topFaction = 'rebel' end
         if self.getGUID() == "7e15f6" then
-            faction = bottom_faction
-            color   = top_color
-            zone    = getObjectFromGUID("59b7ad")
+            faction = bottomFaction
+            color   = topColor
+            zone    = zoneBasesBottom
             rot     = {0.00, 0.00, 0.00}
             loc     = {29.50, 3.50, 21.00}
         elseif self.getGUID() == "fa055e" then
-            faction = top_faction
-            color   = bottom_color
-            zone    = getObjectFromGUID("23b5a3")
+            faction = topFaction
+            color   = bottomColor
+            zone    = zoneBasesTop
             rot     = {0.00, 180.00, 0.00}
             loc     = {29.50, 3.50, -21.00}
         end

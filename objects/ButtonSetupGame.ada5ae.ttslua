@@ -1,12 +1,12 @@
--- pad_galaxy_deck holds a bunch of helper functions
-pad_galaxy_deck     = getObjectFromGUID("83b3ce")
+-- padGalaxyDeck holds a bunch of helper functions
+padGalaxyDeck     = getObjectFromGUID("83b3ce")
 pad_republic_reveal = getObjectFromGUID("2abc18")
-pad_outer_rim       = getObjectFromGUID("")
+padOuterRim      = getObjectFromGUID("")
 
 
 function onLoad()
     math.randomseed(os.time())
-    all_colors = Global.getTable('all_colors')
+    allColors= Global.getTable('all_colors')
     self.createButton({
       click_function = "setup_game",
       function_owner = self,
@@ -353,7 +353,7 @@ end -- end change_card_back()
 
 
 function setup_game(button, _, _)
-    local is_ai = Global.getVar('enable_leaders')
+    local is_ai = Global.getVar('enableLeaders')
     -- check that both player areas have selected a faction
     if getObjectFromGUID("17e255") ~= nil or getObjectFromGUID("16d15b") ~= nil then -- check for backdrop objects
         broadcastToAll("Both players must select a faction before setup can continue.", "Orange")
@@ -365,9 +365,9 @@ function setup_game(button, _, _)
         return nil
     end
     -- get factions, locations (check zones for starter deck tags)
-    local bottom_faction, top_faction = pad_galaxy_deck.call('get_playerareas')
-    local capitalized_bottom_faction  = (bottom_faction:gsub("^%l", string.upper))
-    local capitalized_top_faction     = (top_faction:gsub("^%l", string.upper))
+    local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
+    local capitalized_bottomFaction  = (bottomFaction:gsub("^%l", string.upper))
+    local capitalized_topFaction     = (topFaction:gsub("^%l", string.upper))
     -- set player seat colors
     ---- empire/separatist blue, or separatist purple if both are in
     ---- rebel/republic red, or republic orange if both are in
@@ -404,106 +404,106 @@ function setup_game(button, _, _)
         getObjectFromGUID("b6d068"),
         getObjectFromGUID("051249"),
     }
-    local bottom_color    = nil
-    local top_color       = nil
-    if bottom_faction == "separatist" and top_faction == "empire" then
-        bottom_color = "Purple"
-        top_color    = "Blue"
-    elseif (bottom_faction == "separatist" or bottom_faction == "empire") and
-    (top_faction == "republic" or top_faction == "rebellion") then
-        bottom_color = "Blue"
-        top_color    = "Red"
-    elseif bottom_faction == "empire" and top_faction == "separatist" then
-        bottom_color = "Blue"
-        top_color    = "Purple"
-    elseif bottom_faction == "republic" and top_faction == "rebellion" then
-        bottom_color = "Orange"
-        top_color    = "Red"
-    elseif (bottom_faction == "republic" or bottom_faction == "rebellion") and
-    (top_faction == "separatist" or top_faction == "empire") then
-        bottom_color = "Red"
-        top_color    = "Blue"
-    elseif bottom_faction == "rebellion" and top_faction == "republic" then
-        bottom_color = "Red"
-        top_color    = "Orange"
+    local bottomColor    = nil
+    local topColor       = nil
+    if bottomFaction == "separatist" and topFaction == "empire" then
+        bottomColor = "Purple"
+        topColor    = "Blue"
+    elseif (bottomFaction == "separatist" or bottomFaction == "empire") and
+    (topFaction == "republic" or topFaction == "rebellion") then
+        bottomColor = "Blue"
+        topColor    = "Red"
+    elseif bottomFaction == "empire" and topFaction == "separatist" then
+        bottomColor = "Blue"
+        topColor    = "Purple"
+    elseif bottomFaction == "republic" and topFaction == "rebellion" then
+        bottomColor = "Orange"
+        topColor    = "Red"
+    elseif (bottomFaction == "republic" or bottomFaction == "rebellion") and
+    (topFaction == "separatist" or topFaction == "empire") then
+        bottomColor = "Red"
+        topColor    = "Blue"
+    elseif bottomFaction == "rebellion" and topFaction == "republic" then
+        bottomColor = "Red"
+        topColor    = "Orange"
     end
     -- set string for get_playercolors()
-    getObjectFromGUID("12cd71").setDescription(bottom_color)
-    getObjectFromGUID("834dea").setDescription(top_color)
+    getObjectFromGUID("12cd71").setDescription(bottomColor)
+    getObjectFromGUID("834dea").setDescription(topColor)
     -- change hand zone colors
-    if bottom_handzone.getValue() ~= bottom_color then
-        bottom_handzone.setValue(bottom_color)
+    if bottom_handzone.getValue() ~= bottomColor then
+        bottom_handzone.setValue(bottomColor)
     end
-    if top_handzone.getValue() ~= top_color then
-        top_handzone.setValue(top_color)
+    if top_handzone.getValue() ~= topColor then
+        top_handzone.setValue(topColor)
     end
     -- deploy republic reveal pad stuff
-    if bottom_faction == "republic" then
+    if bottomFaction == "republic" then
         pad_republic_reveal.call('setup_reveal_ui', {area="Bottom"})
-    elseif top_faction == "republic" then
+    elseif topFaction == "republic" then
         pad_republic_reveal.call('setup_reveal_ui', {area="Top"})
     end
     pad_republic_reveal.call('hide_reveal_ui')
     -- set players to new hand zones
     Wait.frames(function()
     if bottom_player ~= nil then
-        if bottom_player.color ~= bottom_color then
-            bottom_player.changeColor(bottom_color)
+        if bottom_player.color ~= bottomColor then
+            bottom_player.changeColor(bottomColor)
         end
         for i = 1, 9 do
-            bottom_tint_obj[i].setColorTint(bottom_color)
+            bottom_tint_obj[i].setColorTint(bottomColor)
         end
     end
     if top_player ~= nil then
         if top_player.color ~= top_player then
-            top_player.changeColor(top_color)
+            top_player.changeColor(topColor)
         end
         for i = 1, 9 do
-            top_tint_obj[i].setColorTint(top_color)
+            top_tint_obj[i].setColorTint(topColor)
         end
     end
     end, 2)
     -- place selected galaxy deck, remove other
-    local placement_deck_galaxy = nil
+    local placement_deckGalaxy = nil
     local placement_deck_ships  = nil
-    local removal_deck_galaxy   = nil
+    local removal_deckGalaxy   = nil
     local removal_deck_ships    = nil
     local random_number = nil
     if galaxy_deck_original_enabled then
-        placement_deck_galaxy = getObjectFromGUID("33b71a")
+        placement_deckGalaxy = getObjectFromGUID("33b71a")
         placement_deck_ships  = getObjectFromGUID("d27ec8")
-        removal_deck_galaxy   = getObjectFromGUID("7d15af")
+        removal_deckGalaxy   = getObjectFromGUID("7d15af")
         removal_deck_ships    = getObjectFromGUID("98f4b5")
     elseif galaxy_deck_expansion_enabled then
-        placement_deck_galaxy = getObjectFromGUID("7d15af")
+        placement_deckGalaxy = getObjectFromGUID("7d15af")
         placement_deck_ships  = getObjectFromGUID("98f4b5")
-        removal_deck_galaxy   = getObjectFromGUID("33b71a")
+        removal_deckGalaxy   = getObjectFromGUID("33b71a")
         removal_deck_ships    = getObjectFromGUID("d27ec8")
     elseif galaxy_deck_random_enabled then
         random_number = math.random(1, 2)
         if random_number == 1 then
-            placement_deck_galaxy = getObjectFromGUID("33b71a")
+            placement_deckGalaxy = getObjectFromGUID("33b71a")
             placement_deck_ships  = getObjectFromGUID("d27ec8")
-            removal_deck_galaxy   = getObjectFromGUID("7d15af")
+            removal_deckGalaxy   = getObjectFromGUID("7d15af")
             removal_deck_ships    = getObjectFromGUID("98f4b5")
         elseif random_number == 2 then
-            placement_deck_galaxy = getObjectFromGUID("7d15af")
+            placement_deckGalaxy = getObjectFromGUID("7d15af")
             placement_deck_ships  = getObjectFromGUID("98f4b5")
-            removal_deck_galaxy   = getObjectFromGUID("33b71a")
+            removal_deckGalaxy   = getObjectFromGUID("33b71a")
             removal_deck_ships    = getObjectFromGUID("d27ec8")
         end
     end
-    placement_deck_galaxy.setRotation({0.00, 90.00, 180.00})
-    placement_deck_galaxy.setLock(false)
-    placement_deck_galaxy.setPositionSmooth({-28.00, 1.50, 2.50})
+    placement_deckGalaxy.setRotation({0.00, 90.00, 180.00})
+    placement_deckGalaxy.setLock(false)
+    placement_deckGalaxy.setPositionSmooth({-28.00, 1.50, 2.50})
     placement_deck_ships.setRotation({0.00, 90.00, 180.00})
     placement_deck_ships.setLock(false)
     placement_deck_ships.setPositionSmooth({-28.00, 1.50, 2.50})
-    getObjectFromGUID("834dea").putObject(removal_deck_galaxy)
+    getObjectFromGUID("834dea").putObject(removal_deckGalaxy)
     getObjectFromGUID("834dea").putObject(removal_deck_ships)
     -- shuffle galaxy deck, deal galaxy row
     Wait.time(function()
-    local galaxy_deck = pad_galaxy_deck.call('get_galaxy_deck')
+    local galaxy_deck = padGalaxyDeck.call('get_galaxy_deck')
     galaxy_deck.setName('Galaxy Deck')
     galaxy_deck.shuffle()
     local loc_1 = {-21.00, 0.75, 0.00}
@@ -519,7 +519,7 @@ function setup_game(button, _, _)
             card     = card,
             position = deal_locs[i]
         }
-        pad_galaxy_deck.call('rotate_dealt_card', parms)
+        padGalaxyDeck.call('rotate_dealt_card', parms)
     end
     end, 2)
     -- place selected outer rim pilot deck, remove other
@@ -546,7 +546,7 @@ function setup_game(button, _, _)
     getObjectFromGUID("12cd71").putObject(removal_deck_outer_rim)
     -- clean up unselected faction decks, shuffle starters in play
     local all_objects = getObjects()
-    local factions = pad_galaxy_deck.call('get_factions')
+    local factions = padGalaxyDeck.call('get_factions')
     if not factions[1] then
         for _, object in ipairs(all_objects) do
             if object.hasTag('empire') then
@@ -591,63 +591,63 @@ function setup_game(button, _, _)
     end
     -- get starter decks, shuffle, deal to hand
     local parms = {
-        player_area = "bottom",
+        playerArea = "bottom",
         count       = 5
     }
     getObjectFromGUID("83b3ce").call('deal_card', parms)
-    parms.player_area = "top"
+    parms.playerArea = "top"
     if not is_ai then
-        pad_galaxy_deck.call('deal_card', parms)
+        padGalaxyDeck.call('deal_card', parms)
     end
     -- determine first player
     -- enable turns, set turn to first player
     local random_first_player    = math.random(2)
     local board_counter_bottom   = getObjectFromGUID("5ddc6c")
     local board_counter_top      = getObjectFromGUID("c6a07b")
-    local button_end_turn_bottom = getObjectFromGUID("d2864e")
-    local button_end_turn_top    = getObjectFromGUID("b6d068")
+    local buttonEndTurnBottom = getObjectFromGUID("d2864e")
+    local buttonEndTurnTop    = getObjectFromGUID("b6d068")
     local force_tracker          = getObjectFromGUID("74b511")
     local force_track            = getObjectFromGUID("53e12c")
-    local turn_tracker           = pad_galaxy_deck.call('get_turn_tracker')
+    local turnTracker           = padGalaxyDeck.call('get_turnTracker')
     local rot_tracker            = nil
     local pos_tracker            = nil
     local state_id               = nil
     local tracker_color          = nil
     -- check if start randomization required
     local random_required = true
-    if (bottom_faction == "empire" and top_faction == "rebellion") or
-    (bottom_faction == "separatist" and top_faction == "republic") then
+    if (bottomFaction == "empire" and topFaction == "rebellion") or
+    (bottomFaction == "separatist" and topFaction == "republic") then
         random_required = false
         -- bottom first player set turn
         Wait.frames(function()
-        Turns.turn_color = bottom_color
+        Turns.turn_color = bottomColor
         end,5)
         rot_tracker = {0, 180, 0}
         pos_tracker = {-46.00, 0.12, -21.00}
-        if bottom_faction ~= "empire" then
-            turn_tracker = turn_tracker.setState(2)
+        if bottomFaction ~= "empire" then
+            turnTracker = turnTracker.setState(2)
         end
-        tracker_color = bottom_color
+        tracker_color = bottomColor
         board_counter_bottom.setInvisibleTo({})
         board_counter_top.setInvisibleTo(all_colors)
-        button_end_turn_bottom.setInvisibleTo({})
+        buttonEndTurnBottom.setInvisibleTo({})
         -- top second player set force track
-        force_tracker.setColorTint(top_color)
-        force_tracker.highlightOn(top_color)
-        force_track.setColorTint(top_color)
-        broadcastToAll("The force is with " .. capitalized_top_faction .. ".", top_color)
-        broadcastToAll(capitalized_bottom_faction .. " gets first turn.", bottom_color)
-    elseif (bottom_faction == "rebellion" and top_faction == "empire") or
-    (bottom_faction == "republic" and top_faction == "separatist") then
+        force_tracker.setColorTint(topColor)
+        force_tracker.highlightOn(topColor)
+        force_track.setColorTint(topColor)
+        broadcastToAll("The force is with " .. capitalized_topFaction .. ".", topColor)
+        broadcastToAll(capitalized_bottomFaction .. " gets first turn.", bottomColor)
+    elseif (bottomFaction == "rebellion" and topFaction == "empire") or
+    (bottomFaction == "republic" and topFaction == "separatist") then
         random_required = false
         -- bottom second player set force track
-        force_tracker.setColorTint(bottom_color)
-        force_tracker.highlightOn(bottom_color)
+        force_tracker.setColorTint(bottomColor)
+        force_tracker.highlightOn(bottomColor)
         force_tracker.setPosition({29.41, 1.15, -8.50})
-        force_track.setColorTint(bottom_color)
+        force_track.setColorTint(bottomColor)
         -- top first player set turn
         Wait.frames(function()
-        Turns.turn_color = top_color
+        Turns.turn_color = topColor
         end, 5)
         if not is_ai then
             rot_tracker = {0, 0, 0}
@@ -655,96 +655,96 @@ function setup_game(button, _, _)
             rot_tracker = {0, 180, 0}
         end
         pos_tracker = {46.00, 0.12, 21.00}
-        if top_faction ~= "empire" then
-            turn_tracker = turn_tracker.setState(2)
+        if topFaction ~= "empire" then
+            turnTracker = turnTracker.setState(2)
         end
-        tracker_color = top_color
+        tracker_color = topColor
         board_counter_top.setInvisibleTo({})
         board_counter_bottom.setInvisibleTo(all_colors)
-        button_end_turn_top.setInvisibleTo({})
-        broadcastToAll("The force is with " .. capitalized_bottom_faction .. ".", bottom_color)
-        broadcastToAll(capitalized_top_faction .. " gets first turn.", top_color)
+        buttonEndTurnTop.setInvisibleTo({})
+        broadcastToAll("The force is with " .. capitalized_bottomFaction .. ".", bottomColor)
+        broadcastToAll(capitalized_topFaction .. " gets first turn.", topColor)
     end
     if random_required then
         if random_first_player == 1 then
             -- bottom first player set turn
             Wait.frames(function()
-            Turns.turn_color = bottom_color
+            Turns.turn_color = bottomColor
             end,5)
             rot_tracker = {0, 180, 0}
             pos_tracker = {-46.00, 0.12, -21.00}
-            if bottom_faction == "republic" then
-                turn_tracker = turn_tracker.setState(4)
-            elseif bottom_faction == "rebellion" then
-                turn_tracker = turn_tracker.setState(3)
-            elseif bottom_faction == "separatist" then
-                turn_tracker = turn_tracker.setState(2)
+            if bottomFaction == "republic" then
+                turnTracker = turnTracker.setState(4)
+            elseif bottomFaction == "rebellion" then
+                turnTracker = turnTracker.setState(3)
+            elseif bottomFaction == "separatist" then
+                turnTracker = turnTracker.setState(2)
             end
-            tracker_color = bottom_color
+            tracker_color = bottomColor
             board_counter_bottom.setInvisibleTo({})
             board_counter_top.setInvisibleTo(all_colors)
-            button_end_turn_bottom.setInvisibleTo({})
+            buttonEndTurnBottom.setInvisibleTo({})
             -- top second player set force track
-            force_tracker.setColorTint(top_color)
-            force_tracker.highlightOn(top_color)
-            force_track.setColorTint(top_color)
-            broadcastToAll("The force is with " .. capitalized_top_faction .. ".", top_color)
-            broadcastToAll(capitalized_bottom_faction .. " gets first turn.", bottom_color)
+            force_tracker.setColorTint(topColor)
+            force_tracker.highlightOn(topColor)
+            force_track.setColorTint(topColor)
+            broadcastToAll("The force is with " .. capitalized_topFaction .. ".", topColor)
+            broadcastToAll(capitalized_bottomFaction .. " gets first turn.", bottomColor)
         else
             -- bottom second player set force track
-            force_tracker.setColorTint(bottom_color)
-            force_tracker.highlightOn(bottom_color)
+            force_tracker.setColorTint(bottomColor)
+            force_tracker.highlightOn(bottomColor)
             force_tracker.setPosition({29.41, 1.15, -8.50})
-            force_track.setColorTint(bottom_color)
+            force_track.setColorTint(bottomColor)
             -- top first player set turn
             Wait.frames(function()
-            Turns.turn_color = top_color
+            Turns.turn_color = topColor
             end, 5)
             rot_tracker = {0, 0, 0}
             pos_tracker = {46.00, 0.12, 21.00}
-            if top_faction == "republic" then
-                turn_tracker = turn_tracker.setState(4)
-            elseif top_faction == "rebellion" then
-                turn_tracker = turn_tracker.setState(3)
-            elseif top_faction == "separatist" then
-                turn_tracker = turn_tracker.setState(2)
+            if topFaction == "republic" then
+                turnTracker = turnTracker.setState(4)
+            elseif topFaction == "rebellion" then
+                turnTracker = turnTracker.setState(3)
+            elseif topFaction == "separatist" then
+                turnTracker = turnTracker.setState(2)
             end
-            tracker_color = top_color
+            tracker_color = topColor
             board_counter_top.setInvisibleTo({})
             board_counter_bottom.setInvisibleTo(all_colors)
-            button_end_turn_top.setInvisibleTo({})
-            broadcastToAll("The force is with " .. capitalized_bottom_faction .. ".", bottom_color)
-            broadcastToAll(capitalized_top_faction .. " gets first turn.", top_color)
+            buttonEndTurnTop.setInvisibleTo({})
+            broadcastToAll("The force is with " .. capitalized_bottomFaction .. ".", bottomColor)
+            broadcastToAll(capitalized_topFaction .. " gets first turn.", topColor)
         end
     end
     -- handle force track graphic in case of traditional matchup
     local original_force_track  = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065188393/F54092F923F8BA59AC13E93874F92CE5C62DDC4B/"
     local expansion_force_track = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065207212/5A5DF1FB7E5B591D9C33802D41319952F89E9CB9/"
-    if top_faction == "republic" and bottom_faction == "separatist" then
+    if topFaction == "republic" and bottomFaction == "separatist" then
         force_track.setCustomObject({image=expansion_force_track})
         force_track = force_track.reload()
-    elseif top_faction == "separatist" and bottom_faction == "republic" then
+    elseif topFaction == "separatist" and bottomFaction == "republic" then
         force_track.setCustomObject({image=expansion_force_track})
         force_track = force_track.reload()
         force_track.setRotation({0.00, 180.00, 0.00})
-    elseif top_faction == "rebellion" and bottom_faction == "empire" then
+    elseif topFaction == "rebellion" and bottomFaction == "empire" then
         force_track.setCustomObject({image=original_force_track})
         force_track = force_track.reload()
-    elseif top_faction == "empire" and bottom_faction == "rebellion" then
+    elseif topFaction == "empire" and bottomFaction == "rebellion" then
         force_track.setCustomObject({image=original_force_track})
         force_track = force_track.reload()
         force_track.setRotation({0.00, 180.00, 0.00})
     end
     -- set turn tracker to first player faction, move into position
-    turn_tracker.setInvisibleTo({})
-    turn_tracker.setLock(true)
-    turn_tracker.interactable = false
+    turnTracker.setInvisibleTo({})
+    turnTracker.setLock(true)
+    turnTracker.interactable = false
     if is_ai then
         rot_tracker = {0, 180, 0}
     end
-    turn_tracker.setRotation(rot_tracker)
-    turn_tracker.setPosition(pos_tracker)
-    turn_tracker.setColorTint(tracker_color)
+    turnTracker.setRotation(rot_tracker)
+    turnTracker.setPosition(pos_tracker)
+    turnTracker.setColorTint(tracker_color)
     -- broadcast GLHF message, include plug for ratings to mod page
     if galaxy_deck_original_enabled then
         broadcastToAll("Original Galaxy Deck has been selected!", "Green")
@@ -773,7 +773,7 @@ function setup_game(button, _, _)
     end
     self.destruct()
     if is_ai then
-        setup_solo(top_faction)
+        setup_solo(topFaction)
     end
 end -- end setup_game()
 
@@ -788,9 +788,9 @@ function setup_solo(faction)
     snap_board_solo.setPosition(snap_board_solo_pos)
     bag.putObject(snap_board_top_mp)
     -- get top player color, drop cubes to leader board *** WILL ONLY WORK WHEN RUNNING OFF MAIN SETUP FUNCTION ***
-    -- bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    -- bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     -- so, declare var instead to test
-    bottom_color, top_color = pad_galaxy_deck.call('get_playercolors')
+    bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     -- faction vars
     -- [1]      = inq/jedi etc
     -- [2],[3]  = troopers
@@ -917,7 +917,7 @@ function setup_solo(faction)
     local galaxy_deck       = getObjectFromGUID(faction_guids[15])
     -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
     if galaxy_deck == nil then
-        for _, object in pairs(getObjectFromGUID("cdc550").getObjects()) do
+        for _, object in pairs(zoneGalaxyDeck.getObjects()) do
             if object.tag == "Deck" then
                 galaxy_deck = object
             end
@@ -1034,7 +1034,7 @@ function setup_solo(faction)
     -- rotate, tint purchase buttons
     for i = 7, 13 do
         manipulate_objects[i].setRotation({0.00, 180.00, 0.00})
-        manipulate_objects[i].setColorTint(top_color)
+        manipulate_objects[i].setColorTint(topColor)
     end
     -- destroy no longer required UI objects
     for i = 1, #destroy_objects do
@@ -1043,17 +1043,17 @@ function setup_solo(faction)
     -- pull leader board marker cubes
     local cube_progress = bag.takeObject({
         guid        =
-        ((top_color == "Blue" and "4863a8") or
-        (top_color  == "Purple" and "59278f") or
-        (top_color  == "Red" and "4fd77b") or
-        (top_color  == "Orange" and "fa5ca7")),
+        ((topColor == "Blue" and "4863a8") or
+        (topColor  == "Purple" and "59278f") or
+        (topColor  == "Red" and "4fd77b") or
+        (topColor  == "Orange" and "fa5ca7")),
         rotation    = {0.00, 180.00, 0.00}
     })
     cube_progress.setPosition({-17.76, 0.85, 21.88})
     local cube_resource = bag.takeObject({guid="590c7d", rotation={0.00, 180.00, 0.00}})
     cube_resource.setPosition({-15.74, 0.85, 12.85})
     -- tint leaderboard
-    getObjectFromGUID(faction_guids[12]).setColorTint(top_color)
+    getObjectFromGUID(faction_guids[12]).setColorTint(topColor)
     -- place muster pad, reimage, tint
     local muster_pad_guid = (
         (faction == "empire" and "5e3df3") or
@@ -1068,7 +1068,7 @@ function setup_solo(faction)
     print(faction_image)
     muster_pad.setRotation({0.00, 180.00, 180.00})
     muster_pad.setPosition({-1.88, 0.10, 20.39})
-    muster_pad.setColorTint(top_color)
+    muster_pad.setColorTint(topColor)
     muster_pad.setCustomObject({image=faction_image})
     muster_pad.reload()
     end, 1)

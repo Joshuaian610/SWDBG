@@ -2,8 +2,8 @@ function onLoad()
     button_return      = getObjectFromGUID("82a57b")
     button_discard     = getObjectFromGUID("ec01dd")
     button_draw        = getObjectFromGUID("780bc6")
-    pad_galaxy_deck    = getObjectFromGUID("83b3ce")
-    pad_galaxy_discard = getObjectFromGUID("a03936")
+    padGalaxyDeck    = getObjectFromGUID("83b3ce")
+    padGalaxyDiscard = getObjectFromGUID("a03936")
     Wait.frames(function()
     hide_reveal_ui()
     end, 1)
@@ -54,7 +54,7 @@ function hide_reveal_ui()
         objects[i].setPosition(positions[i])
     end
     for i = 2, 4 do
-        pad_galaxy_deck.call('remove_buttons', {object=objects[i]})
+        padGalaxyDeck.call('remove_buttons', {object=objects[i]})
     end
 end -- end hide_reveal_ui()
 
@@ -95,10 +95,10 @@ end -- end show_reveal_ui()
 function reveal_card(parms)
     local button                      = parms.button
     local playercolor                 = parms.playercolor
-    local bottom_faction, top_faction = pad_galaxy_deck.call('get_playerareas')
+    local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
     local area                        = get_area()
     local is_bottom                   = area == "Bottom"
-    local faction                     = is_bottom and bottom_faction or top_faction
+    local faction                     = is_bottom and bottomFaction or topFaction
     local republic_color              = getObjectFromGUID(is_bottom and "12cd71" or "834dea").getDescription()
     local deck_zone                   = getObjectFromGUID(is_bottom and "209eca" or "97aa40")
     local discard_zone                = getObjectFromGUID(is_bottom and "61dacf" or "3ebaef")
@@ -147,7 +147,7 @@ function reveal_card(parms)
             if button.getName() ~= "Mace Windu" then
                 broadcastToAll("Hello there! Obi-Wan Kenobi has been revealed, and added to Republic hand.", republic_color)
                 Wait.time(function() draw_revealed() end, 1)
-                Wait.time(function() pad_galaxy_discard.call('obi_wan_repeat_action', {button=button, playercolor=playercolor}) end, 2)
+                Wait.time(function() padGalaxyDiscard.call('obi_wan_repeat_action', {button=button, playercolor=playercolor}) end, 2)
             end
         end
         reveal_card.setRotation(is_bottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
@@ -161,7 +161,7 @@ function reveal_card(parms)
             if button.getName() ~= "Mace Windu" then
                 broadcastToAll("Hello there! Obi-Wan Kenobi has been revealed, and added to Republic hand.", republic_color)
                 Wait.time(function() draw_revealed() end, 1)
-                Wait.time(function() pad_galaxy_discard.call('obi_wan_repeat_action', {button=button, playercolor=playercolor}) end, 2)
+                Wait.time(function() padGalaxyDiscard.call('obi_wan_repeat_action', {button=button, playercolor=playercolor}) end, 2)
             end
         end
         reveal_card.setRotation(is_bottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
