@@ -17,12 +17,12 @@ function exileCard(playerArea, position, object)
 end
 
 
-function sec_ability_button_create_ui()
-    padGalaxyDeck.call('sec_ability_button_create_ui', {card=self, pri_tooltip="Force", sec_tooltip="Resource"})
-end -- end ability_button_create()
+function initAbilityButtonSecXML()
+    padGalaxyDeck.call('initAbilityButtonSecXML', {card=self, pri_tooltip="Force", sec_tooltip="Resource"})
+end -- end initAbilityButton()
 
 
-function force_button_create()
-    padGalaxyDeck.call('force_button_create', {card=self})
-end -- end force_button_create()
+function initXMLForceButton()
+    padGalaxyDeck.call('initXMLForceButton', {card=self})
+end -- end initXMLForceButton()
 

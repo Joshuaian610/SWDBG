@@ -280,19 +280,19 @@ function purchase_card(parms)
         end
     end
     -- handle Fang Fighter
-    local force_owner = padGalaxyDeck.call('get_force_owner')
+    local forceOwner = padGalaxyDeck.call('getForceOwner')
     if card_object.getName() == "Fang Fighter" and (not is_ai or (isBottom and is_ai)) then
         card_destination = (isBottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
         local deckDeal = nil
         local countDeck = 0
         local card_found = false
         if isBottom then
-            if force_owner == "Bottom" then
+            if forceOwner == "Bottom" then
                 broadcastToAll("The Force is with the " .. capitalized_faction .. ", who draws a card from the Fang Fighter ability.", color)
                 padGalaxyDeck.call('dealCard', {playerArea="bottom", count=1})
             end
         elseif is_top then
-            if force_owner == "Top" then
+            if forceOwner == "Top" then
                 broadcastToAll("The Force is with the " .. capitalized_faction .. ", who draws a card from the Fang Fighter ability.", color)
                 padGalaxyDeck.call('dealCard', {playerArea="top", count=1})
             end
@@ -305,13 +305,13 @@ function purchase_card(parms)
     end
     -- handle Quarren Mercenary
     if card_object.getName() == 'Quarren Mercenary' and (not is_ai or (isBottom and is_ai)) then
-        if isBottom and force_owner == "Bottom" then
+        if isBottom and forceOwner == "Bottom" then
             broadcastToAll("The Force is with the " .. capitalized_faction .. ", who may exile two cards out of hand or discard pile.", color)
-        elseif isBottom and force_owner ~= "Bottom" then
+        elseif isBottom and forceOwner ~= "Bottom" then
             broadcastToAll("The Force is not with the " .. capitalized_faction .. ", who may only exile one card out of hand or discard pile.", color)
-        elseif is_top and force_owner == "Top" then
+        elseif is_top and forceOwner == "Top" then
             broadcastToAll("The Force is with the " .. capitalized_faction .. ", who may exile two cards out of hand or discard pile.", color)
-        elseif is_top and force_owner ~= "Top" then
+        elseif is_top and forceOwner ~= "Top" then
             broadcastToAll("The Force is not with the " .. capitalized_faction .. ", who may only exile one card out of hand or discard pile.", color)
         end
     end

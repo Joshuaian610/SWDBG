@@ -1,0 +1,89 @@
+-- this require page will contain functions and functionality related to Leaders solo mode
+
+
+function discardAICard(isRandom)
+  -- this function handles the discard of an AI card
+  local checkZone = getObjectbyName("Zone Leaders Muster")
+  local musterCards = {}
+  local targetDiscard = nil
+  local _, AIcolor = getPlayerColors()
+  local _, opponentFaction = getPlayerAreas()
+  local capitalizedOpponentFaction = (opponentFaction:gsub("^%l", string.upper))
+
+  for _, object in pairs(checkZone.getObjects()) do
+    if object.tag == "Card" and not object.is_face_down then
+      table.insert(musterCards, object)
+    end
+  end
+
+  if not isRandom then
+    -- do the discard lowest in muster thing, checking first by card cost, then attack value to break ties
+    local lowestCost = 0
+    local lowestAttack = 0
+    local multiples = {}
+    local tieBreakMultiples = {}
+
+    for i = 1, #musterCards do
+      local cardCost = musterCards[i].getVar('cost') -- NEED DATA TABLE
+      if i == 1 then
+        lowestCost = cardCost
+        table.insert(multiples, musterCards[i])
+      else
+        if cardCost == lowestCost then
+          table.insert(multiples, musterCards[i])
+        elseif cardCost <= lowestCost then
+          multiples = {}
+          table.insert(multiples, musterCards[i])
+        end
+      end
+    end
+
+    -- check if tie break needed, do so if so
+    if #multiples == 1 then
+      targetDiscard = multiples[1]
+
+    elseif #multiples > 1 then
+      -- break tie by attack
+      for i = 1, #multiples do
+        local cardAttack = multiples[i].getVar('fight') -- NEED DATA TABLE
+        if i == 1 then
+
+          lowestAttack = cardAttack
+          table.insert(tieBreakMultiples, multiples[i])
+
+        else
+
+          if cardAttack == lowestAttack then
+            table.insert(tieBreakMultiples, multiples[i])
+          elseif cardAttack <= lowestAttack then
+            tieBreakMultiples = {}
+            table.insert(tieBreakMultiples, multiples[i])
+          end
+        end
+      end
+    end
+
+    if #tieBreakMultiples > 0 then
+      local randomIndex = math.random(1, #tieBreakMultiples)
+      targetDiscard = tieBreakMultiples[randomIndex]
+    end
+
+  else
+    -- or, do the discard random in muster thing
+    local discardIndex = math.random(1, #musterCards)
+    targetDiscard = musterCards[discardIndex]
+  end
+
+  -- once card identified, move to muster pile facedown & broadcast
+  Wait.time(function()
+
+    if not isRandom then
+      broadcastToAll("[" .. Color.fromString(AIcolor):toHex() .. "]AI " .. capitalizedOpponentFaction .. "[-] has decided to discard " .. targetDiscard.getName() .. ".", "White")
+    else
+      broadcastToAll("[" .. Color.fromString(AIcolor):toHex() .. "]AI " .. capitalizedOpponentFaction .. "[-] has randomly discarded " .. targetDiscard.getName() .. ".", "White")
+    end
+    targetDiscard.setPosition({ -1.88, 1.00, 20.39 })
+    targetDiscard.flip()
+
+  end, 1)
+end -- discardAICard()

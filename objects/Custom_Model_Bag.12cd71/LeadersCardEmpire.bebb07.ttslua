@@ -572,7 +572,7 @@ function setup_game(button, _, _)
         first_base.setPosition(loc_first_base_rebel)
         first_base.setRotation(rot_base_faceup_rebel)
         local base_deck = nil
-        for k, v in pairs(zoneBaseTop.getObjects()) do
+        for k, v in pairs(zoneBasesTop.getObjects()) do
             if v.tag == "Deck" then
                 base_deck = v
             end
@@ -647,7 +647,7 @@ function setup_game(button, _, _)
         first_base.setRotation(rot_base_faceup_empire)
         -- shuffle bases, pull 2 bases, resize, create deck of 2 & position
         local base_deck = nil
-        for k, v in pairs(zoneBaseBottom.getObjects()) do
+        for k, v in pairs(zoneBasesBottom.getObjects()) do
             if v.tag == "Deck" then
                 base_deck = v
             end
@@ -688,7 +688,7 @@ function setup_game(button, _, _)
     for i = 1, 12 do
         buttonsGalaxyDiscard[i].interactable = false
         buttonsGalaxyDiscard[i].createButton({
-            click_function = "galaxy_discard",
+            click_function = "galaxyDiscard",
             label = "",
             color = {0.6, 0.78, 0.73, 0.0},
             hover_color = {0.6, 0.78, 0.73, 0.4},
@@ -938,7 +938,7 @@ function ai_begin_turn(faction)
     local ability_marker = nil
     local ability_marker_guid = (isBottom and ai_base_marker_empire or ai_base_marker_rebel)
     local counter = getObjectFromGUID(isBottom and ai_base_damage_counter_empire or ai_base_damage_counter_rebel)
-    local force_owner = who_has_force()
+    local forceOwner = who_has_force()
     local force_tracker = getObjectFromGUID("74b511")
     local force_position = force_tracker.getPosition()
     local zone_1 = getObjectFromGUID("c98289")
@@ -2458,7 +2458,7 @@ function apply_base_damage(faction, amount)
             base_zone = getObjectFromGUID("79222b")
         else
             opposing_counter = player_opposing_counter
-            base_zone = zoneBaseBottom
+            base_zone = zoneBasesBottom
         end
 
     else
@@ -2469,7 +2469,7 @@ function apply_base_damage(faction, amount)
             base_zone = getObjectFromGUID("7a0285")
         else
             opposing_counter = player_opposing_counter
-            base_zone = zoneBaseTop
+            base_zone = zoneBasesTop
         end
     end
 

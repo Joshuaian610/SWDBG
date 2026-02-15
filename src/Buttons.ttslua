@@ -1,0 +1,302 @@
+-- this require page will contain button related functions and functionality
+
+
+function animateButtonDiscardRandom(button)
+  -- handles animation of discard random buttons
+  button.clearButtons()
+
+  local posButton = button.getPosition()
+  posButton.y = posButton.y - .35
+  button.setPosition(posButton)
+  posButton.y = posButton.y + .35
+  button.setPositionSmooth(posButton, false, false)
+
+  Wait.time(function()
+
+    button.call('create_button') -- NEED REQUIRE
+
+  end, .5)
+end -- end animateButtonDiscardRandom()
+
+
+function animateButtonGalaxyRow(button)
+  -- handles animation of galaxy row purchase/discard/exile buttons
+  button.clearButtons()
+
+  local posButton = button.getPosition()
+  posButton.y = posButton.y - .35
+  button.setPosition(posButton)
+  posButton.y = posButton.y + .35
+  button.setPositionSmooth(posButton, false, false)
+
+  Wait.time(function()
+
+    button.call('create_button') -- NEED REQUIRE
+
+  end, .5)
+end -- end animateButtonGalaxyRow()
+
+
+function initAbilityButton(card)
+  -- handles creation of lua buttons on cards
+  -- these buttons perform the actual click action underlying the XML graphics
+  local bottomColor, topColor = getPlayerColors()
+  local tags = card.getTags()
+  local isBottom = false
+
+  for _, tag in ipairs(tags) do
+    if tag == "bottom_owner" then
+      isBottom = true
+    end
+  end
+
+  local buttonColor = isBottom and bottomColor or topColor
+  local color, hoverColor = getButtonColors(buttonColor)
+
+  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
+    card.createButton({
+      click_function = "primary_button_action", -- NEED REQUIRE
+      function_owner = self,
+      label          = '',
+      position       = { 0, 0.5, 1.23 },
+      height         = 575,
+      width          = 1800,
+      color          = color,
+      hover_color    = hoverColor,
+      rotation       = { 0, 0, 0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+      tooltip        = "Use " .. card.getName() .. " ability.",
+    })
+  end
+
+  if card.getName() == "Jar Jar Binks" and (not card.hasTag('bottom_owner') and not card.hasTag('top_owner')) then
+    color, hoverColor = getButtonColors("Purple")
+    card.createButton({
+      click_function = "primary_button_action", -- NEED REQUIRE
+      function_owner = self,
+      label          = '',
+      position       = { 0, 0.5, 1.23 },
+      height         = 575,
+      width          = 1800,
+      color          = color,
+      hover_color    = hoverColor,
+      rotation       = { 0, 0, 0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+      tooltip        = "Use " .. card.getName() .. " ability.",
+    })
+  end
+end -- end initAbilityButton()
+
+
+function initAbilityButtonSec(card, primaryTooltip, secondaryTooltip)
+  -- handles creation of lua buttons on cards that require multiple buttons
+  -- these buttons perform the actual click action underlying the XML graphics
+  local bottomColor, topColor = getPlayerColors()
+  local tags = card.getTags()
+  local isBottom = false
+
+  for _, tag in pairs(tags) do
+    if tag == 'bottom_owner' then
+      isBottom = true
+    end
+  end
+
+  local buttonColor = isBottom and bottomColor or topColor
+  local color, hoverColor = getButtonColors(buttonColor)
+
+  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
+    card.createButton({
+      click_function = "primary_button_action", -- NEED REQUIRE
+      function_owner = self,
+      label          = '',
+      position       = { -.545, 0.5, 1.23 },
+      height         = 575,
+      width          = 1000,
+      color          = color,
+      hover_color    = hoverColor,
+      rotation       = { 0, 0, 0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+      tooltip        = "Use " .. card.getName() .. " ability for " .. primaryTooltip .. "."
+    })
+    card.createButton({
+      click_function = "secondary_button_action", -- NEED REQUIRE
+      function_owner = self,
+      label          = '',
+      position       = { .545, 0.5,1.23 },
+      height         = 575,
+      width          = 1000,
+      color          = { 0.7569, 0.6863, 0.1020, .8 },
+      hover_color    = { 0.7569, 0.6863, 0.1020, .9 },
+      rotation       = { 0, 0, 0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+      tooltip        = "Use " .. card.getName() .. " ability for " .. secondaryTooltip .. ".",
+    })
+  end
+end -- end initAbilityButtonSec()
+
+
+function initAbilityButtonXML(card)
+  -- handles creation of primary (or only) XML graphic for card ability buttons
+  local bottomColor, topColor = getPlayerColors()
+  local isBottom = card.hasTag('bottom_owner') and true or false
+  local buttonColor = isBottom and bottomColor or topColor
+
+  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
+    card.UI.show('ability_button_' .. string.lower(buttonColor))
+  end
+end -- end initAbilityButtonXML()
+
+
+function initAbilityButtonSecXML(card)
+  -- handles creation of secondary XML graphic, if required, for card ability buttons
+  local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
+  local isBottom = card.hasTag('bottom_owner') and true or false
+  local buttonColor = isBottom and bottomColor or topColor
+
+  -- only create if card is owned, Jar Jar creates sec XML button while in row
+  if card.hasTag('bottom_owner') or card.hasTag('top_owner') and card.getName() ~= "Jar Jar Binks" then
+    card.UI.show('ability_button_' .. string.lower(buttonColor))
+    card.UI.show('ability_button_gold')
+  end
+end -- end initAbilityButtonSecXML()
+
+
+function initBHSaboButtons(card, tooltip, faction)
+  -- handles the creation of bounty hunt /sabotage buttons while in galaxy row
+  local bottomFaction, topFaction = getPlayerAreas()
+  local attackFaction = (faction == bottomFaction and topFaction or bottomFaction)
+  local attackAction = nil
+
+  if attackFaction == "republic" or attackFaction == "rebellion" then
+    attackAction = "Sabotage"
+  elseif attackFaction == "empire" or attackFaction == "separatist" then
+    attackAction = "Bounty Hunt"
+  end
+
+  local bottomColor, topColor = getPlayerColors()
+  local buttonColor = (attackFaction == bottomFaction and bottomColor or topColor)
+  local color, hoverColor = get_button_colors({ buttonColor=buttonColor }) -- NEED HELPER
+
+  if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then
+    card.createButton({
+      click_function = "bh_action", -- REVISIT
+      function_owner = padGalaxyDiscard,
+      label          = '',
+      position       = { 0, 0.5, 1.23 },
+      height         = 575,
+      width          = 1800,
+      color          = color,
+      hover_color    = hoverColor,
+      rotation       = { 0, 0, 0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+      tooltip        = attackAction .. ' ' .. card.getName() .. ': ' .. tooltip
+    })
+  end
+end -- end initBHSaboButtons()
+
+
+function initCancelButton(button)
+  -- handles creation of XML cancel button for certain card ability buttons
+  local bottomColor, topColor = getPlayerColors()
+  local tags = button.getTags()
+  local isBottom = false
+
+  for _, tag in ipairs(tags) do
+      if tag == "bottom_owner" then
+          isBottom = true
+      end
+  end
+
+  local buttonColor = (isBottom and bottomColor or topColor)
+  local color, hoverColor = getButtonColors(buttonColor)
+
+  if button.hasTag('buttons') then
+    button.createButton({
+      click_function = "cancelCardAction", -- NEED REQUIRE
+      function_owner = self,
+      label          = 'Cancel Action',
+      position       = { 0, 0.5, 1.23 },
+      height         = 575,
+      width          = 1800,
+      font_size      = 275,
+      color          = { 0, 0, 0, .9 },
+      hover_color    = { 0, 0, 0, .5 },
+      font_color     = { 1, 1, 1 },
+      rotation       = { 0, 0, 0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+      tooltip        = "Cancel use of " .. button.getName() .. " ability.",
+    })
+  elseif button.hasTag('ability_button') then
+    button.UI.show('ability_button_cancel')
+  end
+end -- end initCancelButton()
+
+
+function initXMLForceButton(card)
+  -- handles creation of card force buttons    
+  local bottomColor, topColor = getPlayerColors()
+  local tags = card.getTags()
+  local isBottom = false
+  for _, tag in ipairs(tags) do
+    if tag == "bottom_owner" then
+      isBottom = true
+    end
+  end
+
+  local buttonColor = isBottom and bottomColor or topColor  
+
+  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
+    card.UI.show('force_button_' .. buttonColor)
+  end
+end -- end initXMLForceButton()
+
+
+function initShipCounter(card, val)
+  -- handles creation of ship damage counters
+  local bottomColor, topColor = getPlayerColors()
+  local isBottom = card.hasTag('bottom_owner')
+  local isTop = card.hasTag('top_owner') or card.hasTag('ai_owner')
+  local ownerColor = isBottom and bottomColor or topColor
+  local fColor = { 1, 1, 1, 255 }
+  local sColor, hColor = getButtonColors(ownerColor)
+
+  card.clearButtons()
+
+  if card.hasTag('bottom_owner') or card.hasTag('top_owner') or card.hasTag('ai_owner') then
+    card.createButton({
+      label          = tostring(val),
+      click_function = "add_subtract",
+      function_owner = card,
+      position       = { .55, 0.5,-.65 },
+      height         = 600,
+      width          = 600,
+      font_size      = 600,
+      font_color     = fColor,
+      hover_color    = hColor,
+      color          = sColor,
+      rotation       = { 0,90,0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+    })
+  end
+end -- end initShipCounter()
+
+
+function removeAbilityButtons(obj)
+  -- handles removal of XML ability buttons on cards
+  obj.UI.hide('ability_button_blue')
+  obj.UI.hide('ability_button_purple')
+  obj.UI.hide('ability_button_orange')
+  obj.UI.hide('ability_button_red')
+  obj.UI.hide('ability_button_gold')
+  obj.UI.hide('ability_button_white')
+  obj.UI.hide('ability_button_cancel')
+end -- end removeAbilityButtons()
+
+
+function removeForceButtons(obj)
+  -- handles removal of XML force buttons on cards
+  obj.UI.hide('force_button_blue')
+  obj.UI.hide('force_button_purple')
+  obj.UI.hide('force_button_orange')
+  obj.UI.hide('force_button_red')
+end -- end removeForceButtons()

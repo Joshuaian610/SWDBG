@@ -60,7 +60,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/cancel_card_action_ui(bb5d1c)" image="Ability Cancel"></Button>
+    <Button onClick   = "83b3ce/cancelCardActionXML(bb5d1c)" image="Ability Cancel"></Button>
 </Panel>
 
 
@@ -74,7 +74,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Blue"></Button>
+    <Button onClick   = "83b3ce/addUnitForce(bb5d1c)" image="Force Blue"></Button>
 </Panel>
 
 <Panel
@@ -87,7 +87,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Purple"></Button>
+    <Button onClick   = "83b3ce/addUnitForce(bb5d1c)" image="Force Purple"></Button>
 </Panel>
 
 <Panel
@@ -100,7 +100,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Red"></Button>
+    <Button onClick   = "83b3ce/addUnitForce(bb5d1c)" image="Force Red"></Button>
 </Panel>
 
 <Panel
@@ -113,5 +113,5 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/add_unit_force(bb5d1c)" image="Force Orange"></Button>
+    <Button onClick   = "83b3ce/addUnitForce(bb5d1c)" image="Force Orange"></Button>
 </Panel>

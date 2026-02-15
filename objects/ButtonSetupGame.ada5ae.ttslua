@@ -366,8 +366,8 @@ function setup_game(button, _, _)
     end
     -- get factions, locations (check zones for starter deck tags)
     local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
-    local capitalized_bottomFaction  = (bottomFaction:gsub("^%l", string.upper))
-    local capitalized_topFaction     = (topFaction:gsub("^%l", string.upper))
+    local capitalizedBottomFaction  = (bottomFaction:gsub("^%l", string.upper))
+    local capitalizedTopFaction     = (topFaction:gsub("^%l", string.upper))
     -- set player seat colors
     ---- empire/separatist blue, or separatist purple if both are in
     ---- rebel/republic red, or republic orange if both are in
@@ -503,9 +503,11 @@ function setup_game(button, _, _)
     getObjectFromGUID("834dea").putObject(removal_deck_ships)
     -- shuffle galaxy deck, deal galaxy row
     Wait.time(function()
-    local deckGalaxy = padGalaxyDeck.call('get_galaxy_deck')
-    deckGalaxy.setName('Galaxy Deck')
-    deckGalaxy.shuffle()
+    local deckGalaxy = getGalaxyDeck()
+    if deckGalaxy then
+        deckGalaxy.setName('Galaxy Deck')
+        deckGalaxy.shuffle()
+    end
     local loc_1 = {-21.00, 0.75, 0.00}
     local loc_2 = {-14.00, 0.75, 0.00}
     local loc_3 = {-7.00, 0.75, 0.00}
@@ -635,8 +637,8 @@ function setup_game(button, _, _)
         force_tracker.setColorTint(topColor)
         force_tracker.highlightOn(topColor)
         force_track.setColorTint(topColor)
-        broadcastToAll("The force is with " .. capitalized_topFaction .. ".", topColor)
-        broadcastToAll(capitalized_bottomFaction .. " gets first turn.", bottomColor)
+        broadcastToAll("The force is with " .. capitalizedTopFaction .. ".", topColor)
+        broadcastToAll(capitalizedBottomFaction .. " gets first turn.", bottomColor)
     elseif (bottomFaction == "rebellion" and topFaction == "empire") or
     (bottomFaction == "republic" and topFaction == "separatist") then
         random_required = false
@@ -662,8 +664,8 @@ function setup_game(button, _, _)
         board_counter_top.setInvisibleTo({})
         board_counter_bottom.setInvisibleTo(all_colors)
         buttonEndTurnTop.setInvisibleTo({})
-        broadcastToAll("The force is with " .. capitalized_bottomFaction .. ".", bottomColor)
-        broadcastToAll(capitalized_topFaction .. " gets first turn.", topColor)
+        broadcastToAll("The force is with " .. capitalizedBottomFaction .. ".", bottomColor)
+        broadcastToAll(capitalizedTopFaction .. " gets first turn.", topColor)
     end
     if random_required then
         if random_first_player == 1 then
@@ -688,8 +690,8 @@ function setup_game(button, _, _)
             force_tracker.setColorTint(topColor)
             force_tracker.highlightOn(topColor)
             force_track.setColorTint(topColor)
-            broadcastToAll("The force is with " .. capitalized_topFaction .. ".", topColor)
-            broadcastToAll(capitalized_bottomFaction .. " gets first turn.", bottomColor)
+            broadcastToAll("The force is with " .. capitalizedTopFaction .. ".", topColor)
+            broadcastToAll(capitalizedBottomFaction .. " gets first turn.", bottomColor)
         else
             -- bottom second player set force track
             force_tracker.setColorTint(bottomColor)
@@ -713,8 +715,8 @@ function setup_game(button, _, _)
             board_counter_top.setInvisibleTo({})
             board_counter_bottom.setInvisibleTo(all_colors)
             buttonEndTurnTop.setInvisibleTo({})
-            broadcastToAll("The force is with " .. capitalized_bottomFaction .. ".", bottomColor)
-            broadcastToAll(capitalized_topFaction .. " gets first turn.", topColor)
+            broadcastToAll("The force is with " .. capitalizedBottomFaction .. ".", bottomColor)
+            broadcastToAll(capitalizedTopFaction .. " gets first turn.", topColor)
         end
     end
     -- handle force track graphic in case of traditional matchup
@@ -917,11 +919,7 @@ function setup_solo(faction)
     local deckGalaxy       = getObjectFromGUID(faction_guids[15])
     -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
     if deckGalaxy == nil then
-        for _, object in pairs(zoneGalaxyDeck.getObjects()) do
-            if object.tag == "Deck" then
-                deckGalaxy = object
-            end
-        end
+        deckGalaxy = getGalaxyDeck()
     end
     for i = 1, 3 do
         reserve_shuttles[i] = starter_deck.takeObject({guid=faction_guids[i+6], rotation={0.00, 180.00, 180.00}})

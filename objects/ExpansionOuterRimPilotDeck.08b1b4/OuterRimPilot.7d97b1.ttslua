@@ -23,7 +23,7 @@ function exileCard(playerArea, position, object)
 end
 
 
-function ability_button_create_ui()
-    padGalaxyDeck.call('ability_button_create_ui', {card=self})
-end -- end ability_button_create()
+function initAbilityButtonXML()
+    padGalaxyDeck.call('initAbilityButtonXML', {card=self})
+end -- end initAbilityButton()
 

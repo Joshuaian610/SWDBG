@@ -48,7 +48,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/add_unit_force(118a7e)" image="Force Blue"></Button>
+    <Button onClick   = "83b3ce/addUnitForce(118a7e)" image="Force Blue"></Button>
 </Panel>
 
 <Panel
@@ -61,5 +61,5 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/add_unit_force(118a7e)" image="Force Purple"></Button>
+    <Button onClick   = "83b3ce/addUnitForce(118a7e)" image="Force Purple"></Button>
 </Panel>

@@ -8,7 +8,7 @@ end -- end onLoad()
 
 function create_button()
     self.createButton({
-        click_function = "galaxy_discard",
+        click_function = "galaxyDiscard",
         function_owner = self,
         label          = "",
         color          = {0.6, 0.78, 0.73, 0.0},
@@ -20,6 +20,6 @@ function create_button()
     })
 end -- end create_button()
 
-function galaxy_discard(button, playercolor, alt_click)
-    padGalaxyDeck.call('galaxy_discard', {button=self, card_zone=getObjectFromGUID(zone), alt_click=alt_click})
-end -- end galaxy_discard()
+function galaxyDiscard(button, playercolor, alt_click)
+    padGalaxyDeck.call('galaxyDiscard', {button=self, card_zone=getObjectFromGUID(zone), alt_click=alt_click})
+end -- end galaxyDiscard()

@@ -112,14 +112,14 @@ function primary_button_action(button, playercolor, _)
     local board_counter                = (isBottom and getObjectFromGUID("5ddc6c") or getObjectFromGUID("c6a07b"))
     local current_resource_count       = counter.getVar('val')
     local opponent_discard_loc         = (isBottom and {8.50, 1.50, 31.00} or {-8.50, 1.50, -31.00})
-    local force_owner                  = padGalaxyDeck.call('get_force_owner')
+    local forceOwner                  = padGalaxyDeck.call('getForceOwner')
     local bottomFaction, topFaction  = padGalaxyDeck.call('get_playerareas')
     local faction                      = (isBottom and bottomFaction or topFaction)
     local opponent_faction             = (isBottom and topFaction or bottomFaction)
     local capitalized_faction          = (faction:gsub("^%l", string.upper))
     local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
-    local capitalized_bottomFaction   = (bottomFaction:gsub("^%l", string.upper))
-    local capitalized_topFaction      = (topFaction:gsub("^%l", string.upper))
+    local capitalizedBottomFaction   = (bottomFaction:gsub("^%l", string.upper))
+    local capitalizedTopFaction      = (topFaction:gsub("^%l", string.upper))
     local color                        = (isBottom and bottomColor or topColor)
     local opponent_color               = (isBottom and topColor or bottomColor)
     local allColors                  = Global.getVar('all_colors')
@@ -129,8 +129,8 @@ function primary_button_action(button, playercolor, _)
     local name                         = button.getName()
     local attack_action                = ((faction == "empire" or faction == "separatist") and "Bounty Hunt" or "Sabotage")
     local area                         = (isBottom and "bottom" or "top")
-    local base_zone                    = (isBottom and zoneBaseBottom or zoneBaseTop)
-    local deckGalaxy                  = padGalaxyDeck.call('get_galaxy_deck')
+    local base_zone                    = (isBottom and zoneBasesBottom or zoneBasesTop)
+    local deckGalaxy                  = padGalaxyDeck.call('getGalaxyDeck')
     local owner_tag                    = nil
     local exile_bag                    = (bottomFaction == "separatist") and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249")
     local galaxy_row_zones             = {
@@ -221,9 +221,9 @@ function primary_button_action(button, playercolor, _)
             broadcastToAll("Nebulon-B Frigate ability used, " .. capitalized_faction .. " has repaired 3 base damage.", color)
             padGalaxyDeck.call('repair_base', {playerArea=color, count=3, tags=button.getTags()})
         elseif name == "Lando Calrissian" then
-            if (((isBottom and force_owner == "Bottom") or (is_top and force_owner == "Top")) and not is_ai) then
+            if (((isBottom and forceOwner == "Bottom") or (is_top and forceOwner == "Top")) and not is_ai) then
                 broadcastToAll("The Force is with the " .. capitalized_faction .. " while Lando Calrissian ability used. " .. capitalized_faction .. " has drawn a card, and " .. capitalized_opponent_faction .. " must discard a card.", color)
-            elseif (isBottom and force_owner == "Bottom") or (is_top and force_owner == "Top") then
+            elseif (isBottom and forceOwner == "Bottom") or (is_top and forceOwner == "Top") then
                 broadcastToAll("The Force is with the " .. capitalized_faction .. " while Lando Calrissian ability used. " .. capitalized_faction .. " has drawn a card, however AI " .. capitalized_opponent_faction .. " does not discard.", color)
             else
                 broadcastToAll("The Force is not with the " .. capitalized_faction .. " while Lando Calrissian ability used, " .. capitalized_faction .. " has drawn a card.", color)
@@ -252,7 +252,7 @@ function primary_button_action(button, playercolor, _)
             end
         elseif name == "Jabba the Hutt" then
             if isBottom then
-                if force_owner == "Bottom" then
+                if forceOwner == "Bottom" then
                     broadcastToAll(capitalized_faction .. " has manually exiled a card from hand, and drawn 2 cards from Jabba the Hutt ability.", color)
                     padGalaxyDeck.call('dealCard', {playerArea=area, count=2})
                 else
@@ -260,7 +260,7 @@ function primary_button_action(button, playercolor, _)
                     padGalaxyDeck.call('dealCard', {playerArea=area, count=1})
                 end
             elseif is_top then
-                if force_owner == "Top" then
+                if forceOwner == "Top" then
                     broadcastToAll(capitalized_faction .. " has manually exiled a card from hand, and drawn 2 cards from Jabba the Hutt ability.", color)
                     padGalaxyDeck.call('dealCard', {playerArea=area, count=2})
                 else
@@ -341,8 +341,8 @@ function primary_button_action(button, playercolor, _)
             -- check row for bounty hunter, modify effective fight counter
         elseif name == "Underworld Contact" then
             -- check force owner, if force give -2 discount
-            if (not (force_owner == "Bottom" and bottomFaction == faction)) and
-            (not (force_owner == "Top" and topFaction == faction)) then
+            if (not (forceOwner == "Bottom" and bottomFaction == faction)) and
+            (not (forceOwner == "Top" and topFaction == faction)) then
                 broadcastToAll("Force is not with " .. capitalized_faction .. ", Underworld Contact discount not applied", color)
             else
                 Global.setVar('nextCardContact', true)
@@ -633,7 +633,7 @@ function primary_button_action(button, playercolor, _)
                     end
                 end
             end
-            if (force_owner == "Bottom" and bottomFaction == "empire") or (force_owner == "Top" and topFaction == "empire") then
+            if (forceOwner == "Bottom" and bottomFaction == "empire") or (forceOwner == "Top" and topFaction == "empire") then
                 broadcastToAll("The Force is with the Empire while Moff Jerjerrod ability used, Empire searches the top card of the galaxy deck.", "Blue")
                 Wait.time(function() broadcastToAll("Then, Empire may manually swap that card with a card in the galaxy row.", "Blue") end, 1)
             else
@@ -650,7 +650,7 @@ function primary_button_action(button, playercolor, _)
             padGalaxyDeck.call('dealCard', {playerArea=area, count=1})
         elseif name == "Director Krennic" then
             local death_star_found = false
-            local base_zone = (isBottom and zoneBaseBottom or zoneBaseTop)
+            local base_zone = (isBottom and zoneBasesBottom or zoneBasesTop)
             for k, v in pairs(base_zone.getObjects()) do
                 if v.getName() == "Death Star" then
                     death_star_found = true
@@ -705,7 +705,7 @@ function primary_button_action(button, playercolor, _)
                 local tracker_pos   = getObjectFromGUID("74b511").getPosition()
                 if tracker_pos.z < 9.5 and tracker_pos.z > 7.5 then
                     broadcastToAll("Duros Spy ability used: AI " .. capitalized_opponent_faction .. " chooses to discard.", color)
-                    padGalaxyDeck.call('discard_ai_card', {is_random=false})
+                    padGalaxyDeck.call('discardAICard', {isRandom=false})
                 else
                     broadcastToAll("Duros Spy ability used: AI " .. capitalized_opponent_faction .. " chooses for you to gain +1 Force.", color)
                     padGalaxyDeck.call('move_force_track', {button=getObjectFromGUID("d586db"), count=1})
@@ -719,29 +719,29 @@ function primary_button_action(button, playercolor, _)
                 broadcastToAll("Snowspeeder ability used, " .. capitalized_opponent_faction .. " must choose a card to discard.", "Red")
             else
                 broadcastToAll("Snowspeeder ability used, AI " .. capitalized_opponent_faction .. " must choose a card to discard.", "Red")
-                padGalaxyDeck.call('discard_ai_card', {is_random=false})
+                padGalaxyDeck.call('discardAICard', {isRandom=false})
             end
         elseif name == "Rebel Commando" then
             if not is_ai then
                 local discard_button       = (isBottom and getObjectFromGUID("ded0c2") or getObjectFromGUID("bfc82c"))
                 local discard_button_color = discard_button.getColorTint()
-                if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
+                if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
                     broadcastToAll("The Force is with the Rebellion while Rebel Commando ability used, " .. capitalized_opponent_faction .. " discards a random card.", "Red")
                     discard_button.call('discardRandomCard')
                 else
                     broadcastToAll("The Force is not with the Rebellion while Rebel Commando ability used, " .. capitalized_opponent_faction .. "  must choose a card to discard.", "Red")
                 end
             else
-                if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
+                if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
                     broadcastToAll("The Force is with the Rebellion while Rebel Commando ability used, AI " .. capitalized_opponent_faction .. " discards a random card.", "Red")
-                    padGalaxyDeck.call('discard_ai_card', {is_random=true})
+                    padGalaxyDeck.call('discardAICard', {isRandom=true})
                 else
                     broadcastToAll("The Force is not with the Rebellion while Rebel Commando ability used, AI " .. capitalized_opponent_faction .. "  must choose a card to discard.", "Red")
-                    padGalaxyDeck.call('discard_ai_card', {is_random=false})
+                    padGalaxyDeck.call('discardAICard', {isRandom=false})
                 end
             end
         elseif name == "X-Wing" then
-            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
+            if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
                 broadcastToAll("The Force is with the Rebellion while X-Wing ability used, Rebellion draws a card.", "Red")
                 padGalaxyDeck.call('dealCard', {playerArea=area, count=1})
             else
@@ -764,7 +764,7 @@ function primary_button_action(button, playercolor, _)
             broadcastToAll("Hammerhead Corvette ability used to self exile, Rebellion may manually destroy an enemy ship in play or row.", "Red")
             padGalaxyDeck.call('exileCard', {p_area="Red", obj=button})
         elseif name == "Jyn Erso" then
-            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
+            if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
                 if not is_ai then
                     broadcastToAll("The Force is with the Rebellion while Jyn Erso ability used, Rebellion may look at " .. capitalized_opponent_faction .. " hand, and then place one card on top of " .. capitalized_opponent_faction .. " deck.", "Red")
                 else
@@ -779,7 +779,7 @@ function primary_button_action(button, playercolor, _)
             end
             Wait.time(function() broadcastToAll("Hint: " .. capitalized_opponent_faction .. " may right click on one of their cards in hand and select 'Show Hand' to easily do so.", color) end, 1)
         elseif name == "U-Wing" then
-            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
+            if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
                 broadcastToAll("The Force is with the Rebellion while U-Wing ability used, Rebellion repairs 3 base damage.", "Red")
                 padGalaxyDeck.call('repair_base', {playerArea="Red", count=3, tags=button.getTags()})
             else
@@ -801,7 +801,7 @@ function primary_button_action(button, playercolor, _)
                 else
                     if base_pos.z > 18.25 and base_pos.z < 19.25 then
                         broadcastToAll("B-Wing ability used, AI " .. capitalized_opponent_faction .. " decides to discard a card.", "Red")
-                        padGalaxyDeck.call('discard_ai_card', {is_random=false})
+                        padGalaxyDeck.call('discardAICard', {isRandom=false})
                     else
                         broadcastToAll("B-Wing ability used, AI " .. capitalized_opponent_faction .. " decides to allow +2 Attack to B-Wing..", "Red")
                     end
@@ -812,7 +812,7 @@ function primary_button_action(button, playercolor, _)
                 broadcastToAll("Cassian Andor ability used for Rebellion after Sabotaging, " .. capitalized_opponent_faction .. " must discard a card from hand.", "Red")
             else
                 broadcastToAll("Cassian Andor ability used for Rebellion after Sabotaging, AI " .. capitalized_opponent_faction .. " must discard a card from hand.", "Red")
-                padGalaxyDeck.call('discard_ai_card', {is_random=false})
+                padGalaxyDeck.call('discardAICard', {isRandom=false})
             end
         elseif name == "Han Solo" then
             local falcon_in_play = false
@@ -829,8 +829,8 @@ function primary_button_action(button, playercolor, _)
         elseif name == "Princess Leia" then
             Global.setVar('nextCardLeia', true)
             broadcastToAll("Princess Leia ability used, right click purchase button to purchase next Rebel card for free.", "Red")
-            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
-                padGalaxyDeck.call('next_card_to_deck', {faction="rebellion"})
+            if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+                padGalaxyDeck.call('nextCardToDeck', {faction="rebellion"})
                 Wait.time(function()
                 broadcastToAll("The Force is with the Rebellion while Princess Leia ability used, the purchased Rebellion card will go to top of deck.", "Red")
                 end,1)
@@ -855,7 +855,7 @@ function primary_button_action(button, playercolor, _)
                 end
             end
         elseif name == "Luke Skywalker" then
-            if (force_owner == "Bottom" and bottomFaction == "rebellion") or (force_owner == "Top" and topFaction == "rebellion") then
+            if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
                 broadcastToAll("The Force is with the Rebellion while Luke Skywalker ability used, Rebellion may choose " .. capitalized_opponent_faction .. " ship to manually destroy.", "Red")
             else
                 broadcastToAll("The Force is not with the Rebellion while Luke Skywalker ability used, no " .. capitalized_opponent_faction .. " ships destroyed.", "Red")
@@ -989,7 +989,7 @@ function primary_button_action(button, playercolor, _)
             end
         elseif name == "Ahsoka Tano" then
             local function ahsoka_reveal(reveal_card)
-                if (force_owner == "Bottom" and bottomFaction == "republic") or (force_owner == "Top" and topFaction == "republic") then
+                if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
                     if reveal_card.getName() ~= "Obi-Wan Kenobi" then
                         broadcastToAll(name .. " ability used to reveal " .. reveal_card.getName() .. " while the Force is with them. " .. reveal_card.getName() .. " may be returned or swapped with card in discard.", color)
                     end
@@ -1020,7 +1020,7 @@ function primary_button_action(button, playercolor, _)
                     end
                 end
             end
-            -- reveal top card, may replace. if republic force_owner, may swap
+            -- reveal top card, may replace. if republic forceOwner, may swap
             reveal_card = pad_republic_reveal.call('reveal_card', {button=button, playercolor=playercolor})
             pad_republic_reveal.call('show_reveal_ui', {show_discard=false, show_draw=false})
             if reveal_card ~= nil then
@@ -1076,7 +1076,7 @@ function primary_button_action(button, playercolor, _)
                 end
             end
             -- broadcast to manually do the thing
-            if (force_owner == "Bottom" and bottomFaction == "republic") or (force_owner == "Top" and topFaction == "republic") then
+            if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
                 broadcastToAll(name .. " ability used while the Force is with them, and may manually place a 'Trooper' from discard to hand.", color)
             else
                 broadcastToAll(name .. " ability used while the Force is with them, and may manually place a 'Trooper' from discard to top of deck.", color)
@@ -1122,7 +1122,7 @@ function primary_button_action(button, playercolor, _)
                 Global.setVar('nextCardToDeckTop', true)
             end
         --elseif name == "Anakin Skywalker" then
-            -- check force_owner, modify effective damage counter
+            -- check forceOwner, modify effective damage counter
         elseif name == "Padmé Amidala" then
             -- check if base == Naboo, draw 2 cards if so, 1 card if not
             local naboo_found = false
@@ -1151,7 +1151,7 @@ function primary_button_action(button, playercolor, _)
                 plus_attack = reveal_card.getVar('cost')
                 if plus_attack > 5 then plus_attack = 5 end
                 end,1)
-                if (force_owner == "Bottom" and bottomFaction == "republic") or (force_owner == "Top" and topFaction == "republic") then
+                if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
                     if reveal_card.getName() == "Obi-Wan Kenobi" then
                         broadcastToAll("Mace Windu ability used to reveal Obi-Wan Kenobi while the Force is with the Republic, and may choose to return Obi-Wan Kenobi for +5 Attack to Mace Windu, or, draw Obi-Wan Kenobi via his ability.", color)
                         -- hide standard return button
@@ -1205,8 +1205,8 @@ function primary_button_action(button, playercolor, _)
                 end
             end
             -- reveal top card, may replace
-            -- check force, if republic force_owner get reveal card cost and modify effective damage counter
-            -- reveal top card, may replace. if republic force_owner, may swap
+            -- check force, if republic forceOwner get reveal card cost and modify effective damage counter
+            -- reveal top card, may replace. if republic forceOwner, may swap
             local reveal_card = pad_republic_reveal.call('reveal_card', {button=button, playercolor=playercolor})
             -- place pad first since buttons need to be made conditionally
             pad_republic_reveal.setRotation(isBottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
@@ -1340,7 +1340,7 @@ function primary_button_action(button, playercolor, _)
                 local button = getObjectFromGUID(button_guid)
                 for _, v in pairs(getObjectFromGUID(zones[i]).getObjects()) do
                     if v.hasTag('neutral') and v.hasTag('unit') then
-                        padGalaxyDeck.call('galaxy_discard', {button=button, card_zone=getObjectFromGUID(zones[i]), alt_click=true})
+                        padGalaxyDeck.call('galaxyDiscard', {button=button, card_zone=getObjectFromGUID(zones[i]), alt_click=true})
                         neutral_count = neutral_count + 1
                     end
                 end
@@ -1374,7 +1374,7 @@ function primary_button_action(button, playercolor, _)
             end
             end, .5)
             Wait.time(function()
-            if (force_owner == "Bottom" and bottomFaction == "separatist") or (force_owner == "Top" and topFaction == "separatist") then
+            if (forceOwner == "Bottom" and bottomFaction == "separatist") or (forceOwner == "Top" and topFaction == "separatist") then
                 if #opponent_cards == 0 then
                     broadcastToAll("The force is with Separatist, however there are no enemy cards in row to discard with Asajj Ventress ability.", color)
                 elseif #opponent_cards == 1 then
@@ -1395,7 +1395,7 @@ function primary_button_action(button, playercolor, _)
             end
             end, 1)
         elseif name == "Count Dooku" then
-            if (force_owner == "Bottom" and bottomFaction == "separatist") or (force_owner == "Top" and topFaction == "separatist") then
+            if (forceOwner == "Bottom" and bottomFaction == "separatist") or (forceOwner == "Top" and topFaction == "separatist") then
                 local exile_valid = false
                 for _, object in ipairs(exile_bag.getObjects()) do
                     if object.name ~= "B1 Battle Droid" and object.name ~= "Separatist Shuttle" and object.name ~= "Dark Side Agent" then
@@ -1425,7 +1425,7 @@ function primary_button_action(button, playercolor, _)
     name == "Dark Side Agent" or name == "Lobot" or name == "Zam Wesell" then
         padGalaxyDeck.call('remove_force_buttons', {object=button})
     end
-    if button.hasTag('ship') then button.call('ship_counter_create') end
+    if button.hasTag('ship') then button.call('initShipCounter') end
     -- create cancel buttons on requiring cards
     if name == 'Grand Moff Tarkin' or name == 'Princess Leia' or
     name == 'Millenium Falcon' or name == 'Underworld Contact' or
@@ -1433,7 +1433,7 @@ function primary_button_action(button, playercolor, _)
     name == 'B2 Battle Droid' or name == 'Munificent-Class Frigate' or
     name == 'Tri-Fighter' or name == 'AAT' or name == "Nute Gunray" or
     name == 'Wat Tambor' then
-        padGalaxyDeck.call('cancel_create', {button=button})
+        padGalaxyDeck.call('initCancelButton', {button=button})
     end
 end -- end primary_button_action()
 
@@ -1441,14 +1441,14 @@ end -- end primary_button_action()
 function secondary_button_action(button, playercolor, _)
     local isBottom                    = button.hasTag('bottom_owner')
     local is_top                       = button.hasTag('top_owner')
-    local force_owner                  = padGalaxyDeck.call('get_force_owner')
+    local forceOwner                  = padGalaxyDeck.call('getForceOwner')
     local bottomFaction, topFaction  = padGalaxyDeck.call('get_playerareas')
     local faction                      = (isBottom and bottomFaction or topFaction)
     local opponent_faction             = (isBottom and topFaction or bottomFaction)
     local capitalized_faction          = (faction:gsub("^%l", string.upper))
     local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
-    local capitalized_bottomFaction   = (bottomFaction:gsub("^%l", string.upper))
-    local capitalized_topFaction      = (topFaction:gsub("^%l", string.upper))
+    local capitalizedBottomFaction   = (bottomFaction:gsub("^%l", string.upper))
+    local capitalizedTopFaction      = (topFaction:gsub("^%l", string.upper))
     local bottomColor, topColor      = padGalaxyDeck.call('get_playercolors')
     local color                        = (isBottom and bottomColor or topColor)
     local allColors                  = Global.getVar('all_colors')
@@ -1458,7 +1458,7 @@ function secondary_button_action(button, playercolor, _)
     local name                         = button.getName()
     local attack_action                = ((faction == "empire" or faction == "separatist") and "Bounty Hunt" or "Sabotage")
     local area                         = (isBottom and "bottom" or "top")
-    local base_zone                    = (isBottom and zoneBaseBottom or zoneBaseTop)
+    local base_zone                    = (isBottom and zoneBasesBottom or zoneBasesTop)
     local owner_tag                    = nil
     if button.hasTag('bottom_owner') then
         owner_tag = 'bottom_owner'
@@ -1510,7 +1510,7 @@ function secondary_button_action(button, playercolor, _)
         padGalaxyDeck.call('remove_force_buttons', {object=button})
     end
     -- padGalaxyDeck.call('cardExhaust', {card=button})
-    if button.hasTag('ship') then button.call('ship_counter_create') end
+    if button.hasTag('ship') then button.call('initShipCounter') end
 end -- end secondary_button_action()
 
 

@@ -17,19 +17,19 @@ function exileCard(playerArea, position, object)
 end
 
 
-function ability_button_create_ui()
-    padGalaxyDeck.call('ability_button_create_ui', {card=self})
-end -- end ability_button_create_ui()
+function initAbilityButtonXML()
+    padGalaxyDeck.call('initAbilityButtonXML', {card=self})
+end -- end initAbilityButtonXML()
 
 
-function force_button_create()
-    padGalaxyDeck.call('force_button_create', {card=self})
-end -- end ability_button_create()
+function initXMLForceButton()
+    padGalaxyDeck.call('initXMLForceButton', {card=self})
+end -- end initAbilityButton()
 
 
-function createBHSaboButtons()
+function initBHSaboButtons()
     return nil
-end -- end createBHSaboButtons()
+end -- end initBHSaboButtons()
 
 function bh_neutral_create()
     padGalaxyDeck.call('bh_neutral_create', {card=self, tooltip=attack_tooltip, faction=faction})

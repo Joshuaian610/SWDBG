@@ -21,7 +21,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/add_unit_force(624155)" image="Force Blue"></Button>
+    <Button onClick   = "83b3ce/addUnitForce(624155)" image="Force Blue"></Button>
 </Panel>
 
 <Panel
@@ -34,5 +34,5 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/cancel_card_action_ui(624155)" image="Ability Cancel"></Button>
+    <Button onClick   = "83b3ce/cancelCardActionXML(624155)" image="Ability Cancel"></Button>
 </Panel>

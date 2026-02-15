@@ -37,13 +37,13 @@
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "",
+  "Nickname": "Force Track",
   "Snap": true,
   "Sticky": true,
   "Tags": [
     "non_interactable"
   ],
-  "Tooltip": true,
+  "Tooltip": false,
   "Transform": {
     "posX": 29.4,
     "posY": 0.22,

@@ -4,15 +4,12 @@
 -- Tabletop Simulator Table Design & Scripting by Nonprophet
 -- Leaders AI Solo mode by AzureDeath
 
--- helper functions are located on galaxy deck pad object
--- card button functions are located on galaxy discard pad object
--- button functions are located on their own objects
--- setup game functions are located on setup game backdrop tile object
--- faction graphic img urls are located on the player area backdrop tile objects
--- purchase functions are located on outer rim deck pad object
 
-
+require("Buttons")
+require("GameFunctionality")
+require("GameSetup")
 require("HelperFuncs")
+require("Leaders")
 
 
 function onLoad()
@@ -21,7 +18,7 @@ function onLoad()
   Turns.enable = false
 
   local interactable = false
-  local invis = true
+  local invis = false
 
   -- set non interactables
   if interactable then
@@ -352,7 +349,7 @@ function onObjectEnterZone(zone, obj)
 
     -- create ship counters
     if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) then
-      obj.call('ship_counter_create') -- NEED REQUIRE
+      obj.call('initShipCounter') -- NEED REQUIRE
     end
   end
 
@@ -370,35 +367,35 @@ function onObjectEnterZone(zone, obj)
 
   -- ability button creation
   if zone == zoneInPlay and obj.hasTag('buttons') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('ability_button_create', {card=obj}) -- NEED REQUIRE
+    obj.call('initAbilityButton', {card=obj}) -- NEED REQUIRE
   end
   if zone == zoneInPlay and obj.hasTag('buttons_sec') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('sec_ability_button_create', {card=obj}) -- NEED REQUIRE
+    obj.call('initAbilityButtonSec', {card=obj}) -- NEED REQUIRE
   end
 
   -- ui ability button creation creation
   if zone == zoneInPlay and obj.hasTag('ability_button') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('ability_button_create_ui', {card=obj}) -- NEED REQUIRE
+    obj.call('initAbilityButtonXML', {card=obj}) -- NEED REQUIRE
   end
   
   -- dual ui ability buttons creation
   if zone == zoneInPlay and obj.hasTag('ability_button_sec') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and obj.getName() ~= "Jar Jar Binks" then
-    obj.call('sec_ability_button_create_ui', {card=obj}) -- NEED REQUIRE
+    obj.call('initAbilityButtonSecXML', {card=obj}) -- NEED REQUIRE
   end
 
   -- ui force buttons creation
   if zone == zoneInPlay and obj.hasTag('add_force_button') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('force_button_create', {card=obj}) -- NEED REQUIRE
+    obj.call('initXMLForceButton', {card=obj}) -- NEED REQUIRE
   end
 
   -- jar jar row button creation
   if (zone.getName():find("Zone Row")) and
   (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
-    obj.call('sec_ability_button_create_ui', {card=obj}) -- NEED REQUIRE
+    obj.call('initAbilityButtonSecXML', {card=obj}) -- NEED REQUIRE
   end
 
   -- bounty hunt / sabotage button creation
@@ -406,7 +403,7 @@ function onObjectEnterZone(zone, obj)
 
     if obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
     not obj.hasTag('republic_owner') and not obj.hasTag('separatist_owner') and not obj.hasTag('neutral')) then
-        obj.call('createBHSaboButtons') -- NEED REQUIRE
+        obj.call('initBHSaboButtons') -- NEED REQUIRE
     end
 
     -- neutral bh /sabotage button creation if required  IS THIS BLOCK ACTUALLY NEEDED
@@ -551,7 +548,7 @@ function onObjectEnterContainer(container, obj)
   -- this function handles the broadcast of exiled cards
   -- done via onObjectEnterContainer to not miss manual drops into exile bag
   if container.getName() == "Exiled!" and obj.type == "Card" then
-    local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')    
+    local bottomColor, topColor = padGalaxyDeck.call('getPlayerColors')    
     local ownerColor = (obj.hasTag('bottom_owner') and bottomColor or topColor)
     local cardName = obj.getName()
 

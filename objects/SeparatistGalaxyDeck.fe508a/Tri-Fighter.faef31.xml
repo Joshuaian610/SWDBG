@@ -34,5 +34,5 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "83b3ce/cancel_card_action_ui(faef31)" image="Ability Cancel"></Button>
+    <Button onClick   = "83b3ce/cancelCardActionXML(faef31)" image="Ability Cancel"></Button>
 </Panel>

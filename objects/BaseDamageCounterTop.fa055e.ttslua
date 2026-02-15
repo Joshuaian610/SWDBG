@@ -86,14 +86,14 @@ function add_subtract(_obj, _color, alt_click)
         if self.getGUID() == "7e15f6" then
             faction = bottomFaction
             color   = topColor
-            zone    = zoneBaseBottom
+            zone    = zoneBasesBottom
             rot     = {0.00, 0.00, 0.00}
             loc     = {29.50, 3.50, 21.00}
         elseif self.getGUID() == "fa055e" then
             faction = topFaction
             color   = bottomColor
             if not is_ai then
-                zone    = zoneBaseTop
+                zone    = zoneBasesTop
             else
                 zone    = getObjectFromGUID("6b5523")
             end

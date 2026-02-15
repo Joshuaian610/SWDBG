@@ -22,7 +22,7 @@
   },
   "Description": "Drop Exiled Cards Here",
   "DragSelectable": true,
-  "GMNotes": "",
+  "GMNotes": "Bottom",
   "GUID": "96e6ce",
   "Grid": true,
   "GridProjection": false,

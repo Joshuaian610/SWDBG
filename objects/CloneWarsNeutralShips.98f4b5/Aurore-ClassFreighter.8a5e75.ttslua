@@ -30,7 +30,7 @@ function onload(saved_data)
     end
     for k, v in pairs(play_zone.getObjects()) do
         if v == self and (v.hasTag('bottom_owner') or v.hasTag('top_owner') or v.hasTag('ai_owner')) then
-            ship_counter_create()
+            initShipCounter()
         end
     end
 end
@@ -48,13 +48,13 @@ function exileCard(playerArea, position, object)
 end -- end exileCard()
 
 
-function ability_button_create_ui()
-    padGalaxyDeck.call('ability_button_create_ui', {card=self})
-end -- end ability_button_create()
+function initAbilityButtonXML()
+    padGalaxyDeck.call('initAbilityButtonXML', {card=self})
+end -- end initAbilityButton()
 
 
-function ship_counter_create()
-    padGalaxyDeck.call('ship_counter_create', {ship_card=self, val=val})
+function initShipCounter()
+    padGalaxyDeck.call('initShipCounter', {ship_card=self, val=val})
 end -- end function createAll()
 
 
@@ -79,7 +79,7 @@ function add_subtract(_obj, _color, alt_click)
         rotDiscard = (isBottom and {0, 180, 0} or {0, 0, 0})
     end
     local naboo_checkzone = nil
-    naboo_checkzone       = (isBottom and zoneBaseBottom) or (is_top and zoneBaseTop) or (is_ai and getObjectFromGUID("6b5523"))
+    naboo_checkzone       = (isBottom and zoneBasesBottom) or (is_top and zoneBasesTop) or (is_ai and getObjectFromGUID("6b5523"))
     local naboo_in_play   = false
     if naboo_checkzone ~= nil then
         for _, object in pairs(naboo_checkzone.getObjects()) do
