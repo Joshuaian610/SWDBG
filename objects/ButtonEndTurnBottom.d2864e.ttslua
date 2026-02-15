@@ -3,7 +3,7 @@ function onLoad()
     play_zone       = zoneInPlay
     allColors     = Global.getTable('all_colors')
     self.createButton({
-        click_function = "end_turn",
+        click_function = "endTurn",
         function_owner = padGalaxyDeck,
         label          = "",
         color          = {1, 1, 1, 0},
@@ -15,6 +15,6 @@ function onLoad()
     })
 end -- end onLoad()
 
-function end_turn(button, _, _)
-    padGalaxyDeck.call('end_turn')
-end -- end end_turn()
+function endTurn(button, _, _)
+    padGalaxyDeck.call('endTurn')
+end -- end endTurn()

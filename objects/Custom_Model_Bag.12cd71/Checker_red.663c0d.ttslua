@@ -157,12 +157,12 @@ function setup_solo()
     -- bottom to top - shuttle X3, maybe companion, inq/jedi, shuttle
     -- bottom shuttles
     local reserve_shuttles  = {shuttle_1, shuttle_2, shuttle_3}
-    local galaxy_deck       = getObjectFromGUID(faction_guids[15])
+    local deckGalaxy       = getObjectFromGUID(faction_guids[15])
     -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
-    if galaxy_deck == nil then
+    if deckGalaxy == nil then
         for _, object in pairs(zoneGalaxyDeck.getObjects()) do
             if object.tag == "Deck" then
-                galaxy_deck = object
+                deckGalaxy = object
             end
         end
     end
@@ -172,7 +172,7 @@ function setup_solo()
     end
     if faction == "separatist" or faction == "republic" then
         -- companion
-        local companion     = galaxy_deck.takeObject({guid=faction_guids[17], rotation={0.00, 180.00, 180.00}})
+        local companion     = deckGalaxy.takeObject({guid=faction_guids[17], rotation={0.00, 180.00, 180.00}})
         companion.setPositionSmooth(pos_reserves[4], false, false)
         -- agent (dark side agent / jedi knight)
         local agent         = starter_deck.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
@@ -187,7 +187,7 @@ function setup_solo()
         getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[5], false, false)
     end
     -- place leader
-    local leader            = galaxy_deck.takeObject({guid=faction_guids[16], rotation={0.00, 180.00, 0.00}})
+    local leader            = deckGalaxy.takeObject({guid=faction_guids[16], rotation={0.00, 180.00, 0.00}})
     local pos_leader        = {-7.70, 0.60, 16.67}
     leader.setPositionSmooth(pos_leader, false, false)
     -- base setup

@@ -5,7 +5,7 @@ end -- end onLoad()
 
 function create_button()
     self.createButton({
-        click_function = "discard_random_card",
+        click_function = "discardRandomCard",
         function_owner = self,
         label          = "",
         color          = {1, 1, 1, .1},
@@ -17,7 +17,7 @@ function create_button()
     })
 end -- end create_button()
 
-function discard_random_card()
+function discardRandomCard()
     color    =  getObjectFromGUID("f27d6d").getData()["FogColor"]
-    padGalaxyDeck.call('discard_random_card', {button=self, color=color})
-end -- end discard_random_card()
+    padGalaxyDeck.call('discardRandomCard', {button=self, color=color})
+end -- end discardRandomCard()

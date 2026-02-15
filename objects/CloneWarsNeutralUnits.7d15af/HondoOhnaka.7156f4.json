@@ -56,10 +56,10 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "CloneWarsNeutralUnits.7d15af/HondoOnaka.7156f4.ttslua",
+  "LuaScript_path": "CloneWarsNeutralUnits.7d15af/HondoOhnaka.7156f4.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
-  "Nickname": "Hondo Onaka",
+  "Nickname": "Hondo Ohnaka",
   "SidewaysCard": false,
   "Snap": true,
   "Sticky": true,
@@ -72,9 +72,9 @@
   ],
   "Tooltip": true,
   "Transform": {
-    "posX": -7,
-    "posY": 0.404,
-    "posZ": 0,
+    "posX": 14.402,
+    "posY": 1.985,
+    "posZ": 5.258,
     "rotX": 0,
     "rotY": 90,
     "rotZ": 0,
@@ -83,5 +83,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "CloneWarsNeutralUnits.7d15af/HondoOnaka.7156f4.xml"
+  "XmlUI_path": "CloneWarsNeutralUnits.7d15af/HondoOhnaka.7156f4.xml"
 }

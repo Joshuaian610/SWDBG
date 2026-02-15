@@ -65,7 +65,7 @@ function reloadAll()
 end -- end function reloadAll()
 
 function add_subtract(_obj, _color, alt_click)
-    local is_ai = getObjectFromGUID("83b3ce").call('check_is_ai')
+    local is_ai = getObjectFromGUID("83b3ce").call('checkIfAI')
     mod = alt_click and -1 or 1
     new_value = math.min(math.max(val + mod, MIN_VALUE), MAX_VALUE)
     if val ~= new_value then
@@ -86,14 +86,14 @@ function add_subtract(_obj, _color, alt_click)
         if self.getGUID() == "7e15f6" then
             faction = bottomFaction
             color   = topColor
-            zone    = zoneBasesBottom
+            zone    = zoneBaseBottom
             rot     = {0.00, 0.00, 0.00}
             loc     = {29.50, 3.50, 21.00}
         elseif self.getGUID() == "fa055e" then
             faction = topFaction
             color   = bottomColor
             if not is_ai then
-                zone    = zoneBasesTop
+                zone    = zoneBaseTop
             else
                 zone    = getObjectFromGUID("6b5523")
             end

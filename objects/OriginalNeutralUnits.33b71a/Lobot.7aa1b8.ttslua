@@ -27,9 +27,9 @@ function force_button_create()
 end -- end force_button_create()
 
 
-function bh_create()
+function createBHSaboButtons()
     return nil
-end -- end bh_create()
+end -- end createBHSaboButtons()
 
 function bh_neutral_create()
     padGalaxyDeck.call('bh_neutral_create', {card=self, tooltip=attack_tooltip, faction=faction})

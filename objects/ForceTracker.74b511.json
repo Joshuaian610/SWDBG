@@ -25,13 +25,13 @@
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "BlockSquare",
-  "Nickname": "",
+  "Nickname": "Force Tracker",
   "Snap": true,
   "Sticky": true,
   "Tags": [
     "non_interactable"
   ],
-  "Tooltip": true,
+  "Tooltip": false,
   "Transform": {
     "posX": 29.411,
     "posY": 1.152,

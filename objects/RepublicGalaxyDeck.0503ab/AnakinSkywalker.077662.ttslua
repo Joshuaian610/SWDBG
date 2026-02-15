@@ -22,7 +22,7 @@ function force_button_create()
 end -- end force_button_create()
 
 
-function bh_create()
-    padGalaxyDeck.call('bh_create', {card=self, tooltip=attack_tooltip, faction=faction})
-end -- end bh_create()
+function createBHSaboButtons()
+    padGalaxyDeck.call('createBHSaboButtons', {card=self, tooltip=attack_tooltip, faction=faction})
+end -- end createBHSaboButtons()
 

@@ -10,20 +10,20 @@ function purchase_card(parms)
     local playercolor                  = parms.player_color
     local alt_click                    = parms.altclick
     local playerArea                  = parms.playerarea
-    local is_bottom                    = (playerArea == "bottom")
+    local isBottom                    = (playerArea == "bottom")
     local is_top                       = (playerArea == "top")
     local bottomColor, topColor      = padGalaxyDeck.call('get_playercolors')
     local bottomFaction, topFaction  = padGalaxyDeck.call('get_playerareas')
-    local color                        = (is_bottom and bottomColor or topColor)
-    local faction                      = (is_bottom and bottomFaction or topFaction)
+    local color                        = (isBottom and bottomColor or topColor)
+    local faction                      = (isBottom and bottomFaction or topFaction)
     local capitalized_faction          = (faction:gsub("^%l", string.upper))
-    local opponent_faction             = (is_bottom and topFaction or bottomFaction)
+    local opponent_faction             = (isBottom and topFaction or bottomFaction)
     local capitalized_opponent_faction = (opponent_faction:gsub("^%l", string.upper))
     local faction_tag                  = faction
     local opponent_tag                 = opponent_faction
-    local card_tag                     = (is_bottom and 'bottom_owner' or 'top_owner')
-    local counter                      = (is_bottom and getObjectFromGUID("79146f") or getObjectFromGUID("34be5a"))
-    local board_counter                = (is_bottom and getObjectFromGUID("5ddc6c") or getObjectFromGUID("c6a07b"))
+    local card_tag                     = (isBottom and 'bottom_owner' or 'top_owner')
+    local counter                      = (isBottom and getObjectFromGUID("79146f") or getObjectFromGUID("34be5a"))
+    local board_counter                = (isBottom and getObjectFromGUID("5ddc6c") or getObjectFromGUID("c6a07b"))
     local card_dest                    = nil
     local card_rot                     = nil
     local nextCardToHandBottom     = Global.getVar('nextCardToHandBottom')
@@ -38,7 +38,7 @@ function purchase_card(parms)
     local nextCardATTE               = Global.getVar('nextCardATTE')
     local nextCardAsajj              = Global.getVar('nextCardAsajj')
     local attack_action                = nil
-    local is_ai                        = padGalaxyDeck.call('check_is_ai')
+    local is_ai                        = padGalaxyDeck.call('checkIfAI')
     if faction_tag == "rebellion" then faction_tag = "rebel" end
     if opponent_tag == "rebellion" then opponent_tag = "rebel" end
     if faction == "rebellion" or faction == "republic" then
@@ -47,7 +47,7 @@ function purchase_card(parms)
         attack_action = "Bounty Hunt"
     end
     padGalaxyDeck.call('animate_button', {obj=button})
-    if is_bottom then
+    if isBottom then
         if nextCardToHandBottom then
             card_destination = {0.00, 1.46, -43.00}
             card_rot         = {0.00, 180.00, 0.00}
@@ -215,7 +215,7 @@ function purchase_card(parms)
     local enemy_faction    = nil
     local bottom_check_obj = getObjectFromGUID("12cd71")
     local top_check_obj    = getObjectFromGUID("834dea")
-    if is_bottom then
+    if isBottom then
         current_faction = bottom_check_obj.getName()
         enemy_faction   = top_check_obj.getName()
     elseif is_top or is_ai then
@@ -224,8 +224,8 @@ function purchase_card(parms)
     end
     local capitalized_faction       = (current_faction:gsub("^%l", string.upper))
     local capitalized_enemy_faction = (enemy_faction:gsub("^%l", string.upper))
-    owner_tag = (is_bottom and "bottom_owner" or "top_owner")
-    if is_ai and not is_bottom then
+    owner_tag = (isBottom and "bottom_owner" or "top_owner")
+    if is_ai and not isBottom then
         owner_tag = "ai_owner"
     end
     for _, value in pairs(card_tags) do
@@ -281,33 +281,33 @@ function purchase_card(parms)
     end
     -- handle Fang Fighter
     local force_owner = padGalaxyDeck.call('get_force_owner')
-    if card_object.getName() == "Fang Fighter" and (not is_ai or (is_bottom and is_ai)) then
-        card_destination = (is_bottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
-        local deal_deck = nil
-        local deck_count = 0
+    if card_object.getName() == "Fang Fighter" and (not is_ai or (isBottom and is_ai)) then
+        card_destination = (isBottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
+        local deckDeal = nil
+        local countDeck = 0
         local card_found = false
-        if is_bottom then
+        if isBottom then
             if force_owner == "Bottom" then
                 broadcastToAll("The Force is with the " .. capitalized_faction .. ", who draws a card from the Fang Fighter ability.", color)
-                padGalaxyDeck.call('deal_card', {playerArea="bottom", count=1})
+                padGalaxyDeck.call('dealCard', {playerArea="bottom", count=1})
             end
         elseif is_top then
             if force_owner == "Top" then
                 broadcastToAll("The Force is with the " .. capitalized_faction .. ", who draws a card from the Fang Fighter ability.", color)
-                padGalaxyDeck.call('deal_card', {playerArea="top", count=1})
+                padGalaxyDeck.call('dealCard', {playerArea="top", count=1})
             end
         end
     end
     -- handle Vulture Droid
-    if card_object.getName() == "Vulture Droid" and (not is_ai or (is_bottom and is_ai)) then
-        card_destination = (is_bottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
+    if card_object.getName() == "Vulture Droid" and (not is_ai or (isBottom and is_ai)) then
+        card_destination = (isBottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
         broadcastToAll("Vulture Droid added to Separatist hand via it's ability.", color)
     end
     -- handle Quarren Mercenary
-    if card_object.getName() == 'Quarren Mercenary' and (not is_ai or (is_bottom and is_ai)) then
-        if is_bottom and force_owner == "Bottom" then
+    if card_object.getName() == 'Quarren Mercenary' and (not is_ai or (isBottom and is_ai)) then
+        if isBottom and force_owner == "Bottom" then
             broadcastToAll("The Force is with the " .. capitalized_faction .. ", who may exile two cards out of hand or discard pile.", color)
-        elseif is_bottom and force_owner ~= "Bottom" then
+        elseif isBottom and force_owner ~= "Bottom" then
             broadcastToAll("The Force is not with the " .. capitalized_faction .. ", who may only exile one card out of hand or discard pile.", color)
         elseif is_top and force_owner == "Top" then
             broadcastToAll("The Force is with the " .. capitalized_faction .. ", who may exile two cards out of hand or discard pile.", color)
@@ -316,8 +316,8 @@ function purchase_card(parms)
         end
     end
     -- handle Super Commando
-    if card_object.getName() == "Super Commando" and (not is_ai or (is_bottom and is_ai)) then
-        if is_bottom then
+    if card_object.getName() == "Super Commando" and (not is_ai or (isBottom and is_ai)) then
+        if isBottom then
             card_destination = {0.00, 1.46, -43.00}
         elseif is_top then
             card_destination = {0.00, 1.46, 43.00}
@@ -331,7 +331,7 @@ function purchase_card(parms)
     -- handle Hondo Onaka
     local cost_over_4   = base_card_cost > 3 and true or false
     local hondo_in_play = false
-    if not is_ai or (is_bottom and is_ai) then
+    if not is_ai or (isBottom and is_ai) then
         for _, object in ipairs(play_zone.getObjects()) do
             if object.getName() == "Hondo Onaka" and
             (object.hasTag('bottom_owner') or object.hasTag('top_owner')) then
@@ -348,11 +348,11 @@ function purchase_card(parms)
     end
     -- handle Grand Moff Tarkin
     if Global.getVar('nextCardTarkin') then
-        card_destination = (is_bottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
+        card_destination = (isBottom and {0.00, 1.46, -43.00} or {0.00, 1.46, 43.00})
         padGalaxyDeck.call('remove_ability_buttons', {object=getObjectFromGUID("624155")})
     end
     -- execution
-    if not is_bottom and is_ai then
+    if not isBottom and is_ai then
         card_rot         = {0.00, 180.00, 180.00}
         card_destination = {-1.88, 3.00, 20.39}
     end
@@ -376,7 +376,7 @@ function purchase_card(parms)
     if button ~= button_purchase_7 and button ~= button_purchase_8 then
         Wait.time(function()
         if Global.getVar('nextCardNute') then
-            exile_bag = (is_bottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+            exile_bag = (isBottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
             padGalaxyDiscard.call('handle_nute_gunray', {exile_bag=exile_bag, color=color})
         else
             padGalaxyDeck.call('draw_galaxy_card')

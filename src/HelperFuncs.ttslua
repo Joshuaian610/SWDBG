@@ -1,4 +1,253 @@
+function addResource(area, count)
+  -- this function handles adding a resource to both related counters simultaneously  
+  isBottom = (area == "bottom")
+  counter = isBottom and counterResourceBottom or counterResourceTop
+  counterBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
+  local currentValue = counter.getVar('val')
+  currentValue = currentValue + count
+  counter.call('set_val', currentValue)
+  counterBoard.call('set_val', currentValue)
+end -- end add_resource()
+
+
+function animateButtonDiscardRandom(button)
+  -- handles animation of discard random buttons
+  button.clearButtons()
+
+  local posButton = button.getPosition()
+  posButton.y = posButton.y - .35
+  button.setPosition(posButton)
+  posButton.y = posButton.y + .35
+  button.setPositionSmooth(posButton, false, false)
+
+  Wait.time(function()
+
+    button.call('create_button') -- NEED REQUIRE
+
+  end, .5)
+end -- end animateButtonDiscardRandom()
+
+
+function cardExhaust(parms)
+  -- handles exhausting cards on ability use
+  local card = parms.card
+  local isBottom = (card.hasTag('bottom_owner'))
+  local isTop = (card.hasTag('top_owner'))
+  local rotObj = (isBottom and { 0.00, 210.00, 0.00 }) or (isTop and { 0.00, 30.00, 0.00 })
+  card.setRotationSmooth(rotObj, false, true)
+end -- end cardExhaust()
+
+
+function checkBase(faction)
+  -- detects and returns current base per faction
+  local bottomFaction, topFaction = getPlayerAreas()
+  local isBottom = faction == bottomFaction
+  local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
+  for _, zoneObj in pairs(checkZone.getObjects()) do
+    if zoneObj.tag == "Card" and (zoneObj.hasTag('empire_base') or zoneObj.hasTag('rebel_base')) or
+    zoneObj.hasTag('republic_base') or zoneObj.hasTag('separatist_base') then
+      return zoneObj.getName()
+    end
+  end
+end -- end checkBase()
+
+
+function checkIfAI()
+  -- determines if AI is in play
+  -- NEED TO FIGURE OUT OBJS BELOW & REMOVE GUID methodology
+  local isAI = false
+  for _, obj in pairs(getObjects()) do
+    if obj.getGUID() == "f001ad" or obj.getGUID() == "adf064" or
+    obj.getGUID() == "b5ca34" or obj.getGUID() == "a41512" then
+      isAI = true
+    end
+  end
+  return isAI
+end -- end checkIfAI()
+
+
+function createBHSaboButtons(card, tooltip, faction)
+  -- this function handles the creation of bounty hunt buttons
+  local bottomFaction, topFaction = getPlayerAreas()
+  local attackFaction = (faction == bottomFaction and topFaction or bottomFaction)
+  local attackAction = nil
+
+  if attackFaction == "republic" or attackFaction == "rebellion" then
+    attackAction = "Sabotage"
+  elseif attackFaction == "empire" or attackFaction == "separatist" then
+    attackAction = "Bounty Hunt"
+  end
+
+  local bottomColor, topColor = getPlayerColors()
+  local buttonColor = (attackFaction == bottomFaction and bottomColor or topColor)
+  local color, hoverColor = get_button_colors({ buttonColor=buttonColor }) -- NEED HELPER
+
+  if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then
+    card.createButton({
+      click_function = "bh_action", -- REVISIT
+      function_owner = padGalaxyDiscard,
+      label          = '',
+      position       = { 0, 0.5, 1.23 },
+      height         = 575,
+      width          = 1800,
+      color          = color,
+      hover_color    = hoverColor,
+      rotation       = { 0, 0, 0 },
+      scale          = { x=0.5, y=0.5, z=0.5 },
+      tooltip        = attackAction .. ' ' .. card.getName() .. ': ' .. tooltip
+    })
+  end
+end -- end createBHSaboButtons()
+
+
+function damageBase(isBottom, count, playerColor, faction)
+  -- handles damaging and movement of defeated  bases
+  local counter = isBottom and counterBaseBottom or counterBaseTop
+  local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
+  local isAI = checkIfAI()
+  if isBottom and isAI then zone = zoneLeadersBases end
+  if faction == "rebellion" then faction = "rebel" end  
+  local currentValue = counter.getVar('val')
+  local currentValue = currentValue + count
+  local maxHP = nil
+  local baseFound = false -- boolean to determine if base object is found
+  local foundBase = nil -- the base object that may or may not be found
+
+  counter.call('set_val', currentValue)
+
+  for _, obj in pairs(checkZone.getObjects()) do
+    if obj.type == "Card" and obj.hasTag(faction .. '_base') then
+      maxHP = obj.getVar('max_hp')
+      baseFound = true
+      foundBase = obj
+    end
+  end
+  if not baseFound then log("damageBase() base not found!") return end
+  
+  if currentValue >= maxHP then
+    broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. foundBase.getName() .. "[-] has been destroyed!", "White")
+    local rotBottom = { 0.00, 180.00, 0.00 }
+    local rotTop = { 0.00, 0.00, 0.00 }
+    local posBottom = { 29.50, 3.50, -21.00 }
+    local posTop = { 29.50, 3.50, 21.00 }
+    foundBase.setRotation(isBottom and rotBottom or rotTop)
+    foundBase.setPositionSmooth((isBottom and posBottom or posTop), false, true)
+    counter.call('set_val', 0)
+  end
+end -- end damageBase()
+
+
+function dealCard(playerArea, count)
+  -- handles the deal of player cards up to count
+  local zoneDeck = nil
+  local zoneDiscard = nil
+  local zoneHandzone = nil
+  local posDeck = nil
+  local faction = nil
+  local tintFaction = nil
+  local bottomFaction, topFaction = getPlayerAreas()
+
+  if playerArea == "bottom" then
+    zoneDeck = zoneDeckBottom
+    zoneDiscard = zoneDiscardBottom
+    zoneHandzone = zoneHandzoneBottom
+    posDeck = { -3.50, 1.50, -31.00 }
+    faction = bottomFaction
+      
+  elseif playerArea == "top" then
+    zoneDeck = zoneDeckTop
+    zoneDiscard = zoneDiscardTop
+    zoneHandzone = zoneHandzoneBottom
+    posDeck = { 3.50, 2.50, 31.00 }
+    faction = topFaction
+  end
+
+  tintFaction = zoneHandzone.getData()["FogColor"]
+
+  -- check for deck or card
+  local deckDeal = nil
+  local deckOrCardFound = false
+  local countDeck = 0
+  
+  for _, zoneObj in pairs(zoneDeck.getObjects()) do
+    if zoneObj.type == "Deck" then
+      deckOrCardFound = true
+      deckDeal = zoneObj
+      countDeck = deckDeal.getQuantity()
+    end
+
+    if zoneObj.type == "Card" then
+      deckOrCardFound = true
+      deckDeal = zoneObj
+      countDeck = 1
+    end
+  end
+
+  -- deal the cards
+  if countDeck >= count then
+    if deckOrCardFound then deckDeal.deal(count, tintFaction) end
+  elseif countDeck < count then
+    if deckOrCardFound then deckDeal.deal(countDeck, tintFaction) end
+  end
+
+  -- if original deal deck count was insufficient, refill deck & continue dealing
+  if deckOrCardFound == false or countDeck < count then
+    Wait.time(function()
+
+      for k, v in pairs(zoneDiscard.getObjects()) do
+        if zoneObj.tag == "Deck" then
+          deckDeal = v
+          deckDeal.flip()
+          deckDeal.shuffle()
+          Wait.time(function() deckDeal.setPosition(posDeck) end, 1)
+          deckDeal.setName(faction:gsub("^%l", string.upper))
+        end
+      end
+
+    end, 1)
+    Wait.time(function() deckDeal.deal(count - countDeck, tintFaction) end, 3)
+  end
+end -- end dealCard()
+
+
+function discardRandomCard(button, playerColor)
+  animateButtonDiscardRandom({obj=button})
+  local posButton = button.getPosition()
+  local isBottom = button.getName() == "Button Discard Bottom"
+  local isTop = button.getName() == "Button Discard Top"
+  local rotDiscard = isBottom and { 0, 180, 0 } or { 0, 0, 0 }
+  local posDiscard = isBottom and { -8.50, 2.00, -31.00 } or { 8.50, 2.00, 31.00 }
+  
+  if isBottom or isTop then
+    local hand = Player[playerColor].getHandObjects()
+
+    if #hand > 0 then
+      local randomIndex = math.random(1, #hand)
+      local randomCard = hand[randomIndex]
+      randomCard.setRotation(rotDiscard)
+      randomCard.setPosition(posDiscard)
+
+      -- broadcast discard result
+      if Player[playerColor].steam_name ~= nil then
+        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has randomly discarded " .. randomCard.getName() .. ".", "White")
+      else
+        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. playerColor .. " Player[-] has randomly discarded " .. randomCard.getName() .. ".", "White")
+      end
+
+    -- broadcast error case to player
+    elseif #hand == 0 then
+      if Player[playerColor].steam_name ~= nil then
+        broadcastToColor("No cards in hand to discard.", playerColor, playerColor)
+      end
+    end
+  end
+end -- end discardRandomCard()
+
+
 function drawGalaxyCard()
+  -- handles the replacement of a galaxy row card
+  -- determines next empty slot, deals to it
+
   -- determine leftmost free slot
   local slots = {
     zoneGalaxyRow1,
@@ -32,17 +281,17 @@ function drawGalaxyCard()
       -- determine galaxy deck, deal card
       local deckGalaxy = nil
       local card = nil
-      local deck_or_card_found = false
+      local deckOrCardFound = false
       for _, obj in pairs(zoneGalaxyDeck.getObjects()) do
         if obj.tag == "Deck" then
-          deck_or_card_found = true
+          deckOrCardFound = true
           deckGalaxy = obj
           card = deckGalaxy.takeObject()
           rotateDealtCard(card, posDeal)
           return nil
         end
         if obj.tag == "Card" then
-          deck_or_card_found = true
+          deckOrCardFound = true
           card = obj
           rotateDealtCard(card, posDeal)
           return nil
@@ -50,7 +299,7 @@ function drawGalaxyCard()
       end
 
       -- handle galaxy deck refresh from discard if required
-      if deck_or_card_found == false then
+      if deckOrCardFound == false then
         for _, obj in pairs(zoneGalaxyDiscard.getObjects()) do
           if obj.tag == "Deck" then
             deckGalaxy = obj
@@ -67,6 +316,58 @@ function drawGalaxyCard()
     end
   end
 end -- end drawGalaxyCard()
+
+
+function drawGalaxyCardToSlot(rowSlot)
+  -- handles the replacement of a Galaxy Row card to a specific slot  
+  local posSlots = {
+    { -21.00, 0.75, 0.00 },
+    { -14.00, 0.75, 0.00 },
+    { -7.00, 0.75, 0.00 },
+    { 0.00, 0.75, 0.00 },
+    { 7.00, 0.75, 0.00 },
+    { 14.00, 0.75, 0.00 }
+  }
+  local posSlot = posSlots[rowSlot]
+  
+  -- determine galaxy deck, deal card
+  local deckGalaxy = nil
+  local card = nil
+  local deckOrCardFound = false
+
+  for _, zoneObj in pairs(zoneGalaxyDeck.getObjects()) do
+    if zoneObj.type == "Deck" then
+      deckOrCardFound = true
+      deckGalaxy = zoneObj
+      card = deckGalaxy.takeObject()
+      rotateDealtCard(card, posSlot)
+      return
+    end
+
+    if zoneObj.tag == "Card" then
+      deckOrCardFound = true
+      card = zoneObj
+      rotateDealtCard(card, posSlot)
+      return
+    end
+  end
+
+  -- handle refresh of Galaxy deck if required before deal
+  if deckOrCardFound == false then
+    for _, zoneObj in pairs(zoneGalaxyDiscard.getObjects()) do
+      if zoneObj.tag == "Deck" then
+        deckGalaxy = zoneObj
+        deckGalaxy.setName('Galaxy Deck')
+        deckGalaxy.flip()
+        deckGalaxy.shuffle()
+        deckGalaxy.setPositionSmooth(posDeckGalaxy, false, true)
+        card = deckGalaxy.takeObject()
+        rotateDealtCard(card, posSlot)
+        return
+      end
+    end
+  end
+end -- end drawGalaxyCardToSlot()
 
 
 function rotateDealtCard(card, position)
@@ -115,6 +416,149 @@ function rotateDealtCard(card, position)
 
   card.setPositionSmooth(position, false, true)
 end -- end rotateDealtCard()
+
+
+function endTurn(button, _, _)
+  -- handles end turn functionality
+
+  local bottomColor, topColor = getPlayerColors()
+
+  -- discard all units
+  local isBottom = false
+  local isTop = false
+  if button.getName() == "Button End Turn Bottom" then
+    isBottom = true
+  elseif button.getName() == "Button End Turn Top" then
+    isTop = true
+  end
+
+  local playerColor = isBottom and bottomColor or topColor
+  local isAI = checkIfAI()
+  local rotDiscard = isBottom and { 0, 180, 0 } or { 0, 0, 0 }
+  local posDiscard = isBottom and { -8.50, 2.00, -31.00 } or { 8.50, 2.00, 31.00 }
+  local posDeck = isBottom and { -3.50, 2.00, -31.00 } or { 3.50, 2.00, 31.00 }
+
+  -- discard cards
+  for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+    if isBottom then
+      if zoneObj.hasTag('unit') and zoneObj.hasTag('bottom_owner') then
+        zoneObj.setRotation(rotDiscard)
+        zoneObj.setPositionSmooth(posDiscard, false, true)
+      end
+    end
+
+    if isTop and not isAI then
+      if zoneObj.hasTag('unit') and zoneObj.hasTag('top_owner') then
+        zoneObj.setRotation(rotDiscard)
+        zoneObj.setPositionSmooth(posDiscard, false, true)
+      end
+    end
+
+    -- handle tarkin exile
+    if zoneObj.hasTag('tarkin_exile') then
+      zoneObj.setDescription("")
+      zoneObj.highlightOff()
+      exileCard("Blue", zoneObj)
+    end
+  end
+
+  -- reset resource counter (needs Mygeeto base in play check)
+  local mygeetoInPlay = false
+  local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
+
+  for _, object in pairs(checkZone.getObjects()) do
+    if object.getName() == "Mygeeto" then
+      mygeetoInPlay = true
+    end
+  end
+
+  local counterResource = isBottom and counterResourceBottom or counterResourceTop
+  local counterResourceBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
+
+  if not mygeetoInPlay then
+    counterResource.call('set_val', 0)
+    counterResourceBoard.call('set_val', 0)
+
+  else
+    local countResource = counterResource.getVar('val')
+    broadcastToAll("Mygeeto is in play, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] resources have not been reset.", "White")
+    Wait.time(function()
+      
+      counterResource.call('set_val',  countResource)
+      counterResourceBoard.call('set_val',  countResource)
+
+    end, 1)
+  end
+
+  local playerHand = Player[playerColor].getHandObjects()
+  for _, card in pairs(playerHand) do
+    card.setPosition(posDiscard)
+  end
+
+  -- deal new hand
+  local zoneDeck = isBottom and zoneDeckBottom or zoneDeckTop
+  local zoneDiscard = isBottom and zoneDiscardBottom or zoneDiscardTop
+  
+  Wait.time(function()
+
+    if not isAI or (isBottom and isAI) then
+      dealCard(isBottom and "bottom" or "top", 5)
+    end
+
+    -- create ship ability buttons for new player
+    if isBottom then
+
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag('bottom_owner') and zoneObj.hasTag('ship') then
+          if zoneObj.hasTag('ability_button') or zoneObj.hasTag('ability_button_sec') then
+            remove_ability_buttons({object=zoneObj}) -- NEED REQUIRE
+          end
+          zoneObj.clearButtons()
+          zoneObj.call('ship_counter_create') -- NEED REQUIRE
+        end
+      end
+
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button') then
+          zoneObj.call('ability_button_create_ui') -- NEED REQUIRE
+        end
+        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button_sec') then
+          zoneObj.call('sec_ability_button_create_ui') -- NEED REQUIRE
+        end
+      end
+
+    else -- isTop
+
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') then
+          if zoneObj.hasTag('ability_button') or zoneObj.hasTag('ability_button_sec') then
+            remove_ability_buttons({object=v}) -- NEED REQUIRE
+          end
+          zoneObj.clearButtons()
+          zoneObj.call('ship_counter_create') -- NEED REQUIRE
+        end
+      end
+
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag('bottom_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button') then
+          zoneObj.call('ability_button_create_ui') -- NEED REQUIRE
+        end
+        if zoneObj.hasTag('bottom_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button_sec') then
+          zoneObj.call('sec_ability_button_create_ui') -- NEED REQUIRE
+        end
+      end
+    end
+
+  end, 1)
+
+  -- swap turn to other color
+  local nextColor = isBottom and topColor or bottomColor
+  if Turns.enable then
+    Turns.turn_color = nextColor
+  end
+
+  setBoard(nextColor)
+end -- end endTurn()
 
 
 function exileCard(playerArea, obj)
@@ -178,7 +622,7 @@ function getTurn()
   local checkZones = {zoneBottom, zoneTop}
   for i = 1, 2 do
     for k, v in ipairs(checkZones[i].getObjects()) do
-      if v.hasTag('turnTracker') then
+      if zoneObj.hasTag('turnTracker') then
         if i == 1 then
           return "Bottom"
         elseif i == 2 then
@@ -189,3 +633,181 @@ function getTurn()
   end
   return nil
 end -- end getTurn()
+
+
+function setBoard(playerColor)
+  -- handles the setup of a player area and board on a fresh turn
+
+  local isAI = checkIfAI()
+  local bottomColor, topColor = getPlayerColors()
+  local setBoardToBottom = false
+  local setBoardToTop = false
+  if playerColor == topColor then
+    setBoardToTop = true
+    setBoardToBottom = false
+  elseif playerColor == bottomColor then
+    setBoardToBottom = true
+    setBoardToTop = false
+  end
+  local ownerTag = (setBoardToBottom and "bottom_owner" or "top_owner")
+  if isAI and ownerTag == "top_owner" then
+    ownerTag = "ai_owner"
+  end
+  local toAdd = 0
+  local counter = setBoardToBottom and counterResourceBottom or counterResourceTop
+  local counterBoard = setBoardToBottom and counterResourceBoardBottom or counterResourceBoardTop
+  local currentValue = 0
+
+  -- clean up ability tags
+  for _, object in pairs(getObjects()) do
+    if object.hasTag('twilek_ability') then
+      object.removeTag('twilek_ability')
+    end
+  end
+
+  -- reset vars
+  nextCardToHandEmpire = false
+  nextCardToHandRebel = false
+  nextCardToHandSeparatist = false
+  nextCardToHandRepublic = false
+  nextCardToDeckEmpire = false
+  nextCardToDeckRebel = false
+  nextCardToDeckSeparatist = false
+  nextCardToDeckRepublic = false
+  nextCardTarkin = false
+  nextCardLeia = false
+  nextCardATAT = false
+  nextCardFalcon = false
+  nextCardContact = false
+  nextCardATTE = false
+  nextCardAsajj = false
+  nextCardNute = false
+  metConditionDroideka = false
+  metConditionHondo = false
+  metConditionWat = false
+
+  -- disable hondo highlight if still on
+  if getObjectbyName("Hondo Ohnaka") ~= nil then
+    getObjectbyName("Hondo Ohnaka").highlightOff()
+  end
+
+  -- set end turn button visibility
+  buttonEndTurnBottom.setInvisibleTo(setBoardToBottom and {} or allColors)
+  buttonEndTurnTop.setInvisibleTo(setBoardToBottom and allColors or {})
+
+  -- get, position, and set turn tracker
+  local turnTracker = nil
+  for _, object in pairs(getObjects()) do
+    if object.hasTag('turnTracker') then
+      turnTracker = object
+    end
+  end
+
+  local bottomFaction, topFaction = getPlayerAreas()
+  local nextFaction = setBoardToBottom and bottomFaction or topFaction
+  local stateID = nil
+
+  if nextFaction == "empire" then
+    stateID = 1
+    metConditionTrench = false
+
+  elseif nextFaction == "separatist" then
+    stateID = 2
+    for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+      if zoneObj.hasTag(ownerTag) and zoneObj.hasTag('ship') then
+        metConditionTrench = true
+      end
+    end
+
+  elseif nextFaction == "rebellion" then
+    stateID = 3
+    metConditionTrench = false
+
+  elseif nextFaction == "republic" then
+    stateID = 4
+    metConditionTrench = false
+  end
+
+  local posTurnTracker = setBoardToBottom and { -46.00, 0.12, -21.00 } or { 46.00, 0.12, 21.00 }
+  local rotTurnTracker = setBoardToBottom and { 0, 180, 0 } or { 0, 0, 0 }
+  if isAI and not setBoardToBottom then
+    rotTurnTracker =  {0, 180, 0}
+  end
+
+  turnTracker.setRotation(rotTurnTracker)
+  turnTracker.setPosition(posTurnTracker)
+  turnTracker = turnTracker.setState(stateID)
+  turnTracker.setLock(true)
+  turnTracker.interactable = false
+
+  -- swap board counter visibility
+  counterResourceBoardBottom.setInvisibleTo(setBoardToBottom and {} or allColors)
+  counterResourceBoardTop.setInvisibleTo(setBoardToBottom and allColors or {})
+
+  -- set up next player's resource counters
+  -- add force resource
+  local trackerForce    = getObjectbyName("Force Tracker")
+  local posTracker = trackerForce.getPosition().z
+  -- bottom .z positions are the negative inverse of the top .z positions, which allows for...
+  if setBoardToBottom then posTracker = (posTracker * -1) end
+
+  local mygeetoInPlay   = false
+  local checkZoneMygeeto = setBoardToBottom and zoneBaseBottom or zoneBaseTop
+  for _, object in pairs(checkZoneMygeeto.getObjects()) do
+    if object.getName() == "Mygeeto" then
+      mygeetoInPlay = true
+    end
+  end
+
+  if mygeetoInPlay then
+    toAdd = toAdd + counter.getVar('val')
+    broadcastToAll("Mygeeto is in play - [" .. Color.fromString(playerColor):toHex() .. "]Separatists[-] begin turn with last turn's overflow, " .. toAdd .. " resources.", "White")
+  end
+
+  if posTracker > 7.5 and posTracker < 9.5 then
+    toAdd = toAdd + 1
+  end
+
+  -- add capital ships resources
+  for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+    if zoneObj.hasTag(ownerTag) and zoneObj.hasTag('ship') then
+      toAdd = toAdd + zoneObj.getVar('produce') -- NEED DATA TABLE
+    end
+  end
+
+  if toAdd ~= nil then
+    currentValue = currentValue + toAdd
+  end
+  if setBoardToTop and isAI then
+    currentValue = 0
+  end
+
+  counter.call('set_val', currentValue)
+  counterBoard.call('set_val', currentValue)
+
+  -- check for base, force search base deck if no base
+  local baseCard = nil
+  local deckBases = nil
+  local zoneBase = setBoardToBottom and zoneBaseBottom or zoneBaseTop
+  if setBoardToTop and isAI then
+    zoneBase = zoneLeadersBases
+  end
+
+  for _, object in ipairs(zoneBase.getObjects()) do
+    if object.tag == "Card" then
+      baseCard = object
+    end
+    if object.tag == "Deck" then
+      deckBases = object
+    end
+  end
+
+  if baseCard == nil then
+    if Player[playerColor].steam_name then
+      broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-]: Base destroyed, please select a new base!", "White")
+    else
+      broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. playerColor .. " Player[-]: Base destroyed, please select a new base!", "White")
+    end
+    Wait.time(function() deckBases.Container.search(playerColor) end, .5)
+  end
+end -- end setBoard()

@@ -1,17 +1,17 @@
-function onLoad()
-    padGalaxyDeck      = getObjectFromGUID("83b3ce")
-    padGalaxyDiscard   = getObjectFromGUID("a03936")
-    padOuterRim       = getObjectFromGUID("606e92")
-    play_zone            = zoneInPlay
-    allColors          = Global.getTable('all_colors')
-end -- end onLoad()
+-- function onLoad()
+--     padGalaxyDeck      = getObjectFromGUID("83b3ce")
+--     padGalaxyDiscard   = getObjectFromGUID("a03936")
+--     padOuterRim       = getObjectFromGUID("606e92")
+--     play_zone          = zoneInPlay
+--     allColors          = Global.getTable('all_colors')
+-- end -- end onLoad()
 
 function ability_button_create_ui(parms)
     local card                    = parms.card
     local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     local tags                    = card.getTags()
-    local is_bottom               = (card.hasTag('bottom_owner') and true or false)
-    local button_color            = (is_bottom and bottomColor or topColor)
+    local isBottom               = (card.hasTag('bottom_owner') and true or false)
+    local button_color            = (isBottom and bottomColor or topColor)
     if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
         card.UI.show('ability_button_' .. string.lower(button_color))
     end
@@ -22,8 +22,8 @@ function sec_ability_button_create_ui(parms)
     local card                    = parms.card
     local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     local tags                    = card.getTags()
-    local is_bottom               = (card.hasTag('bottom_owner') and true or false)
-    local button_color            = (is_bottom and bottomColor or topColor)
+    local isBottom               = (card.hasTag('bottom_owner') and true or false)
+    local button_color            = (isBottom and bottomColor or topColor)
     if card.hasTag('bottom_owner') or card.hasTag('top_owner') and card.getName() ~= "Jar Jar Binks" then -- only create if card is owned, Jar Jar creates sec in row
         card.UI.show('ability_button_' .. string.lower(button_color))
         card.UI.show('ability_button_gold')
@@ -35,13 +35,13 @@ function ability_button_create(parms)
     local card                    = parms.card
     local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     local tags                    = card.getTags()
-    local is_bottom = false
+    local isBottom = false
     for _, tag in ipairs(tags) do
         if tag == "bottom_owner" then
-            is_bottom = true
+            isBottom = true
         end
     end
-    local button_color            = (is_bottom and bottomColor or topColor)
+    local button_color            = (isBottom and bottomColor or topColor)
     local color, hover_color      = get_button_colors({button_color=button_color})
     if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
         card.createButton({
@@ -80,8 +80,8 @@ end -- end ability_button_create()
 function add_unit_force(player, value, id)
     local card_object        = getObjectFromGUID(value)
     local playercolor        = player.color
-    local is_bottom          = card_object.hasTag('bottom_owner') and true or false
-    local button_force_track = (is_bottom and getObjectFromGUID("d586db") or getObjectFromGUID("817b24"))
+    local isBottom          = card_object.hasTag('bottom_owner') and true or false
+    local button_force_track = (isBottom and getObjectFromGUID("d586db") or getObjectFromGUID("817b24"))
     local name               = card_object.getName()
     broadcastToAll(name .. " has generated Force.", playercolor)
     if name == "Dark Side Agent" or name == "Inquisitor" or
@@ -106,78 +106,17 @@ function add_unit_force(player, value, id)
 end -- end add_force_x1()
 
 
-function add_resource(parms)
-    local area          = parms.area
-    local count         = parms.count
-    is_bottom           = (area == "bottom")
-    counter             = getObjectFromGUID(is_bottom and "79146f" or "34be5a")
-    board_counter       = getObjectFromGUID(is_bottom and "5ddc6c" or "c6a07b")
-    local current_value = counter.getVar('val')
-    current_value       = current_value + count
-    counter.call('set_val', current_value)
-    board_counter.call('set_val', current_value)
-end -- end add_resource()
-
-
-
-function animate_button(parms)
-    button = parms.obj
-    remove_buttons({object=button})
-    local pos = button.getPosition()
-    pos.y = pos.y - .35
-    button.setPosition(pos)
-    pos.y = pos.y + .35
-    button.setPositionSmooth(pos, false, false)
-    Wait.time(function()
-    button.call('create_button')
-    end, .5)
-end -- end animate_button()
-
-
-function bh_create(parms)
-    local card                        = parms.card
-    local attack_tooltip              = parms.tooltip
-    local faction                     = parms.faction
-    local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
-    local attack_faction              = (faction == bottomFaction and topFaction or bottomFaction)
-    local attack_action               = nil
-    if attack_faction == "republic" or attack_faction == "rebellion" then
-        attack_action = "Sabotage"
-    elseif attack_faction == "empire" or attack_faction == "separatist" then
-        attack_action = "Bounty Hunt"
-    end
-    local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
-    local button_color            = (attack_faction == bottomFaction and bottomColor or topColor)
-    local color, hover_color      = get_button_colors({button_color=button_color})
-    if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then -- only create if card is not owned
-        card.createButton({
-            click_function = "bh_action",
-            function_owner = padGalaxyDiscard,
-            label          = '',
-            position       = {0, 0.5, 1.23},
-            height         = 575,
-            width          = 1800,
-            color          = color,
-            hover_color    = hover_color,
-            rotation       = {0, 0, 0},
-            scale          = {x=0.5, y=0.5, z=0.5},
-            tooltip        = attack_action .. ' ' .. card.getName() .. ': ' .. attack_tooltip
-        })
-    end
-end -- end bh_create()
-
-
 function cancel_create(parms)
     local button                  = parms.button
     local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     local tags                    = button.getTags()
-    local is_bottom = false
+    local isBottom = false
     for _, tag in ipairs(tags) do
         if tag == "bottom_owner" then
-            is_bottom = true
+            isBottom = true
         end
     end
-    local button_color       = (is_bottom and bottomColor or topColor)
+    local button_color       = (isBottom and bottomColor or topColor)
     local color, hover_color = get_button_colors({button_color=button_color})
     if button.hasTag('buttons') then
         button.createButton({
@@ -260,188 +199,6 @@ function cancel_card_action(button, playercolor, _)
 end -- end cancel_card_action()
 
 
-function card_exhaust(parms)
-    local card         = parms.card
-    local is_bottom    = (card.hasTag('bottom_owner'))
-    local is_top       = (card.hasTag('top_owner'))
-    local obj_rotation = ((is_bottom and {0.00, 210.00, 0.00}) or (is_top and {0.00, 30.00, 0.00}))
-    card.setRotationSmooth(obj_rotation, false, false)
-end -- end card_exhaust
-
-
-function check_base(faction)
-    local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
-    local is_bottom = (faction == bottomFaction or topFaction)
-    local check_zone = getObjectFromGUID(is_bottom and "59b7ad" or "23b5a3")
-    for k, v in pairs(check_zone.getObjects()) do
-        if v.tag == "Card" and (v.hasTag('empire_base') or v.hasTag('rebel_base')) or
-        v.hasTag('republic_base') or v.hasTag('separatist_base') then
-            return v.getName()
-        end
-    end
-end -- end check_base
-
-
-function check_is_ai()
-    local is_ai = false
-    for _, object in pairs(getObjects()) do
-        if object.getGUID() == "f001ad" or object.getGUID() == "adf064" or
-        object.getGUID() == "b5ca34" or object.getGUID() == "a41512" then
-            is_ai = true
-        end
-    end
-    return is_ai
-end -- end check_is_ai()
-
-
-function damage_base(parms)
-    local is_bottom     = parms.is_bottom
-    local counter       = getObjectFromGUID(is_bottom and "fa055e" or "7e15f6")
-    local zone          = getObjectFromGUID(is_bottom and "23b5a3" or "59b7ad")
-    local is_ai         = check_is_ai()
-    if is_bottom and is_ai then zone = getObjectFromGUID("6b5523") end
-    local count         = parms.count
-    local color         = parms.color
-    local faction       = parms.faction
-    if faction == "rebellion" then faction = "rebel" end
-    local current_value = counter.getVar('val')
-    local current_value = current_value + count
-    local max_hp        = nil
-    local base_found    = false
-    local found_base    = nil
-    counter.call('set_val', current_value)
-    for k, object in pairs(zone.getObjects()) do
-        if object.tag == "Card" and object.hasTag(faction .. '_base') then
-            max_hp     = object.getVar('max_hp')
-            base_found = true
-            found_base = object
-        end
-    end
-    if not base_found then
-        return nil
-    end
-    if current_value >= max_hp then
-        broadcastToAll(found_base.getName() .. " has been destroyed!", color)
-        found_base.setRotation(is_bottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
-        found_base.setPositionSmooth((is_bottom and {29.50, 3.50, -21.00} or {29.50, 3.50, 21.00}), false, false)
-        counter.call('set_val', 0)
-    end
-end -- end damage_base()
-
-
-function deal_card(parms)
-    local playerArea  = parms.playerArea
-    local count        = parms.count
-    local deck_zone    = nil
-    local discard_zone = nil
-    local hand_zone    = nil
-    local pos_deck     = nil
-    local pos_discard  = nil
-    local faction      = nil
-    local faction_tint = nil
-    local bottomFaction, topFaction = get_playerareas()
-    if playerArea == "bottom" then
-        deck_zone    = getObjectFromGUID("209eca")
-        discard_zone = getObjectFromGUID("61dacf")
-        hand_zone    = getObjectFromGUID("dcb1f5")
-        pos_deck     = {-3.50, 1.50, -31.00}
-        pos_discard  = {-8.50, 1.50, -31.00}
-        faction      = bottomFaction
-        faction_tint = getObjectFromGUID("dcb1f5").getData()["FogColor"]
-    elseif playerArea == "top" then
-        deck_zone    = getObjectFromGUID("97aa40")
-        discard_zone = getObjectFromGUID("3ebaef")
-        hand_zone    = getObjectFromGUID("f27d6d")
-        pos_deck     = {3.50, 2.50, 31.00}
-        pos_discard  = {8.50, 2.50, 31.00}
-        faction      = topFaction
-        faction_tint = getObjectFromGUID("f27d6d").getData()["FogColor"]
-    end
-    local deal_deck = nil
-    local deck_or_card_found = false
-    local deck_count = 0
-    -- check for deck or card
-    for k, v in pairs(deck_zone.getObjects()) do
-        if v.tag == "Deck" then
-            deck_or_card_found = true
-            deal_deck = v
-            deck_count = deal_deck.getQuantity()
-        end
-        if v.tag == "Card" then
-            deck_or_card_found = true
-            deal_deck = v
-            deck_count = 1
-        end
-    end
-    if deck_count >= count then
-        if deck_or_card_found then deal_deck.deal(count, faction_tint) end
-    elseif deck_count < count then
-        if deck_or_card_found then deal_deck.deal(deck_count, faction_tint) end
-    end
-    if deck_or_card_found == false or deck_count < count then
-        Wait.time(function()
-        for k, v in pairs(discard_zone.getObjects()) do
-            if v.tag == "Deck" then
-                deal_deck = v
-                deal_deck.flip()
-                deal_deck.shuffle()
-                Wait.time(function() deal_deck.setPosition(pos_deck) end, 1)
-                deal_deck.setName(faction:gsub("^%l", string.upper))
-            end
-        end
-        end, 1)
-        Wait.time(function() deal_deck.deal(count - deck_count, faction_tint) end, 3)
-    end
-end -- end deal_card()
-
-
-function discard_object(parms)
-    local object = parms.object
-    -- DISCARD PAD
-    local rot_discard_bottom      = {0.00, 180.00, 0.00}
-    local loc_discard_bottom      = {-8.50, 2.5, -31.00}
-    local rot_deck_bottom         = {0.00, 180.00, 180.00}
-    local loc_deck_empire         = {-3.50, 2.5, -31}
-    local rot_discard_top         = {0.00, 0.00, 0.00}
-    local loc_discard_top         = {8.5, 2.5, 31.00}
-    local rot_deck_top            = {0.00, 0.00, 180.00}
-    local loc_deck_top            = {3.50, 2.5, 31}
-    local rot_discard_galaxy      = {0.00, 90.00, 0.00}
-    local loc_discard_galaxy      = {-28.00, 2.5, -2.50}
-    local rot_discard_base_bottom = {0.00, 0.00, 0.00}
-    local loc_discard_base_bottom = {29.40, 1.5, 14.65}
-    local rot_discard_base_top    = {0.00, 180.00, 0.00}
-    local loc_discard_base_top    = {29.40, 1.5, -14.65}
-    if zone == getObjectFromGUID("1f2094") or zone == getObjectFromGUID("fecb4e") or -- empire pad
-    zone == getObjectFromGUID("2a77c3") or zone == getObjectFromGUID("9d4e7e") then  -- rebel pad
-        if object.hasTag('bottom_owner') and object.tag == "Card" then
-            object.setRotation(rot_discard_bottom)
-            object.setPosition(loc_discard_bottom)
-            check_discard(zone, object)
-        elseif object.hasTag('top_owner') and object.tag == "Card" then
-            object.setRotation(rot_discard_top)
-            object.setPosition(loc_discard_top)
-            check_discard(zone, object)
-        elseif object.hasTag('bottom_owner') == false and object.hasTag('top_owner') == false and
-        object.hasTag('trash') == false and object.hasTag('rebel_base') == false and
-        object.hasTag('empire_base') and object.hasTag('republic_base') == false and
-        object.hasTag('separatist_base') then
-            object.setRotation(rot_discard_galaxy)
-            object.setPosition(loc_discard_galaxy)
-            check_discard(zone, object)
-        -- elseif object.hasTag('empire_base') then
-        --     object.setRotation(rot_discard_base_bottom)
-        --     object.setPosition(loc_discard_base_bottom)
-        -- elseif object.hasTag('rebel_base') then
-        --     object.setRotation(rot_discard_base_top)
-        --     object.setPosition(loc_discard_base_top)
-        elseif object.hasTag('trash') then
-            object.destruct()
-        end
-    end
-end -- end discard_object()
-
-
 function discard_ai_card(parms)
     local is_random                    = parms.is_random
     local check_zone                   = getObjectFromGUID("88751a")
@@ -517,206 +274,6 @@ function discard_ai_card(parms)
 end -- discard_ai_card()
 
 
-function discard_random_card(parms)
-    local button                = parms.button
-    local color                 = parms.color
-    animate_button({obj=button})
-    local button_position       = button.getPosition()
-    local button_discard_bottom = getObjectFromGUID("bfc82c")
-    local button_discard_top    = getObjectFromGUID("ded0c2")
-    local is_bottom             = (button == button_discard_bottom)
-    local is_top                = (button == button_discard_top)
-    local discard_loc           = (is_bottom and {-8.50, 2, -31.00} or {8.50, 2, 31.00})
-    local discard_rot           = (is_bottom and {0, 180, 0} or {0, 0, 0})
-    if is_bottom or is_top then
-        local hand = Player[color].getHandObjects()
-        if #hand > 0 then
-            local random_index = math.random(1, #hand)
-            local random_card = hand[random_index]
-            random_card.setRotation(discard_rot)
-            random_card.setPosition(discard_loc)
-            if Player[color].steam_name ~= nil then
-                broadcastToAll(Player[color].steam_name .. " has randomly discarded " .. random_card.getName() .. ".", color)
-            end
-        elseif #hand == 0 then
-            broadcastToColor("No cards in hand to discard.", color, color)
-        end
-    end
-end -- end discard_random_card
-
-
-
-
-
-function draw_galaxy_card_to_slot(parms)
-    local slot     = parms.slot
-    local position = nil1
-    if slot == 1 then
-      position = {-21.00, 0.75, 0.00}
-    elseif slot == 2 then
-      position = {-14.00, 0.75, 0.00}
-    elseif slot == 3 then
-      position = {-7.00, 0.75, 0.00}
-    elseif slot == 4 then
-      position = {0.00, 0.75, 0.00}
-    elseif slot == 5 then
-      position = {7.00, 0.75, 0.00}
-    elseif slot == 6 then
-      position = {14.00, 0.75, 0.00}
-    end
-    -- determine galaxy deck, deal card
-    local galaxy_deck = nil
-    local card = nil
-    local deck_or_card_found = false
-    for k, v in pairs(zoneGalaxyDeck.getObjects()) do
-        if v.tag == "Deck" then
-            deck_or_card_found = true
-            galaxy_deck = v
-            card = galaxy_deck.takeObject()
-            getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
-            return nil
-        end
-        if v.tag == "Card" then
-            deck_or_card_found = true
-            card = v
-            getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
-            return nil
-        end
-    end
-    if deck_or_card_found == false then
-        for k, v in pairs(zoneGalaxyDiscard.getObjects()) do
-            if v.tag == "Deck" then
-                galaxy_deck = v
-                galaxy_deck.setName('Galaxy Deck')
-                galaxy_deck.flip()
-                galaxy_deck.shuffle()
-                galaxy_deck.setPositionSmooth(posDeckGalaxy, false, false)
-                card = galaxy_deck.takeObject()
-                getObjectFromGUID("83b3ce").call('rotate_dealt_card', {card=card, position=position})
-                return nil
-            end
-        end
-    end
-end -- end draw_galaxy_card_to_slot()
-
-
-function end_turn(button, _, _)
-    local bottomColor, topColor = get_playercolors()
-    -- discard all units
-    local is_bottom = false
-    local is_top    = false
-    if button.getGUID() == "d2864e" then
-        is_bottom = true
-    elseif button.getGUID() == "b6d068" then
-        is_top = true
-    end
-    local color = (is_bottom and bottomColor or topColor)
-    local is_ai = check_is_ai()
-    local discard_loc = (is_bottom and {-8.50, 2, -31.00} or {8.50, 2, 31.00})
-    local discard_rot = (is_bottom and {0, 180, 0} or {0, 0, 0})
-    local deck_loc    = (is_bottom and {-3.50, 2, -31.00} or {3.50, 2, 31.00})
-    -- discard cards
-    for k, v in pairs(play_zone.getObjects()) do
-        if is_bottom then
-            if v.hasTag('unit') and v.hasTag('bottom_owner') then
-                v.setRotation(discard_rot)
-                v.setPositionSmooth(discard_loc, false, false)
-            end
-        end
-        if is_top and not is_ai then
-            if v.hasTag('unit') and v.hasTag('top_owner') then
-                v.setRotation(discard_rot)
-                v.setPositionSmooth(discard_loc, false, false)
-            end
-        end
-        -- handle tarkin exile
-        if v.hasTag('tarkin_exile') then
-            v.setDescription("")
-            v.highlightOff()
-            exileCard({p_area="Blue", obj=v})
-        end
-    end
-    -- reset resource counter (needs Mygeeto base in play check)
-    local mygeeto_in_play   = false
-    local mygeeto_checkzone = (is_bottom and zoneBasesBottom or zoneBasesTop)
-    for _, object in pairs(mygeeto_checkzone.getObjects()) do
-        if object.getName() == "Mygeeto" then
-            mygeeto_in_play = true
-        end
-    end
-    local mygeeto_resource_counter = getObjectFromGUID(is_bottom and "79146f" or "34be5a")
-    if not mygeeto_in_play then
-        mygeeto_resource_counter.call('set_val', 0)
-    else
-        local resource_count = mygeeto_resource_counter.getVar('val')
-        broadcastToAll("Mygeeto is in play, Separatist resources have not been reset.", color)
-        Wait.time(function() mygeeto_resource_counter.call('set_val',  resource_count) end, 1)
-    end
-    local player_hand = Player[color].getHandObjects()
-    for i, card in ipairs(player_hand) do
-        card.setPosition(discard_loc)
-    end
-    local deck_zone    = (is_bottom and "209eca" or "97aa40")
-    local discard_zone = (is_bottom and "61dacf" or "3ebaef")
-
-    -- deal new hand
-    Wait.time(function()
-    if not is_ai or (is_bottom and is_ai) then
-        padGalaxyDeck.call('deal_card', {playerArea=(is_bottom and "bottom" or "top"), count=5})
-    end
-    -- create ship ability buttons for new player
-    if is_bottom then
-        for k, v in pairs(play_zone.getObjects()) do
-            if v.hasTag('bottom_owner') and v.hasTag('ship') then
-                if v.hasTag('ability_button') or v.hasTag('ability_button_sec') then
-                    remove_ability_buttons({object=v})
-                end
-                remove_buttons({object=v})
-                v.call('ship_counter_create')
-            end
-        end
-        for k, v in pairs(play_zone.getObjects()) do
-            if v.hasTag('top_owner') and v.hasTag('ship') and v.hasTag('ability_button') then
-              v.call('ability_button_create_ui')
-            end
-            if v.hasTag('top_owner') and v.hasTag('ship') and v.hasTag('ability_button_sec') then
-              v.call('sec_ability_button_create_ui')
-            end
-        end
-    else
-        for k, v in pairs(play_zone.getObjects()) do
-            if v.hasTag('top_owner') and v.hasTag('ship') then
-                if v.hasTag('ability_button') or v.hasTag('ability_button_sec') then
-                    remove_ability_buttons({object=v})
-                end
-                remove_buttons({object=v})
-                v.call('ship_counter_create')
-            end
-        end
-        for k, v in pairs(play_zone.getObjects()) do
-            if v.hasTag('bottom_owner') and v.hasTag('ship') and v.hasTag('ability_button') then
-              v.call('ability_button_create_ui')
-            end
-            if v.hasTag('bottom_owner') and v.hasTag('ship') and v.hasTag('ability_button_sec') then
-              v.call('sec_ability_button_create_ui')
-            end
-        end
-    end
-    end, 1)
-
-
-
-    local next_color = (is_bottom and topColor or bottomColor)
-    if Turns.enable == true then
-        Turns.turn_color = next_color
-    end
-    set_board_to(next_color)
-end -- end end_turn()
-
-
-
-
-
 function exile_row_card(parms)
     local bottomColor, topColor = get_playercolors()
     local button                  = parms.button
@@ -745,7 +302,7 @@ function exile_row_card(parms)
     -- do the calling_card action (all exile separatist cards only)
     if calling_card.getName() == "B2 Battle Droid" then
         -- draw a card for separatist
-        deal_card({playerArea=((playercolor == bottomColor) and "bottom" or "top"), count=1})
+        dealCard({playerArea=((playercolor == bottomColor) and "bottom" or "top"), count=1})
         broadcastToAll("Separatist has exiled a card, and draws a card via B2 Battle Droid ability.", playercolor)
     elseif calling_card.getName() == "Munificent-Class Frigate" then
         -- repair 2 base damage
@@ -778,7 +335,7 @@ end -- end exile_row_card()
 
 function exile_row_deploy(parms)
     local calling_card = parms.calling_card
-    local is_bottom    = parms.is_bottom
+    local isBottom    = parms.isBottom
     local button_bag   = getObjectFromGUID("c20af0")
     local zones        = {
         -- from galaxy deck side to outer rim/force track side
@@ -790,15 +347,15 @@ function exile_row_deploy(parms)
         "c5ef86",
     }
     local button_locs  = {
-        (is_bottom and {-20.98, 0.14, -7.00} or {-21.00, 0.14, 7.00}),
-        (is_bottom and {-14.00, 0.14, -7.00} or {-14.00, 0.14, 7.00}),
-        (is_bottom and {-7.00, 0.14, -7.00} or {-7.00, 0.14, 7.00}),
-        (is_bottom and {0.00, 0.14, -7.00} or {0.00, 0.14, 7.00}),
-        (is_bottom and {7.00, 0.14, -7.00} or {7.00, 0.14, 7.00}),
-        (is_bottom and {14.00, 0.14, -7.00} or {14.00, 0.14, 7.00}),
+        (isBottom and {-20.98, 0.14, -7.00} or {-21.00, 0.14, 7.00}),
+        (isBottom and {-14.00, 0.14, -7.00} or {-14.00, 0.14, 7.00}),
+        (isBottom and {-7.00, 0.14, -7.00} or {-7.00, 0.14, 7.00}),
+        (isBottom and {0.00, 0.14, -7.00} or {0.00, 0.14, 7.00}),
+        (isBottom and {7.00, 0.14, -7.00} or {7.00, 0.14, 7.00}),
+        (isBottom and {14.00, 0.14, -7.00} or {14.00, 0.14, 7.00}),
     }
-    local rotation  = (is_bottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
-    local exile_bag = (is_bottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+    local rotation  = (isBottom and {0.00, 180.00, 0.00} or {0.00, 0.00, 0.00})
+    local exile_bag = (isBottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
     for i = 1, 6 do
         for _, object in pairs(getObjectFromGUID(zones[i]).getObjects()) do
             if object.hasTag('separatist') then
@@ -821,13 +378,13 @@ function force_button_create(parms)
     local card                    = parms.card
     local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     local tags                    = card.getTags()
-    local is_bottom = false
+    local isBottom = false
     for _, tag in ipairs(tags) do
         if tag == "bottom_owner" then
-            is_bottom = true
+            isBottom = true
         end
     end
-    local button_color            = (is_bottom and bottomColor or topColor)
+    local button_color            = (isBottom and bottomColor or topColor)
     local color, hover_color      = get_button_colors({button_color=button_color})
     if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
         card.UI.show('force_button_' .. button_color)
@@ -840,19 +397,19 @@ function galaxy_discard(parms)
     local card_zone               = parms.card_zone
     local alt_click               = parms.alt_click
     animate_button({obj=button})
-    local is_bottom               = false
+    local isBottom               = false
     if button == getObjectFromGUID("64b1c3") or button == getObjectFromGUID("859a1a") or button == getObjectFromGUID("96be63") or
     button == getObjectFromGUID("b205d2") or button == getObjectFromGUID("7fc7d3") or button == getObjectFromGUID("8cf6b7") then
-        is_bottom = true
+        isBottom = true
     end
-    local exile_bag                   = (is_bottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
+    local exile_bag                   = (isBottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
     local card_tag                    = nil
     local card_destination            = {-28.00, 2.5, -2.50}
     local card_rotation               = {0, 90, 0}
     local card_object                 = nil
     local card_in_zone                = false
     local bottomColor, topColor     = get_playercolors()
-    local playercolor                 = (is_bottom and bottomColor or topColor)
+    local playercolor                 = (isBottom and bottomColor or topColor)
     local force_owner                 = get_force_owner()
     local bottomFaction, topFaction = get_playerareas()
     local metConditionWat           = Global.getVar('metConditionWat')
@@ -887,10 +444,10 @@ function galaxy_discard(parms)
                 wat_owner_force = true
                 broadcastToAll("Wat Tambor ability discarded card while Separatist is Force owner. It may be replaced with a Separatist card from galaxy discard.", playercolor)
                 -- check if discard pile exists
-                local discard_zone  = zoneGalaxyDiscard
+                local zoneDiscard  = zoneGalaxyDiscard
                 local discard_found = false
                 local discard_pile  = nil
-                for _, object in ipairs(discard_zone.getObjects()) do
+                for _, object in ipairs(zoneDiscard.getObjects()) do
                     if object.tag == "Card" or object.tag == "Deck" then
                         discard_found = true
                         stop_draw = true
@@ -1019,14 +576,14 @@ end -- end get_force_owner()
 
 
 function get_galaxy_deck()
-    local galaxy_deck = nil
+    local deckGalaxy = nil
     for k, v in pairs(zoneGalaxyDeck.getObjects()) do
         if v.tag == "Deck" then
-            galaxy_deck = v
+            deckGalaxy = v
         end
     end
-    if galaxy_deck then
-        return galaxy_deck
+    if deckGalaxy then
+        return deckGalaxy
     else
         return nil
     end
@@ -1074,7 +631,7 @@ function move_force_track(parms)
     local loc_5_color             = nil
     local loc_6_color             = nil
     local loc_7_color             = nil
-    local is_bottom               = (button == getObjectFromGUID("d586db") and true or false)
+    local isBottom               = (button == getObjectFromGUID("d586db") and true or false)
     local force_tracker           = getObjectFromGUID("74b511")
     local force_track             = getObjectFromGUID("53e12c")
     local start_location          = force_tracker.getPosition()
@@ -1118,8 +675,8 @@ function move_force_track(parms)
     local bottomFaction, topFaction = get_playerareas()
     local capitalized_bottomFaction  = (bottomFaction:gsub("^%l", string.upper))
     local capitalized_topFaction     = (topFaction:gsub("^%l", string.upper))
-    local faction                     = (is_bottom and capitalized_bottomFaction or capitalized_topFaction)
-    local playercolor                 = (is_bottom and bottomColor or topColor)
+    local faction                     = (isBottom and capitalized_bottomFaction or capitalized_topFaction)
+    local playercolor                 = (isBottom and bottomColor or topColor)
     for i = 1, count do
         if button == bottom_force_button then
             if start_location.z < -7.5 and start_location.z > -9.5 then
@@ -1191,8 +748,8 @@ end -- end move_force_track()
 function next_card_to_hand(parms)
     local faction                     = parms.faction
     local bottomFaction, topFaction = get_playerareas()
-    local is_bottom                   = (faction == bottomFaction)
-    if is_bottom then
+    local isBottom                   = (faction == bottomFaction)
+    if isBottom then
         Global.setVar('nextCardToHandBottom', true)
     else
         Global.setVar('nextCardToHandBottom', true)
@@ -1203,8 +760,8 @@ end -- end next_card_to_hand()
 function next_card_to_deck(parms)
     local faction                     = parms.faction
     local bottomFaction, topFaction = get_playerareas()
-    local is_bottom                   = (faction == bottomFaction)
-    if is_bottom then
+    local isBottom                   = (faction == bottomFaction)
+    if isBottom then
         Global.setVar('nextCardToDeckBottom', true)
     else
         Global.setVar('nextCardToDeckTop', true)
@@ -1217,17 +774,17 @@ function repair_base(parms)
     count   = parms.count
     tags    = parms.tags
     local bottomFaction, topFaction = get_playerareas()
-    local is_bottom                   = nil
+    local isBottom                   = nil
     for _, tag in ipairs(tags) do
         if tag == "bottom_owner" then
-            is_bottom = true
+            isBottom = true
         end
     end
-    local counter = getObjectFromGUID(is_bottom and "7e15f6" or "fa055e")
-    local current_value = counter.getVar('val')
-    current_value = current_value - count
-    if current_value < 0 then current_value = 0 end
-    counter.call('set_val', current_value)
+    local counter = getObjectFromGUID(isBottom and "7e15f6" or "fa055e")
+    local currentValue = counter.getVar('val')
+    currentValue = currentValue - count
+    if currentValue < 0 then currentValue = 0 end
+    counter.call('set_val', currentValue)
 end -- end repair_base()
 
 
@@ -1272,13 +829,13 @@ function sec_ability_button_create(parms)
     local secondary_tooltip       = parms.sec_tooltip
     local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
     local tags                    = card.getTags()
-    local is_bottom = false
+    local isBottom = false
     for _, tag in ipairs(tags) do
         if tag == 'bottom_owner' then
-            is_bottom = true
+            isBottom = true
         end
     end
-    local button_color            = (is_bottom and bottomColor or topColor)
+    local button_color            = (isBottom and bottomColor or topColor)
     local color, hover_color      = get_button_colors({button_color=button_color})
     if card.hasTag('bottom_owner') or card.hasTag('top_owner') then -- only create if card is owned
         card.createButton({
@@ -1311,169 +868,169 @@ function sec_ability_button_create(parms)
 end -- end sec_ability_button_create()
 
 
-function set_board_to(color)
-    local is_ai                   = check_is_ai()
-    local bottomColor, topColor = get_playercolors()
-    local set_board_to_bottom     = false
-    local set_board_to_top        = false
-    if color == topColor then
-        set_board_to_top          = true
-        set_board_to_bottom       = false
-    end
-    if color == bottomColor then
-        set_board_to_bottom       = true
-        set_board_to_top          = false
-    end
-    local owner_tag               = (set_board_to_bottom and "bottom_owner" or "top_owner")
-    if is_ai and owner_tag == "top_owner" then
-        owner_tag = "ai_owner"
-    end
-    local to_add                  = 0
-    local counter                 = getObjectFromGUID(set_board_to_bottom and "79146f" or "34be5a")
-    local board_counter           = getObjectFromGUID(set_board_to_bottom and "5ddc6c" or "c6a07b")
-    local current_value           = 0
-    -- clean up ability tags
-    for _, object in pairs(getObjects()) do
-        if object.hasTag('twilek_ability') then
-            object.removeTag('twilek_ability')
-        end
-    end
-    -- reset vars
-    Global.setVar('next_card_to_hand_empire', false)
-    Global.setVar('next_card_to_hand_rebel', false)
-    Global.setVar('next_card_to_hand_separatist', false)
-    Global.setVar('next_card_to_hand_republic', false)
-    Global.setVar('next_card_to_deck_empire', false)
-    Global.setVar('next_card_to_deck_rebel', false)
-    Global.setVar('next_card_to_deck_separatist', false)
-    Global.setVar('next_card_to_deck_republic', false)
-    Global.setVar('nextCardTarkin', false)
-    Global.setVar('nextCardLeia', false)
-    Global.setVar('nextCardATAT', false)
-    Global.setVar('nextCardFalcon', false)
-    Global.setVar('nextCardContact', false)
-    Global.setVar('nextCardATTE', false)
-    Global.setVar('nextCardAsajj', false)
-    Global.setVar('nextCardNute' , false)
-    Global.setVar('metConditionDroideka', false)
-    Global.setVar('metConditionHondo', false)
-    Global.setVar('metConditionWat', false)
-    -- disable hondo highlight if still on
-    if getObjectFromGUID("7156f4") ~= nil then
-        getObjectFromGUID("7156f4").highlightOff()
-    end
-    -- set end turn button visibility
-    getObjectFromGUID("d2864e").setInvisibleTo(set_board_to_bottom and {} or all_colors)
-    getObjectFromGUID("b6d068").setInvisibleTo(set_board_to_bottom and allColorsor {})
-    -- get, postion, and set turn tracker
-    all_objects = getObjects()
-    local turnTracker = nil
-    for k, v in pairs(all_objects) do
-        if v.hasTag('turnTracker') then
-            turnTracker = v
-        end
-    end
-    local bottomFaction, topFaction = get_playerareas()
-    local next_faction                = (set_board_to_bottom and bottomFaction or topFaction)
-    local state_id                    = nil
-    if next_faction == "empire" then
-        state_id = 1
-        Global.setVar('metConditionTrench' , false)
-    elseif next_faction == "separatist" then
-        state_id = 2
-        local trench_up = false
-        for _, object in pairs(play_zone.getObjects()) do
-            if object.hasTag(owner_tag) and object.hasTag('ship') then
-                trench_up = true
-            end
-        end
-        if trench_up then
-            Global.setVar('metConditionTrench' , true)
-        else
-            Global.setVar('metConditionTrench' , false)
-        end
-    elseif next_faction == "rebellion" then
-        state_id = 3
-        Global.setVar('metConditionTrench' , false)
-    elseif next_faction == "republic" then
-        state_id = 4
-        Global.setVar('metConditionTrench' , false)
-    end
-    local turnTracker_pos = set_board_to_bottom and {-46.00, 0.12, -21.00} or {46.00, 0.12, 21.00}
-    local turnTracker_rot = set_board_to_bottom and {0, 180, 0} or {0, 0, 0}
-    if is_ai and not set_board_to_bottom then
-        turnTracker_rot =  {0, 180, 0}
-    end
-    turnTracker.setRotation(turnTracker_rot)
-    turnTracker.setPosition(turnTracker_pos)
-    turnTracker = turnTracker.setState(state_id)
-    turnTracker.setLock(true)
-    turnTracker.interactable = false
-    -- swap board counter visibility
-    getObjectFromGUID("5ddc6c").setInvisibleTo(set_board_to_bottom and {} or all_colors) -- bottom resource counter
-    getObjectFromGUID("c6a07b").setInvisibleTo(set_board_to_bottom and allColorsor {}) -- top resource counter
-    -- set up next player's resource counters
-    -- add force resource
-    local force_tracker    = getObjectFromGUID("74b511")
-    local tracker_position = force_tracker.getPosition().z
-    if set_board_to_bottom then tracker_position = (tracker_position * -1) end
-    local mygeeto_in_play   = false
-    local mygeeto_checkzone = (set_board_to_bottom and zoneBasesBottom or zoneBasesTop)
-    for _, object in pairs(mygeeto_checkzone.getObjects()) do
-        if object.getName() == "Mygeeto" then
-            mygeeto_in_play = true
-        end
-    end
-    if mygeeto_in_play then
-        to_add = to_add + counter.getVar('val')
-        broadcastToAll("Mygeeto is in play - Separatists begin turn with last turn's overflow, " .. to_add .. " resources.", color)
-    end
-    if tracker_position > 7.5 and tracker_position < 9.5 then
-        to_add = to_add + 1
-    end
-    -- add capital ships resources
-    for k, v in pairs(play_zone.getObjects()) do
-        if v.hasTag(owner_tag) and v.hasTag('ship') then
-            to_add = to_add + v.getVar('produce')
-        end
-    end
-    if to_add ~= nil then
-        current_value = current_value + to_add
-    end
-    if set_board_to_top and is_ai then
-        current_value = 0
-    end
-    counter.call('set_val', current_value)
-    board_counter.call('set_val', current_value)
-    -- check for base, force search base deck if no base
-    local base_card = nil
-    local base_deck = nil
-    local base_zone = (set_board_to_bottom and zoneBasesBottom or zoneBasesTop)
-    if not set_board_to_bottom and is_ai then
-        base_zone = getObjectFromGUID("6b5523")
-    end
-    for _, object in ipairs(base_zone.getObjects()) do
-        if object.tag == "Card" then
-            base_card = object
-        end
-        if object.tag == "Deck" then
-            base_deck = object
-        end
-    end
-    if base_card == nil then
-        broadcastToAll("Base destroyed, please select a new base!", color)
-        Wait.time(function() base_deck.Container.search(color) end, .5)
-    end
-end -- end set_board_to()
+-- function setBoard(color)
+--     local is_ai                   = checkIfAI()
+--     local bottomColor, topColor = get_playercolors()
+--     local set_board_to_bottom     = false
+--     local set_board_to_top        = false
+--     if color == topColor then
+--         set_board_to_top          = true
+--         set_board_to_bottom       = false
+--     end
+--     if color == bottomColor then
+--         set_board_to_bottom       = true
+--         set_board_to_top          = false
+--     end
+--     local owner_tag               = (set_board_to_bottom and "bottom_owner" or "top_owner")
+--     if is_ai and owner_tag == "top_owner" then
+--         owner_tag = "ai_owner"
+--     end
+--     local to_add                  = 0
+--     local counter                 = getObjectFromGUID(set_board_to_bottom and "79146f" or "34be5a")
+--     local board_counter           = getObjectFromGUID(set_board_to_bottom and "5ddc6c" or "c6a07b")
+--     local currentValue           = 0
+--     -- clean up ability tags
+--     for _, object in pairs(getObjects()) do
+--         if object.hasTag('twilek_ability') then
+--             object.removeTag('twilek_ability')
+--         end
+--     end
+--     -- reset vars
+--     Global.setVar('next_card_to_hand_empire', false)
+--     Global.setVar('next_card_to_hand_rebel', false)
+--     Global.setVar('next_card_to_hand_separatist', false)
+--     Global.setVar('next_card_to_hand_republic', false)
+--     Global.setVar('next_card_to_deck_empire', false)
+--     Global.setVar('next_card_to_deck_rebel', false)
+--     Global.setVar('next_card_to_deck_separatist', false)
+--     Global.setVar('next_card_to_deck_republic', false)
+--     Global.setVar('nextCardTarkin', false)
+--     Global.setVar('nextCardLeia', false)
+--     Global.setVar('nextCardATAT', false)
+--     Global.setVar('nextCardFalcon', false)
+--     Global.setVar('nextCardContact', false)
+--     Global.setVar('nextCardATTE', false)
+--     Global.setVar('nextCardAsajj', false)
+--     Global.setVar('nextCardNute' , false)
+--     Global.setVar('metConditionDroideka', false)
+--     Global.setVar('metConditionHondo', false)
+--     Global.setVar('metConditionWat', false)
+--     -- disable hondo highlight if still on
+--     if getObjectFromGUID("7156f4") ~= nil then
+--         getObjectFromGUID("7156f4").highlightOff()
+--     end
+--     -- set end turn button visibility
+--     getObjectFromGUID("d2864e").setInvisibleTo(set_board_to_bottom and {} or all_colors)
+--     getObjectFromGUID("b6d068").setInvisibleTo(set_board_to_bottom and allColorsor {})
+--     -- get, postion, and set turn tracker
+--     all_objects = getObjects()
+--     local turnTracker = nil
+--     for k, v in pairs(all_objects) do
+--         if v.hasTag('turnTracker') then
+--             turnTracker = v
+--         end
+--     end
+--     local bottomFaction, topFaction = get_playerareas()
+--     local next_faction                = (set_board_to_bottom and bottomFaction or topFaction)
+--     local state_id                    = nil
+--     if next_faction == "empire" then
+--         state_id = 1
+--         Global.setVar('metConditionTrench' , false)
+--     elseif next_faction == "separatist" then
+--         state_id = 2
+--         local trench_up = false
+--         for _, object in pairs(play_zone.getObjects()) do
+--             if object.hasTag(owner_tag) and object.hasTag('ship') then
+--                 trench_up = true
+--             end
+--         end
+--         if trench_up then
+--             Global.setVar('metConditionTrench' , true)
+--         else
+--             Global.setVar('metConditionTrench' , false)
+--         end
+--     elseif next_faction == "rebellion" then
+--         state_id = 3
+--         Global.setVar('metConditionTrench' , false)
+--     elseif next_faction == "republic" then
+--         state_id = 4
+--         Global.setVar('metConditionTrench' , false)
+--     end
+--     local turnTracker_pos = set_board_to_bottom and {-46.00, 0.12, -21.00} or {46.00, 0.12, 21.00}
+--     local turnTracker_rot = set_board_to_bottom and {0, 180, 0} or {0, 0, 0}
+--     if is_ai and not set_board_to_bottom then
+--         turnTracker_rot =  {0, 180, 0}
+--     end
+--     turnTracker.setRotation(turnTracker_rot)
+--     turnTracker.setPosition(turnTracker_pos)
+--     turnTracker = turnTracker.setState(state_id)
+--     turnTracker.setLock(true)
+--     turnTracker.interactable = false
+--     -- swap board counter visibility
+--     getObjectFromGUID("5ddc6c").setInvisibleTo(set_board_to_bottom and {} or all_colors) -- bottom resource counter
+--     getObjectFromGUID("c6a07b").setInvisibleTo(set_board_to_bottom and allColorsor {}) -- top resource counter
+--     -- set up next player's resource counters
+--     -- add force resource
+--     local force_tracker    = getObjectFromGUID("74b511")
+--     local tracker_position = force_tracker.getPosition().z
+--     if set_board_to_bottom then tracker_position = (tracker_position * -1) end
+--     local mygeetoInPlay   = false
+--     local mygeeto_checkzone = (set_board_to_bottom and zoneBaseBottom or zoneBaseTop)
+--     for _, object in pairs(mygeeto_checkzone.getObjects()) do
+--         if object.getName() == "Mygeeto" then
+--             mygeetoInPlay = true
+--         end
+--     end
+--     if mygeetoInPlay then
+--         to_add = to_add + counter.getVar('val')
+--         broadcastToAll("Mygeeto is in play - Separatists begin turn with last turn's overflow, " .. to_add .. " resources.", color)
+--     end
+--     if tracker_position > 7.5 and tracker_position < 9.5 then
+--         to_add = to_add + 1
+--     end
+--     -- add capital ships resources
+--     for k, v in pairs(play_zone.getObjects()) do
+--         if v.hasTag(owner_tag) and v.hasTag('ship') then
+--             to_add = to_add + v.getVar('produce')
+--         end
+--     end
+--     if to_add ~= nil then
+--         currentValue = currentValue + to_add
+--     end
+--     if set_board_to_top and is_ai then
+--         currentValue = 0
+--     end
+--     counter.call('set_val', currentValue)
+--     board_counter.call('set_val', currentValue)
+--     -- check for base, force search base deck if no base
+--     local base_card = nil
+--     local base_deck = nil
+--     local base_zone = (set_board_to_bottom and zoneBaseBottom or zoneBaseTop)
+--     if not set_board_to_bottom and is_ai then
+--         base_zone = getObjectFromGUID("6b5523")
+--     end
+--     for _, object in ipairs(base_zone.getObjects()) do
+--         if object.tag == "Card" then
+--             base_card = object
+--         end
+--         if object.tag == "Deck" then
+--             base_deck = object
+--         end
+--     end
+--     if base_card == nil then
+--         broadcastToAll("Base destroyed, please select a new base!", color)
+--         Wait.time(function() base_deck.Container.search(color) end, .5)
+--     end
+-- end -- end setBoard()
 
 
 function ship_counter_create(parms)
     local card                    = parms.ship_card
     local val                     = parms.val
     local bottomColor, topColor = get_playercolors()
-    local is_bottom               = (card.hasTag('bottom_owner'))
+    local isBottom               = (card.hasTag('bottom_owner'))
     local is_top                  = (card.hasTag('top_owner') or card.hasTag('ai_owner'))
-    local ownerColor             = (is_bottom and bottomColor or topColor)
+    local ownerColor             = (isBottom and bottomColor or topColor)
     local f_color                 = {1, 1, 1, 255}
     local s_color                 = nil
     local h_color                 = nil

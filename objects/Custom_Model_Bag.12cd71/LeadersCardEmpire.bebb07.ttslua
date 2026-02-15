@@ -502,10 +502,10 @@ function setup_game(button, _, _)
     end
     end, 1)
     -- get galaxy and starter decks, shuffle all
-    local galaxy_deck = nil
+    local deckGalaxy = nil
     for k, v in pairs(zoneGalaxyDeck.getObjects()) do
         if v.tag == "Deck" then
-            galaxy_deck = v
+            deckGalaxy = v
         end
     end
 
@@ -528,7 +528,7 @@ function setup_game(button, _, _)
             buttonsGalaxyDiscard[i].destruct()
         end
         -- pull & position leader
-        local leader_card = galaxy_deck.takeObject({guid="5f007b"})
+        local leader_card = deckGalaxy.takeObject({guid="5f007b"})
         leader_card.lock()
         leader_card.setPosition(loc_leader_rebel)
         leader_card.setRotation(rot_unit_faceup_rebel)
@@ -572,7 +572,7 @@ function setup_game(button, _, _)
         first_base.setPosition(loc_first_base_rebel)
         first_base.setRotation(rot_base_faceup_rebel)
         local base_deck = nil
-        for k, v in pairs(zoneBasesTop.getObjects()) do
+        for k, v in pairs(zoneBaseTop.getObjects()) do
             if v.tag == "Deck" then
                 base_deck = v
             end
@@ -602,7 +602,7 @@ function setup_game(button, _, _)
             buttonsGalaxyDiscard[i].destruct()
         end
         -- pull & position leader
-        local leader_card = galaxy_deck.takeObject({guid="9c5c40"})
+        local leader_card = deckGalaxy.takeObject({guid="9c5c40"})
         leader_card.lock()
         leader_card.setPosition(loc_leader_empire)
         leader_card.setRotation(rot_unit_faceup_empire)
@@ -647,7 +647,7 @@ function setup_game(button, _, _)
         first_base.setRotation(rot_base_faceup_empire)
         -- shuffle bases, pull 2 bases, resize, create deck of 2 & position
         local base_deck = nil
-        for k, v in pairs(zoneBasesBottom.getObjects()) do
+        for k, v in pairs(zoneBaseBottom.getObjects()) do
             if v.tag == "Deck" then
                 base_deck = v
             end
@@ -658,7 +658,7 @@ function setup_game(button, _, _)
 
 
     -- deal galaxy row
-    galaxy_deck.shuffle()
+    deckGalaxy.shuffle()
 
     local loc_1 = {-21.00, 0.75, 0.00}
     local loc_2 = {-14.00, 0.75, 0.00}
@@ -668,7 +668,7 @@ function setup_game(button, _, _)
     local loc_6 = {14.00, 0.75, 0.00}
     local deal_locs = {loc_1, loc_2, loc_3, loc_4, loc_5, loc_6,}
     for i = 1, 6 do
-        local card = galaxy_deck.takeObject()
+        local card = deckGalaxy.takeObject()
         rotate_dealt_card(card, deal_locs[i])
     end
     -- show galaxy row buttons
@@ -702,7 +702,7 @@ function setup_game(button, _, _)
     for i = 1, 2 do
         -- end_turn_buttons[i].interactable = false
         -- end_turn_buttons[i].createButton({
-        --   click_function = "end_turn",
+        --   click_function = "endTurn",
         --   label = "",
         --   color = {1, 1, 1, 0},
         --   hover_color = {1, 1, 1, 0.2},
@@ -761,54 +761,54 @@ end -- end disable_leaders()
 ----- debug function to build with -----
 function toggle_solo_ui(button, _, _)
 
-    local is_bottom = (button == button_solo_empire)
-    local ai_bag = (is_bottom and ai_bag_empire or ai_bag_rebel)
-    local ai_backdrop = (is_bottom and ai_backdrop_empire or ai_backdrop_rebel)
-    local ai_leaderboard = (is_bottom and ai_leaderboard_empire or ai_leaderboard_rebel)
-    local ai_progress_cube = (is_bottom and ai_progress_cube_empire or ai_progress_cube_rebel)
-    local ai_resource_cube = (is_bottom and ai_resource_cube_empire or ai_resource_cube_rebel)
-    local ai_phase_marker = (is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local ai_base_marker = (is_bottom and ai_base_marker_empire or ai_base_marker_rebel)
-    local ai_rules = (is_bottom and ai_rules_empire or ai_rules_rebel)
-    local ai_tutorial_qr = (is_bottom and ai_tutorial_qr_empire or ai_tutorial_qr_rebel)
-    local ai_leaders_label = (is_bottom and ai_leaders_label_empire or ai_leaders_label_rebel)
-    local ai_resource_counter = (is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
-    local ai_base_damage_counter = (is_bottom and ai_base_damage_counter_empire or ai_base_damage_counter_rebel)
-    local decal_button = (is_bottom and decal_button_empire or decal_button_rebel)
-    local attack_ldr_button = (is_bottom and attack_ldr_button_empire or attack_ldr_button_rebel)
-    local loc_backdrop = (is_bottom and loc_backdrop_empire or loc_backdrop_rebel)
-    local loc_leaderboard = (is_bottom and loc_leaderboard_empire or loc_leaderboard_rebel)
-    local loc_progress_cube = (is_bottom and loc_progress_cube_empire or loc_progress_cube_rebel)
-    local loc_resource_cube = (is_bottom and loc_resource_cube_empire or loc_resource_cube_rebel)
-    local loc_phase_begin_turn = (is_bottom and loc_phase_begin_turn_empire or loc_phase_begin_turn_rebel)
-    local loc_resource_counter = (is_bottom and loc_resource_counter_empire or loc_resource_counter_rebel)
-    local loc_rules = (is_bottom and loc_rules_empire or loc_rules_rebel)
-    local loc_tutorial_qr = (is_bottom and loc_tutorial_qr_empire or loc_tutorial_qr_rebel)
-    local loc_leaders_label = (is_bottom and loc_leaders_label_empire or loc_leaders_label_rebel)
-    local loc_decal_button = (is_bottom and loc_decal_button_empire or loc_decal_button_rebel)
-    local loc_attack_ldr_button = (is_bottom and loc_attack_ldr_button_empire or loc_attack_ldr_button_rebel)
-    local loc_base_damage_counter = (is_bottom and loc_base_damage_counter_empire or loc_base_damage_counter_rebel)
-    local loc_leader = (is_bottom and loc_leader_empire or loc_leader_rebel)
-    local loc_first_base_deck = (is_bottom and loc_first_base_deck_empire or loc_first_base_deck_rebel)
-    local loc_first_base = (is_bottom and loc_first_base_empire or loc_first_base_rebel)
-    local loc_reserves_deck = (is_bottom and loc_reserves_deck_empire or loc_reserves_deck_rebel)
-    local rot_backdrop = (is_bottom and rot_backdrop_empire or rot_backdrop_rebel)
-    local rot_leaderboard = (is_bottom and rot_leaderboard_empire or rot_leaderboard_rebel)
-    local rot_cube = (is_bottom and rot_cube_empire or rot_cube_rebel)
-    local rot_rules = (is_bottom and rot_rules_empire or rot_rules_rebel)
-    local rot_tutorial_qr = (is_bottom and rot_tutorial_qr_empire or rot_tutorial_qr_rebel)
-    local rot_leaders_label = (is_bottom and rot_leaders_label_empire or rot_leaders_label_rebel)
-    local rot_decal_button = (is_bottom and rot_decal_button_empire or rot_decal_button_rebel)
-    local rot_attack_ldr_button = (is_bottom and rot_attack_ldr_button_empire or rot_attack_ldr_button_rebel)
-    local rot_base_damage_counter = (is_bottom and rot_base_damage_counter_empire or rot_base_damage_counter_rebel)
-    local rot_resource_counter = (is_bottom and rot_resource_counter_empire or rot_resource_counter_rebel)
-    local rot_base_damage_counter = (is_bottom and rot_base_damage_counter_empire or rot_base_damage_counter_rebel)
-    local rot_unit_faceup = (is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
-    local rot_unit_facedown = (is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
-    local rot_ship_faceup = (is_bottom and rot_ship_faceup_empire or rot_ship_faceup_rebel)
-    local rot_ship_facedown = (is_bottom and rot_ship_facedown_empire or rot_ship_facedown_rebel)
-    local rot_base_faceup = (is_bottom and rot_base_faceup_empire or rot_base_faceup_rebel)
-    local rot_base_facedown = (is_bottom and rot_base_facedown_empire or rot_base_facedown_rebel)
+    local isBottom = (button == button_solo_empire)
+    local ai_bag = (isBottom and ai_bag_empire or ai_bag_rebel)
+    local ai_backdrop = (isBottom and ai_backdrop_empire or ai_backdrop_rebel)
+    local ai_leaderboard = (isBottom and ai_leaderboard_empire or ai_leaderboard_rebel)
+    local ai_progress_cube = (isBottom and ai_progress_cube_empire or ai_progress_cube_rebel)
+    local ai_resource_cube = (isBottom and ai_resource_cube_empire or ai_resource_cube_rebel)
+    local ai_phase_marker = (isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local ai_base_marker = (isBottom and ai_base_marker_empire or ai_base_marker_rebel)
+    local ai_rules = (isBottom and ai_rules_empire or ai_rules_rebel)
+    local ai_tutorial_qr = (isBottom and ai_tutorial_qr_empire or ai_tutorial_qr_rebel)
+    local ai_leaders_label = (isBottom and ai_leaders_label_empire or ai_leaders_label_rebel)
+    local ai_resource_counter = (isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local ai_base_damage_counter = (isBottom and ai_base_damage_counter_empire or ai_base_damage_counter_rebel)
+    local decal_button = (isBottom and decal_button_empire or decal_button_rebel)
+    local attack_ldr_button = (isBottom and attack_ldr_button_empire or attack_ldr_button_rebel)
+    local loc_backdrop = (isBottom and loc_backdrop_empire or loc_backdrop_rebel)
+    local loc_leaderboard = (isBottom and loc_leaderboard_empire or loc_leaderboard_rebel)
+    local loc_progress_cube = (isBottom and loc_progress_cube_empire or loc_progress_cube_rebel)
+    local loc_resource_cube = (isBottom and loc_resource_cube_empire or loc_resource_cube_rebel)
+    local loc_phase_begin_turn = (isBottom and loc_phase_begin_turn_empire or loc_phase_begin_turn_rebel)
+    local loc_resource_counter = (isBottom and loc_resource_counter_empire or loc_resource_counter_rebel)
+    local loc_rules = (isBottom and loc_rules_empire or loc_rules_rebel)
+    local loc_tutorial_qr = (isBottom and loc_tutorial_qr_empire or loc_tutorial_qr_rebel)
+    local loc_leaders_label = (isBottom and loc_leaders_label_empire or loc_leaders_label_rebel)
+    local loc_decal_button = (isBottom and loc_decal_button_empire or loc_decal_button_rebel)
+    local loc_attack_ldr_button = (isBottom and loc_attack_ldr_button_empire or loc_attack_ldr_button_rebel)
+    local loc_base_damage_counter = (isBottom and loc_base_damage_counter_empire or loc_base_damage_counter_rebel)
+    local loc_leader = (isBottom and loc_leader_empire or loc_leader_rebel)
+    local loc_first_base_deck = (isBottom and loc_first_base_deck_empire or loc_first_base_deck_rebel)
+    local loc_first_base = (isBottom and loc_first_base_empire or loc_first_base_rebel)
+    local loc_reserves_deck = (isBottom and loc_reserves_deck_empire or loc_reserves_deck_rebel)
+    local rot_backdrop = (isBottom and rot_backdrop_empire or rot_backdrop_rebel)
+    local rot_leaderboard = (isBottom and rot_leaderboard_empire or rot_leaderboard_rebel)
+    local rot_cube = (isBottom and rot_cube_empire or rot_cube_rebel)
+    local rot_rules = (isBottom and rot_rules_empire or rot_rules_rebel)
+    local rot_tutorial_qr = (isBottom and rot_tutorial_qr_empire or rot_tutorial_qr_rebel)
+    local rot_leaders_label = (isBottom and rot_leaders_label_empire or rot_leaders_label_rebel)
+    local rot_decal_button = (isBottom and rot_decal_button_empire or rot_decal_button_rebel)
+    local rot_attack_ldr_button = (isBottom and rot_attack_ldr_button_empire or rot_attack_ldr_button_rebel)
+    local rot_base_damage_counter = (isBottom and rot_base_damage_counter_empire or rot_base_damage_counter_rebel)
+    local rot_resource_counter = (isBottom and rot_resource_counter_empire or rot_resource_counter_rebel)
+    local rot_base_damage_counter = (isBottom and rot_base_damage_counter_empire or rot_base_damage_counter_rebel)
+    local rot_unit_faceup = (isBottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+    local rot_unit_facedown = (isBottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+    local rot_ship_faceup = (isBottom and rot_ship_faceup_empire or rot_ship_faceup_rebel)
+    local rot_ship_facedown = (isBottom and rot_ship_facedown_empire or rot_ship_facedown_rebel)
+    local rot_base_faceup = (isBottom and rot_base_faceup_empire or rot_base_faceup_rebel)
+    local rot_base_facedown = (isBottom and rot_base_facedown_empire or rot_base_facedown_rebel)
 
     -- first check if placing or removing
     local removing = false
@@ -827,8 +827,8 @@ function toggle_solo_ui(button, _, _)
         ai_bag.putObject(getObjectFromGUID(ai_leaders_label))
         ai_bag.putObject(getObjectFromGUID(decal_button))
         ai_bag.putObject(getObjectFromGUID(attack_leader_button))
-        local loc_attack_ldr_button = (is_bottom and loc_attack_ldr_button_empire or loc_attack_ldr_button_rebel)
-        local loc_base_damage_counter = (is_bottom and loc_base_damage_counter_empire or loc_base_damage_counter_rebel)
+        local loc_attack_ldr_button = (isBottom and loc_attack_ldr_button_empire or loc_attack_ldr_button_rebel)
+        local loc_base_damage_counter = (isBottom and loc_base_damage_counter_empire or loc_base_damage_counter_rebel)
     else
 
         local backdrop = ai_bag.takeObject({guid=ai_backdrop})
@@ -901,43 +901,43 @@ end -- end toggle_solo_ui()
 -- this function handles the Begin Turn step of the AI turn
 function ai_begin_turn(faction)
 
-    -- local is_bottom = (button == button_test_empire)
-    -- local faction = (is_bottom and "Empire" or "Rebel")
-    is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local ai_bag = (is_bottom and ai_bag_empire or ai_bag_rebel)
-    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local loc_phase_tracker = (is_bottom and {5.88, 6.16, -18.55} or {-5.88, 6.26, 18.46})
-    local base_zone = getObjectFromGUID(is_bottom and "79222b" or "7a0285")
+    -- local isBottom = (button == button_test_empire)
+    -- local faction = (isBottom and "Empire" or "Rebel")
+    isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local ai_bag = (isBottom and ai_bag_empire or ai_bag_rebel)
+    local phase_tracker = getObjectFromGUID(isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (isBottom and {5.88, 6.16, -18.55} or {-5.88, 6.26, 18.46})
+    local base_zone = getObjectFromGUID(isBottom and "79222b" or "7a0285")
     local base_deck = nil
-    local base_deck_zone = getObjectFromGUID(is_bottom and "59b7ad" or "23b5a3")
+    local base_deck_zone = getObjectFromGUID(isBottom and "59b7ad" or "23b5a3")
     local current_base_found = false
     local current_base = nil
     local destroyed_base = nil
-    local loc_victory = (is_bottom and {48.00, 3.5, 10.00} or {-48.00, 3.5, -10.00})
-    local rot_victory = (is_bottom and {0.00, 0.00, 0.00} or {0.00, 180.00, 0.00})
-    local base_tag = (is_bottom and "empire_base" or "rebel_base")
-    local ai_owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
+    local loc_victory = (isBottom and {48.00, 3.5, 10.00} or {-48.00, 3.5, -10.00})
+    local rot_victory = (isBottom and {0.00, 0.00, 0.00} or {0.00, 180.00, 0.00})
+    local base_tag = (isBottom and "empire_base" or "rebel_base")
+    local ai_owner_tag = (isBottom and "ai_bottom_owner" or "ai_top_owner")
     local base_count = nil
-    local loc_first_base = (is_bottom and loc_first_base_empire or loc_first_base_rebel)
-    local loc_second_base = (is_bottom and loc_second_base_empire or loc_second_base_rebel)
-    local loc_third_base = (is_bottom and loc_third_base_empire or loc_third_base_rebel)
+    local loc_first_base = (isBottom and loc_first_base_empire or loc_first_base_rebel)
+    local loc_second_base = (isBottom and loc_second_base_empire or loc_second_base_rebel)
+    local loc_third_base = (isBottom and loc_third_base_empire or loc_third_base_rebel)
     local next_loc = nil
-    local rot_base = (is_bottom and {40.00, 0.00, 0.00} or {40.00, 180.00, 0.00})
+    local rot_base = (isBottom and {40.00, 0.00, 0.00} or {40.00, 180.00, 0.00})
     local next_base = nil
     local next_base_value = nil
     local replace_base = false
-    local loc_bottom_left_ability = (is_bottom and loc_bottom_left_ability_empire or loc_bottom_left_ability_rebel)
-    local loc_bottom_middle_ability = (is_bottom and loc_bottom_middle_ability_empire or loc_bottom_middle_ability_rebel)
-    local loc_bottom_right_ability = (is_bottom and loc_bottom_right_ability_empire or loc_bottom_right_ability_rebel)
-    local loc_top_left_ability = (is_bottom and loc_top_left_ability_empire or loc_top_left_ability_rebel)
-    local loc_top_middle_ability = (is_bottom and loc_top_middle_ability_empire or loc_top_middle_ability_rebel)
-    local loc_top_right_ability = (is_bottom and loc_top_right_ability_empire or loc_top_right_ability_rebel)
-    local ability_marker_rotation = (is_bottom and rot_cube_empire or rot_cube_rebel)
+    local loc_bottom_left_ability = (isBottom and loc_bottom_left_ability_empire or loc_bottom_left_ability_rebel)
+    local loc_bottom_middle_ability = (isBottom and loc_bottom_middle_ability_empire or loc_bottom_middle_ability_rebel)
+    local loc_bottom_right_ability = (isBottom and loc_bottom_right_ability_empire or loc_bottom_right_ability_rebel)
+    local loc_top_left_ability = (isBottom and loc_top_left_ability_empire or loc_top_left_ability_rebel)
+    local loc_top_middle_ability = (isBottom and loc_top_middle_ability_empire or loc_top_middle_ability_rebel)
+    local loc_top_right_ability = (isBottom and loc_top_right_ability_empire or loc_top_right_ability_rebel)
+    local ability_marker_rotation = (isBottom and rot_cube_empire or rot_cube_rebel)
     local loc_ability_marker = nil
     local ability_marker = nil
-    local ability_marker_guid = (is_bottom and ai_base_marker_empire or ai_base_marker_rebel)
-    local counter = getObjectFromGUID(is_bottom and ai_base_damage_counter_empire or ai_base_damage_counter_rebel)
+    local ability_marker_guid = (isBottom and ai_base_marker_empire or ai_base_marker_rebel)
+    local counter = getObjectFromGUID(isBottom and ai_base_damage_counter_empire or ai_base_damage_counter_rebel)
     local force_owner = who_has_force()
     local force_tracker = getObjectFromGUID("74b511")
     local force_position = force_tracker.getPosition()
@@ -948,27 +948,27 @@ function ai_begin_turn(faction)
     local zone_5 = getObjectFromGUID("d83464")
     local zone_6 = getObjectFromGUID("c5ef86")
     local zones = {zone_1,zone_2,zone_3,zone_4,zone_5,zone_6}
-    local opposing_faction_tag = (is_bottom and "rebel" or "empire")
-    local galaxy_deck = nil
+    local opposing_faction_tag = (isBottom and "rebel" or "empire")
+    local deckGalaxy = nil
     local zone_galaxy_deck = zoneGalaxyDeck
     local trooper_1 = ai_trooper_empire_1
     local trooper_2 = ai_trooper_empire_2
     local troopers = {trooper_1, trooper_2}
     -- checks opposite muster zones, used for automatic AI muster zone "discard" flip face down
-    local zone_muster_1 = (is_bottom and ai_zone_rebel_muster_1 or ai_zone_empire_muster_1)
-    local zone_muster_2 = (is_bottom and ai_zone_rebel_muster_2 or ai_zone_empire_muster_2)
-    local zone_muster_3 = (is_bottom and ai_zone_rebel_muster_3 or ai_zone_empire_muster_3)
-    local zone_muster_4 = (is_bottom and ai_zone_rebel_muster_4 or ai_zone_empire_muster_4)
-    local zone_muster_5 = (is_bottom and ai_zone_rebel_muster_5 or ai_zone_empire_muster_5)
-    local zone_muster_6 = (is_bottom and ai_zone_rebel_muster_6 or ai_zone_empire_muster_6)
-    local zone_muster_7 = (is_bottom and ai_zone_rebel_muster_7 or ai_zone_empire_muster_7)
-    local zone_muster_8 = (is_bottom and ai_zone_rebel_muster_8 or ai_zone_empire_muster_8)
-    local zone_muster_9 = (is_bottom and ai_zone_rebel_muster_9 or ai_zone_empire_muster_9)
-    local zone_muster_10 = (is_bottom and ai_zone_rebel_muster_10 or ai_zone_empire_muster_10)
-    local zone_muster_11 = (is_bottom and ai_zone_rebel_muster_11 or ai_zone_empire_muster_11)
-    local zone_muster_12 = (is_bottom and ai_zone_rebel_muster_12 or ai_zone_empire_muster_12)
-    local zone_muster_13 = (is_bottom and ai_zone_rebel_muster_13 or ai_zone_empire_muster_13)
-    local zone_muster_14 = (is_bottom and ai_zone_rebel_muster_14 or ai_zone_empire_muster_14)
+    local zone_muster_1 = (isBottom and ai_zone_rebel_muster_1 or ai_zone_empire_muster_1)
+    local zone_muster_2 = (isBottom and ai_zone_rebel_muster_2 or ai_zone_empire_muster_2)
+    local zone_muster_3 = (isBottom and ai_zone_rebel_muster_3 or ai_zone_empire_muster_3)
+    local zone_muster_4 = (isBottom and ai_zone_rebel_muster_4 or ai_zone_empire_muster_4)
+    local zone_muster_5 = (isBottom and ai_zone_rebel_muster_5 or ai_zone_empire_muster_5)
+    local zone_muster_6 = (isBottom and ai_zone_rebel_muster_6 or ai_zone_empire_muster_6)
+    local zone_muster_7 = (isBottom and ai_zone_rebel_muster_7 or ai_zone_empire_muster_7)
+    local zone_muster_8 = (isBottom and ai_zone_rebel_muster_8 or ai_zone_empire_muster_8)
+    local zone_muster_9 = (isBottom and ai_zone_rebel_muster_9 or ai_zone_empire_muster_9)
+    local zone_muster_10 = (isBottom and ai_zone_rebel_muster_10 or ai_zone_empire_muster_10)
+    local zone_muster_11 = (isBottom and ai_zone_rebel_muster_11 or ai_zone_empire_muster_11)
+    local zone_muster_12 = (isBottom and ai_zone_rebel_muster_12 or ai_zone_empire_muster_12)
+    local zone_muster_13 = (isBottom and ai_zone_rebel_muster_13 or ai_zone_empire_muster_13)
+    local zone_muster_14 = (isBottom and ai_zone_rebel_muster_14 or ai_zone_empire_muster_14)
     local muster_zones = {
         zone_muster_1,
         zone_muster_2,
@@ -985,30 +985,30 @@ function ai_begin_turn(faction)
         zone_muster_13,
         zone_muster_14,
     }
-    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local resource_counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
 
-    local text_bottom_left = (is_bottom and "AI Empire moves the highest cost Empire or neutral card from the galaxy row to the Muster area, face up." or
+    local text_bottom_left = (isBottom and "AI Empire moves the highest cost Empire or neutral card from the galaxy row to the Muster area, face up." or
     "AI Rebellion moves the highest cost Rebellion or neutral card from the galaxy row to the Muster area, face up.")
 
-    local text_bottom_middle_force = (is_bottom and "Force is all the way to AI Empire, discard all Rebellion cards from galaxy row." or
+    local text_bottom_middle_force = (isBottom and "Force is all the way to AI Empire, discard all Rebellion cards from galaxy row." or
     "Force is all the way to AI Rebellion, ***** Player must choose a card to discard from their hand! *****")
 
-    local text_bottom_middle_no_force = (is_bottom and "Force is not all the way to AI Empire, they gain up to 4 Force." or
+    local text_bottom_middle_no_force = (isBottom and "Force is not all the way to AI Empire, they gain up to 4 Force." or
     "Force is not all the way to AI Rebellion, they gain up to 4 Force.")
 
-    local text_bottom_right_force = (is_bottom and "Enemy Stormtroopers gain +1 Damage." or
+    local text_bottom_right_force = (isBottom and "Enemy Stormtroopers gain +1 Damage." or
     "Force is with AI Rebellion, Player discards a card from their hand at random.")
 
-    local text_bottom_right_no_force = (is_bottom and "Enemy Stormtroopers gain +1 Damage." or
+    local text_bottom_right_no_force = (isBottom and "Enemy Stormtroopers gain +1 Damage." or
     "Force is not with AI Rebellion, ***** Player must choose a card to discard from their hand! *****")
 
-    local text_top_left = (is_bottom and "AI Empire moves the highest cost Empire or neutral card from the galaxy row to the Muster area, face up." or
+    local text_top_left = (isBottom and "AI Empire moves the highest cost Empire or neutral card from the galaxy row to the Muster area, face up." or
     "AI Rebellion moves the highest cost Rebellion or neutral card from the galaxy row to the Muster area, face up.")
 
-    local text_top_middle = (is_bottom and "AI Empire discards all Rebellion cards from the galaxy row, and deals 1 damage to the Rebellion base for each card discarded in this way." or
+    local text_top_middle = (isBottom and "AI Empire discards all Rebellion cards from the galaxy row, and deals 1 damage to the Rebellion base for each card discarded in this way." or
     "Prevent the first 2 damage dealt to AI Rebellion base each turn.")
 
-    local text_top_right = (is_bottom and "At the beginning of each Purchase step, AI Empire spends 4 Resources to destroy the highest hit point opposing capital ship in play (if any)" or
+    local text_top_right = (isBottom and "At the beginning of each Purchase step, AI Empire spends 4 Resources to destroy the highest hit point opposing capital ship in play (if any)" or
     "Player discards a card at random. Deal 2 damage to the player base.")
 
     -- show phase tracker to "1. Begin Turn"
@@ -1084,14 +1084,14 @@ function ai_begin_turn(faction)
             elseif next_base_value == 14 then
                 loc_base_ability = loc_bottom_middle_ability
                 local force_tracker_position = force_tracker.getPosition()
-                if (force_tracker_position.z < -8 and force_tracker_position.z > -9 and is_bottom) or
-                (force_tracker_position.z > 8 and force_tracker_position.z < 9 and not is_bottom) then
+                if (force_tracker_position.z < -8 and force_tracker_position.z > -9 and isBottom) or
+                (force_tracker_position.z > 8 and force_tracker_position.z < 9 and not isBottom) then
                     broadcastToAll(text_bottom_middle_force, ai_color)
-                    if is_bottom then
+                    if isBottom then
                         -- discard all rebellion cards from galaxy row
                         for k, v in pairs(zone_galaxy_deck.getObjects()) do
                             if v.tag == "Deck" then
-                                galaxy_deck = v
+                                deckGalaxy = v
                             end
                         end
                         for i = 1, 6 do
@@ -1114,7 +1114,7 @@ function ai_begin_turn(faction)
                                     Wait.time(function()
                                     v.setRotation({0.00, 90.00, 180.00})
                                     v.setPositionSmooth({-28.00, 2.5, -2.50}, false, false)
-                                    replace_card = galaxy_deck.takeObject()
+                                    replace_card = deckGalaxy.takeObject()
                                     rotate_dealt_card(replace_card, loc_replace)
                                     wait_timer = wait_timer + .2
                                     end, wait_timer)
@@ -1124,7 +1124,7 @@ function ai_begin_turn(faction)
                     end
                 else
                     broadcastToAll(text_bottom_middle_no_force, ai_color)
-                    if is_bottom then
+                    if isBottom then
                         for i = 1, 4 do move_force_track(empire_force_button, "Blue", _) end
                     else
                         for i = 1, 4 do move_force_track(buttonForceTop, "Red", _) end
@@ -1132,8 +1132,8 @@ function ai_begin_turn(faction)
                 end
             elseif next_base_value == 16 then
                 loc_base_ability = loc_bottom_right_ability
-                if (who_has_force() == "Empire" and is_bottom) or
-                (who_has_force() == "Rebel" and not is_bottom) then
+                if (who_has_force() == "Empire" and isBottom) or
+                (who_has_force() == "Rebel" and not isBottom) then
                     broadcastToAll(text_bottom_right_force, ai_color)
                     -- if_empire enemy stormtroopers gain +1 damage
                     -- PLACEHOLDER MAYBE DO FANCY HIGHLIGHT / DESCRIPTION STUFF HERE
@@ -1142,7 +1142,7 @@ function ai_begin_turn(faction)
 
                     -- else player discards a card from hand at random
                     -- or if ai opponent, flips random muster card face down
-                    if not is_bottom then
+                    if not isBottom then
                         if getObjectFromGUID(ai_backdrop_empire) ~= nil then
                               local faceup_muster_cards = {}
                               local rotation = nil
@@ -1162,7 +1162,7 @@ function ai_begin_turn(faction)
                               faceup_muster_cards[random_index].setRotationSmooth(rotation, false, false)
                               broadcastToAll("AI Empire has randomly flipped " .. faceup_muster_cards[random_index].getName() .. "in their muster area to simulate a random card discard." , "Red")
                         else
-                              discard_random_card(buttonDiscardRandomBottom, "Blue", _)
+                              discardRandomCard(buttonDiscardRandomBottom, "Blue", _)
                         end
                     end
                 else
@@ -1201,11 +1201,11 @@ function ai_begin_turn(faction)
                 loc_base_ability = loc_top_middle_ability
                 local total_damage = 0
 
-                if is_bottom then
+                if isBottom then
                     -- discard all rebellion cards from galaxy row
                     for k, v in pairs(zone_galaxy_deck.getObjects()) do
                         if v.tag == "Deck" then
-                            galaxy_deck = v
+                            deckGalaxy = v
                         end
                     end
                     local wait_timer = 0
@@ -1229,7 +1229,7 @@ function ai_begin_turn(faction)
                                 total_damage = total_damage + 1
                                 v.setRotation({0.00, 90.00, 0.00})
                                 v.setPositionSmooth({-28.00, 2.5, -2.50}, false, false)
-                                replace_card = galaxy_deck.takeObject()
+                                replace_card = deckGalaxy.takeObject()
                                 rotate_dealt_card(replace_card, loc_replace)
                             end
                         end
@@ -1246,7 +1246,7 @@ function ai_begin_turn(faction)
                 -- empire is just text here
 
                 -- rebel: opponent discards card at random, deals 2 dmg to base
-                if not is_bottom then
+                if not isBottom then
                     if getObjectFromGUID(ai_backdrop_empire) ~= nil then
                         local faceup_muster_cards = {}
                         local rotation = nil
@@ -1266,7 +1266,7 @@ function ai_begin_turn(faction)
                         faceup_muster_cards[random_index].setRotationSmooth(rotation, false, false)
                         broadcastToAll("AI Empire has randomly flipped " .. faceup_muster_cards[random_index].getName() .. "in their muster area to simulate a random card discard." , "Red")
                     else
-                        discard_random_card(buttonDiscardRandomBottom, "Blue", _)
+                        discardRandomCard(buttonDiscardRandomBottom, "Blue", _)
                     end
                     apply_base_damage("Empire", 2)
                 end
@@ -1286,8 +1286,8 @@ function ai_begin_turn(faction)
     end
     -- if force is all the way to AI, gain 1 resource
     local force_tracker_position = force_tracker.getPosition()
-    if (force_tracker_position.z < -8 and force_tracker_position.z > -9 and is_bottom) or
-    (force_tracker_position.z > 8 and force_tracker_position.z < 9 and is_bottom == false) then
+    if (force_tracker_position.z < -8 and force_tracker_position.z > -9 and isBottom) or
+    (force_tracker_position.z > 8 and force_tracker_position.z < 9 and isBottom == false) then
         local new_resource_total = resource_counter.getVar('val') + 1
         Wait.time(function()
         resource_counter.call('set_val', new_resource_total)
@@ -1306,19 +1306,19 @@ end -- end ai_begin_turn()
 -- this function handles the Gain Resources step of the AI turn
 function ai_gain_resources(faction)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local loc_phase_tracker = (is_bottom and {3.46, 6.16, -18.55} or {-3.46, 6.26, 18.46})
-    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
-    local resource_cube = getObjectFromGUID(is_bottom and ai_resource_cube_empire or ai_resource_cube_rebel)
-    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
-    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
-    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
-    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
-    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
-    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
-    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (isBottom and {3.46, 6.16, -18.55} or {-3.46, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local resource_cube = getObjectFromGUID(isBottom and ai_resource_cube_empire or ai_resource_cube_rebel)
+    local zone_play_unit_1 = (isBottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (isBottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (isBottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (isBottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (isBottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (isBottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (isBottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
     play_zones = {
         zone_play_unit_1,
         zone_play_unit_2,
@@ -1328,18 +1328,18 @@ function ai_gain_resources(faction)
         zone_play_unit_6,
         zone_play_unit_7,
     }
-    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
-    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
-    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
-    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
-    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
-    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
-    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
-    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
-    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
-    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
-    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
-    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    local zone_play_ship_1 = (isBottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (isBottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (isBottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (isBottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (isBottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (isBottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (isBottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (isBottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (isBottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (isBottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (isBottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (isBottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
     play_ship_zones = {
         zone_play_ship_1,
         zone_play_ship_2,
@@ -1354,7 +1354,7 @@ function ai_gain_resources(faction)
         zone_play_ship_11,
         zone_play_ship_12,
     }
-    shuttle_zone = (is_bottom and ai_zone_empire_shuttles or ai_zone_rebel_shuttles)
+    shuttle_zone = (isBottom and ai_zone_empire_shuttles or ai_zone_rebel_shuttles)
 
     -- announce Gain Resources step of AI turn
     broadcastToAll("AI " .. faction .. " is running Step 2 of it's turn: Gain Resources.", ai_color)
@@ -1391,18 +1391,18 @@ end -- end ai_gain_resources()
 -- this function handles the Gain Force step of the AI turn
 function ai_gain_force(faction)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local loc_phase_tracker = (is_bottom and {1.00, 6.16, -18.55} or {-1.00, 6.26, 18.46})
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (isBottom and {1.00, 6.16, -18.55} or {-1.00, 6.26, 18.46})
 
-    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
-    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
-    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
-    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
-    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
-    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
-    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    local zone_play_unit_1 = (isBottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (isBottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (isBottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (isBottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (isBottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (isBottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (isBottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
     play_zones = {
         zone_play_unit_1,
         zone_play_unit_2,
@@ -1412,18 +1412,18 @@ function ai_gain_force(faction)
         zone_play_unit_6,
         zone_play_unit_7,
     }
-    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
-    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
-    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
-    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
-    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
-    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
-    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
-    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
-    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
-    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
-    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
-    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    local zone_play_ship_1 = (isBottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (isBottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (isBottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (isBottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (isBottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (isBottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (isBottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (isBottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (isBottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (isBottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (isBottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (isBottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
     play_ship_zones = {
         zone_play_ship_1,
         zone_play_ship_2,
@@ -1438,8 +1438,8 @@ function ai_gain_force(faction)
         zone_play_ship_11,
         zone_play_ship_12,
     }
-    shuttle_zone = (is_bottom and ai_zone_empire_shuttles or ai_zone_rebel_shuttles)
-    force_button = (is_bottom and empire_force_button or buttonForceTop)
+    shuttle_zone = (isBottom and ai_zone_empire_shuttles or ai_zone_rebel_shuttles)
+    force_button = (isBottom and empire_force_button or buttonForceTop)
 
     -- move & resize phase tracker to "3. Gain Force"
     -- announce Gain Resources step of AI turn
@@ -1486,10 +1486,10 @@ end -- end ai_gain_force()
 -- this function handles the Purchase step of the AI turn
 function ai_purchase(faction)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local loc_phase_tracker = (is_bottom and {-1.10, 6.16, -18.55} or {1.10, 6.26, 18.46})
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (isBottom and {-1.10, 6.16, -18.55} or {1.10, 6.26, 18.46})
     local next_muster_slot = nil
     local zone_play_ship_1 = ai_zone_rebel_play_ship_1
     local zone_play_ship_2 = ai_zone_rebel_play_ship_2
@@ -1522,7 +1522,7 @@ function ai_purchase(faction)
     if ability_marker ~= nil then
         loc_ability_marker = ability_marker.getPosition()
     end
-    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local resource_counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
     local current_resources = resource_counter.getVar('val')
     local highest_ship_value = 0
     local current_highest_ship = nil
@@ -1538,7 +1538,7 @@ function ai_purchase(faction)
     phase_tracker.setPositionSmooth(loc_phase_tracker, false, false)
 
     -- check if AI empire has "death star" base effect, if so, do the thing
-    if is_bottom and ability_marker ~= nil and current_resources > 3 then -- working
+    if isBottom and ability_marker ~= nil and current_resources > 3 then -- working
         if loc_ability_marker.x > 0 and loc_ability_marker.x < 1 and
         loc_ability_marker.z < -20.50 and loc_ability_marker.z > -21.50 then
             -- check for rebel ships in play, first check if AI rebel or Player rebel
@@ -1627,22 +1627,22 @@ end -- end ai_purchase()
 -- this function handles the Attack step of the AI turn
 function ai_attack(faction)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local attack_string = (is_bottom and "Bounty Hunt" or "Sabotage")
-    local opponent_is_ai = getObjectFromGUID(is_bottom and ai_backdrop_rebel or ai_backdrop_empire)
-    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local loc_phase_tracker = (is_bottom and {-2.93, 6.16, -18.55} or {2.93, 6.26, 18.46})
-    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local attack_string = (isBottom and "Bounty Hunt" or "Sabotage")
+    local opponent_is_ai = getObjectFromGUID(isBottom and ai_backdrop_rebel or ai_backdrop_empire)
+    local phase_tracker = getObjectFromGUID(isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (isBottom and {-2.93, 6.16, -18.55} or {2.93, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
     local base_damage_counter = nil
     if opponent_is_ai then
-        base_damage_counter = getObjectFromGUID(is_bottom and ai_base_damage_counter_rebel or ai_base_damage_counter_empire)
+        base_damage_counter = getObjectFromGUID(isBottom and ai_base_damage_counter_rebel or ai_base_damage_counter_empire)
     else
-        base_damage_counter = getObjectFromGUID(is_bottom and "fa055e" or "7e15f6")
+        base_damage_counter = getObjectFromGUID(isBottom and "fa055e" or "7e15f6")
     end
 
-    local rot_facedown = (is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
-    local rot_ship_facedown = (is_bottom and rot_ship_facedown_empire or rot_ship_facedown_rebel)
+    local rot_facedown = (isBottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+    local rot_ship_facedown = (isBottom and rot_ship_facedown_empire or rot_ship_facedown_rebel)
     local loc_discard = {-28.00, 2.5, -2.50}
     local rot_discard = {0, 90, 0}
 
@@ -1661,26 +1661,26 @@ function ai_attack(faction)
         end
     end
 
-    if who_has_force() == "Empire" and is_bottom then
+    if who_has_force() == "Empire" and isBottom then
         buff_vader = true
     end
 
     local leader_found = false
-    local zone_leader = getObjectFromGUID(is_bottom and "383ed0" or "248b87")
-    local leader_guid = (is_bottom and "9c5c40" or "5f007b")
+    local zone_leader = getObjectFromGUID(isBottom and "383ed0" or "248b87")
+    local leader_guid = (isBottom and "9c5c40" or "5f007b")
     for k, v in pairs(zone_leader.getObjects()) do
         if v.getGUID() == leader_guid then
             leader_found = true
         end
     end
 
-    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
-    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
-    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
-    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
-    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
-    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
-    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    local zone_play_unit_1 = (isBottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (isBottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (isBottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (isBottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (isBottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (isBottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (isBottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
     play_zones = {
         zone_play_unit_1,
         zone_play_unit_2,
@@ -1690,18 +1690,18 @@ function ai_attack(faction)
         zone_play_unit_6,
         zone_play_unit_7,
     }
-    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
-    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
-    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
-    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
-    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
-    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
-    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
-    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
-    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
-    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
-    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
-    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    local zone_play_ship_1 = (isBottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (isBottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (isBottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (isBottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (isBottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (isBottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (isBottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (isBottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (isBottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (isBottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (isBottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (isBottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
     play_ship_zones = {
         zone_play_ship_1,
         zone_play_ship_2,
@@ -1809,7 +1809,7 @@ function ai_attack(faction)
                             end
                             if force_value > 0 then
                                 broadcastToAll("AI " .. faction .. " has earned " .. force_value .. " Force from it's " .. attack_string .. " of " .. attack_card.getName() .. ".", ai_color)
-                                if is_bottom then
+                                if isBottom then
                                     for i = 1, force_value do move_force_track(button_empire_force, "Blue", _) end
                                 else
                                     for i = 1, force_value do move_force_track(button_rebel_force, "Red", _) end
@@ -1828,7 +1828,7 @@ function ai_attack(faction)
         if not row_attack_made then
             broadcastToAll("No " .. attack_string .. " was made.", ai_color)
         end
-    elseif not leader_found and not is_bottom then -- check for luke ability
+    elseif not leader_found and not isBottom then -- check for luke ability
         for i = 1, #play_zones do
             for k, v in pairs(play_zones[i].getObjects()) do
                 if v.getGUID() == "5f007b" then
@@ -1941,30 +1941,30 @@ end -- end ai_attack()
 -- this function handles the End of Turn step of the AI Turn
 function ai_end_of_turn(faction)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
-    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local loc_phase_tracker = (is_bottom and {-4.91, 6.16, -18.55} or {4.90, 6.26, 18.46})
-    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local owner_tag = (isBottom and "ai_bottom_owner" or "ai_top_owner")
+    local phase_tracker = getObjectFromGUID(isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (isBottom and {-4.91, 6.16, -18.55} or {4.90, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
     local current_resources = resource_counter.getVar('val')
     local progress_to_add = 0
     local current_progress = check_progress_track(faction)
     local final_progress = nil
-    local progress_cube = getObjectFromGUID(is_bottom and ai_progress_cube_empire or ai_progress_cube_rebel)
-    local loc_ptrack_1 = (is_bottom and {6.49, 12.42, -25.85} or {-6.49, 12.44, 25.85})
-    local loc_ptrack_2 = (is_bottom and {5.47, 12.42, -25.85} or {-5.48, 12.44, 25.85})
-    local loc_ptrack_3 = (is_bottom and {4.47, 12.42, -25.85} or {-4.48, 12.44, 25.85})
-    local loc_ptrack_4 = (is_bottom and {3.47, 12.42, -25.85} or {-3.47, 12.44, 25.85})
-    local loc_ptrack_5 = (is_bottom and {2.46, 12.42, -25.85} or {-2.44, 12.44, 25.85})
-    local loc_ptrack_6 = (is_bottom and {1.46, 12.42, -25.85} or {-1.45, 12.44, 25.85})
-    local loc_ptrack_7 = (is_bottom and {0.45, 12.42, -25.85} or {-0.44, 12.44, 25.85})
-    local loc_ptrack_8 = (is_bottom and {-0.55, 12.42, -25.85} or {0.58, 12.44, 25.85})
-    local loc_ptrack_9 = (is_bottom and {-1.57, 12.42, -25.85} or {1.58, 12.44, 25.85})
-    local loc_ptrack_10 = (is_bottom and {-2.57, 12.42, -25.85} or {2.58, 12.44, 25.85})
-    local loc_ptrack_11 = (is_bottom and {-3.58, 12.42, -25.85} or {3.58, 12.44, 25.85})
-    local loc_ptrack_12 = (is_bottom and {-4.58, 12.42, -25.85} or {4.59, 12.44, 25.85})
-    local loc_ptrack_13 = (is_bottom and {-5.58, 12.42, -25.85} or {5.60, 12.44, 25.85})
+    local progress_cube = getObjectFromGUID(isBottom and ai_progress_cube_empire or ai_progress_cube_rebel)
+    local loc_ptrack_1 = (isBottom and {6.49, 12.42, -25.85} or {-6.49, 12.44, 25.85})
+    local loc_ptrack_2 = (isBottom and {5.47, 12.42, -25.85} or {-5.48, 12.44, 25.85})
+    local loc_ptrack_3 = (isBottom and {4.47, 12.42, -25.85} or {-4.48, 12.44, 25.85})
+    local loc_ptrack_4 = (isBottom and {3.47, 12.42, -25.85} or {-3.47, 12.44, 25.85})
+    local loc_ptrack_5 = (isBottom and {2.46, 12.42, -25.85} or {-2.44, 12.44, 25.85})
+    local loc_ptrack_6 = (isBottom and {1.46, 12.42, -25.85} or {-1.45, 12.44, 25.85})
+    local loc_ptrack_7 = (isBottom and {0.45, 12.42, -25.85} or {-0.44, 12.44, 25.85})
+    local loc_ptrack_8 = (isBottom and {-0.55, 12.42, -25.85} or {0.58, 12.44, 25.85})
+    local loc_ptrack_9 = (isBottom and {-1.57, 12.42, -25.85} or {1.58, 12.44, 25.85})
+    local loc_ptrack_10 = (isBottom and {-2.57, 12.42, -25.85} or {2.58, 12.44, 25.85})
+    local loc_ptrack_11 = (isBottom and {-3.58, 12.42, -25.85} or {3.58, 12.44, 25.85})
+    local loc_ptrack_12 = (isBottom and {-4.58, 12.42, -25.85} or {4.59, 12.44, 25.85})
+    local loc_ptrack_13 = (isBottom and {-5.58, 12.42, -25.85} or {5.60, 12.44, 25.85})
     local ptrack_locs = {loc_ptrack_1,loc_ptrack_2,loc_ptrack_3,loc_ptrack_4,loc_ptrack_5,loc_ptrack_6,
     loc_ptrack_7,loc_ptrack_8,loc_ptrack_9,loc_ptrack_10,loc_ptrack_11,loc_ptrack_12,loc_ptrack_13,}
 
@@ -2012,14 +2012,14 @@ function ai_end_of_turn(faction)
 
     if current_progress < 3 and final_progress > 2 then -- 3 - Force REBEL/EMPIRE
         broadcastToAll("AI " .. faction .. " gains +1 Force via Progress Track slot 3.", ai_color)
-        if is_bottom then
+        if isBottom then
             move_force_track(empire_force_button, "Blue", _)
         else
             move_force_track(buttonForceTop, "Red", _)
         end
     end
     if current_progress < 5 and final_progress > 4 then -- 5 - shuttle REBEL / force EMPIRE
-        if is_bottom then
+        if isBottom then
             broadcastToAll("AI Empire gains +1 Force via Progress Track slot 4.", ai_color)
             move_force_track(empire_force_button, "Blue", _)
         else
@@ -2028,7 +2028,7 @@ function ai_end_of_turn(faction)
         end
     end
     if current_progress < 6 and final_progress > 5 then -- 6 - Force REBEL / inquisitor EMPIRE
-        if is_bottom then
+        if isBottom then
             broadcastToAll("AI Empire adds their Inquisitor to Muster area via Progress Track slot 6.", ai_color)
             ai_add_special(faction)
         else
@@ -2037,7 +2037,7 @@ function ai_end_of_turn(faction)
         end
     end
     if current_progress < 7 and final_progress > 6 then -- 7 - guardian REBEL / shuttle EMPIRE
-        if is_bottom then
+        if isBottom then
             broadcastToAll("AI Empire gains a shuttle via Progress Track slot 7.", ai_color)
             ai_add_shuttle(faction)
         else
@@ -2047,14 +2047,14 @@ function ai_end_of_turn(faction)
     end
     if current_progress < 8 and final_progress > 7 then -- 8 - Force REBEL/EMPIRE
         broadcastToAll("AI " .. faction .. " gains +1 Force via Progress Track slot 8.", ai_color)
-        if is_bottom then
+        if isBottom then
             move_force_track(empire_force_button, "Blue", _)
         else
             move_force_track(buttonForceTop, "Red", _)
         end
     end
     if current_progress < 12 and final_progress > 11 then -- 12 - Force REBEL
-        if not is_bottom then
+        if not isBottom then
             broadcastToAll("AI Rebel gains +1 Force via Progress Track slot 12.", ai_color)
             move_force_track(buttonForceTop, "Red", _)
         end
@@ -2071,26 +2071,26 @@ function ai_end_of_turn(faction)
     resource_counter.call('set_val', 0)
     broadcastToAll("The AI " .. faction .. " turn has ended.", ai_color)
 
-    local end_turn_button = (is_bottom and button_end_turn_empire or button_end_turn_rebel)
-    end_turn(end_turn_button, ai_color)
+    local end_turn_button = (isBottom and button_end_turn_empire or button_end_turn_rebel)
+    endTurn(end_turn_button, ai_color)
     end, ai_speed*3)
 end -- end ai_end_of_turn()
 
 
 -- this function adds a shuttle to the ai shuttles row
 function ai_add_shuttle(faction)
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local shuttles = (is_bottom and empire_shuttles or rebel_shuttles)
-    local owner_tag = (is_bottom and 'bottom_owner' or 'top_owner')
-    local zone_shuttles = getObjectFromGUID(is_bottom and "91cebb" or "9fa9c1")
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local shuttles = (isBottom and empire_shuttles or rebel_shuttles)
+    local owner_tag = (isBottom and 'bottom_owner' or 'top_owner')
+    local zone_shuttles = getObjectFromGUID(isBottom and "91cebb" or "9fa9c1")
     local shuttle_count = 0
     local next_shuttle_slot = nil
     local base_deck = nil
-    local base_deck_zone = getObjectFromGUID(is_bottom and "4d85ec" or "0df73c")
+    local base_deck_zone = getObjectFromGUID(isBottom and "4d85ec" or "0df73c")
     local next_shuttle = nil
-    local shuttle_rot = (is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
-    local shuttle_locs = (is_bottom and loc_shuttles_empire or loc_shuttles_rebel)
+    local shuttle_rot = (isBottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+    local shuttle_locs = (isBottom and loc_shuttles_empire or loc_shuttles_rebel)
 
     for k, v in pairs(zone_shuttles.getObjects()) do
         if v.tag == "Card" and v.hasTag(owner_tag) then
@@ -2115,11 +2115,11 @@ end -- end ai_add_shuttle()
 
 -- this function adds the ai temple guardian / inquisitor from Reserves to Muster
 function ai_add_special(faction)
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
     local reserves_deck = nil
-    local zone_reserves_deck = getObjectFromGUID(is_bottom and "4d85ec" or "0df73c")
-    local special_unit_guid = (is_bottom and "118a7e" or "95313f")
+    local zone_reserves_deck = getObjectFromGUID(isBottom and "4d85ec" or "0df73c")
+    local special_unit_guid = (isBottom and "118a7e" or "95313f")
     local special_unit = nil
     for k, v in pairs(zone_reserves_deck.getObjects()) do
         if v.tag == "Deck" then
@@ -2132,15 +2132,15 @@ end -- end ai_add_special()
 
 -- this function adds the ai Leader to Muster
 function ai_add_leader(faction)
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local zone_leader = getObjectFromGUID(is_bottom and "383ed0" or "248b87")
-    zone_reserves_deck = getObjectFromGUID(is_bottom and "0df73c" or "4d85ec")
-    local leader_guid = (is_bottom and "9c5c40" or "5f007b")
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local zone_leader = getObjectFromGUID(isBottom and "383ed0" or "248b87")
+    zone_reserves_deck = getObjectFromGUID(isBottom and "0df73c" or "4d85ec")
+    local leader_guid = (isBottom and "9c5c40" or "5f007b")
     local leader_found = false
     local leader = nil
-    local ai_decal_button = getObjectFromGUID(is_bottom and decal_button_empire or decal_button_rebel)
-    local ai_attack_button = getObjectFromGUID(is_bottom and attack_ldr_button_empire or attack_ldr_button_rebel)
+    local ai_decal_button = getObjectFromGUID(isBottom and decal_button_empire or decal_button_rebel)
+    local ai_attack_button = getObjectFromGUID(isBottom and attack_ldr_button_empire or attack_ldr_button_rebel)
     local leader_attacked = false
     local rot_leader = "faceup"
     -- first, check if leader is even in slot. if not, return nil out
@@ -2168,8 +2168,8 @@ end -- end ai_add_leader()
 -- this function handles the AI opponent galaxy row checks, returns card object
 function check_row(faction, type, check)
     ----- 2 tyoes: "purchase" or "base_ability" -----
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
     local zone_1 = getObjectFromGUID("c98289")
     local zone_2 = getObjectFromGUID("46fd89")
     local zone_3 = getObjectFromGUID("174e23")
@@ -2177,8 +2177,8 @@ function check_row(faction, type, check)
     local zone_5 = getObjectFromGUID("d83464")
     local zone_6 = getObjectFromGUID("c5ef86")
     local zones = {zone_1,zone_2,zone_3,zone_4,zone_5,zone_6}
-    local opposing_faction_tag = (is_bottom and "rebel" or "empire")
-    local counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local opposing_faction_tag = (isBottom and "rebel" or "empire")
+    local counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
     local current_resources = counter.getVar('val')
     local remaining_resources = 0
     local highest_cost = 0
@@ -2190,7 +2190,7 @@ function check_row(faction, type, check)
     local card_found = false
     local current_highest_card = nil
     local outer_rim_pilot = nil
-    local ai_owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
+    local ai_owner_tag = (isBottom and "ai_bottom_owner" or "ai_top_owner")
 
     -- purchase is for buying new cards, checks/uses resources, prioritizes ships then units then 2X OR pilots
     --if type == "purchase" then    -- important - ELSE return no more purchases available
@@ -2297,9 +2297,9 @@ end -- end check_row()
 
 -- this function handles the purchasing of a found card to purchase
 function ai_purchase_card(faction)
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local resource_counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
     local is_purchase = check_row(faction, "purchase", true)
     local resources = resource_counter.getVar('val')
     local new_resources = nil
@@ -2350,21 +2350,21 @@ end -- end ai_purchase_card()
 -- this function takes a card and moves it to the next available muster slot
 function to_muster(object, faction, rotation)
 
-    local is_bottom = (faction == "Empire")
-    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
-    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
-    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
-    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
-    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
-    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
-    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
-    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
-    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
-    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
-    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
-    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
-    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
-    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    local isBottom = (faction == "Empire")
+    local zone_muster_1 = (isBottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (isBottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (isBottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (isBottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (isBottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (isBottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (isBottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (isBottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (isBottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (isBottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (isBottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (isBottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (isBottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (isBottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
     local muster_zones = {
         zone_muster_1,
         zone_muster_2,
@@ -2381,20 +2381,20 @@ function to_muster(object, faction, rotation)
         zone_muster_13,
         zone_muster_14,
     }
-    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
-    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
-    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
-    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
-    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
-    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
-    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
-    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
-    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
-    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
-    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
-    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
-    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
-    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    local loc_muster_1 = (isBottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (isBottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (isBottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (isBottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (isBottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (isBottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (isBottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (isBottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (isBottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (isBottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (isBottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (isBottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (isBottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (isBottom and loc_muster_empire_14 or loc_muster_rebel_14)
     local muster_locs = {
         loc_muster_1,
         loc_muster_2,
@@ -2412,8 +2412,8 @@ function to_muster(object, faction, rotation)
         loc_muster_14,
     }
     local slot = nil
-    local rot_faceup = (is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
-    local rot_facedown = (is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+    local rot_faceup = (isBottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+    local rot_facedown = (isBottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
     local object_rotation = nil
     if rotation == "faceup" then object_rotation = rot_faceup end
     if rotation == "facedown" then object_rotation = rot_facedown end
@@ -2441,16 +2441,16 @@ end -- end to_muster()
 -- this function applies damage to a base
 function apply_base_damage(faction, amount)
 
-    local is_bottom = (faction == "Empire")
-    local ai_opposing_counter = getObjectFromGUID(is_bottom and ai_base_damage_counter_rebel or ai_base_damage_counter_empire)
-    local player_opposing_counter = getObjectFromGUID(is_bottom and "7e15f6" or "fa055e")
+    local isBottom = (faction == "Empire")
+    local ai_opposing_counter = getObjectFromGUID(isBottom and ai_base_damage_counter_rebel or ai_base_damage_counter_empire)
+    local player_opposing_counter = getObjectFromGUID(isBottom and "7e15f6" or "fa055e")
     local opposing_counter = nil
     local base_zone = nil
     local base_value = 9999
     local owner_tag = nil
     local base_card = nil
 
-    if is_bottom then
+    if isBottom then
 
         owner_tag = "empire_base"
         if getObjectFromGUID(ai_backdrop_empire) ~= nil then
@@ -2458,7 +2458,7 @@ function apply_base_damage(faction, amount)
             base_zone = getObjectFromGUID("79222b")
         else
             opposing_counter = player_opposing_counter
-            base_zone = zoneBasesBottom
+            base_zone = zoneBaseBottom
         end
 
     else
@@ -2469,7 +2469,7 @@ function apply_base_damage(faction, amount)
             base_zone = getObjectFromGUID("7a0285")
         else
             opposing_counter = player_opposing_counter
-            base_zone = zoneBasesTop
+            base_zone = zoneBaseTop
         end
     end
 
@@ -2499,23 +2499,23 @@ end -- end apply_base_damage()
 -- and flipping facedown cards in muster faceup
 function muster_to_play(faction)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
 
-    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
-    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
-    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
-    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
-    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
-    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
-    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
-    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
-    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
-    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
-    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
-    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
-    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
-    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    local zone_muster_1 = (isBottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (isBottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (isBottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (isBottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (isBottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (isBottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (isBottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (isBottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (isBottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (isBottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (isBottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (isBottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (isBottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (isBottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
     muster_zones = {
         zone_muster_1,
         zone_muster_2,
@@ -2532,13 +2532,13 @@ function muster_to_play(faction)
         zone_muster_13,
         zone_muster_14,
     }
-    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
-    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
-    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
-    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
-    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
-    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
-    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    local zone_play_unit_1 = (isBottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (isBottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (isBottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (isBottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (isBottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (isBottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (isBottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
     play_zones = {
         zone_play_unit_1,
         zone_play_unit_2,
@@ -2548,18 +2548,18 @@ function muster_to_play(faction)
         zone_play_unit_6,
         zone_play_unit_7,
     }
-    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
-    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
-    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
-    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
-    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
-    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
-    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
-    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
-    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
-    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
-    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
-    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    local zone_play_ship_1 = (isBottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (isBottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (isBottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (isBottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (isBottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (isBottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (isBottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (isBottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (isBottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (isBottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (isBottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (isBottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
     play_ship_zones = {
         zone_play_ship_1,
         zone_play_ship_2,
@@ -2575,20 +2575,20 @@ function muster_to_play(faction)
         zone_play_ship_12,
     }
 
-    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
-    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
-    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
-    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
-    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
-    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
-    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
-    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
-    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
-    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
-    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
-    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
-    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
-    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    local loc_muster_1 = (isBottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (isBottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (isBottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (isBottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (isBottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (isBottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (isBottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (isBottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (isBottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (isBottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (isBottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (isBottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (isBottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (isBottom and loc_muster_empire_14 or loc_muster_rebel_14)
     muster_locs = {
         loc_muster_1,
         loc_muster_2,
@@ -2605,13 +2605,13 @@ function muster_to_play(faction)
         loc_muster_13,
         loc_muster_14,
     }
-    local loc_play_unit_1 = (is_bottom and loc_play_empire_1 or loc_play_rebel_1)
-    local loc_play_unit_2 = (is_bottom and loc_play_empire_2 or loc_play_rebel_2)
-    local loc_play_unit_3 = (is_bottom and loc_play_empire_3 or loc_play_rebel_3)
-    local loc_play_unit_4 = (is_bottom and loc_play_empire_4 or loc_play_rebel_4)
-    local loc_play_unit_5 = (is_bottom and loc_play_empire_5 or loc_play_rebel_5)
-    local loc_play_unit_6 = (is_bottom and loc_play_empire_6 or loc_play_rebel_6)
-    local loc_play_unit_7 = (is_bottom and loc_play_empire_7 or loc_play_rebel_7)
+    local loc_play_unit_1 = (isBottom and loc_play_empire_1 or loc_play_rebel_1)
+    local loc_play_unit_2 = (isBottom and loc_play_empire_2 or loc_play_rebel_2)
+    local loc_play_unit_3 = (isBottom and loc_play_empire_3 or loc_play_rebel_3)
+    local loc_play_unit_4 = (isBottom and loc_play_empire_4 or loc_play_rebel_4)
+    local loc_play_unit_5 = (isBottom and loc_play_empire_5 or loc_play_rebel_5)
+    local loc_play_unit_6 = (isBottom and loc_play_empire_6 or loc_play_rebel_6)
+    local loc_play_unit_7 = (isBottom and loc_play_empire_7 or loc_play_rebel_7)
     play_locs = {
         loc_play_unit_1,
         loc_play_unit_2,
@@ -2621,18 +2621,18 @@ function muster_to_play(faction)
         loc_play_unit_6,
         loc_play_unit_7,
     }
-    local loc_play_ship_1 = (is_bottom and loc_play_ship_empire_1 or loc_play_ship_rebel_1)
-    local loc_play_ship_2 = (is_bottom and loc_play_ship_empire_2 or loc_play_ship_rebel_2)
-    local loc_play_ship_3 = (is_bottom and loc_play_ship_empire_3 or loc_play_ship_rebel_3)
-    local loc_play_ship_4 = (is_bottom and loc_play_ship_empire_4 or loc_play_ship_rebel_4)
-    local loc_play_ship_5 = (is_bottom and loc_play_ship_empire_5 or loc_play_ship_rebel_5)
-    local loc_play_ship_6 = (is_bottom and loc_play_ship_empire_6 or loc_play_ship_rebel_6)
-    local loc_play_ship_7 = (is_bottom and loc_play_ship_empire_7 or loc_play_ship_rebel_7)
-    local loc_play_ship_8 = (is_bottom and loc_play_ship_empire_8 or loc_play_ship_rebel_8)
-    local loc_play_ship_9 = (is_bottom and loc_play_ship_empire_9 or loc_play_ship_rebel_9)
-    local loc_play_ship_10 = (is_bottom and loc_play_ship_empire_10 or loc_play_ship_rebel_10)
-    local loc_play_ship_11 = (is_bottom and loc_play_ship_empire_11 or loc_play_ship_rebel_11)
-    local loc_play_ship_12 = (is_bottom and loc_play_ship_empire_12 or loc_play_ship_rebel_12)
+    local loc_play_ship_1 = (isBottom and loc_play_ship_empire_1 or loc_play_ship_rebel_1)
+    local loc_play_ship_2 = (isBottom and loc_play_ship_empire_2 or loc_play_ship_rebel_2)
+    local loc_play_ship_3 = (isBottom and loc_play_ship_empire_3 or loc_play_ship_rebel_3)
+    local loc_play_ship_4 = (isBottom and loc_play_ship_empire_4 or loc_play_ship_rebel_4)
+    local loc_play_ship_5 = (isBottom and loc_play_ship_empire_5 or loc_play_ship_rebel_5)
+    local loc_play_ship_6 = (isBottom and loc_play_ship_empire_6 or loc_play_ship_rebel_6)
+    local loc_play_ship_7 = (isBottom and loc_play_ship_empire_7 or loc_play_ship_rebel_7)
+    local loc_play_ship_8 = (isBottom and loc_play_ship_empire_8 or loc_play_ship_rebel_8)
+    local loc_play_ship_9 = (isBottom and loc_play_ship_empire_9 or loc_play_ship_rebel_9)
+    local loc_play_ship_10 = (isBottom and loc_play_ship_empire_10 or loc_play_ship_rebel_10)
+    local loc_play_ship_11 = (isBottom and loc_play_ship_empire_11 or loc_play_ship_rebel_11)
+    local loc_play_ship_12 = (isBottom and loc_play_ship_empire_12 or loc_play_ship_rebel_12)
     play_ship_locs = {
         loc_play_ship_1,
         loc_play_ship_2,
@@ -2702,7 +2702,7 @@ function muster_to_play(faction)
     broadcastToAll("AI " .. faction .. " moves their faceup units in their Muster area to their play area, and flips facedown Muster units faceup.", ai_color)
     if #units > 0 then
         for i = 1, #units do
-            units[i].setRotation(is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
+            units[i].setRotation(isBottom and rot_unit_faceup_empire or rot_unit_faceup_rebel)
             units[i].setPositionSmooth(play_locs[next_free_play_slot])
             next_free_play_slot = next_free_play_slot +1
         end
@@ -2710,14 +2710,14 @@ function muster_to_play(faction)
 
     if #ships > 0 then
         for i = 1, #ships do
-            ships[i].setRotation(is_bottom and rot_ship_faceup_empire or rot_ship_faceup_rebel)
+            ships[i].setRotation(isBottom and rot_ship_faceup_empire or rot_ship_faceup_rebel)
             ships[i].setPositionSmooth(play_ship_locs[next_free_ship_slot])
             next_free_ship_slot = next_free_ship_slot +1
         end
     end
     -- flip facedown cards faceup
     for i = 1, #muster_facedown_cards do
-        muster_facedown_cards[i].setRotationSmooth(is_bottom and rot_unit_faceup_empire or rot_unit_faceup_rebel, false, false)
+        muster_facedown_cards[i].setRotationSmooth(isBottom and rot_unit_faceup_empire or rot_unit_faceup_rebel, false, false)
     end
 
     ----- run muster row cleanup function (maybe)
@@ -2730,23 +2730,23 @@ end -- end muster_to_play()
 -- this function handles the process of exiling spent AI units and returning troopers/inquisitors etc
 function play_to_muster(faction)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
 
-    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
-    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
-    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
-    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
-    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
-    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
-    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
-    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
-    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
-    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
-    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
-    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
-    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
-    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    local zone_muster_1 = (isBottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (isBottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (isBottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (isBottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (isBottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (isBottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (isBottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (isBottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (isBottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (isBottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (isBottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (isBottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (isBottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (isBottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
     muster_zones = {
         zone_muster_1,
         zone_muster_2,
@@ -2763,13 +2763,13 @@ function play_to_muster(faction)
         zone_muster_13,
         zone_muster_14,
     }
-    local zone_play_unit_1 = (is_bottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
-    local zone_play_unit_2 = (is_bottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
-    local zone_play_unit_3 = (is_bottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
-    local zone_play_unit_4 = (is_bottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
-    local zone_play_unit_5 = (is_bottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
-    local zone_play_unit_6 = (is_bottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
-    local zone_play_unit_7 = (is_bottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
+    local zone_play_unit_1 = (isBottom and ai_zone_empire_play_1 or ai_zone_rebel_play_1)
+    local zone_play_unit_2 = (isBottom and ai_zone_empire_play_2 or ai_zone_rebel_play_2)
+    local zone_play_unit_3 = (isBottom and ai_zone_empire_play_3 or ai_zone_rebel_play_3)
+    local zone_play_unit_4 = (isBottom and ai_zone_empire_play_4 or ai_zone_rebel_play_4)
+    local zone_play_unit_5 = (isBottom and ai_zone_empire_play_5 or ai_zone_rebel_play_5)
+    local zone_play_unit_6 = (isBottom and ai_zone_empire_play_6 or ai_zone_rebel_play_6)
+    local zone_play_unit_7 = (isBottom and ai_zone_empire_play_7 or ai_zone_rebel_play_7)
     play_zones = {
         zone_play_unit_1,
         zone_play_unit_2,
@@ -2780,20 +2780,20 @@ function play_to_muster(faction)
         zone_play_unit_7,
     }
 
-    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
-    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
-    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
-    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
-    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
-    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
-    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
-    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
-    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
-    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
-    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
-    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
-    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
-    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    local loc_muster_1 = (isBottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (isBottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (isBottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (isBottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (isBottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (isBottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (isBottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (isBottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (isBottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (isBottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (isBottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (isBottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (isBottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (isBottom and loc_muster_empire_14 or loc_muster_rebel_14)
     muster_locs = {
         loc_muster_1,
         loc_muster_2,
@@ -2813,7 +2813,7 @@ function play_to_muster(faction)
     local units = {}
     local next_free_muster_slot = nil
     local cards_exiled = false
-    local ai_owner_tag = (is_bottom and "ai_bottom_owner" or "ai_top_owner")
+    local ai_owner_tag = (isBottom and "ai_bottom_owner" or "ai_top_owner")
 
     for i = 1, 7 do
         for k, v in pairs(play_zones[i].getObjects()) do
@@ -2845,7 +2845,7 @@ function play_to_muster(faction)
     end
     if #units > 0 then
         for i = 1, #units do
-            units[i].setRotation(is_bottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
+            units[i].setRotation(isBottom and rot_unit_facedown_empire or rot_unit_facedown_rebel)
             units[i].setPositionSmooth(muster_locs[next_free_muster_slot])
             next_free_muster_slot = next_free_muster_slot +1
         end
@@ -2856,22 +2856,22 @@ end -- end play_to_muster()
 -- this function re-orders the muster row after begin turn (maybe) and purchase (definitely) steps
 function sort_muster(faction)
 
-    local is_bottom = (faction == "Empire")
+    local isBottom = (faction == "Empire")
 
-    local zone_muster_1 = (is_bottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
-    local zone_muster_2 = (is_bottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
-    local zone_muster_3 = (is_bottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
-    local zone_muster_4 = (is_bottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
-    local zone_muster_5 = (is_bottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
-    local zone_muster_6 = (is_bottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
-    local zone_muster_7 = (is_bottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
-    local zone_muster_8 = (is_bottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
-    local zone_muster_9 = (is_bottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
-    local zone_muster_10 = (is_bottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
-    local zone_muster_11 = (is_bottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
-    local zone_muster_12 = (is_bottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
-    local zone_muster_13 = (is_bottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
-    local zone_muster_14 = (is_bottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
+    local zone_muster_1 = (isBottom and ai_zone_empire_muster_1 or ai_zone_rebel_muster_1)
+    local zone_muster_2 = (isBottom and ai_zone_empire_muster_2 or ai_zone_rebel_muster_2)
+    local zone_muster_3 = (isBottom and ai_zone_empire_muster_3 or ai_zone_rebel_muster_3)
+    local zone_muster_4 = (isBottom and ai_zone_empire_muster_4 or ai_zone_rebel_muster_4)
+    local zone_muster_5 = (isBottom and ai_zone_empire_muster_5 or ai_zone_rebel_muster_5)
+    local zone_muster_6 = (isBottom and ai_zone_empire_muster_6 or ai_zone_rebel_muster_6)
+    local zone_muster_7 = (isBottom and ai_zone_empire_muster_7 or ai_zone_rebel_muster_7)
+    local zone_muster_8 = (isBottom and ai_zone_empire_muster_8 or ai_zone_rebel_muster_8)
+    local zone_muster_9 = (isBottom and ai_zone_empire_muster_9 or ai_zone_rebel_muster_9)
+    local zone_muster_10 = (isBottom and ai_zone_empire_muster_10 or ai_zone_rebel_muster_10)
+    local zone_muster_11 = (isBottom and ai_zone_empire_muster_11 or ai_zone_rebel_muster_11)
+    local zone_muster_12 = (isBottom and ai_zone_empire_muster_12 or ai_zone_rebel_muster_12)
+    local zone_muster_13 = (isBottom and ai_zone_empire_muster_13 or ai_zone_rebel_muster_13)
+    local zone_muster_14 = (isBottom and ai_zone_empire_muster_14 or ai_zone_rebel_muster_14)
     muster_zones = {
         zone_muster_1,
         zone_muster_2,
@@ -2888,20 +2888,20 @@ function sort_muster(faction)
         zone_muster_13,
         zone_muster_14,
     }
-    local loc_muster_1 = (is_bottom and loc_muster_empire_1 or loc_muster_rebel_1)
-    local loc_muster_2 = (is_bottom and loc_muster_empire_2 or loc_muster_rebel_2)
-    local loc_muster_3 = (is_bottom and loc_muster_empire_3 or loc_muster_rebel_3)
-    local loc_muster_4 = (is_bottom and loc_muster_empire_4 or loc_muster_rebel_4)
-    local loc_muster_5 = (is_bottom and loc_muster_empire_5 or loc_muster_rebel_5)
-    local loc_muster_6 = (is_bottom and loc_muster_empire_6 or loc_muster_rebel_6)
-    local loc_muster_7 = (is_bottom and loc_muster_empire_7 or loc_muster_rebel_7)
-    local loc_muster_8 = (is_bottom and loc_muster_empire_8 or loc_muster_rebel_8)
-    local loc_muster_9 = (is_bottom and loc_muster_empire_9 or loc_muster_rebel_9)
-    local loc_muster_10 = (is_bottom and loc_muster_empire_10 or loc_muster_rebel_10)
-    local loc_muster_11 = (is_bottom and loc_muster_empire_11 or loc_muster_rebel_11)
-    local loc_muster_12 = (is_bottom and loc_muster_empire_12 or loc_muster_rebel_12)
-    local loc_muster_13 = (is_bottom and loc_muster_empire_13 or loc_muster_rebel_13)
-    local loc_muster_14 = (is_bottom and loc_muster_empire_14 or loc_muster_rebel_14)
+    local loc_muster_1 = (isBottom and loc_muster_empire_1 or loc_muster_rebel_1)
+    local loc_muster_2 = (isBottom and loc_muster_empire_2 or loc_muster_rebel_2)
+    local loc_muster_3 = (isBottom and loc_muster_empire_3 or loc_muster_rebel_3)
+    local loc_muster_4 = (isBottom and loc_muster_empire_4 or loc_muster_rebel_4)
+    local loc_muster_5 = (isBottom and loc_muster_empire_5 or loc_muster_rebel_5)
+    local loc_muster_6 = (isBottom and loc_muster_empire_6 or loc_muster_rebel_6)
+    local loc_muster_7 = (isBottom and loc_muster_empire_7 or loc_muster_rebel_7)
+    local loc_muster_8 = (isBottom and loc_muster_empire_8 or loc_muster_rebel_8)
+    local loc_muster_9 = (isBottom and loc_muster_empire_9 or loc_muster_rebel_9)
+    local loc_muster_10 = (isBottom and loc_muster_empire_10 or loc_muster_rebel_10)
+    local loc_muster_11 = (isBottom and loc_muster_empire_11 or loc_muster_rebel_11)
+    local loc_muster_12 = (isBottom and loc_muster_empire_12 or loc_muster_rebel_12)
+    local loc_muster_13 = (isBottom and loc_muster_empire_13 or loc_muster_rebel_13)
+    local loc_muster_14 = (isBottom and loc_muster_empire_14 or loc_muster_rebel_14)
     muster_locs = {
         loc_muster_1,
         loc_muster_2,
@@ -2972,11 +2972,11 @@ end -- end sort_muster()
 
 -- this function takes in faction & resource count, and updates the resource counter/cubes for ai faction
 function add_ai_resources(faction, amount)
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local phase_tracker = getObjectFromGUID(is_bottom and ai_phase_marker_empire or ai_phase_marker_rebel)
-    local loc_phase_tracker = (is_bottom and {3.46, 6.16, -18.55} or {-3.46, 6.26, 18.46})
-    local resource_counter = getObjectFromGUID(is_bottom and ai_resource_counter_empire or ai_resource_counter_rebel)
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local phase_tracker = getObjectFromGUID(isBottom and ai_phase_marker_empire or ai_phase_marker_rebel)
+    local loc_phase_tracker = (isBottom and {3.46, 6.16, -18.55} or {-3.46, 6.26, 18.46})
+    local resource_counter = getObjectFromGUID(isBottom and ai_resource_counter_empire or ai_resource_counter_rebel)
     local start_amount = resource_counter.getVar('val')
     local wait_timer = 0
     broadcastToAll("AI " .. faction .. ", starting with " .. start_amount .. ", gains " .. amount .. " resources to end with " .. start_amount + amount .. ".", ai_color)
@@ -2994,51 +2994,51 @@ end -- end add_ai_resources()
 -- this helper function simply checks for and returns slot number of the progress track cube
 function check_progress_track(faction)
 
-    local is_bottom = (faction == "Empire")
-    local progress_cube = getObjectFromGUID(is_bottom and ai_progress_cube_empire or ai_progress_cube_rebel)
+    local isBottom = (faction == "Empire")
+    local progress_cube = getObjectFromGUID(isBottom and ai_progress_cube_empire or ai_progress_cube_rebel)
     local position = progress_cube.getPosition()
 
-    local loc_ptrack_1 = (is_bottom and {6.49, 12.42, -25.85} or {-6.49, 12.44, 25.85})
-    local loc_ptrack_2 = (is_bottom and {5.47, 12.42, -25.85} or {-5.48, 12.44, 25.85})
-    local loc_ptrack_3 = (is_bottom and {4.47, 12.42, -25.85} or {-4.48, 12.44, 25.85})
-    local loc_ptrack_4 = (is_bottom and {3.47, 12.42, -25.85} or {-3.47, 12.44, 25.85})
-    local loc_ptrack_5 = (is_bottom and {2.46, 12.42, -25.85} or {-2.44, 12.44, 25.85})
-    local loc_ptrack_6 = (is_bottom and {1.46, 12.42, -25.85} or {-1.45, 12.44, 25.85})
-    local loc_ptrack_7 = (is_bottom and {0.45, 12.42, -25.85} or {-0.44, 12.44, 25.85})
-    local loc_ptrack_8 = (is_bottom and {-0.55, 12.42, -25.85} or {0.58, 12.44, 25.85})
-    local loc_ptrack_9 = (is_bottom and {-1.57, 12.42, -25.85} or {1.58, 12.44, 25.85})
-    local loc_ptrack_10 = (is_bottom and {-2.57, 12.42, -25.85} or {2.58, 12.44, 25.85})
-    local loc_ptrack_11 = (is_bottom and {-3.58, 12.42, -25.85} or {3.58, 12.44, 25.85})
-    local loc_ptrack_12 = (is_bottom and {-4.58, 12.42, -25.85} or {4.59, 12.44, 25.85})
-    local loc_ptrack_13 = (is_bottom and {-5.58, 12.42, -25.85} or {5.60, 12.44, 25.85})
+    local loc_ptrack_1 = (isBottom and {6.49, 12.42, -25.85} or {-6.49, 12.44, 25.85})
+    local loc_ptrack_2 = (isBottom and {5.47, 12.42, -25.85} or {-5.48, 12.44, 25.85})
+    local loc_ptrack_3 = (isBottom and {4.47, 12.42, -25.85} or {-4.48, 12.44, 25.85})
+    local loc_ptrack_4 = (isBottom and {3.47, 12.42, -25.85} or {-3.47, 12.44, 25.85})
+    local loc_ptrack_5 = (isBottom and {2.46, 12.42, -25.85} or {-2.44, 12.44, 25.85})
+    local loc_ptrack_6 = (isBottom and {1.46, 12.42, -25.85} or {-1.45, 12.44, 25.85})
+    local loc_ptrack_7 = (isBottom and {0.45, 12.42, -25.85} or {-0.44, 12.44, 25.85})
+    local loc_ptrack_8 = (isBottom and {-0.55, 12.42, -25.85} or {0.58, 12.44, 25.85})
+    local loc_ptrack_9 = (isBottom and {-1.57, 12.42, -25.85} or {1.58, 12.44, 25.85})
+    local loc_ptrack_10 = (isBottom and {-2.57, 12.42, -25.85} or {2.58, 12.44, 25.85})
+    local loc_ptrack_11 = (isBottom and {-3.58, 12.42, -25.85} or {3.58, 12.44, 25.85})
+    local loc_ptrack_12 = (isBottom and {-4.58, 12.42, -25.85} or {4.59, 12.44, 25.85})
+    local loc_ptrack_13 = (isBottom and {-5.58, 12.42, -25.85} or {5.60, 12.44, 25.85})
 
 
     if position.x > 6 and position.x < 7 then
         return 1
     elseif position.x > 5 and position.x < 6 then
-        return (is_bottom and 2 or 13)
+        return (isBottom and 2 or 13)
     elseif position.x > 4 and position.x < 5 then
-        return (is_bottom and 3 or 12)
+        return (isBottom and 3 or 12)
     elseif position.x > 3 and position.x < 4 then
-        return (is_bottom and 4 or 11)
+        return (isBottom and 4 or 11)
     elseif position.x > 2 and position.x < 3 then
-        return (is_bottom and 5 or 10)
+        return (isBottom and 5 or 10)
     elseif position.x > 1 and position.x < 2 then
-        return (is_bottom and 6 or 9)
+        return (isBottom and 6 or 9)
     elseif position.x > 0 and position.x < 1 then
-        return (is_bottom and 7 or 8)
+        return (isBottom and 7 or 8)
     elseif position.x < 0 and position.x > -1 then
-        return (is_bottom and 8 or 7)
+        return (isBottom and 8 or 7)
     elseif position.x < -1 and position.x > -2 then
-        return (is_bottom and 9 or 6)
+        return (isBottom and 9 or 6)
     elseif position.x < -2 and position.x > -3 then
-        return (is_bottom and 10 or 5)
+        return (isBottom and 10 or 5)
     elseif position.x < -3 and position.x > -4 then
-        return (is_bottom and 11 or 4)
+        return (isBottom and 11 or 4)
     elseif position.x < -4 and position.x > -5 then
-        return (is_bottom and 12 or 3)
+        return (isBottom and 12 or 3)
     elseif position.x < -5 and position.x > -6 then
-        return (is_bottom and 13 or 2)
+        return (isBottom and 13 or 2)
     elseif position.x < -6 and position.x > -7 then
         return 1
     end
@@ -3048,8 +3048,8 @@ end -- end check_progress_track()
 -- this function checks the galaxy row and determines the best target for a bounty hunt or sabotage
 function check_attack_row(faction, attack_value)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
 
     local zone_1 = getObjectFromGUID("c98289")
     local zone_2 = getObjectFromGUID("46fd89")
@@ -3080,7 +3080,7 @@ function check_attack_row(faction, attack_value)
 
     for i = 6, 1, -1 do
         for k, v in pairs(zones[i].getObjects()) do
-            if not is_bottom then
+            if not isBottom then
             -- 4 resource cards
                 if (v.getGUID() == "8d331f" or v.getGUID() == "06fa36" or -- landing craft
                 v.getGUID() == "9c5c40") and highest_resource_value <= 4 then -- vader
@@ -3267,27 +3267,27 @@ end -- end find_most_efficient_combination()
 -- this function checks for opponent ships, and returns a table of ships to select which to damage next
 function check_ships(faction, opponent_is_ai)
 
-    local is_bottom = (faction == "Empire")
-    local ai_color = (is_bottom and "Blue" or "Red")
-    local opponent_is_ai = getObjectFromGUID(is_bottom and ai_backdrop_rebel or ai_backdrop_empire)
+    local isBottom = (faction == "Empire")
+    local ai_color = (isBottom and "Blue" or "Red")
+    local opponent_is_ai = getObjectFromGUID(isBottom and ai_backdrop_rebel or ai_backdrop_empire)
     local opponent_tag = ""
     if opponent_is_ai then
-        opponent_tag = (is_bottom and "ai_top_owner" or "ai_bottom_owner")
+        opponent_tag = (isBottom and "ai_top_owner" or "ai_bottom_owner")
     else
-        opponent_tag = (is_bottom and "top_owner" or "bottom_owner")
+        opponent_tag = (isBottom and "top_owner" or "bottom_owner")
     end
-    local zone_play_ship_1 = (is_bottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
-    local zone_play_ship_2 = (is_bottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
-    local zone_play_ship_3 = (is_bottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
-    local zone_play_ship_4 = (is_bottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
-    local zone_play_ship_5 = (is_bottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
-    local zone_play_ship_6 = (is_bottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
-    local zone_play_ship_7 = (is_bottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
-    local zone_play_ship_8 = (is_bottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
-    local zone_play_ship_9 = (is_bottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
-    local zone_play_ship_10 = (is_bottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
-    local zone_play_ship_11 = (is_bottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
-    local zone_play_ship_12 = (is_bottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
+    local zone_play_ship_1 = (isBottom and ai_zone_empire_play_ship_1 or ai_zone_rebel_play_ship_1)
+    local zone_play_ship_2 = (isBottom and ai_zone_empire_play_ship_2 or ai_zone_rebel_play_ship_2)
+    local zone_play_ship_3 = (isBottom and ai_zone_empire_play_ship_3 or ai_zone_rebel_play_ship_3)
+    local zone_play_ship_4 = (isBottom and ai_zone_empire_play_ship_4 or ai_zone_rebel_play_ship_4)
+    local zone_play_ship_5 = (isBottom and ai_zone_empire_play_ship_5 or ai_zone_rebel_play_ship_5)
+    local zone_play_ship_6 = (isBottom and ai_zone_empire_play_ship_6 or ai_zone_rebel_play_ship_6)
+    local zone_play_ship_7 = (isBottom and ai_zone_empire_play_ship_7 or ai_zone_rebel_play_ship_7)
+    local zone_play_ship_8 = (isBottom and ai_zone_empire_play_ship_8 or ai_zone_rebel_play_ship_8)
+    local zone_play_ship_9 = (isBottom and ai_zone_empire_play_ship_9 or ai_zone_rebel_play_ship_9)
+    local zone_play_ship_10 = (isBottom and ai_zone_empire_play_ship_10 or ai_zone_rebel_play_ship_10)
+    local zone_play_ship_11 = (isBottom and ai_zone_empire_play_ship_11 or ai_zone_rebel_play_ship_11)
+    local zone_play_ship_12 = (isBottom and ai_zone_empire_play_ship_12 or ai_zone_rebel_play_ship_12)
     play_ship_zones = {
         zone_play_ship_1,
         zone_play_ship_2,

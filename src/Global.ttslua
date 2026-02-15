@@ -83,10 +83,12 @@ function onLoad()
   zoneDeckTop = getObjectbyName("Zone Deck Top")
   zoneDiscardBottom = getObjectbyName("Zone Discard Bottom")
   zoneDiscardTop = getObjectbyName("Zone Discard Top")
-  zoneBasesBottom = getObjectbyName("Zone Bases Bottom")
-  zoneBasesTop = getObjectbyName("Zone Bases Top")
+  zoneBaseBottom = getObjectbyName("Zone Bases Bottom")
+  zoneBaseTop = getObjectbyName("Zone Bases Top")
   zoneFactionSelectBottom = getObjectbyName("Zone Faction Select Bottom")
   zoneFactionSelectTop = getObjectbyName("Zone Faction Select Top")
+
+  zoneLeadersBases = getObjectbyName("Zone Leaders Bases")
 
   buttonEndTurnBottom = getObjectbyName("Button End Turn Bottom")
   buttonEndTurnTop = getObjectbyName("Button End Turn Top")
@@ -98,7 +100,9 @@ function onLoad()
   counterResourceBoardBottom = getObjectbyName("Resource Counter Base Bottom")
   counterResourceBottom = getObjectbyName("Resource Counter Bottom")
   counterResourceBoardTop = getObjectbyName("Resource Counter Base Top")
-  counterResourceTop = getObjectbyName("Resource Counter Bottom")
+  counterResourceTop = getObjectbyName("Resource Counter Top")
+  counterBaseBottom = getObjectbyName("Base Damage Counter Bottom")
+  counterBaseTop = getObjectbyName("Base Damage Counter Top")
 
   artAssetBottom = getObjectbyName("Art Asset Bottom")
   artAssetTop = getObjectbyName("Art Asset Top")
@@ -201,7 +205,7 @@ function onLoad()
 
     -- detect turn, show correct end turn button
     turnTracker.setInvisibleTo({})
-    currentTurn = getTurn() -- check for location of turn tracker, set end_turn buttons
+    currentTurn = getTurn() -- check for location of turn tracker, set endTurn buttons
     if currentTurn == "Bottom" then
       buttonEndTurnBottom.setInvisibleTo({})
       if invis then buttonEndTurnTop.setInvisibleTo(allColors) end
@@ -402,13 +406,13 @@ function onObjectEnterZone(zone, obj)
 
     if obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
     not obj.hasTag('republic_owner') and not obj.hasTag('separatist_owner') and not obj.hasTag('neutral')) then
-        obj.call('bh_create') -- NEED REQUIRE
+        obj.call('createBHSaboButtons') -- NEED REQUIRE
     end
 
     -- neutral bh /sabotage button creation if required  IS THIS BLOCK ACTUALLY NEEDED
     -- if obj.hasTag('unit') and not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and obj.hasTag('neutral') then
     --   -- check for ord mantell
-    --   local zones = {zoneBasesBottom, zoneBasesTop}
+    --   local zones = {zoneBaseBottom, zoneBaseTop}
     --   for i = 1, 2 do
     --     for _, zoneObj in pairs(zones[i].getObjects()) do
     --       if zoneObj.getName() == "Ord Mantell" then
@@ -437,7 +441,7 @@ function onObjectEnterZone(zone, obj)
     end
   end -- end createBHbuttons() (local)
 
-  if (zone == zoneBasesBottom or zone == zoneBasesTop) and obj.getName() == "Ord Mantell" then
+  if (zone == zoneBaseBottom or zone == zoneBaseTop) and obj.getName() == "Ord Mantell" then
     -- createBHbuttons() -- REVISIT
   end
 
@@ -533,7 +537,7 @@ function onObjectLeaveZone(zone, obj)
     end
   end -- end removeBHButtons() (local)
 
-  if (zone == zoneBasesBottom or zone == zoneBasesTop) and obj.getName() == "Ord Mantell" then
+  if (zone == zoneBaseBottom or zone == zoneBaseTop) and obj.getName() == "Ord Mantell" then
     -- removeBHbuttons()
   end
   if zone == zoneInPlay and obj.getName() == "Assassin Droid" and
