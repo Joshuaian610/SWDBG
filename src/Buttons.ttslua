@@ -319,6 +319,7 @@ end -- end buttonActionSecXML()
 function handleNuteGunray(bagExile, playerColor)
   -- opens player's exile bag automatically upon Nute Gunray action trigger execution
   local exileIsValid = false
+  local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
   for _, object in ipairs(bagExile.getObjects()) do
     if object.name ~= "B1 Battle Droid" and object.name ~= "Separatist Shuttle" and object.name ~= "Dark Side Agent" then
       exileIsValid = true
@@ -326,10 +327,10 @@ function handleNuteGunray(bagExile, playerColor)
   end
 
   if exileIsValid then
-    broadcastToAll("Nute Gunray ability applied on card leaving galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] must replace it with a non-starter card from their exile.", "White")
+    broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability applied on card leaving galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] must replace it with a non-starter card from their exile.", "White")
     bagExile.Container.search(playerColor)
   else
-    broadcastToAll("Nute Gunray ability applied on card leaving galaxy row, but there are no valid [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] cards in their exile to replace. Drawing new card from galaxy deck.", "White")
+    broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability applied on card leaving galaxy row, but there are no valid [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] cards in their exile to replace. Drawing new card from galaxy deck.", "White")
     drawGalaxyCard()
   end
 
@@ -1908,14 +1909,10 @@ function bhAction(button, _, _)
   local bottomFaction, topFaction = getPlayerAreas()
   local bottomColor, topColor = getPlayerColors()
   local attackFaction = bottomFaction ~= targetFaction and bottomFaction or topFaction
-  local opponentFaction = bottomFaction ~= targetFaction and topFaction or bottomFaction
   local isBottom = attackFaction == bottomFaction
-  local isTop = attackFaction == topFaction
   local buttonForce = isBottom and buttonForceBottom or buttonForceTop
   local attackFactionColor = isBottom and bottomColor or topColor
   local capitalizedAttackFaction = attackFaction:gsub("^%l", string.upper)
-  local capitalizedOpponentFaction = opponentFaction:gsub("^%l", string.upper)
-  local enemyFaction = isBottom and topFaction or bottomFaction
   local area = isBottom and "bottom" or "top"
   local attackAction = nil
   local zoneButton = nil

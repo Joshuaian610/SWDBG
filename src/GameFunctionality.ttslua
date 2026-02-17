@@ -332,13 +332,13 @@ function drawGalaxyCard()
   local posDeal = nil
 
   for i = 1, 6 do
-    local card_in_zone = false
+    local cardInZone = false
     for _, object in pairs(slots[i].getObjects()) do
         if object.type == "Card" then
-          card_in_zone = true
+          cardInZone = true
         end
     end    
-    if card_in_zone == false then
+    if cardInZone == false then
       -- determine position to deal card to via slot number
       posDeal = posSlots[i]
 
@@ -1051,6 +1051,445 @@ function nextCardToDeck(faction)
     nextCardToDeckTop = true
   end
 end -- end nextCardToDeck()
+
+
+function purchaseCard(button, playerColor, altClick)
+  local buttonNumber = button.getGMNotes()
+  local playerArea = buttonNumber < 8 and "bottom" or "top"
+  local isBottom = playerArea == "bottom"
+  local isTop = playerArea == "top"
+  local bottomColor, topColor = getPlayerColors()
+  local bottomFaction, topFaction  = getPlayerAreas()
+  playerColor = (isBottom and bottomColor or topColor)
+  local faction = isBottom and bottomFaction or topFaction
+  local capitalizedFaction = faction:gsub("^%l", string.upper)
+  local opponentFaction = isBottom and topFaction or bottomFaction
+  local capitalizedOpponentFaction = (opponentFaction:gsub("^%l", string.upper))
+  local factionTag = faction
+  local opponentTag = opponentFaction
+  local cardTag = isBottom and 'bottom_owner' or 'top_owner'
+  local counter = isBottom and counterResourceBottom or counterResourceTop
+  local counterBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
+  local posCard = nil
+  local rotCard = nil
+  local attackAction = nil
+  local isAI = checkIfAI()
+
+  if factionTag == "rebellion" then factionTag = "rebel" end
+  if opponentTag == "rebellion" then opponentTag = "rebel" end
+  if faction == "rebellion" or faction == "republic" then
+    attackAction = "Sabotage"
+  elseif faction == "empire" or faction == "separatist" then
+    attackAction = "Bounty Hunt"
+  end
+
+  animateButtonGalaxyRow(button)
+
+  if isBottom then
+    if nextCardToHandBottom then
+      posCard = { 0.00, 1.46, -43.00 }
+      rotCard = { 0.00, 180.00, 0.00 }
+    elseif nextCardToDeckBottom then
+      posCard = { -3.50, 3.5, -31.00 }
+      rotCard = { 0.00, 180.00, 180.00 }
+    else
+      posCard = { -8.50, 2.5, -31.00 }
+      rotCard = { 0.00, 180.00, 0.00 }
+    end
+  elseif isTop then
+    if nextCardToHandBottom then
+      posCard = { 0.00, 1.46, 43.00 }
+      rotCard = { 0.00, 0.00, 0.00 }
+    elseif nextCardToDeckTop then
+      posCard = { 3.50, 3.5, 31.00 }
+      rotCard = { 0.00, 0.00, 180.00 }
+    else
+      posCard = { 8.50, 2.5, 31.00 }
+      rotCard = { 0.00, 0.00, 0.00 }
+    end
+  end
+
+  local currentResources = counter.getVar('val')  
+  local cardObj = nil
+  local cardCost = nil
+  local baseCardCost = nil
+  local zoneCard = button.getVar('checkzone') -- NEED DATA TABLE
+  local forFree = altClick and true or false
+  local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
+
+  if nextCardTarkin then forFree = true end
+
+  for _, zoneObj in pairs(zoneCard.getObjects()) do
+    if zoneObj.tag == "Card" then
+      cardInZone = true
+      cardObj = zoneObj
+      cardCost = cardObj.getVar('cost') -- NEED DATA TABLE
+      baseCardCost = cardCost
+      -- if tarkin ability adding card, check if empire card
+      if nextCardTarkin and not zoneObj.hasTag('empire') then        
+        broadcastToAll(prefix .. "Next card purchased for free must be [" .. Color.fromString(playerColor) .. "]Empire[-] card, using [b]Grand Moff Tarkin[/b] ability", "White")
+        return
+      end
+
+      -- if at-at sabotage ability purchasing card, check if empire card
+      if nextCardATAT and not zoneObj.hasTag(factionTag) then        
+        broadcastToAll(prefix .. "Next card purchased must be  [" .. Color.fromString(playerColor) .. "]" .. capitalizedFaction .. "[-] card, using [b]AT-AT[/b] " .. attackAction .. " reward.", "White")
+        return
+      end
+      -- if falcon bounty hunt ability purchasing card, check if empire card
+      if nextCardFalcon and not zoneObj.hasTag(factionTag) then
+        broadcastToAll(prefix .. "Next card purchased must be [" .. Color.fromString(playerColor) .. "]" .. capitalizedFaction .. "[-] card, using [b]Millennium Falcon[/b] " .. attackAction .. " reward.", "White")
+        return
+      end
+
+      -- if leia adding card, check if rebel card
+      if nextCardLeia and not zoneObj.hasTag('rebel') then        
+        broadcastToAll(prefix .. "Next card purchased must be [" .. Color.fromString(playerColor) .. "]Rebellion[-] card, using [b]Princess Leia[/b] ability.", "White")
+        return
+      end
+
+      if nextCardContact and not zoneObj.hasTag('neutral') then
+        broadcastToAll(prefix .. "Next card purchased must be Neutral card, using [b]Underworld Contact[/b] ability.", "White")
+        return
+      end
+
+      if nextCardATTE and zoneObj.hasTag('factionTag') then        
+        broadcastToAll(prefix .. "Next card purchased must be [" .. Color.fromString(playerColor) .. "]" .. capitalizedFaction .. "[-] card, using [b]AT-TE[/b] " .. attackAction .. " reward.", "White")        
+        return nil
+      end
+
+      if nextCardAsajj and zoneObj.hasTag('factionTag') then
+        if not isAI then
+          broadcastToColor(prefix .. "Next card purchased must be [" .. Color.fromString(playerColor) .. "]" .. capitalizedFaction .. "[-] card, using [b]Asajj Ventress[/b] " .. attackAction .. " reward.", "White", color)
+        else
+          broadcastToAll(prefix .. "Next card purchased must be [" .. Color.fromString(playerColor) .. "]" .. capitalizedFaction .. "[-] card, using [b]Asajj Ventress[/b] " .. attackAction .. " reward.", "White")
+        end
+        return nil
+      end
+    end
+  end
+
+  -- outer rim pilot purchase
+  local cardInZone = false
+  if zoneCard == getObjectbyName("Zone Outer Rim") then
+    for _, zoneObj in ipairs(zoneCard.getObjects()) do
+
+      if zoneObj.tag == "Deck" then
+        if not forFree then
+          if currentResources >= 2 then
+            cardInZone = true
+            cardObj = zoneObj.takeObject()
+            cardCost = 2
+            baseCardCost = 2
+          elseif currentResources < 2 then
+            broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")
+            return
+          end
+        else
+          cardInZone = true
+          cardObj = zoneObj.takeObject()
+          cardCost = 0
+          baseCardCost = 2
+        end
+      end
+
+      if v.tag == "Card" then
+        if forFree ~= true then
+            if currentResources >= 2 then
+              cardInZone = true
+              cardObj = zoneObj
+              cardCost = 2
+              baseCardCost = 2
+            elseif currentResources < 2 then
+              broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")
+            return
+            end
+        else
+          cardInZone = true
+          cardObj = zoneObj
+          cardCost = 0
+          baseCardCost = 2
+        end
+      end
+    end
+
+    if not cardInZone or cardObj == nil then
+      broadcastToAll(prefix .. "No card in this slot to purchase!", "Yellow")
+      return nil
+    end
+  end
+
+  -- tag card, send purchased card home, deal next
+  local ownerTag = nil
+  local checkIfEnemy = nil
+  local cardTags = cardObj.getTags()
+  local factions = getFactions()
+  local currentFaction = nil
+  local enemyFaction = nil
+  if isBottom then
+    currentFaction = artAssetBottom.getName()
+    enemyFaction   = artAssetTop.getName()
+  elseif isTop or isAI then
+    currentFaction = artAssetTop.getName()
+    enemyFaction   = artAssetBottom.getName()
+  end
+
+  capitalizedFaction = currentFaction:gsub("^%l", string.upper)
+  capitalizedEnemyFaction = enemyFaction:gsub("^%l", string.upper)
+  ownerTag = isBottom and "bottom_owner" or "top_owner"
+  if isAI and not isBottom then
+    ownerTag = "ai_owner"
+  end
+  for _, tag in pairs(cardTags) do
+    if tag == enemyFaction then
+      checkIfEnemy = true
+      broadcastToAll(prefix .. "Unable to purchase enemy faction card!", "Yellow")
+      return
+    end
+  end
+
+  -- determine cost of card and current player's resource total,
+  -- then end the function if not enough resources to pay for card
+  local newTotal = nil
+  
+  -- handle Underworld Contact purchase action
+  if nextCardContact and cardObj.hasTag('neutral') then
+    local originalCardCost = cardCost
+    cardCost = cardCost -2
+
+    -- need to call the below stuff here as well to prevent discount message in case of not enough resources
+    if not forFree and currentResources < cardCost then      
+      broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")      
+      return
+    end
+
+    if cardCost < 0 then cardCost = 0 end
+    broadcastToAll(prefix .. "Original card cost of " .. originalCardCost .. " has been discounted by 2 to " .. cardCost .. ".", "White")
+  end
+
+  if not forFree and currentResources < cardCost then    
+    broadcastToAll(prefix .. "Not enough resources to purchase this card!", "White")
+    return
+  end
+  if not forFree then
+    if currentResources >= cardCost then
+      newTotal = currentResources - cardCost
+      counter.call('set_val', newTotal)
+      counterBoard.call('set_val', newTotal)
+    end
+  end
+
+  -- clean up nextCardContact
+  if nextCardContact and cardObj.hasTag('neutral') then
+    nextCardContact = false
+    for _, obj in ipairs(getObjects()) do
+      if obj.hasTag('nextCardContact') then
+        obj.clearButtons()
+        obj.removeTag('nextCardContact')
+      end
+    end
+  end
+
+  -- handle Fang Fighter
+  local forceOwner = getForceOwner()
+  if cardObj.getName() == "Fang Fighter" and (not isAI or (isBottom and isAI)) then
+    posCard = (isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 })
+    if isBottom then
+      if forceOwner == "Bottom" then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], who draws a card from the [b]Fang Fighter[/b] ability.", "White")
+        dealCard("bottom", 1)
+      end
+    elseif isTop then
+      if forceOwner == "Top" then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], who draws a card from the [b]Fang Fighter[/b] ability.", "White")
+        dealCard("top", 1)
+      end
+    end
+  end
+
+  -- handle Vulture Droid
+  if cardObj.getName() == "Vulture Droid" and (not isAI or (isBottom and isAI)) then
+    posCard = isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 }
+    broadcastToAll(prefix .. "[b]Vulture Droid[/b] added to [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] hand via it's ability.", "White")
+  end
+
+  -- handle Quarren Mercenary
+  if cardObj.getName() == 'Quarren Mercenary' and (not isAI or (isBottom and isAI)) then
+    if isBottom and forceOwner == "Bottom" then
+      broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], who may exile two cards out of hand or discard pile.", "White")
+    elseif isBottom and forceOwner ~= "Bottom" then
+      broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], who may only exile one card out of hand or discard pile.", "White")
+    elseif isTop and forceOwner == "Top" then
+      broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], who may exile two cards out of hand or discard pile.", "White")
+    elseif isTop and forceOwner ~= "Top" then
+      broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], who may only exile one card out of hand or discard pile.", "White")
+    end
+  end
+
+  -- handle Super Commando
+  if cardObj.getName() == "Super Commando" and (not isAI or (isBottom and isAI)) then
+    if isBottom then
+      posCard = { 0.00, 1.46, -43.00 }
+    elseif isTop then
+      posCard = { 0.00, 1.46, 43.00 }
+    end
+    broadcastToAll(prefix .. "[b]Super Commando[/b] added to [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] hand via purchase ability, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually exile 1 card.", "White")
+  end
+
+  -- handle Princess Leia
+  if nextCardLeia then
+    removeAbilityButtons(getObjectbyName("Princess Leia"))
+  end
+
+  -- handle Hondo Onaka
+  local costOver4 = baseCardCost > 3 and true or false
+  if not isAI or (isBottom and isAI) then
+    for _, zoneObj in ipairs(zoneInPlay.getObjects()) do
+      if zoneObj.getName() == "Hondo Onaka" and
+      (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then        
+        if costOver4 then
+          metConditionHondo = true
+          zoneObj.highlightOn(playerColor)
+        else
+          metConditionHondo = false
+          zoneObj.highlightOff()
+        end
+      end
+    end
+  end
+
+  -- handle Grand Moff Tarkin
+  if nextCardTarkin then
+    posCard = isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 }
+    removeAbilityButtons(getObjectbyName("Grand Moff Tarkin"))
+  end
+
+  -- execution
+  if not isBottom and isAI then
+    rotCard = { 0.00, 180.00, 180.00 }
+    posCard = { -1.88, 3.00, 20.39 }
+  end
+
+  -- handle AI Jar Jar Binks
+  if isAI and isTop and cardObj.getName() == "Jar Jar Binks" then
+    rotCard = { 0.00, 180.00, 0.00 }
+    posCard = { -8.50, 1.00, -31.00 }
+    moveForceTrack(buttonForceTop, 1)
+  end
+  cardObj.setRotation(rotCard)
+  cardObj.setPositionSmooth(posCard, false, true)
+  cardObj.addTag(ownerTag)
+  if not isAI then
+    cardObj.addTag('just_bought')
+  end
+
+  if nextCardTarkin then
+    cardObj.addTag("tarkin_exile")
+    cardObj.setDescription("WILL BE EXILED VIA TARKIN ABILITY AT END OF TURN!")
+    cardObj.highlightOn("Blue")
+  end
+
+  if button ~= getObjectbyNameAndNotes("Button Purchase", "7") and button ~= getObjectbyNameAndNotes("Button Purchase", "8") then
+    Wait.time(function()
+
+      if nextCardNute then
+        bagExile = isBottom and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
+        handleNuteGunray(bagExile, playerColor)
+      else
+        drawGalaxyCard()
+      end
+
+    end, 1)
+  end
+
+  if not forFree then
+    if Player[color].steam_name ~= nil then
+      broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
+    else
+      if isAI then
+        broadcastToAll("AI [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
+      end
+    end
+
+  elseif forFree then
+    if Player[color].steam_name ~= nil then
+      broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
+    else
+      if isAI then
+        broadcastToAll("AI [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
+      end
+    end
+  end
+
+  -- cleanup
+  forFree = false
+
+  -- remove relevant card ability buttons
+  for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+    if zoneObj.hasTag('twilek_ability') then
+      removeAbilityButtons(zoneObj)
+      zoneObj.removeTag('twilek_ability')
+    end
+  end
+  
+  -- reset vars
+  nextCardToHandBottom = false
+  nextCardToDeckBottom = false
+  nextCardToHandBottom = false
+  nextCardToDeckTop = false
+  nextCardATAT = false
+  nextCardFalcon = false
+  nextCardLeia = false
+  nextCardTarkin = false
+  nextCardContact = false
+  nextCardATTE = false
+  nextCardAsajj = false
+
+  for _, obj in ipairs(getObjects()) do
+    if obj.hasTag('nextCardATAT') then
+      obj.clearButtons()
+      if obj.getTag('nextCardATAT') then
+        obj.removeTag('nextCardATAT')
+      end
+    end
+    if obj.hasTag('nextCardFalcon') then
+      removeAbilityButtons(obj)
+      if obj.hasTag('nextCardFalcon') then
+        obj.removeTag('nextCardFalcon')
+      end
+    end
+    if obj.hasTag('nextCardLeia') then
+      removeAbilityButtons(obj)
+      if obj.hasTag('nextCardLeia') then
+        obj.removeTag('nextCardLeia')
+      end
+    end
+    if obj.hasTag('nextCardTarkin') then
+      removeAbilityButtons(obj)
+      if obj.hasTag('nextCardTarkin') then
+        obj.removeTag('nextCardTarkin')
+      end
+    end
+    if obj.hasTag('nextCardContact') then
+      removeAbilityButtons(obj)
+      if obj.hasTag('nextCardContact') then
+        obj.removeTag('nextCardContact')
+      end
+    end
+    if obj.hasTag('nextCardATTE') then
+      removeAbilityButtons(obj)
+      if obj.hasTag('nextCardATTE') then
+        obj.removeTag('nextCardATTE')
+      end
+    end
+    if obj.hasTag('nextCardAsajj') then
+      removeAbilityButtons(obj)
+      if obj.hasTag('nextCardAsajj') then
+        obj.removeTag('nextCardAsajj')
+      end
+    end
+  end
+end -- end purchaseCard()
 
 
 function repairBase(count, tags)
