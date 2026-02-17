@@ -377,7 +377,7 @@ function purchase_card(parms)
         Wait.time(function()
         if Global.getVar('nextCardNute') then
             exile_bag = (isBottom and getObjectFromGUID("96e6ce") or getObjectFromGUID("051249"))
-            padGalaxyDiscard.call('handle_nute_gunray', {exile_bag=exile_bag, color=color})
+            padGalaxyDiscard.call('handleNuteGunray', {exile_bag=exile_bag, color=color})
         else
             padGalaxyDeck.call('draw_galaxy_card')
         end

@@ -8,7 +8,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "a03936/ui_button_action(3edf5f)" image="Ability Blue"></Button>
+    <Button onClick   = "a03936/buttonActionXML(3edf5f)" image="Ability Blue"></Button>
 </Panel>
 
 <Panel
@@ -21,5 +21,5 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "a03936/ui_button_action(3edf5f)" image="Ability Purple"></Button>
+    <Button onClick   = "a03936/buttonActionXML(3edf5f)" image="Ability Purple"></Button>
 </Panel>

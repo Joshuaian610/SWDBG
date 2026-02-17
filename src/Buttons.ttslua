@@ -1,5 +1,6 @@
 -- this require page will contain button related functions and functionality
 
+-- ANIMATE, INIT, AND REMOVE FUNCTIONS
 
 function animateButtonDiscardRandom(button)
   -- handles animation of discard random buttons
@@ -55,7 +56,7 @@ function initAbilityButton(card)
 
   if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
     card.createButton({
-      click_function = "primary_button_action", -- NEED REQUIRE
+      click_function = "primaryButtonAction", -- NEED REQUIRE
       function_owner = self,
       label          = '',
       position       = { 0, 0.5, 1.23 },
@@ -72,7 +73,7 @@ function initAbilityButton(card)
   if card.getName() == "Jar Jar Binks" and (not card.hasTag('bottom_owner') and not card.hasTag('top_owner')) then
     color, hoverColor = getButtonColors("Purple")
     card.createButton({
-      click_function = "primary_button_action", -- NEED REQUIRE
+      click_function = "primaryButtonAction", -- NEED REQUIRE
       function_owner = self,
       label          = '',
       position       = { 0, 0.5, 1.23 },
@@ -106,7 +107,7 @@ function initAbilityButtonSec(card, primaryTooltip, secondaryTooltip)
 
   if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
     card.createButton({
-      click_function = "primary_button_action", -- NEED REQUIRE
+      click_function = "primaryButtonAction", -- NEED REQUIRE
       function_owner = self,
       label          = '',
       position       = { -.545, 0.5, 1.23 },
@@ -119,7 +120,7 @@ function initAbilityButtonSec(card, primaryTooltip, secondaryTooltip)
       tooltip        = "Use " .. card.getName() .. " ability for " .. primaryTooltip .. "."
     })
     card.createButton({
-      click_function = "secondary_button_action", -- NEED REQUIRE
+      click_function = "secondaryButtonAction", -- NEED REQUIRE
       function_owner = self,
       label          = '',
       position       = { .545, 0.5,1.23 },
@@ -300,3 +301,1525 @@ function removeForceButtons(obj)
   obj.UI.hide('force_button_orange')
   obj.UI.hide('force_button_red')
 end -- end removeForceButtons()
+
+
+
+-- BUTTION ACTION FUNCTIONS
+
+function buttonActionXML(player, value, _)
+  primaryButtonAction(getObjectFromGUID(value), player.color, _)
+end -- end buttonActionXML()
+
+
+function buttonActionSecXML(player, value, _)
+  secondaryButtonAction(getObjectFromGUID(value), player.color, _)
+end -- end buttonActionSecXML()
+
+
+function handleNuteGunray(bagExile, playerColor)
+  -- opens player's exile bag automatically upon Nute Gunray action trigger execution
+  local exileIsValid = false
+  for _, object in ipairs(bagExile.getObjects()) do
+    if object.name ~= "B1 Battle Droid" and object.name ~= "Separatist Shuttle" and object.name ~= "Dark Side Agent" then
+      exileIsValid = true
+    end
+  end
+
+  if exileIsValid then
+    broadcastToAll("Nute Gunray ability applied on card leaving galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] must replace it with a non-starter card from their exile.", "White")
+    bagExile.Container.search(playerColor)
+  else
+    broadcastToAll("Nute Gunray ability applied on card leaving galaxy row, but there are no valid [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] cards in their exile to replace. Drawing new card from galaxy deck.", "White")
+    drawGalaxyCard()
+  end
+
+  getObjectbyName("Nute Gunray").clearButtons()
+  nextCardNute = false
+end -- end handleNuteGunray()
+
+
+function handleProtocolDroid(matchTag, button, capitalizedFaction, playerColor)
+  local isBottom = button.hasTag('bottom_owner')
+  local deckGalaxy = nil
+  local rotDeckGalaxy = { 0.00, 90.00, 180.00 }
+  local posDeckGalaxy = { -28.00, 5.00, 2.50 }
+  deckGalaxy = getGalaxyDeck()
+  if deckGalaxy == nil then
+    for _, object in ipairs(zoneGalaxyDiscard.getObjects()) do
+      if object.type == "Deck" then
+        deckGalaxy = object
+        deckGalaxy.setRotation(rotDeckGalaxy)
+        deckGalaxy.setPositionSmooth(posDeckGalaxy, false, true)
+        deckGalaxy.shuffle()
+      end
+    end
+  end
+
+  local card = deckGalaxy.takeObject()
+  if card.hasTag(matchTag) then
+    broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card drawn: " .. card.getName() .. ". Manually swap with Neutral unit in galaxy row.", "White")
+    card.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+    card.setPosition({ -33.52, 0.15, 0.00 })
+
+  elseif not card.hasTag(matchTag) then
+    broadcastToAll("Non [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card drawn: " .. card.getName() .. ". It has been discarded.", "White")
+    card.setRotation({ 0.00, 90.00, 0.00 })
+    card.setPositionSmooth({ -28.00, 3.50, -2.5 }, false, true)
+    Wait.time(function()
+    handleProtocolDroid(match_tag, button, capitalizedFaction, color)
+    end, 1)
+  end
+end -- end handleProtocolDroid()
+
+
+function obiWanRepeatAction(button, playerColor)
+  -- assists in handling Obi Wan ability actions
+  primaryButtonAction(button, playerColor, _)
+end -- end obiWanRepeatAction()
+
+
+function kenobiHand(_, playerColor)
+  getObjectbyName("Obi-Wan Kenobi").clearButtons()
+  Wait.frames(function()
+    drawRevealed()
+    broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]Republic[-] has chosen to draw Obi-Wan Kenobi via his ability, and will reveal another card for Mace Windu.", "White")
+    Wait.time(function() obiWanRepeatAction(getObjectbyName("Mace Windu"), playerColor) end, 1)
+  end, 1)
+end -- end kenobiHand()
+
+
+function kenobiMace(_, playerColor)
+  getObjectbyName("Obi-Wan Kenobi").clearButtons()
+  returnRevealed()
+  broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]Republic[-] has chosen to return Obi-Wan Kenobi for +5 Attack to Mace Windu.", "White")
+end -- end kenobiMace()
+
+
+function primaryButtonAction(button, playercolor, _)
+  local isBottom = button.hasTag('bottom_owner')
+  local isTop = button.hasTag('top_owner')
+  local bottomColor, topColor = getPlayerColors()
+  if playercolor == bottomColor then
+    isBottom = true
+  else
+    isTop = true
+  end
+  local isAI = checkIfAI()
+  local rotOpponentDIscard = isBottom and { 0.00, 0.00, 0.00 } or { 0.00, 180.00, 0.00 }
+  local counter = isBottom and counterResourceBottom or counterResourceTop
+  local counterBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
+  local currentResourceCount = counter.getVar('val')
+  local posOpponentDiscard = isBottom and { 8.50, 1.50, 31.00 } or { -8.50, 1.50, -31.00 }
+  local forceOwner = getForceOwner()
+  local bottomFaction, topFaction = getPlayerAreas()
+  local faction = isBottom and bottomFaction or topFaction
+  local opponentFaction = isBottom and topFaction or bottomFaction
+  local capitalizedFaction = faction:gsub("^%l", string.upper)
+  local capitalizedOpponentFaction = opponentFaction:gsub("^%l", string.upper)
+  local capitalizedBottomFaction = bottomFaction:gsub("^%l", string.upper)
+  local capitalizedTopFaction = topFaction:gsub("^%l", string.upper)
+  local playerColor = isBottom and bottomColor or topColor
+  local opponentColor = isBottom and topColor or bottomColor
+  local buttonForce = isBottom and buttonForceBottom or buttonForceTop
+  local cardName = button.getName()
+  local attackAction = (faction == "empire" or faction == "separatist" or faction == "mandalorian") and "Bounty Hunt" or "Sabotage"
+  local area = isBottom and "bottom" or "top"
+  local zoneBase = isBottom and zoneBaseBottom or zoneBaseTop
+  local deckGalaxy = getGalaxyDeck()
+  local ownerTag = nil
+  local bagExile = (bottomFaction == "separatist") and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
+  local zonesGalaxyRow = {
+    zoneGalaxyRow1,
+    zoneGalaxyRow2,
+    zoneGalaxyRow3,
+    zoneGalaxyRow4,
+    zoneGalaxyRow5,
+    zoneGalaxyRow6,
+  }
+  local padRepublicReveal = getObjectbyName("Pad Republic Reveal")
+
+  if button.hasTag('bottom_owner') then
+    ownerTag = 'bottom_owner'
+  elseif button.hasTag('top_owner') then
+    ownerTag = 'top_owner'
+  end
+
+  -- helper function to handle get of revealed card in case of discard shuffe required
+  local function findRevealedCard(isBottom)
+    for _, object in pairs(isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects() do
+      if object.type == "Card" then
+        return object
+      end
+    end
+    return nil
+  end
+
+  local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
+  if isBottom or isTop or cardName == "Jar Jar Binks" then
+    
+    ----- ORIGINAL NEUTRAL PRIMARY ACTION BUTTONS -----
+    if cardName == "Outer Rim Pilot" then
+      broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-]: [b]Outer Rim Pilot[/b] ability used to self exile.", "White")
+      moveForceTrack(buttonForce, 1)
+      exileCard(playerColor, button)
+      metConditionDroideka = true
+
+    elseif cardName == "Jawa Scavenger" then
+      broadcastToAll(prefix .. "[b]Jawa Scavenger[/b] ability used to self exile, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may purchase from the discard.", "White")
+      exileCard(playerColor, button)
+      metConditionDroideka = true
+
+    elseif cardName == "Z-95 Headhunter" then
+      local opponentTag = nil
+      local shipInPlay = false
+      if button.hasTag('bottom_owner') and isBottom then
+        opponentTag = "top_owner"
+      elseif button.hasTag('top_owner') and isTop then
+        opponentTag = "bottom_owner"
+      end
+      if isAI then
+        opponentTag = "ai_owner"
+      end
+      for k, v in pairs(zoneInPlay.getObjects()) do
+        if v.hasTag(opponentTag) and v.hasTag('ship') then
+          shipInPlay = true
+        end
+      end
+      if shipInPlay then
+        broadcastToAll(prefix .. "[b]Z-95 Headhunter[/b] ability used while [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] has ship in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has drawn a card.", "white")
+        dealCard(area, 1)
+      else
+        broadcastToAll("[b]Z-95 Headhunter[/b] ability used while [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] has no ships in play, no card drawn.", "White")
+      end
+
+    elseif cardName == "Kel Dor Mystic" then
+      broadcastToAll(prefix .. "[b]Kel Dor Mystic[/b] ability used to self exile, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually exile a card from hand or discard.", "White")
+      exileCard(playerColor, button)
+
+    elseif cardName == "Bossk" then
+      broadcastToAll(prefix .. "[b]Bossk[/b] ability used after " .. attackAction .. ", [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has gained a Force.", "White")
+      moveForceTrack(buttonForce, 1)
+
+    elseif cardName == "C-Roc Cruiser" then
+      broadcastToAll(prefix .. "[b]C-Roc Cruiser[/b] ability used to discard a card, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] removed 3 damage from their base.", "White")
+      repairBase(3, button.getTags())
+
+    elseif cardName == "Lobot" then
+      broadcastToAll(prefix .. "[b]Lobot[/b] has gained +2 Attack from it's ability.", "White")
+
+    elseif cardName == "Twi'lek Smuggler" then
+      broadcastToAll(prefix .. "[b]Twi'lek Smuggler[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-]'s next purchased card will go to top of their deck.", "White")
+      if isBottom then
+        nextCardToDeckBottom = true
+      elseif isTop then
+        nextCardToDeckTop = true
+      end
+      button.addTag('twilek_ability')
+
+    elseif cardName == "Dengar" then
+      broadcastToAll(prefix .. "[b]Dengar[/b] ability used after ".. attackAction .. ", [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has gained 2 resources.", "White")
+      addResource(area, 2)
+
+    elseif cardName == "HWK-290" then
+      broadcastToAll(prefix .. "[b]HWK-290[/b] ability used to self exile, and 4 damage has been repaired from [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-]'s base.", "White")
+      repairBase(4, button.getTags())
+      exileCard(playerColor, button)
+
+    elseif cardName == "IG-88" then
+      broadcastToAll(prefix .. "]b]IG-88[/b] ability used after " .. attackAction .. ", [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually exile a card from hand or discard.", "White")
+    
+    elseif cardName == "Nebulon-B Frigate" then
+      broadcastToAll(prefix .. "[b]Nebulon-B Frigate[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has repaired 3 base damage.", "White")
+      repairBase(3, button.getTags())
+    
+    elseif cardName == "Lando Calrissian" then
+      if ((isBottom and forceOwner == "Bottom") or (isTop and forceOwner == "Top")) and not isAI then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Lando Calrissian[/b] ability used. [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has drawn a card, and [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] must discard a card.", "White")
+      elseif (isBottom and forceOwner == "Bottom") or (isTop and forceOwner == "Top") then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Lando Calrissian[/b] ability used. [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has drawn a card, however AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] does not discard.", "White")
+      else
+        broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Lando Calrissian[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has drawn a card.", "White")
+      end
+      dealCard(area, 1)
+
+    elseif cardName == "Jabba's Sail Barge" then
+      broadcastToAll(prefix .. "[b]Jabba's Sail Barge[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually add a 'Bounty Hunter' from discard to hand.", "White")
+      -- check if discard pile exists
+      local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
+      local discardFound = false
+      local discardPile = nil
+      for _, object in ipairs(zoneDiscard.getObjects()) do
+        if object.type == "Card" or object.type == "Deck" then
+          discardFound = true
+          discardPile = object
+        end
+      end
+      if not discardFound then
+        broadcastToAll("No discard pile available, Jabba's Sail Barge ability is ineffective.", "White")
+      end
+      -- search discard
+      if discardPile ~= nil then
+        if discardPile.type == "Deck" then
+          discardPile.Container.search(playerColor)
+        end
+      end
+
+    elseif cardName == "Jabba the Hutt" then
+      if isBottom then
+        if forceOwner == "Bottom" then
+          broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has manually exiled a card from hand, and drawn 2 cards from [b]Jabba the Hut[/b] ability.", "White")
+          dealCard(area, 2)
+        else
+          broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has manually exiled a card from hand, and drawn a card from [b]Jabba the Hut[/b] ability.", "White")
+          dealCard(area, 1)
+        end
+      elseif isTop then
+        if forceOwner == "Top" then
+          broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has manually exiled a card from hand, and drawn 2 cards from [b]Jabba the Hut[/b] ability.", "White")
+          dealCard(area, 2)
+        else
+          broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has manually exiled a card from hand, and drawn a card from [b]Jabba the Hut[/b] ability.", "White")
+          dealCard(area, 1)
+        end
+      else
+        return nil
+      end
+
+
+----- EXPANSION NEUTRAL PRIMARY ACTION BUTTONS -----
+    elseif cardName == "Jar Jar Binks" then
+      -- costs 2 resources when using button
+      if currentResourceCount < 2 then
+        broadcastToAll(prefix .. "2 Resources are required to use this ability.", "White")
+        return
+      else
+        local discardLocation = isAI and "muster" or "discard"
+        broadcastToAll(prefix .. "[b]Jar Jar Binks[/b] ability used by [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] to place [b]Jar Jar Binks[/b] in [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] " .. discardLocation .. ".", "White")
+        -- gain force for purchaser
+        moveForceTrack(buttonForce, 1)
+        -- place jar jar in purchaser's opponent's discard
+        if isAI then
+          rotOpponentDIscard = { 0.00, 0.00, 180.00 }
+          posOpponentDiscard = { -1.88, 0.50, 20.39 }
+        end
+        button.setRotation(rotOpponentDIscard)
+        button.setPosition(posOpponentDiscard)
+        local newResourceCount = currentResourceCount - 2
+        counter.call('set_val', newResourceCount)
+        counterBoard.call('set_val', newResourceCount)
+        -- if used from row, draw replacement row card
+        if not button.hasTag('bottom_owner') and not button.hasTag('top_owner') then
+          drawGalaxyCard()
+        end
+        if button.hasTag('bottom_owner') then button.removeTag('bottom_owner') end
+        if button.hasTag('top_owner') then button.removeTag('top_owner') end
+      end
+
+    elseif cardName == "Protocol Droid" then
+      -- check if neutrals are in galaxy row
+      local neutralFound = false
+      for i = 1, 6 do
+        for _, object in ipairs(zonesGalaxyRow[i].getObjects()) do
+          if object.hasTag('neutral') then
+            neutralFound = true
+          end
+        end
+      end
+      if not neutralFound then
+        broadcastToAll(prefix .. "No neutral cards are in the galaxy row to swap with currently.", "White")
+        return nil
+      else
+        broadcastToAll(prefix .. "[b]Protocol Droid[/b] ability used by [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-].", "White")
+        -- exile self
+        exileCard(playerColor, button)
+        -- discard cards from top of galaxy deck one by one until a faction card is drawn
+        local factionTag = faction
+        if faction == "rebellion" then factionTag = "rebel" end
+        handleProtocolDroid(factionTag, button, capitalizedFaction, playerColor)
+      end
+
+    elseif cardName == "Weequay Pirate" then
+      -- check for another owned neutral in play
+      local neutralFound = false
+      for _, object in ipairs(zoneInPlay.getObjects()) do
+        if object.hasTag('neutral') and object.hasTag(ownerTag) and object ~= button then
+          neutralFound = true
+        end
+      end
+      -- draw card if there is one, return nil if not
+      if not neutralFound then
+        broadcastToAll(prefix .. "No other owned neutral cards are in play, no card drawn by [b]Weequay Pirate[/b] ability.", "White")
+      else
+        broadcastToAll(prefix .. "[b]Weequay Pirate[/b] ability used by [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], a card has been drawn.", "White")
+        dealCard(area, 1)
+      end
+
+    -- elseif cardName == "Aurra Sing" then
+      -- check row for bounty hunter, modify effective fight counter
+
+    elseif cardName == "Underworld Contact" then
+      -- check force owner, if force give -2 discount
+      if not (forceOwner == "Bottom" and bottomFaction == faction) and
+      not (forceOwner == "Top" and topFaction == faction) then
+        broadcastToAll(prefix .. "Force is not with [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], [b]Underworld Contact[/b] discount not applied", "White")
+      else
+        nextCardContact = true
+        button.addTag('next_card_contact')
+        broadcastToAll(prefix .. "[b]Underworld Contact[/b] ability used, 2 Resource discount to next Neutral card purchase.", "White")
+      end
+
+    elseif cardName == "Hutt Fighter" then
+      -- check for 2 owned resources
+      if currentResourceCount < 2 then
+        broadcastToAll(prefix .. "2 Resources are required to use this ability.", "White")
+        return nil
+      end
+      broadcastToAll(prefix .. "[b]Hutt Fighter[/b] ability used by [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-]., Hutt Fighter gains +2 Attack.", "White")
+      currentResourceCount = currentResourceCount - 2
+      counter.call('set_val', currentResourceCount)
+      counterBoard.call('set_val', currentResourceCount)
+
+    elseif cardName == "Latts Razzi" then
+      local bhCount = 0
+      for _, object in pairs(zoneInPlay.getObjects()) do
+        if object.hasTag('bounty_hunter') then
+          bhCount = bhCount + 1
+        end
+      end
+      broadcastToAll(prefix .. "[b]Latts Razzi[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] after " .. attackAction .. ", [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] gains " .. bhCount .. " resources.", "White")
+      addResource(area, bhCount
+    )
+    -- elseif cardName == "Super Commando" then
+      -- no button actions, action happens when purchasing
+
+    elseif cardName == "Zam Wesell" then
+      broadcastToAll(prefix .. "[b]Zam Wesell[/b] has gained +2 Attack from it's ability.", "White")
+
+    elseif cardName == "Assassin Droid" then
+      broadcastToAll(prefix .. '[b]Assassin Droid[/b] ability used, ' .. capitalizedFaction .. ' may use the row discard button to "' .. attackAction .. '" a neutral card in the galaxy row, and manually gain the resource reward.', playerColor)
+   
+    elseif cardName == "Embo" then
+      local neutralInPlayCount = 0
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag(ownerTag) and zoneObj.hasTag('neutral') and zoneObj.getName() ~= "Embo" then
+          neutralInPlayCount = neutralInPlayCount + 1
+        end
+      end
+      if neutralInPlayCount > 6 then neutralInPlayCount = 6 end
+      broadcastToAll(prefix .. "[b]Embo[/b] ability used, they gain +" .. neutralInPlayCount .. " Attack this turn.", "White")
+
+    elseif cardName == "Gauntlet Starfighter" then
+      -- check if discard pile exists
+      local zoneDiscard  = zoneGalaxyDiscard
+      local discardFound = false
+      local discardPile  = nil
+      for _, object in ipairs(zoneDiscard.getObjects()) do
+        if object.type == "Card" or object.type == "Deck" then
+          discardFound = true
+          discardPile  = object
+        end
+      end
+      -- exile self, broadcast to manually purchase
+      broadcastToAll(prefix .. "[b]Gauntlet Starfighter[/b] ability used to self exile, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually pull card from galaxy discard, pay for it, and place it in hand.", "White")
+      exileCard(playerColor, button)
+      if not discardFound then
+        broadcastToAll(prefix .. "No galaxy discard pile available, [b]Gauntlet Starfighter[/b] ability is ineffective.", "White")
+      end
+      -- search galaxy discard
+      if discardPile ~= nil then
+        if discardPile.type == "Deck" then
+          discardPile.Container.search(playerColor)
+        end
+      end
+
+    elseif cardName == "Jango Fett" then
+      broadcastToAll(prefix .. "[b]Jango Fett[/b] ability used by [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] after " .. attackAction .. ", [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] draws a card.", "White")
+      dealCard(area, 1)
+
+    elseif cardName == "Cad Bane" then
+      -- check for 3 owned neutrals in play
+      local neutralCount = 0
+      for _, object in ipairs(zoneInPlay.getObjects()) do
+        if object.hasTag('neutral') and object.hasTag(ownerTag) then
+          neutralCount = neutralCount + 1
+        end
+      end
+      local plural = "cards"
+      if neutralCount == 1 then plural = "card" end
+      if neutralCount < 3 then
+        broadcastToAll(prefix .. neutralCount .. " Neutral " .. plural .. " in play for [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-], unable to meet requirements for [b]Cad Bane[/b] ability.", "White")
+      else
+        -- broadcast to manually destroy capital ship or exile card
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has " .. neutralCount .. " neutral cards in play, and may manually destroy enemy ship, or exile a card from hand or discard via [b]Cad Bane[/b] ability.", "White")
+      end
+
+    elseif cardName == "Fett's Firespray" then
+      -- check if discard pile exists
+      local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
+      local discardFound = false
+      local discardPile  = nil
+      for _, zoneObj in ipairs(zoneDiscard.getObjects()) do
+        if zoneObj.type == "Card" or zoneObj.type == "Deck" then
+          discardFound = true
+          discardPile  = zoneObj
+        end
+      end
+      if not discardFound then
+        broadcastToAll(prefix .. "No discard pile available, [b]Fett's Firespray[/b] ability is ineffective.", "White")
+      end
+      -- broadcast to add neutral from discard to hand
+      broadcastToAll(prefix .. "[b]Fett's Firespray[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually add a neutral to hand, it gains +2 attack if 'Bounty Hunter' and attacking row this turn.", "White")
+      -- search discard
+      if discardPile ~= nil then
+        if discardPile.type == "Deck" then
+          discardPile.Container.search(playerColor)
+        end
+      end
+
+    elseif cardName == "Hondo Onaka" then
+      if metConditionHondo then
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .." has met [b]Hondo Onaka[/b] ability condition, and draws a card.", "White")
+        dealCard(area, 1)
+        metConditionHondo = false
+        button.highlightOff()
+      else
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has not met [b]Hondo Onaka[/b] ability condition, no card drawn.", "White")
+      end
+
+
+----- EMPIRE PRIMARY ACTION BUTTONS -----
+    elseif cardName == "Inquisitor" then
+      broadcastToAll(prefix .. "[b]Inquisitor[/b] has gained +1 Attack from it's ability.", "White")
+
+    elseif cardName == "Tie Fighter" then
+      local shipFound = false
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag('ship') and zoneObj.hasTag(ownerTag) then
+          shipFound = true
+        end
+      end
+      if shipFound then
+        broadcastToAll(prefix .. "[b]Tie Fighter[/b] ability used while ship in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has drawn a card.", "White")
+        dealCard(area, 1)
+      else
+        broadcastToAll(prefix .. "[b]Tie Fighter[/b] ability used while ship not in play, no card drawn.", "White")
+      end
+
+    elseif cardName == "Scout Trooper" then
+      deckGalaxy = getGalaxyDeck()
+      local topCard = deckGalaxy.takeObject()
+      for i = 1, #buttonsGalaxyPurchase do
+        buttonsGalaxyPurchase[i].setInvisibleTo(allColors)
+      end
+      for i = 1, #buttonsGalaxyDiscard do
+        buttonsGalaxyDiscard[i].setInvisibleTo(allColors)
+      end
+      topCard.setRotation({ 0.00, 90.00, 0.00 })
+      topCard.setPosition({ -28.00, 1.4, 2.50 })
+      deckGalaxy.lock()
+      Wait.time(function() topCard.lock() end, .75)
+      if topCard.hasTag('neutral') then
+        broadcastToAll(prefix .. "[b]Scout Trooper[/b] ability used to reveal a Neutral card: " .. topCard.getName() .. ".", "White")
+        Wait.time(function()
+
+          broadcastToAll(prefix .. "Returning Neutral card [b]" .. topCard.getName() .. "[/b] to top of galaxy deck.", "White")
+          topCard.setLock(false)
+          deckGalaxy.setLock(false)
+          topCard.setRotation({ 0.00, 90.00, 180.00 })
+          topCard.setPosition({ -28.00, 1.4, 2.50 })
+          deckGalaxy.putObject(topCard)
+
+        end,3)
+      elseif topCard.hasTag('empire') then
+        broadcastToAll(prefix .. "[b]Scout Trooper[/b] ability used to reveal [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card [b]" .. topCard.getName() .. "[/b], +1 Force has been gained.", "White")
+        moveForceTrack(buttonForce, 1)
+        Wait.time(function()
+
+          broadcastToAll(prefix .. "Returning [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card [b]" .. topCard.getName() .. "[/b] to top of galaxy deck.", "White")
+          topCard.setLock(false)
+          deckGalaxy.setLock(false)
+          topCard.setRotation({ 0.00, 90.00, 180.00 })
+          topCard.setPosition({ -28.00, 1.4, 2.50 })
+          deckGalaxy.putObject(topCard)
+
+        end,3)
+      elseif topCard.hasTag('rebel') or topCard.hasTag('republic') or topCard.hasTag('separatist') then
+        broadcastToAll(prefix .. "[b]Scout Trooper[/b] ability used to reveal [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] card: [b]" .. topCard.getName() .. "[/b].", "White")
+        Wait.time(function()
+
+          broadcastToAll(prefix .. "Discarding [b]" .. topCard.getName() .. "[/b].", "White")
+          topCard.setLock(false)
+          deckGalaxy.setLock(false)
+          topCard.setRotation({ 0.00, 90.00, 0.00 })
+          topCard.setPosition({ -28.00, 1.4, -2.50 })
+
+        end,3)
+      end
+      Wait.time(function()
+
+        for i = 1, #buttonsGalaxyPurchase do
+          buttonsGalaxyPurchase[i].setInvisibleTo({})
+        end
+        for i = 1, #buttonsGalaxyDiscard do
+          buttonsGalaxyDiscard[i].setInvisibleTo({})
+        end
+
+      end,3)
+    elseif cardName == "Tie Bomber" then
+      broadcastToAll(prefix .. "[b]Tie Bomber[/b] ability used to discard a card from the galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually do so now.", "White")
+      
+    elseif cardName == "Gozanti Cruiser" then
+      broadcastToAll(prefix .. "[b]Gozanti Cruiser[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] after manually discarding a card, and another card was drawn.", "White")
+      dealCard(area, 1)
+
+    elseif cardName == "Tie Interceptor" then
+      deckGalaxy = getGalaxyDeck
+      local topCard = deckGalaxy.takeObject()
+      for i = 1, #buttonsGalaxyPurchase do
+        buttonsGalaxyPurchase[i].setInvisibleTo(allColors)
+      end
+      for i = 1, #buttonsGalaxyDiscard do
+        buttonsGalaxyDiscard[i].setInvisibleTo(allColors)
+      end
+      topCard.setRotation({ 0.00, 90.00, 0.00 })
+      topCard.setPosition({ -28.00, 1.4, 2.50 })
+      deckGalaxy.lock()
+      Wait.time(function() topCard.lock() end, .75)
+      if topCard.hasTag('neutral') then
+        broadcastToAll(prefix .. "[b]Tie Interceptor[/b] ability used to reveal Neutral card [b]" .. topCard.getName() .. "[/b].", "White")
+        Wait.time(function()
+
+          broadcastToAll(prefix .. "Returning Neutral card [b]" .. topCard.getName() .. "[/b] to top of galaxy deck.", "White")
+          topCard.setLock(false)
+          deckGalaxy.setLock(false)
+          topCard.setRotation( {0.00, 90.00, 180.00} )
+          topCard.setPosition( {-28.00, 1.4, 2.50} )
+          deckGalaxy.putObject(topCard)
+
+        end,3)
+      elseif topCard.hasTag('empire') then
+        broadcastToAll(prefix .. "[b]Tie Interceptor[/b] ability used to reveal [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card [b]" .. topCard.getName() .. "[/b], a card has been drawn.", "White")
+        dealCard(area, 1)
+        Wait.time(function()
+
+          broadcastToAll(prefix .. "Returning [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card [b]" .. topCard.getName() .. "[/b] to top of galaxy deck.", "White")
+          topCard.setLock(false)
+          deckGalaxy.setLock(false)
+          topCard.setRotation({ 0.00, 90.00, 180.00 })
+          topCard.setPosition({ -28.00, 1.4, 2.50 })
+          deckGalaxy.putObject(topCard)
+
+        end,3)
+      elseif topCard.hasTag('rebel') or topCard.hasTag('republic') or topCard.hasTag('separatist') then
+        broadcastToAll(prefix .. "[b]Tie Interceptor[/b] ability used to reveal [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] card: [b]" .. topCard.getName() .. "[/b].", "White")
+        Wait.time(function()
+
+          broadcastToAll(prefix .. "Discarding [b]" .. topCard.getName() .. "[/b].", "White")
+          topCard.setLock(false)
+          deckGalaxy.setLock(false)
+          topCard.setRotation({ 0.00, 90.00, 0.00 })
+          topCard.setPosition({ -28.00, 1.4, -2.50 })
+
+        end,3)
+      end
+      Wait.time(function()
+          
+        for i = 1, #buttonsGalaxyPurchase do
+          buttonsGalaxyPurchase[i].setInvisibleTo({})
+        end
+        for i = 1, #buttonsGalaxyDiscard do
+          buttonsGalaxyDiscard[i].setInvisibleTo({})
+        end
+
+      end,3)
+
+    elseif cardName == "AT-ST" then
+      broadcastToAll(prefix .. "[b]AT-ST[/b] ability used to discard a card from the galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually do so now.", "White")
+      
+    elseif cardName == "General Veers" then
+      local tOrVFound = false
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag(ownerTag) and (zoneObj.hasTag('trooper') or zoneObj.hasTag('vehicle')) then
+          tOrVFound = true
+        end
+      end
+      if tOrVFound == false then
+        broadcastToAll(prefix .. "[b]General Veers[/b] ability used while no Troopers or Vehicles in play, no card drawn.", "White")
+      else
+        broadcastToAll(prefix .. "[b]General Veers[/b] ability used while Trooper and / or Vehicle in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has drawn a card.", "White")
+        dealCard(area, 1)
+      end
+
+    elseif cardName == "Landing Craft" then
+      broadcastToAll(prefix .. "[b]Landing Craft[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has repaired 4 base damage.", "White")
+      repairBase(4, button.getTags())
+
+    elseif cardName == "Moff Jerjerrod" then
+      -- check if galaxy deck exists
+      local zoneDeck  = zoneGalaxyDeck
+      local deckFound = false
+      local deckPile  = nil
+      for _, object in ipairs(zoneDeck.getObjects()) do
+        if object.type == "Card" or object.type == "Deck" then
+          deckFound = true
+          deckPile  = object
+        end
+      end
+      if not deckFound then
+        for _, object in pairs(zoneGalaxyDiscard.getObjects()) do
+          if object.type == "Deck" then
+            deckPile = object
+            deckPile.setRotation({ 0.00, 90.00, 180.00 })
+            deckPile.setPositionSmooth({ -28.00, 1.50, 2.50 })
+          end
+        end
+      end
+      if (forceOwner == "Bottom" and bottomFaction == "empire") or (forceOwner == "Top" and topFaction == "empire") then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Moff Jerjerrod[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] searches the top card of the galaxy deck.", "White")
+        Wait.time(function() broadcastToAll(prefix .. "Then, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually swap that card with a card in the galaxy row.", "White") end, 1)
+      else
+        broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Moff Jerjerrod[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may only search the top card of the galaxy deck.", "White")
+      end
+      -- search galaxy discard
+      if deckPile ~= nil then
+        if deckPile.type == "Deck" then
+          deckPile.Container.search(playerColor, 1)
+        end
+      end
+
+    elseif cardName == "Boba Fett" then
+      broadcastToAll(prefix .. "[b]Boba Fett[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] after Bounty Hunting, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] draws a card.", "White")
+      dealCard(area, 1)
+
+    elseif cardName == "Director Krennic" then
+      local deathStarFound = false
+      for k, v in pairs(zoneBase.getObjects()) do
+        if v.getName() == "Death Star" then
+          deathStarFound = true
+        end
+      end
+      if deathStarFound then
+        broadcastToAll(prefix .. "[b]Director Krennic[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has drawn 2 cards with Death Star in play.", "White")
+        dealCard(area, 2)
+      else
+        broadcastToAll(prefix .. "[b]Director Krennic[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has only drawn 1 card without Death Star in play.", "White")
+        dealCard(area, 1)
+      end
+
+    elseif cardName == "AT-AT" then
+      broadcastToAll(prefix .. "[b]AT-AT[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually add a 'Trooper' from discard pile to hand.", "White")
+      -- check if discard pile exists
+      local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
+      local discardFound = false
+      local discardPile  = nil
+      for _, object in ipairs(zoneDiscard.getObjects()) do
+        if object.type == "Card" or object.type == "Deck" then
+          discardFound = true
+          discardPile  = object
+        end
+      end
+      if not discardFound then
+        broadcastToAll(prefix .. "No discard pile available, [b]AT-AT[/b] ability is ineffective.", "White")
+      end
+      -- search discard
+      if discardPile ~= nil then
+        if discardPile.type == "Deck" then
+          discardPile.Container.search(playerColor)
+        end
+      end
+
+    elseif cardName == "Grand Moff Tarkin" then
+      nextCardTarkin = true
+      broadcastToAll(prefix .. "[b]Grand Moff Tarkin[/b] ability used. [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may right click purchase button to add an [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card in the galaxy row to hand.", "White")
+      Wait.time(function() broadcastToAll(prefix .. "Next purchased card will be purchased for free, added to [" .. Color.fromString(playerColor):toHex() .. "]Empire's[-] hand, and exiled at the end of the turn.", "White") end, 1)
+
+
+----- REBELLION PRIMARY ACTION BUTTONS -----
+    elseif cardName == "Temple Guardian" then
+      broadcastToAll(prefix .. "[b]Temple Guardian[/b] has gained +1 Attack from it's ability.", "White")
+
+    elseif cardName == "Y-Wing" then
+      broadcastToAll(prefix .. "[b]Y-Wing[] ability used to self exile, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually do 2 damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] base or ship.", "White")
+      exileCard(playerCard, button)
+
+    elseif cardName == "Duros Spy" then
+      if not isAI then
+        broadcastToAll(prefix .. "[b]Duros Spy[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] must choose: Choose a card to discard, or [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] gains a Force.", "White")
+      else
+        local posTracker = getObjectbyName("Force Tracker").getPosition()
+        if posTracker.z < 9.5 and posTracker.z > 7.5 then
+          broadcastToAll(prefix .. "[b]Duros Spy[/b] ability used: AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] chooses to discard.", "White")
+          discardAICard(false)
+        else
+          broadcastToAll(prefix .. "[b]Duros Spy[/b] ability used: AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] chooses for you to gain +1 Force.", "White")
+          moveForceTrack(buttonForceBottom, 1)
+        end
+      end
+
+    elseif cardName == "Rebel Transport" then
+      broadcastToAll(prefix .. "[b]Rebel Transport[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has repaired 2 base damage.", "White")
+      repairBase(2, button.getTags())
+
+    elseif cardName == "Snowspeeder" then
+      if not isAI then
+        broadcastToAll(prefix .. "[b]Snowspeeder[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] must choose a card to discard.", "White")
+      else
+        broadcastToAll(prefix .. "[b]Snowspeeder[/b] ability used, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] must choose a card to discard.", "White")
+        discardAICard(false)
+      end
+
+    elseif cardName == "Rebel Commando" then
+      if not isAI then
+        local buttonDiscard = isBottom and buttonDiscardRandomTop or buttonDiscardRandomBottom -- reverse order, opponent is discarding   
+        if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+          broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Rebel Commando[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] discards a random card.", "White")
+          discardRandomCard(buttonDiscard, playerColor)
+        else
+          broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Rebel Commando[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-]  must choose a card to discard.", "White")
+        end
+      else
+        if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+          broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Rebel Commando[/b] ability used, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] discards a random card.", "White")
+          discardAICard(true)
+        else
+          broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Rebel Commando[/b] ability used, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-]  must choose a card to discard.", "White")
+          discardAICard(false)
+        end
+      end
+
+    elseif cardName == "X-Wing" then
+      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]X-Wing[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] draws a card.", "White")
+        dealCard(area, 1)
+      else
+        broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]X-Wing[/b] ability used, no card drawn.", "White")
+      end
+
+    elseif cardName == "Chewbacca" then
+      local uniqueFound = false
+      for k, v in pairs(zoneInPlay.getObjects()) do
+        if v.hasTag(isBottom and 'bottom_owner' or 'top_owner') and (v.hasTag('unique') and v.getName() ~= "Chewbacca") then
+          uniqueFound = true
+        end
+      end
+      if uniqueFound then
+        broadcastToAll(prefix .. "[b]Chewbacca[/b] ability used while 'Unique' in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] draws a card.", "White")
+        dealCard(area, 1)
+      else
+        broadcastToAll(prefix .. "[b]Chewbacca[/b] ability used while no other 'Unique' in play, no card drawn.", "White")
+      end
+
+    elseif cardName == "Hammerhead Corvette" then
+      broadcastToAll(prefix .. "[b]Hammerhead Corvette[/b] ability used to self exile, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually destroy an enemy ship in play or row.", "White")
+      exileCard(playerColor, button)
+
+    elseif cardName == "Jyn Erso" then
+      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+        if not isAI then
+          broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Jyn Erso[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may look at [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] hand, and then place one card on top of [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] deck.", "White")
+        else
+          broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Jyn Erso[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually flip a face up AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] muster row card, and place it on top of face down [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] muster pile.", "White")
+        end
+      else
+        if not isAI then
+          broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Jyn Erso[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may look at [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] hand without choosing a card to replace on their deck.", "White")
+        else
+          broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Jyn Erso[/b] ability used, no action may be taken against the AI.", "White")
+        end
+      end
+      Wait.time(function() broadcastToAll(prefix .. "Hint: [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] may right click on one of their cards in hand and select 'Show Hand' to easily do so.", "White") end, 1)
+ 
+    elseif cardName == "U-Wing" then
+      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]U-Wing[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] repairs 3 base damage.", "White")
+        padGalaxyDeck.call('repair_base', {playerArea="Red", count=3, tags=button.getTags()})
+      else
+        broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]U-Wing[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] did not repair base damage.", "White")
+      end
+  
+    elseif cardName == "B-Wing" then
+      if not isAI then
+        broadcastToAll(prefix .. "[b]B-Wing[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] must decide to discard a card from hand, or, [b]B-Wing[/b] gains 2 damage.", "White")
+      else
+        local posBase = nil
+        for _, zoneObj in pairs(zoneBase.getObjects()) do
+          if zoneObj.hasTag('empire_base') or zoneObj.hasTag('rebel_base') or
+          zoneObj.hasTag('separatist_base') or zoneObj.hasTag('republic_base') then
+            posBase = zoneObj.getPosition()
+          end
+        end
+        if posBase == nil then
+          broadcastToAll(prefix .. "[b]B-Wing[/b] ability used, but scripting is unable to determine position of AI base stack, and thus, how many AI bases are left. Perform [b]B-Wing[/b] ability manually per Original Leaders ruleset.", "White")
+        else
+          if posBase.z > 18.25 and posBase.z < 19.25 then
+            broadcastToAll(prefix .. "[b]B-Wing[/b] ability used, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] decides to discard a card.", "White")
+            discardAICard(false)
+          else
+            broadcastToAll(prefix .. "[b]B-Wing[/b] ability used, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] decides to allow +2 Attack to [b]B-Wing[/b]..", "White")
+          end
+        end
+      end
+   
+    elseif cardName == "Cassian Andor" then
+      if not isAI then
+        broadcastToAll(prefix .. "[b]Cassian Andor[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] after Sabotaging, [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] must discard a card from hand.", "White")
+      else
+        broadcastToAll(prefix .. "[b]Cassian Andor[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] after Sabotaging, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] must discard a card from hand.", "White")
+        discardAICard(false)
+      end
+   
+    elseif cardName == "Han Solo" then
+      local falconInPlay = false
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.getName() == "Millenium Falcon" and zoneObj.hasTag((isBottom and 'bottom_owner' or 'top_owner')) then falconInPlay = true end
+      end
+      if falconInPlay then
+        broadcastToAll(prefix .. "[b]Han Solo[/b] ability used while [b]Millennium Falcon[/b] in play, 2 cards drawn.", "White")
+        dealCard(area, 2)
+      else
+        broadcastToAll(prefix .. "[b]Han Solo[/b] ability used while [b]Millennium Falcon[/b] not in play, 1 card drawn.", "White")
+        dealCard(area, 1)
+      end
+
+    elseif cardName == "Princess Leia" then
+      nextCardLeia = true
+      broadcastToAll(prefix .. "[b]Princess Leia[/b] ability used, right click purchase button to purchase next [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card for free.", "White")
+      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+        nextCardToDeck("rebellion")
+        Wait.time(function()
+        
+          broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Princess Leia[/b] ability used, the purchased [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card will go to top of deck.", "White")
+
+        end,1)
+      end
+
+    elseif cardName == "Millenium Falcon" then
+      broadcastToAll(prefix .. "[b]Millennium Falcon[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may manually add a 'Unique' unit from discard pile to hand.", "White")
+      local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
+      local discardFound = false
+      local discardPile  = nil
+      for _, object in ipairs(zoneDiscard.getObjects()) do
+        if object.type == "Card" or object.type == "Deck" then
+          discardFound = true
+          discardPile  = object
+        end
+      end
+      if not discardFound then
+        broadcastToAll(prefix .. "No discard pile available, [b]Millenium Falcon[/b] ability is ineffective.", "White")
+      end
+      if discardPile ~= nil then
+        if discardPile.type == "Deck" then
+          discardPile.Container.search(playerColor)
+        end
+      end
+
+    elseif cardName == "Luke Skywalker" then
+      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Luke Skywalker[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may choose [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] ship to manually destroy.", "White")
+      else
+        broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Luke Skywalker[/b] ability used, no [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] ships destroyed.", "White")
+      end
+
+
+----- REPUBLIC PRIMARY ACTION BUTTONS -----
+    -- will require "reveal" panel scripting (buttons: replace, draw, discard, swap)
+    -- swap searches appropriate bag - discard pile, exile, etc
+    elseif cardName == "Jedi Knight" then
+      broadcastToAll(prefix .. "[b]Jedi Knight[/b] has gained +1 Attack from it's ability.", "White")
+
+    elseif cardName == "V-19 Torrent" then
+      local function v19Reveal(revealCard)
+        if revealCard.getName() ~= "Obi-Wan Kenobi" then
+          broadcastToAll(prefix .. "[b]" .. cardName .. "[/b]" .. " ability used to reveal [b]" .. revealCard.getName() .. "[/b]. [b]" .. revealCard.getName() .. "[/b] may be discarded or returned.", "White")
+        end
+      end
+      -- reveal top card of deck, may discard or replace
+      showRevealUI(true, false)
+      revealCard = revealACard(button)
+      if revealCard ~= nil then
+        v19Reveal(revealCard)
+      else
+        Wait.time(function()
+
+          local revealCard = findRevealedCard(isBottom)
+          if revealCard ~= nil then
+            v19Reveal(revealCard)
+          end
+
+        end, 3.5)
+      end
+
+    elseif cardName == "AT-RT" then
+      -- check for other trooper in play
+      local trooperFound = false
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag(ownerTag) and zoneObj.hasTag('trooper') and zoneObj ~= button then
+          trooperFound = true
+        end
+      end
+      if not trooperFound then
+        broadcastToAll(prefix .. "[b]AT-RT[/b] ability used while no Troopers in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] base not repaired.", "White")
+      else
+        broadcastToAll(prefix .. "[b]AT-RT[/b] ability used while Trooper in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] has repaired 2 base damage.", "White")
+        repairBase(2, button.getTags())
+      end
+
+    elseif cardName == "BARC Trooper" then
+       -- check for other trooper in play
+       local trooperFound = false
+       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+          if zoneObj.hasTag(ownerTag) and zoneObj.hasTag('trooper') and zoneObj ~= button then
+            trooperFound = true
+          end
+       end
+       if not trooperFound then
+          broadcastToAll(prefix .. "[b]BARC Trooper[/b] ability used while no other Troopers in play, [b]BARC Trooper[/b] does not gain +2 Attack.", "White")
+       else
+          broadcastToAll(prefix .. "[b]BARC Trooper[/b] ability used while Trooper in play, [b]BARC Trooper[/b] gains +2 Attack.", "White")
+       end
+
+    elseif cardName == "Consular-Class Cruiser" then
+      -- check for deck or card in deck zone
+      local dealDeckFound = false
+      local dealCard       = nil
+      for _, object in pairs(isBottom and zoneDiscardBottom or zoneDiscardTop).getObjects() do
+        if object.type == "Deck" then
+          dealDeckFound = true
+          object.Container.search(playerColor, 1)
+        end
+        if object.type == "Card" then
+          dealDeckFound = true
+          deckDeal = object
+          deckDeal.flip()
+        end
+      end
+      if dealDeckFound then
+        broadcastToAll(prefix .. "[b]Consular-Class Cruiser[/b] ability used, Republic swaps card in hand with top card of deck.", "White")
+      else
+        broadcastToAll(prefix .. "[b]Consular-Class Cruiser[/b] ability used while deck is in discard, no swap possible.", "White")
+      end
+
+    elseif cardName == "ARC Trooper" then
+      -- check for jedi or other trooper
+      local tOrJFound = false
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag(ownerTag) and (zoneObj.hasTag('trooper') or zoneObj.hasTag('jedi')) and zoneObj ~= button then
+          tOrJFound = true
+        end
+      end
+      if not tOrJFound then
+        broadcastToAll(prefix .. "[b]ARC Trooper[/b] ability used while no other 'Trooper' or 'Jedi' in play, [b]ARC Trooper[/b] does not deal +2 Damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] base.", "White")
+      else
+        broadcastToAll(prefix .. "[b]ARC Trooper[/b] ability used while other 'Trooper' or 'Jedi' in play, [b]ARC Trooper[/b] deals +2 Damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] base.", "White")
+        damageBase(isBottom, 2, playerColor, opponentFaction)
+      end
+
+    elseif cardName == "Captain Rex" then
+      -- check for owned and galaxy row unique count
+      local uniqueCount = 0
+      for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+        if zoneObj.hasTag('unique') and not zoneObj.hasTag(isBottom and "top_owner" or "bottom_owner") then
+          uniqueCount = uniqueCount + 1
+        end
+      end
+      -- broadcast total + fight
+      broadcastToAll(prefix .. "[b]Captain Rex[/b] ability used, [b]Captain Rex[/b] gains +" .. uniqueCount .. " attack.", "White")
+    -- modify effective damage counter
+
+    elseif cardName == "Delta-7B" then
+      local function delta7bReveal(revealCard)
+        if revealCard.hasTag('jedi') then
+          showRevealUI(false, true)
+          if revealCard.getName() ~= "Obi-Wan Kenobi" then
+            broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal 'Jedi': [b]" .. revealCard.getName() .. "[/b]. " .. revealCard.getName() .. " may be returned or drawn.", "White")
+          end
+        else
+          pad_republic_reveal.call('show_reveal_ui', {show_discard=true, show_draw=false})
+          if revealCard.getName() ~= "Obi-Wan Kenobi" then
+            broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal non 'Jedi': [b]" .. revealCard.getName() .. "[/b]. " .. revealCard.getName() .. " may be returned or discarded.", "White")
+          end
+        end
+      end
+      -- reveal top card of deck. may discard or replace. if jedi, may draw
+      revealCard = revealACard(button)
+      -- place pad first since buttons need to be made conditionally      
+      padRepublicReveal.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+      padRepublicReveal.setPosition(isBottom and { -17.50, 0.02, -31.00 } or { 17.50, 0.02, 31.00 })
+      if revealCard ~= nil then
+        delta7bReveal(revealCard)
+      else
+        Wait.time(function()
+
+          local revealCard = findRevealedCard(isBottom)
+          if revealCard ~= nil then
+            delta7bReveal(revealCard)
+          end
+
+        end, 3.5)
+      end
+
+    elseif cardName == "Ahsoka Tano" then
+      local function ahsokaReveal(revealCard)
+        if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
+          if revealCard.getName() ~= "Obi-Wan Kenobi" then
+            broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal " .. revealCard.getName() .. " while the Force is with them. [b]" .. revealCard.getName() .. "[/b] may be returned or swapped with card in discard.", "White")
+          end
+          -- check if discard pile exists
+          local zoneDiscard = isBottom and zoneDiscardBottom or zoneDiscardTop
+          local discardFound = false
+          local discardPile  = nil
+          for _, zoneObj in ipairs(zoneDiscard.getObjects()) do
+            if zoneObj.type == "Card" or zoneObj.type == "Deck" then
+              discardFound = true
+              discardPile = zoneObj
+            end
+          end
+          if not discardFound then
+            if revealCard.getName() ~= "Obi-Wan Kenobi" then
+              broadcastToAll(prefix .. "No discard pile available, [b]Ahsoka Tano[/b] ability Swap is ineffective.", "White")
+            end
+          end
+          -- search discard
+          if discardPile ~= nil then
+            if discardPile.type == "Deck" then
+              discardPile.Container.search(playerColor)
+            end
+          end
+        else
+          if revealCard.getName() ~= "Obi-Wan Kenobi" then
+            broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal " .. revealCard.getName() .. " while the Force is not with them. [b]" .. revealCard.getName() .. "[/b] may be returned.", "White")
+          end
+        end
+      end
+      -- reveal top card, may replace. if republic forceOwner, may swap
+      revealCard = revealACard(button)
+      showRevealUI(false, false)
+      if revealCard ~= nil then
+        ahsokaReveal(revealCard)
+      else
+        Wait.time(function()
+
+          local revealCard = findRevealedCard(isBottom)
+          if revealCard ~= nil then
+            ahsokaReveal(revealCard)
+          end
+
+        end, 3.5)
+      end
+
+    elseif cardName == "ARC-170" then
+      local function arc170Reveal(revealCard)
+        if revealCard.hasTag('trooper') then
+          broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal 'Trooper': " .. revealCard.getName() .. ", " .. cardName .. " gains +2 Attack. [b]" .. revealCard.getName() .. "[/b] may be returned.", "White")
+        elseif revealCard.hasTag('fighter') then
+          broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal 'Fighter': " .. revealCard.getName() .. ", " .. cardName .. " gains +2 Attack. [b]" .. revealCard.getName() .. "[/b] may be returned.", "White")
+        else
+          if revealCard.getName() ~= "Obi-Wan Kenobi" then
+            broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal non 'Fighter' or 'Trooper': " .. revealCard.getName() .. ". " .. cardName .. " does not gain +2 Attack. [b]" .. revealCard.getName() .. "[/b] may be returned.", "White")
+          end
+        end
+      end
+      -- reveal top card of deck, may replace. if trooper/fighter, modify effective damage counter +2
+      revealACard(button)
+      showRevealUI(false, false)
+      if revealCard ~= nil then
+        arc170Reveal(revealCard)
+      else
+        Wait.time(function()
+
+          local revealCard = findRevealedCard(isBottom)
+          if revealCard ~= nil then
+            arc170Reveal(revealCard)
+          end
+
+        end, 3.5)
+      end
+
+    elseif cardName == "Clone Commander Cody" then
+      -- check if discard pile exists
+      local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
+      local discardFound = false
+      local discardPile  = nil
+      for _, zoneObj in ipairs(zoneDiscard.getObjects()) do
+        if zoneObj.type == "Card" or zoneObj.type == "Deck" then
+          discardFound = true
+          discardPile  = zoneObj
+        end
+      end
+      -- search discard
+      if discardPile ~= nil then
+        if discardPile.type == "Deck" then
+          discardPile.Container.search(playerColor)
+        end
+      end
+      -- broadcast to manually do the thing
+      if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
+        broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used while the Force is with them, and may manually place a 'Trooper' from discard to hand.", "White")
+      else
+        broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] used while the Force is with them, and may manually place a 'Trooper' from discard to top of deck.", "White")
+      end
+      if not discardFound then
+        broadcastToAll(prefix .. "No discard pile available, [b]Clone Commando[/b] ability is ineffective.", "White")
+      end
+
+    elseif cardName == "LAAT Gunship" then
+      local function laatReveal(revealCard)
+        if revealCard.hasTag('trooper') then
+          broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal 'Trooper': [b]" .. revealCard.getName() .. "[/b]. [b]" .. revealCard.getName() .. "[/b] may be returned or drawn.", "White")
+          showRevealUI(false, true)
+        elseif revealCard.hasTag('jedi') then
+          if revealCard.getName() ~= "Obi-Wan Kenobi" then
+            broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal 'Jedi': [b]" .. revealCard.getName() .. "[/b]. [b]" .. revealCard.getName() .. "[/b] may be returned or drawn.", "White")
+          end
+          showRevealUI(false, true)
+        else
+          broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal non 'Jedi' or 'Trooper': [b]" .. revealCard.getName() .. "[/b]. [b]" .. revealCard.getName() .. "[/b] may be returned.", "White")
+          showRevealUI(false, false)
+        end
+      end
+      -- reveal top card, may replace. if jedi/trooper, may draw
+      revealCard = revealACard(button)
+      -- place pad first since buttons need to be made conditionally
+      padRepublicReveal.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+      padRepublicReveal.setPosition(isBottom and { -17.50, 0.02, -31.00 } or { 17.50, 0.02, 31.00 })
+      if revealCard ~= nil then
+        laatReveal(revealCard)
+      else
+        Wait.time(function()
+
+          local revealCard = findRevealedCard(isBottom)
+          if revealCard ~= nil then
+            laatReveal(revealCard)
+          end
+
+        end, 3.5)
+      end
+
+    elseif cardName == "Acclamator-Class Ship" then
+      broadcastToAll(prefix .. "[b]Acclamator-Class Ship[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "'s[-] next purchased card will go to top of their deck.", "White")
+      if isBottom then
+        nextCardToDeckBottom = true
+      elseif isTop then
+        nextCardToDeckTop = true
+      end
+
+    --elseif cardName == "Anakin Skywalker" then
+    -- check forceOwner, modify effective damage counter
+
+    elseif cardName == "Padmé Amidala" then
+      -- check if base == Naboo, draw 2 cards if so, 1 card if not
+      local nabooFound = false
+      for _, object in pairs(isBottom and zoneBaseBottom or zoneBaseTop).getObjects() do
+        if object.getName() == "Naboo" then
+          nabooFound = true
+        end
+      end
+      if nabooFound then
+        broadcastToAll(prefix .. "[b]Padmé Amidala[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]Republic[-] has drawn 2 cards with Naboo in play.", "White")
+        dealCard(area, 2)
+      else
+        broadcastToAll(prefix .. "[b]Padmé Amidala[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]Republic[-] has only drawn 1 card without Naboo in play.", "White")
+        dealCard(area, 1)
+      end
+
+    elseif cardName == "AT-TE" then
+      -- broadcast to manually place unit in play back on top of deck
+      broadcastToAll(prefix .. "[b]AT-TE[/b] ability used. [" .. Color.fromString(playerColor):toHex() .. "]Republic[-] may manually place an in play card on top of their deck.", "White")
+
+    --elseif cardName == "Obi-Wan Kenobi" then
+    -- only does things when revealed, reveal function checks for kenobi (hello there)
+    
+    elseif cardName == "Mace Windu" then
+      local function maceReveal(revealCard)
+        local plusAttack = nil
+        Wait.frames(function()
+          showRevealUI(false, false)
+          plusAttack = revealCard.getVar('cost') -- NEED DATA TABLE
+          if plusAttack > 5 then plusAttack = 5 end
+        end,1)
+        if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
+          if revealCard.getName() == "Obi-Wan Kenobi" then
+            broadcastToAll(prefix .. "[b]Mace Windu[/b] ability used to reveal [b]Obi-Wan Kenobi[/b] while the Force is with the [" .. Color.fromString(playerColor):toHex() .. "]Republic[-], and may choose to return [b]Obi-Wan Kenobi[/b] for +5 Attack to [b]Mace Windu[/b], or, draw [b]Obi-Wan Kenobi[/b] via his ability.", "White")
+            -- hide standard return button
+            local buttonReturn = getObjectbyName("Button Reveal Return")
+            Wait.time(function()
+
+              buttonReturn.setRotation((bottomFaction == "republic") and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+              buttonReturn.setPosition((bottomFaction == "republic") and { -17.50, -1.00, -35.00 } or { 17.50, -1.00, 35.00 })
+              revealCard.createButton({
+                click_function = "kenobiHand",
+                function_owner = self,
+                label          = 'Kenobi\nTo Hand',
+                position       = { -1.75, 0.50, 1.23 },
+                height         = 575,
+                width          = 1000,
+                color          = { 1, 0, 0, .8 },
+                hover_color    = { 1, 0, 0, .9 },
+                font_color     = { 1, 1, 1 },
+                font_size      = 150,
+                rotation       = { 0, 0, 0 },
+                scale          = { x=0.5, y=0.5, z=0.5 },
+                tooltip        = "Choose to use Obi-Wan Kenobi abilty to draw to hand, instead of returning him for +5 Attack to Mace Windu."
+              })
+              revealCard.createButton({
+                click_function = "kenobiMace",
+                function_owner = self,
+                label          = 'Mace +5',
+                position       = { 1.75, 0.5, 1.23 },
+                height         = 575,
+                width          = 1000,
+                color          = { 0.95, 0.39, 0.11, .8 },
+                hover_color    = { 0.95, 0.39, 0.11, .9 },
+                font_color     = { 1, 1, 1 },
+                font_size      = 150,
+                rotation       = { 0, 0, 0 },
+                scale          = { x=0.5, y=0.5, z=0.5 },
+                tooltip        = "Choose to return Obi-Wan Kenobi for +5 Attack to Mace Windu, instead of using his ability to draw to hand.",
+              })
+
+            end, 1)
+          else
+            Wait.frames(function()
+              broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal [b]" .. revealCard.getName() .. "[/b] while the Force is with them, and gains +" .. plusAttack .. " Attack. [b]" .. revealCard.getName() .. "[/b] may be returned.", "White")
+            end)
+          end
+        else
+          broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal [b]" .. revealCard.getName() .. "[/b] while the Force is not with them, and does not gain any Attack. [b]" .. revealCard.getName() .. "[/b] may be returned.", "White")
+          if revealCard.getName() == "Obi-Wan Kenobi" then
+            Wait.time(function() drawRevealed() end, 1)
+            Wait.time(function() obiWanRepeatAction(button, playerColor) end, 2)
+            broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]Hello there![-] [b]Obi-Wan Kenobi[/b] has been revealed, and added to [" .. Color.fromString(playerColor):toHex() .. "]Republic[-] hand.", "White")
+          end
+        end
+      end
+      -- reveal top card, may replace
+      -- check force, if republic forceOwner get reveal card cost and modify effective damage counter
+      -- reveal top card, may replace. if republic forceOwner, may swap
+      local revealCard = revealACard(button)
+      -- place pad first since buttons need to be made conditionally
+      padRepublicReveal.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+      padRepublicReveal.setPosition(isBottom and { -17.50, 0.02, -31.00 } or { 17.50, 0.02, 31.00 })
+      if revealCard ~= nil then
+          maceReveal(revealCard)
+      else
+        Wait.time(function()
+
+          revealCard = findRevealedCard(isBottom)
+          if revealCard ~= nil then
+            maceReveal(revealCard)
+          end
+
+        end, 3.5)
+      end
+
+
+----- SEPARATIST PRIMARY ACTION BUTTONS -----
+-- separatist will need new row buttons - swap, and exile
+-- code so that they can be created via bag, and destroyed
+    elseif cardName == "Dark Side Agent" then
+      broadcastToAll(prefix .. "[b]Dark Side Agent[/b] has gained +1 Attack from it's ability.", "White")
+
+    elseif cardName == "B2 Battle Droid" then
+      -- set exile row buttons (but only for separatist cards)
+      exileRowDeploy(button.getGUID(), isBottom)
+      broadcastToAll(prefix .. "[b]B2 Battle Droid[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: draw a card.", "White")
+    
+    elseif cardName == "Nute Gunray" then
+      nextCardNute = true
+      broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability used, next card to leave row will be replaced by non-starter card from [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] exile.", "White")
+    
+    elseif cardName == "STAP" then
+      -- check if more enemy than separatist cards in row, +1 force if so
+      local zones = zonesGalaxyRow
+      local sepCount = 0
+      local enemyCount = 0
+      for i = 1, 6 do
+        for _, object in pairs(zones[i]).getObjects() do
+          if object.type == "Card" and object.hasTag('separatist') then
+            sepCount = sepCount + 1
+          end
+          if object.type == "Card" and (not object.hasTag('neutral') and not object.hasTag('separatist')) then
+            enemyCount = enemyCount + 1
+          end
+        end
+      end
+      if enemyCount > sepCount then
+        broadcastToAll(prefix .. "[b]STAP[/b] ability used: " .. sepCount .. " [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], " .. enemyCount .. " [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] cards in galaxy row. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] gains +1 Force.", "White")
+        moveForceTrack(buttonForce, 1)
+      else
+        broadcastToAll(prefix .. "[b]STAP[/b] ability used: " .. sepCount .. " [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], " .. enemyCount .. " [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] cards in galaxy row. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] does not gain Force.", "White")
+      end
+    
+    elseif cardName == "Vulture Droid" then
+      -- button to exile initially
+      broadcastToAll(prefix .. "After manually attacking, [b]Vulture Droid[/b] has exiled itself via it's ability.", "White")
+      exileCard(playerColor, button)
+      -- but eventually, go off whatever button I use to modify eventual fight counter
+    
+    elseif cardName == "Droideka" then
+      if metConditionDroideka then
+        broadcastToAll(prefix .. "[b]Droideka[/b] ability used after card has been exiled by [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] this turn. [b]Droideka[/b] gains +2 Attack.", "White")
+      else
+        broadcastToAll(prefix .. "[b]Droideka[/b] ability used, but no card has been exiled by [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] this turn. [b]Droideka[/b] does not gain Attack.", "White")
+      end
+      -- broadcast / modify effective damage counter
+    
+    elseif cardName == "Munificent-Class Frigate" then
+      exileRowDeploy(button.getGUID(), isBottom)
+      broadcastToAll(prefix .. "[b]Munificent-Class Frigate[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: repair 2 base damage.", "White")
+    
+    elseif cardName == "Tri-Fighter" then
+      -- if card exiled, broadcast to do damage to capital ship
+      exileRowDeploy(button.getGUID(), isBottom)
+      broadcastToAll(prefix .. "[b]Tri-Fighter[/b] ability used. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: do 3 damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. capitalizedOpponentFaction .. "[-] ship.", "White")
+    
+    elseif cardName == "Wat Tambor" then
+      broadcastToAll(prefix .. "[b]Wat Tambor[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] must choose a Neutral row card to discard.", "White")
+      metConditionWat =true
+    
+    elseif cardName == "Droid Control Ship" then
+      broadcastToAll(prefix .. "[b]Droid Control Ship[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may purchase a droid from exile.", "White")
+      bagExile.Container.search(playerColor)
+
+    --elseif cardName == "Magnaguard" then
+      -- will need to modify effective health counter of all owned unique units
+    
+    elseif cardName == "MTT" then
+      broadcastToAll(prefix .. "[b]MTT[/b] ability used, manually place next purchased 'Droid' to top of [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] deck.", "White")
+    
+    elseif cardName == "AAT" then
+      -- give 2 force if card exiled
+      exileRowDeploy(button.getGUID(), isBottom)
+      broadcastToAll(prefix .. "[b]AAT[/b] ability used. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: gain 2 Force.", "White")
+    
+    elseif cardName == "Admiral Trench" then
+      if metConditionTrench then
+        broadcastToAll(prefix .. "[b]Admiral Trench[/b] ability used after ship in play at turn start, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] draws 2 cards.", "White")
+        dealCard(area, 2)
+        metConditionTrench = false
+      else
+        broadcastToAll(prefix .. "[b]Admiral Trench[/b] ability used after ship not in play at turn start, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] draws 1 card.", "White")
+        dealCard(area, 1)
+      end
+    
+    elseif cardName == "General Grievous" then
+      broadcastToAll(prefix .. "[b]General Grievous[/b] ability used after Bounty Hunting, may manually exile 'Droid' from hand, and manually receive Bounty Hunt reward a second time.", "White")
+      -- just broadcast to do the stuff manually for now
+      -- ugh, will figure out later
+    
+    elseif cardName == "Asajj Ventress" then
+      -- discard neutrals from row, timed replace
+      local zones = zonesGalaxyRow
+      local neutralCount = 0
+      for i = 1, 6 do
+        local slot = i
+        if not isBottom then slot = slot + 6 end
+        local buttonDiscard = getObjectbyNameAndNotes("Button Discard", slot)
+        for _, v in pairs(zones[i].getObjects()) do
+          if v.hasTag('neutral') and v.hasTag('unit') then
+            galaxyDiscard(buttonDiscard, zones[i], true)
+            neutralCount = neutralCount + 1
+          end
+        end
+      end
+      broadcastToAll(prefix .. "[b]Asajj Ventress[/b] ability used to discard " .. neutralCount .. " Neutral units from row.", "White")
+      local freeSlots = {}
+      local opponentCards = {}
+      for i = 1, 6 do
+        for _, object in pairs(zones[i].getObjects()) do
+          if (object.hasTag('empire') or object.hasTag('republic') or object.hasTag('rebel'))  and object.hasTag('unit') then
+            table.insert(opponentCards, object.getName())
+          end
+        end
+      end
+      Wait.time(function()
+
+        if neutralCount > 0 then
+          for i = 1, 6 do
+            local cardFound = false
+            for _, object in pairs(zones[i].getObjects()) do
+              if object.type == "Card" then
+                cardFound = true
+              end
+            end
+            if not cardFound then
+              table.insert(freeSlots, i)
+            end
+          end
+        end
+        for i = 1, #freeSlots do
+          drawGalaxyCardToSlot(freeSlots[i])
+        end
+
+      end, .5)
+      Wait.time(function()
+
+        if (forceOwner == "Bottom" and bottomFaction == "separatist") or (forceOwner == "Top" and topFaction == "separatist") then
+          if #opponentCards == 0 then
+            broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], however there are no enemy cards in row to discard with [b]Asajj Ventress[/b] ability.", "White")
+          elseif #opponentCards == 1 then
+            broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], and they may also discard [b]" .. opponentCards[1] .. "[/b] with [b]Asajj Ventress[/b] ability.", "White")
+          elseif #opponentCards == 2 then
+            broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], and they may also discard [b]" .. opponentCards[1] .. "[/b], or [b]" .. opponentCards[2] .. "[/b] with [b]Asajj Ventress[/b] ability.", "White")
+          elseif #opponentCards == 3 then
+            broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], and they may also discard [b]" .. opponentCards[1] .. "[/b], [b]" .. opponentCards[2] .. "[/b], or [b]" .. opponentCards[3] .. "[/b] with Asajj Ventress ability.", "White")
+          elseif #opponentCards == 4 then
+            broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], and they may also discard [b]" .. opponentCards[1] .. "[/b], [b]" .. opponentCards[2] .. "[/b], [b]" .. opponentCards[3] .. "[/b], or [b]" .. opponentCards[4] .. "[/b] [b]with Asajj Ventress[/b] ability.", "White")
+          elseif #opponentCards == 5 then
+            broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], and they may also discard [b]" .. opponentCards[1] .. "[/b], [b]" .. opponentCards[2] .. "[/b], [b]" .. opponentCards[3] .. "[/b], [b]" .. opponentCards[4] .. "[/b], or [b]" .. opponentCards[5] .. "[/b] with [b]Asajj Ventress[/b] ability.", "White")
+          elseif #opponentCards == 6 then
+            broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], and they may also discard [b]" .. opponentCards[1] .. "[/b], [b]" .. opponentCards[2] .. "[/b], [b]" .. opponentCards[3] .. "[/b], [b]" .. opponentCards[4] .. "[/b], [b]" .. opponentCards[5] .. "[/b], or [b]" .. opponentCards[6] .. "[/b] with [b]Asajj Ventress[/b] ability.", "White")
+          end
+        else
+          broadcastToAll(prefix .. "The force is not with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], they cannot use the second part of [b]Asajj Ventress[/b] ability.", "White")
+        end
+
+      end, 1)
+
+    elseif cardName == "Count Dooku" then
+      if (forceOwner == "Bottom" and bottomFaction == "separatist") or (forceOwner == "Top" and topFaction == "separatist") then
+        local exileValid = false
+        for _, bagObj in ipairs(bagExile.getObjects()) do
+          if bagObj.cardName ~= "B1 Battle Droid" and bagObj.cardName ~= "Separatist Shuttle" and bagObj.cardName ~= "Dark Side Agent" then
+            exileValid = true
+          end
+        end
+        if exileValid then
+          broadcastToAll(prefix .. "[b]Count Dooku[/b] ability used while force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], may manually swap a unit in galaxy row with non-starter in exile.", "White")
+          bagExile.Container.search(playerColor)
+        else
+          broadcastToAll(prefix .. "[b]Count Dooku[/b] ability used while force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], but no qualifying card is in exile to swap.", "White")
+        end
+      else
+        broadcastToAll(prefix .. "[b]Count Dooku[/b] ability used while force is not with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], no swap happens.", "White")
+      end
+      -- search exile bag, broadcast to swap
+      end
+    end
+    
+  if cardName ~= "Hondo Onaka" then
+    if button.hasTag('buttons') then
+      button.clearButtons()
+
+    elseif button.hasTag('ability_button') or button.hasTag('ability_button_sec') then
+      removeAbilityButtons(button)
+    end
+  end
+
+  if cardName == "Temple Guardian" or cardName == "Inquisitor" or cardName == "Jedi Knight" or
+  cardName == "Dark Side Agent" or cardName == "Lobot" or cardName == "Zam Wesell" then
+    removeForceButtons(button)
+  end
+
+  if button.hasTag('ship') then button.call('initShipCounter') end
+
+  -- create cancel buttons on requiring cards
+  if cardName == 'Grand Moff Tarkin' or cardName == 'Princess Leia' or
+  cardName == 'Millenium Falcon' or cardName == 'Underworld Contact' or
+  cardName == 'Acclamator-Class Ship' or cardName == "Twi'lek Smuggler" or
+  cardName == 'B2 Battle Droid' or cardName == 'Munificent-Class Frigate' or
+  cardName == 'Tri-Fighter' or cardName == 'AAT' or cardName == "Nute Gunray" or
+  cardName == 'Wat Tambor' then
+    initCancelButton(button)
+  end
+end -- end primaryButtonAction()

@@ -74,7 +74,7 @@ function cancelCardAction(button, playerColor, _)
 
   elseif cardName == 'Underworld Contaact' then
     nextCardContact = false
-    button.removeTag('nextCardContact')
+    button.removeTag('next_card_contact')
 
   elseif cardName == 'Nute Gunray' then
     nextCardNute = false
@@ -98,7 +98,7 @@ function cancelCardAction(button, playerColor, _)
   if button.hasTag('buttons') then
     button.clearButtons()
     button.createButton({
-      click_function = "primary_button_action", -- NEED REQUIRE
+      click_function = "primaryButtonAction", -- NEED REQUIRE
       function_owner = self,
       label          = '',
       position       = { 0, 0.5, 1.23 },
@@ -259,7 +259,7 @@ function dealCard(playerArea, count)
     Wait.time(function()
 
       for k, v in pairs(zoneGalaxyDiscard.getObjects()) do
-        if zoneObj.tag == "Deck" then
+        if zoneObj.type == "Deck" then
           deckDeal = v
           deckDeal.flip()
           deckDeal.shuffle()
@@ -334,7 +334,7 @@ function drawGalaxyCard()
   for i = 1, 6 do
     local card_in_zone = false
     for _, object in pairs(slots[i].getObjects()) do
-        if object.tag == "Card" then
+        if object.type == "Card" then
           card_in_zone = true
         end
     end    
@@ -347,14 +347,14 @@ function drawGalaxyCard()
       local card = nil
       local deckOrCardFound = false
       for _, obj in pairs(zoneGalaxyDeck.getObjects()) do
-        if obj.tag == "Deck" then
+        if obj.type == "Deck" then
           deckOrCardFound = true
           deckGalaxy = obj
           card = deckGalaxy.takeObject()
           rotateDealtCard(card, posDeal)
           return nil
         end
-        if obj.tag == "Card" then
+        if obj.type == "Card" then
           deckOrCardFound = true
           card = obj
           rotateDealtCard(card, posDeal)
@@ -365,7 +365,7 @@ function drawGalaxyCard()
       -- handle galaxy deck refresh from discard if required
       if deckOrCardFound == false then
         for _, obj in pairs(zoneGalaxyDiscard.getObjects()) do
-          if obj.tag == "Deck" then
+          if obj.type == "Deck" then
             deckGalaxy = obj
             deckGalaxy.setName('Galaxy Deck')
             deckGalaxy.flip()
@@ -408,7 +408,7 @@ function drawGalaxyCardToSlot(rowSlot)
       return
     end
 
-    if zoneObj.tag == "Card" then
+    if zoneObj.type == "Card" then
       deckOrCardFound = true
       card = zoneObj
       rotateDealtCard(card, posSlot)
@@ -419,7 +419,7 @@ function drawGalaxyCardToSlot(rowSlot)
   -- handle refresh of Galaxy deck if required before deal
   if deckOrCardFound == false then
     for _, zoneObj in pairs(zoneGalaxyDiscard.getObjects()) do
-      if zoneObj.tag == "Deck" then
+      if zoneObj.type == "Deck" then
         deckGalaxy = zoneObj
         deckGalaxy.setName('Galaxy Deck')
         deckGalaxy.flip()
@@ -580,10 +580,10 @@ end -- end endTurn()
 function exileCard(playerArea, obj)
   -- handles the exiling of a card, called via hotkey or context menu
   local bottomColor, topColor = getPlayerColors()
-  local exileBag = (obj.hasTag('bottom_owner') and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
+  local bagExile = (obj.hasTag('bottom_owner') and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
   local playerColor = (playerArea == bottomColor and bottomColor or topColor)
   if not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') then
-    exileBag = (playerArea == bottomColor and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
+    bagExile = (playerArea == bottomColor and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
   end
   local tags = obj.getTags()
   table.insert(tags, 'exiled')
@@ -599,14 +599,14 @@ function exileCard(playerArea, obj)
       end
     end
   end
-  exileBag.putObject(obj)
+  bagExile.putObject(obj)
 
   Wait.time(function()
 
     -- handle Nute Gunray
     if nextCardNute then
       cardInRow = false
-      padGalaxyDiscard.call('handle_nute_gunray', {exileBag=exileBag, color=color}) -- NEED REQUIRE
+      padGalaxyDiscard.call('handleNuteGunray', {bagExile=bagExile, color=color}) -- NEED REQUIRE
     end
 
     -- replace card with galaxy row card if needed
@@ -627,7 +627,7 @@ function exileRowCard(button, playerColor, zoneCard, callCardGUID)
   local exileTargetCard       = nil
   local cardFound              = false
   for _, object in pairs(zoneCard.getObjects()) do
-    if object.tag == "Card" then
+    if object.type == "Card" then
       exileTargetCard = object
       cardFound = true
     end
@@ -718,7 +718,7 @@ function exileRowDeploy(callingCard, isBottom)
     isBottom and {7.00, 0.14, -7.00 } or { 7.00, 0.14, 7.00 },
     isBottom and { 14.00, 0.14, -7.00 } or { 14.00, 0.14, 7.00 },
   }
-  local exileBag = isBottom and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
+  local bagExile = isBottom and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
 
   for i = 1, 6 do
     for _, object in ipairs(zones[i].getObjects()) do
@@ -748,7 +748,7 @@ function galaxyDiscard(button, zoneCard, altClick)
     isBottom = true
   end
 
-  local exileBag = button.hasTag('bottom_owner') and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
+  local bagExile = button.hasTag('bottom_owner') and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
   local rotDiscard = { 0, 90, 0 }
   local posDiscard = { -28.00, 2.50, -2.50 }
   local card = nil
@@ -783,7 +783,7 @@ function galaxyDiscard(button, zoneCard, altClick)
   if nextCardNute then
     Wait.time(function()
 
-      padGalaxyDiscard.call('handle_nute_gunray', {exile_bag=exileBag, color=playerColor}) -- NEED REQUIRE
+      padGalaxyDiscard.call('handleNuteGunray', {bagExile=bagExile, color=playerColor}) -- NEED REQUIRE
 
     end, 1)
   end
@@ -1278,10 +1278,10 @@ function setBoard(playerColor)
   end
 
   for _, object in ipairs(zoneBase.getObjects()) do
-    if object.tag == "Card" then
+    if object.type == "Card" then
       baseCard = object
     end
-    if object.tag == "Deck" then
+    if object.type == "Deck" then
       deckBases = object
     end
   end
@@ -1295,3 +1295,218 @@ function setBoard(playerColor)
     Wait.time(function() deckBases.Container.search(playerColor) end, .5)
   end
 end -- end setBoard()
+
+
+
+
+
+-- FUNCTIONS RELATED TO REPUBLIC REVEAL PAD & BUTTONS
+
+function discardRevealed()
+  local area = getArea()
+  local isBottom = area == "Bottom"
+  local discardCard = nil
+  for _, zoneObj in pairs(isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects() do
+    if zoneObj.type == "Card" then
+      discardCard = zoneObj
+    end
+  end
+  discardCard.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+  discardCard.setPositionSmooth(isBottom and { -8.50, 1.50, -31.00 } or { 8.50, 1.50, 31.00 })
+end -- end discardRevealed()
+
+
+function drawRevealed()
+  -- handles the draw card function of republic reveal stuff
+  local area = getArea()
+  local isBottom = area == "Bottom"
+  local drawCard = nil
+  for _, zoneObj in pairs((isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects()) do
+    if zoneObj.type == "Card" then
+      drawCard = zoneObj
+    end
+  end
+  drawCard.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+  drawCard.setPositionSmooth(isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 })
+end -- end drawRevealed()
+
+
+function hideRevealUI()
+  -- handles the hide of republic reveal UI elements
+  local area = getArea()
+  local isBottom = area == "Bottom"
+  local posPad = isBottom and { -17.50, -1.00, -31.00 } or { 17.50, -1.00, 31.00 }
+  local posReturn  = isBottom and { -17.50, -1.00, -35.00 } or { 17.50, -1.00, 35.00 }
+  local posDiscard = isBottom and { -17.50, -1.00, -36.25 } or { 17.50, -1.00, 36.25 }
+  local posDraw = isBottom and { -17.50, -1.00, -37.50 } or { 17.50, -1.00, 37.50 }
+  local rotRevealUI = isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 }
+  local revealUIObjs = {
+    getObjectbyName("Pad Republic Reveal"),
+    getObjectbyName("Button Reveal Return"),
+    getObjectbyName("Button Reveal Discard"),
+    getObjectbyName("Button Reveal Draw")
+  }
+  local posRevealUI = {posPad, posReturn, posDiscard, posDraw}
+  for i = 1, 4 do
+    revealUIObjs[i].setRotation(rotRevealUI)
+    revealUIObjs[i].setPosition(posRevealUI[i])
+  end
+  for i = 2, 4 do
+    revealUIObjs[i].clearButtons()
+  end
+end -- end hideRevealUI()
+
+
+function returnRevealed()
+  local area = getArea()
+  local isBottom = area == "Bottom"
+  local returnCard = nil
+  for _, zoneObj in pairs(isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects() do
+    if zoneObj.type == "Card" then
+      returnCard = object
+    end
+  end
+  returnCard.setRotation(isBottom and { 0.00, 180.00, 180.00 } or { 0.00, 0.00, 180.00 })
+  returnCard.setPositionSmooth(isBottom and { -3.50, 1.50, -31.00 } or { 3.50, 1.50, 31.00 })
+end -- end returnRevealed()
+
+
+function revealACard(button)
+  -- handles the reveal portion of the republic reveal UI stuff
+  local bottomFaction, topFaction = getPlayerAreas()
+  local area = getArea()
+  local isBottom = area == "Bottom"
+  local faction = isBottom and bottomFaction or topFaction
+  local republicColor = (isBottom and artAssetBottom or artAssetTop).getDescription()
+  local zoneDeck = isBottom and zoneDeckBottom or zoneDeckTop
+  local zoneDiscard = isBottom and zoneDiscardBottom or zoneDiscardTop
+  local posDeck = isBottom and { -3.50, 1.50, -31.00 } or { 3.50, 1.50, 31.00 }
+  local posReveal = isBottom and { -17.50, 0.39, -31.00 } or { 17.50, 0.39, 31.00 }
+  local deckDeal = nil
+  local deckOrCardFound = false
+  local countDeck = 0
+  local revealCard = nil
+  local shuffleRequired = false
+  -- check for deck or card
+  for _, zoneObj in pairs(zoneDeck.getObjects()) do
+    if zoneObj.type == "Deck" then
+      deckOrCardFound = true
+      deckDeal = zoneObj
+      countDeck = deckDeal.getQuantity()
+    end
+    if zoneObj.type == "Card" then
+      deckOrCardFound = true
+      deckDeal = zoneObj
+      countDeck = 1
+    end
+  end
+  if countDeck >= 1 then
+    if deckOrCardFound and deckDeal.type == "Deck" then
+      revealCard = deckDeal.takeObject()
+    elseif deckOrCardFound and deckDeal.type == "Card" then
+      revealCard = deckDeal
+    end
+  elseif countDeck < 1 then
+    shuffleRequired = true
+    for _, zoneObj in pairs(zoneDiscard.getObjects()) do
+      if zoneObj.type == "Deck" then
+        deckDeal = zoneObj
+        deckDeal.flip()
+        deckDeal.shuffle()
+        Wait.time(function() deckDeal.setPosition(posDeck) end, 1)
+        deckDeal.setName(faction:gsub("^%l", string.upper))
+      end
+    end
+    Wait.time(function()
+
+      revealCard = deckDeal.takeObject()
+      local revealCardName = revealCard.getName()
+      if revealCardName == "Obi-Wan Kenobi" and button.getName() ~= "Mace Windu" then
+        broadcastToAll("[" .. Color.fromString(republicColor):toHex() .. "]Hello there![-] [b]Obi-Wan Kenobi[/b] has been revealed, and added to [" .. Color.fromString(republicColor):toHex() .. "]Republic[-] hand.", "White")
+        Wait.time(function() drawRevealed() end, 1)
+        Wait.time(function() obiWanRepeatAction(button, republicColor) end, 2)
+      end
+      revealCard.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+      revealCard.setPositionSmooth(posReveal, false, true)
+      return revealCard
+
+    end, 2)
+  end
+  if not shuffleRequired then
+    local revealCardName = revealCard.getName()
+    if revealCardName == "Obi-Wan Kenobi" then
+      if button.getName() ~= "Mace Windu" then
+        broadcastToAll("[" .. Color.fromString(republicColor):toHex() .. "]Hello there![-] [b]Obi-Wan Kenobi[/b] has been revealed, and added to [" .. Color.fromString(republicColor):toHex() .. "]Republic[-] hand.", republicColor)
+        Wait.time(function() drawRevealed() end, 1)
+        Wait.time(function() obiWanRepeatAction(button, republicColor) end, 2)
+      end
+    end
+    revealCard.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
+    revealCard.setPositionSmooth(posReveal, false, true)
+    return revealCard
+  end
+end -- end revealCard()
+
+
+function setupRevealUI(area)
+  -- handles the setup of republic reveal UI elements
+  local isBottom = area == "Bottom"  
+  local posPad = isBottom and { -17.50, 0.02, -31.00 } or { 17.50, 0.02, 31.00 }
+  local posReturn = isBottom and { -17.50, 0.02, -35.00 } or { 17.50, 0.02, 35.00 }
+  local posDiscard = isBottom and { -17.50, 0.02, -36.25 } or { 17.50, 0.02, 36.25 }
+  local posDraw = isBottom and { -17.50, 0.02, -37.50 } or { 17.50, 0.02, 37.50 }
+  local rotRevealUI = isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 }
+  local revealUIObjs = {
+    getObjectbyName("Pad Republic Reveal"),
+    getObjectbyName("Button Reveal Return"),
+    getObjectbyName("Button Reveal Discard"),
+    getObjectbyName("Button Reveal Draw")
+  }
+  local posRevealUI = {posPad, posReturn, posDiscard, posDraw}
+  for i = 1, 4 do
+    revealUIObjs[i].setRotation(rotRevealUI)
+    revealUIObjs[i].setPosition(posRevealUI[i])
+  end
+end -- end setupRevealUI()
+
+
+function showRevealUI(showDiscard, showDraw)
+  -- handles the show of republic reveal UI elements
+  local area = getArea()
+  local isBottom = area == "Bottom"
+  local posPad = isBottom and { -17.50, 0.02, -31.00 } or { 17.50, 0.02, 31.00 }
+  local posReturn = isBottom and { -17.50, 0.02, -35.00 } or { 17.50, 0.02, 35.00 }
+  local posDiscard = isBottom and { -17.50, 0.02, -36.25 } or { 17.50, 0.02, 36.25 }
+  local posDraw = isBottom and { -17.50, 0.02, -37.50 } or { 17.50, 0.02, 37.50 }
+  local rotRevealUI = isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 }
+  local revealUIObjs = {
+    getObjectbyName("Pad Republic Reveal"),
+    getObjectbyName("Button Reveal Return"),
+    getObjectbyName("Button Reveal Discard"),
+    getObjectbyName("Button Reveal Draw")
+  }
+  local posRevealUI = {posPad, posReturn, posDiscard, posDraw}
+
+  for i = 1, 2 do
+    revealUIObjs[i].setRotation(rotRevealUI)
+    revealUIObjs[i].setPosition(posRevealUI[i])
+  end
+
+  revealUIObjs[2].call('create_button') -- NEED REQUIRE
+
+  if showDiscard then
+    revealUIObjs[3].setRotation(rotRevealUI)
+    revealUIObjs[3].setPosition(posRevealUI[3])
+    revealUIObjs[3].call('create_button') -- NEED REQUIRE
+  end
+
+  if showDraw then
+    revealUIObjs[4].setRotation(rotRevealUI)
+    revealUIObjs[4].setPosition(posRevealUI[4])
+    revealUIObjs[4].call('create_button') -- NEED REQUIRE
+  end
+
+  if showDraw and not showDiscard then
+    revealUIObjs[4].setPosition(posRevealUI[3])
+  end
+end -- end showRevealUI()

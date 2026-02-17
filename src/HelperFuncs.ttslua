@@ -7,7 +7,7 @@ function checkBase(faction)
   local isBottom = faction == bottomFaction
   local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
   for _, zoneObj in pairs(checkZone.getObjects()) do
-    if zoneObj.tag == "Card" and (zoneObj.hasTag('empire_base') or zoneObj.hasTag('rebel_base')) or
+    if zoneObj.type == "Card" and (zoneObj.hasTag('empire_base') or zoneObj.hasTag('rebel_base')) or
     zoneObj.hasTag('republic_base') or zoneObj.hasTag('separatist_base') then
       return zoneObj.getName()
     end
@@ -27,6 +27,19 @@ function checkIfAI()
   end
   return isAI
 end -- end checkIfAI()
+
+
+function getArea()
+  -- related to Republic Reveal Pad functionality
+  local posPad = getObjectbyName("Pad Republic Reveal").getPosition()
+  local area = nil
+  if posPad.x > -18.50 and posPad.x < -16.50 then
+    area = "Bottom"
+  elseif posPad.x > 16.50 and posPad.x < 18.50 then
+    area = "Top"
+  end
+  return area
+end -- end getArea()
 
 
 function getButtonColors(buttonColor)
@@ -75,7 +88,7 @@ function getGalaxyDeck()
   -- gets and returns deck currently positioned in zoneGalaxyDeck
   local deckGalaxy = nil
   for k, v in pairs(zoneGalaxyDeck.getObjects()) do
-    if v.tag == "Deck" then
+    if v.type == "Deck" then
       deckGalaxy = v
     end
   end

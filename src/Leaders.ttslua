@@ -11,7 +11,7 @@ function discardAICard(isRandom)
   local capitalizedOpponentFaction = (opponentFaction:gsub("^%l", string.upper))
 
   for _, object in pairs(checkZone.getObjects()) do
-    if object.tag == "Card" and not object.is_face_down then
+    if object.type == "Card" and not object.is_face_down then
       table.insert(musterCards, object)
     end
   end

@@ -7,7 +7,7 @@ end -- end onLoad()
 
 function create_button()
     self.createButton({
-        click_function = "return_revealed",
+        click_function = "returnRevealed",
         function_owner = self,
         label          = "",
         color          = {0.6, 0.78, 0.73, 0.0},
@@ -19,6 +19,6 @@ function create_button()
     })
 end -- end create_button()
 
-function return_revealed()
-    pad_republic_reveal.call('return_revealed')
-end -- end return_revealed()
+function returnRevealed()
+    pad_republic_reveal.call('returnRevealed')
+end -- end returnRevealed()

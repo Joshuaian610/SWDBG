@@ -8,7 +8,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "a03936/ui_button_action(1e44a9)" image="Exile Blue"></Button>
+    <Button onClick   = "a03936/buttonActionXML(1e44a9)" image="Exile Blue"></Button>
 </Panel>
 
 <Panel
@@ -21,7 +21,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "a03936/ui_button_action(1e44a9)" image="Exile Purple"></Button>
+    <Button onClick   = "a03936/buttonActionXML(1e44a9)" image="Exile Purple"></Button>
 </Panel>
 
 <Panel
@@ -34,7 +34,7 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "a03936/ui_button_action(1e44a9)" image="Exile Red"></Button>
+    <Button onClick   = "a03936/buttonActionXML(1e44a9)" image="Exile Red"></Button>
 </Panel>
 
 <Panel
@@ -47,6 +47,6 @@
     showAnimation     = "Grow"
     hideAnimation     = "Shrink"
     animationDuration = ".25">
-    <Button onClick   = "a03936/ui_button_action(1e44a9)" image="Exile Orange"></Button>
+    <Button onClick   = "a03936/buttonActionXML(1e44a9)" image="Exile Orange"></Button>
 </Panel>
 

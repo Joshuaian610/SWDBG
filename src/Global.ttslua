@@ -92,7 +92,7 @@ function onLoad()
   buttonForceBottom = getObjectbyName("Button Force Bottom")
   buttonForceTop = getObjectbyName("Button Force Top")
   buttonDiscardRandomBottom = getObjectbyName("Button Discard Bottom")
-  buttonDiscardRandomTop = getObjectbyName("Button Discard Top")
+  buttonDiscardRandomTop = getObjectbyName("Button Discard Top")  
 
   counterResourceBoardBottom = getObjectbyName("Resource Counter Base Bottom")
   counterResourceBottom = getObjectbyName("Resource Counter Bottom")
@@ -109,20 +109,18 @@ function onLoad()
 
 
   -- get, assign galaxy deck
-  deckGalaxy = nil
-  for k, v in pairs(zoneGalaxyDeck.getObjects()) do
-    if v.tag == "Deck" then
-      deckGalaxy = v
-    end
-  end
+  deckGalaxy = getGalaxyDeck()
   
   -- get, assign turn tracker
   turnTracker = nil
-  for k, v in pairs(getObjects()) do
-    if v.hasTag('turnTracker') then
-      turnTracker = v
+  for _, zoneObj in pairs(getObjects()) do
+    if zoneObj.hasTag('turnTracker') then
+      turnTracker = zoneObj
     end
   end
+
+  -- ensure Republic Reveal UI stuff is hidden
+  Wait.frames(function() hideRevealUI() end)
 
   -- galaxy purchase buttons
   -- starts at player area 1 (bottom) left, runs counter clockwise
@@ -281,7 +279,7 @@ function getObjectbyNameAndNotes(name, gmNotes)
   end
   log("getObjectFromNameAndTag() object not found via " .. name .. ", " .. gmNotes)
   return nil
-end -- end getObjectFromNameAndNotes()
+end -- end getObjectByNameAndNotes()
 
 
 function onObjectEnterZone(zone, obj)
@@ -540,6 +538,14 @@ function onObjectLeaveZone(zone, obj)
   if zone == zoneInPlay and obj.getName() == "Assassin Droid" and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
     -- removeBHbuttons()
+  end
+
+  -- handles republic reveal UI hide
+  local areaRevealPad = getArea()
+  local isBottom = areaRevealPad == "Bottom"
+  local zonerepublicReveal = isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop
+  if zone == zonerepublicReveal and obj.hasTag(isBottom and 'bottom_owner' or 'top_owner') then
+    hideRevealUI()
   end
 end -- end onObjectLeaveZone()
 
