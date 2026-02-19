@@ -273,6 +273,8 @@ function onObjectSpawn(obj)
     initPurchaseCardButtons(obj)
   elseif name == "Button Discard" then
     initRowDiscardButtons(obj)
+  elseif name == "Button Force Bottom" or name == "Button Force Top" then
+    initForceButton(obj)
   end
 end
 

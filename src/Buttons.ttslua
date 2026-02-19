@@ -233,6 +233,21 @@ function initCancelButton(button)
 end -- end initCancelButton()
 
 
+function initForceButton(button)
+  button.createButton({
+    click_function = "doMoveForceTrack",
+    function_owner = self,
+    label          = "",
+    color          = { 1, 1, 1, 0 },
+    hover_color    = { 1, 1, 1, 0.2 },
+    position       = { 0, 0.36, 0 },
+    height         = 990,
+    width          = 2795,
+    tooltip        = "Left clicking this button will move the force tracker one space towards you.\nRight clicking will move the force tracker one space away from you.",
+  })
+end
+
+
 function initPurchaseCardButtons(button)
   button.clearButtons()
   button.createButton({

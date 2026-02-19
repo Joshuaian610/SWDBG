@@ -868,6 +868,15 @@ function galaxyDiscard(button, _, altClick)
 end -- end galaxyDiscard()
 
 
+function doMoveForceTrack(button, _, altClick)
+  -- handle button click of force track buttons
+  -- first need to check if game has even started, return out if not (no broadcast required)
+  if getObjectbyName("Button Setup Game") then
+    return
+  end
+  moveForceTrack(button, altClick and -1 or 1)
+end
+
 function moveForceTrack(button, count)
   -- z axis locs, top to bottom
   local posForceTrackZ = {
