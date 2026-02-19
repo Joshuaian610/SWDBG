@@ -233,6 +233,22 @@ function initCancelButton(button)
 end -- end initCancelButton()
 
 
+function initEndTurnButton(button)
+  button.clearButtons()
+  button.createButton({
+    click_function = "endTurn",
+    function_owner = padGalaxyDeck,
+    label          = "",
+    color          = { 1, 1, 1, 0 },
+    hover_color    = { 1, 1, 1, 0.2 },
+    position       = { 0, 0.36, 0 },
+    height         = 990,
+    width          = 1725,
+    tooltip        = "Pressing this button will end it's player's turn.",
+  })
+end -- end initEndTurnButton()
+
+
 function initForceButton(button)
   button.createButton({
     click_function = "doMoveForceTrack",
@@ -245,7 +261,7 @@ function initForceButton(button)
     width          = 2795,
     tooltip        = "Left clicking this button will move the force tracker one space towards you.\nRight clicking will move the force tracker one space away from you.",
   })
-end
+end -- end initForceButton()
 
 
 function initPurchaseCardButtons(button)
@@ -261,7 +277,7 @@ function initPurchaseCardButtons(button)
     width          = 2900,
     tooltip        = "Pressing this button will purchase this card for the clicking player.\n\nRight clicking this button will purchase the card for free.",
   })
-end
+end -- end initPurchaseCardButtons()
 
 
 function initRandomDiscardButton(button)
@@ -278,7 +294,7 @@ function initRandomDiscardButton(button)
     width          = 1390,
     tooltip        = "Pressing this button will discard a random card from your hand.",
   })
-end
+end -- end initRandomDiscardButton()
 
 
 function initRowDiscardButtons(button)
@@ -295,7 +311,7 @@ function initRowDiscardButtons(button)
     width          = 2900,
     tooltip = "Pressing this button will send it's card to the galaxy discard pile, and automatically replace with a new card. Right clicking discards without automatic replacement.",
   })
-end
+end -- end initRowDiscardButtons()
 
 
 function initXMLForceButton(card)

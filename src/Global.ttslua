@@ -277,6 +277,8 @@ function onObjectSpawn(obj)
     initForceButton(obj)
   elseif name == "Button Discard Bottom" or name == "Button Discard Top" then
     initRandomDiscardButton(obj)
+  elseif name == "Button End Turn Bottom" or name == "Button End Turn Top" then
+    initEndTurnButton(obj)
   end
 end
 
