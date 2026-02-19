@@ -738,16 +738,22 @@ function exileRowDeploy(callingCard, isBottom)
 end -- end exileRowDeploy()
 
 
-function galaxyDiscard(button, zoneCard, altClick)
+function galaxyDiscard(button, _, altClick)
   -- handles discard action of galaxy row discard button
   animateButtonGalaxyRow(button)
 
   local isBottom = false
-  if button.GMNotes() == "1" or button.GMNotes() == "2" or button.GMNotes() == "3" or
-  button.GMNotes() == "4" or button.GMNotes() == "5" or button.GMNotes() == "6" then
+  if tonumber(button.GMNotes()) < 7 then
     isBottom = true
   end
-
+  
+  local zoneCard = button.GMNotes() == 1 or button.GMNotes == 12 and zoneGalaxyRow1 or
+                   button.GMNotes() == 2 or button.GMNotes == 11 and zoneGalaxyRow2 or
+                   button.GMNotes() == 3 or button.GMNotes == 10 and zoneGalaxyRow3 or
+                   button.GMNotes() == 4 or button.GMNotes == 9  and zoneGalaxyRow4 or
+                   button.GMNotes() == 5 or button.GMNotes == 8  and zoneGalaxyRow5 or
+                   button.GMNotes() == 6 or button.GMNotes == 7 and zoneGalaxyRow6
+                   
   local bagExile = button.hasTag('bottom_owner') and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
   local rotDiscard = { 0, 90, 0 }
   local posDiscard = { -28.00, 2.50, -2.50 }

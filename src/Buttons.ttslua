@@ -249,6 +249,22 @@ function initPurchaseCardButtons(button)
 end
 
 
+function initRowDiscardButtons(button)
+  button.clearButtons()
+  button.createButton({
+    click_function = "galaxyDiscard",
+    function_owner = self,
+    label          = "",
+    color          = { 0.6, 0.78, 0.73, 0.0 },
+    hover_color    = { 0.6, 0.78, 0.73, 0.4 },
+    position       = { 0, 0.2, 0 },
+    height         = 750,
+    width          = 2900,
+    tooltip = "Pressing this button will send it's card to the galaxy discard pile, and automatically replace with a new card. Right clicking discards without automatic replacement.",
+  })
+end
+
+
 function initXMLForceButton(card)
   -- handles creation of card force buttons    
   local bottomColor, topColor = getPlayerColors()

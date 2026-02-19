@@ -271,6 +271,8 @@ function onObjectSpawn(obj)
 
   if name == "Button Purchase" then
     initPurchaseCardButtons(obj)
+  elseif name == "Button Discard" then
+    initRowDiscardButtons(obj)
   end
 end
 
