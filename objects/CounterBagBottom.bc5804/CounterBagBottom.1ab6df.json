@@ -1,0 +1,130 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "AttachedSnapPoints": [
+    {
+      "Position": {
+        "x": 0.009,
+        "y": 0.5,
+        "z": 0.002
+      }
+    }
+  ],
+  "Autoraise": true,
+  "ChildObjects": [
+    {
+      "AltLookAngle": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "Autoraise": true,
+      "ColorDiffuse": {
+        "b": 0.235294014,
+        "g": 0.235294014,
+        "r": 0.235294014
+      },
+      "CustomImage": {
+        "CustomTile": {
+          "Stackable": false,
+          "Stretch": true,
+          "Thickness": 0.348251343,
+          "Type": 2
+        },
+        "ImageScalar": 1,
+        "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/13188527176338351149/2D8530B94650666C40994BDB22EC4039CC96E105/",
+        "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/13188527176338351149/2D8530B94650666C40994BDB22EC4039CC96E105/",
+        "WidthScale": 0
+      },
+      "Description": "",
+      "DragSelectable": true,
+      "GMNotes": "",
+      "GUID": "f8ecdf",
+      "Grid": true,
+      "GridProjection": false,
+      "Hands": false,
+      "HideWhenFaceDown": false,
+      "IgnoreFoW": false,
+      "LayoutGroupSortIndex": 0,
+      "Locked": true,
+      "LuaScript": "",
+      "LuaScriptState": "",
+      "MeasureMovement": false,
+      "Name": "Custom_Tile",
+      "Nickname": "Counter Bag Bottom",
+      "Snap": true,
+      "Sticky": true,
+      "Tooltip": true,
+      "Transform": {
+        "posX": -1.57979252e-9,
+        "posY": -0.5,
+        "posZ": -1.90609484e-9,
+        "rotX": -1.07458776e-14,
+        "rotY": -0.00000159386161,
+        "rotZ": 1.4946511e-22,
+        "scaleX": 0.504634857,
+        "scaleY": 2.87148929,
+        "scaleZ": 0.504631639
+      },
+      "Value": 0,
+      "XmlUI": ""
+    }
+  ],
+  "ColorDiffuse": {
+    "a": 0,
+    "b": 1,
+    "g": 1,
+    "r": 1
+  },
+  "ContainedObjects_order": [
+    "Counter.98108a"
+  ],
+  "ContainedObjects_path": "CounterBagBottom.1ab6df",
+  "CustomMesh": {
+    "CastShadows": true,
+    "ColliderURL": "",
+    "Convex": true,
+    "DiffuseURL": "",
+    "MaterialIndex": 0,
+    "MeshURL": "https://steamusercontent-a.akamaihd.net/ugc/1666858152071991282/5C391C2599AE5F6972D6EFA7BFC04B41D6E821E3/",
+    "NormalURL": "",
+    "TypeIndex": 7
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "1ab6df",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MaterialIndex": -1,
+  "MeasureMovement": false,
+  "MeshIndex": -1,
+  "Name": "Custom_Model_Infinite_Bag",
+  "Nickname": "Counter Bag Bottom",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": false,
+  "Transform": {
+    "posX": 13.795,
+    "posY": 0.2,
+    "posZ": -40.908,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 1.49,
+    "scaleY": 0.35,
+    "scaleZ": 1.49
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

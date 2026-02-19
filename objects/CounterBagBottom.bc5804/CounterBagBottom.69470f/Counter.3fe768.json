@@ -1,0 +1,57 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 1,
+    "g": 0.53,
+    "r": 0.118
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.34825182,
+      "Type": 2
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2032858469272040756/97E98648BEFEFAB3D7D739A8FAB7A5506303C74F/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2032858469272040756/97E98648BEFEFAB3D7D739A8FAB7A5506303C74F/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "3fe768",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": false,
+  "LuaScriptState": "[0]",
+  "LuaScript_path": "CounterBagBottom.bc5804/CounterBagBottom.69470f/Counter.3fe768.ttslua",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Counter",
+  "Snap": true,
+  "Sticky": true,
+  "Tooltip": true,
+  "Transform": {
+    "posX": 13.795,
+    "posY": 0.392,
+    "posZ": -40.92,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.61,
+    "scaleY": 1,
+    "scaleZ": 0.61
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

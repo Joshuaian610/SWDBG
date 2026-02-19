@@ -33,13 +33,13 @@
   "Transform": {
     "posX": -25,
     "posY": 0.388,
-    "posZ": -37.626,
+    "posZ": -35.59,
     "rotX": 0,
     "rotY": 0,
     "rotZ": 0,
     "scaleX": 2,
     "scaleY": 0.5,
-    "scaleZ": 2
+    "scaleZ": 6
   },
   "Value": 0,
   "XmlUI": ""

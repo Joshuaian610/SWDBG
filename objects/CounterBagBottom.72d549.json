@@ -1,0 +1,68 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.23529,
+    "g": 0.23529,
+    "r": 0.23529
+  },
+  "ContainedObjects_path": "CounterBagBottom.72d549",
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 0.348251343,
+      "Type": 2
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939737109/5D0EB14B96DAEE2CE32EF96FE14C077569CAD911/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939737109/5D0EB14B96DAEE2CE32EF96FE14C077569CAD911/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "72d549",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Counter Bag Bottom",
+  "Snap": true,
+  "States_path": {
+    "2": "CounterBagBottom.69470f",
+    "3": "CounterBagBottom.bf7077",
+    "4": "CounterBagBottom.81ca15",
+    "5": "CounterBagBottom.6e7cc5",
+    "6": "CounterBagBottom.1ab6df"
+  },
+  "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -17.12,
+    "posY": 0.02,
+    "posZ": 28.39,
+    "rotX": 0,
+    "rotY": 0,
+    "rotZ": 0,
+    "scaleX": 0.75,
+    "scaleY": 1,
+    "scaleZ": 0.75
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

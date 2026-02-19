@@ -279,6 +279,8 @@ function onObjectSpawn(obj)
     initRandomDiscardButton(obj)
   elseif name == "Button End Turn Bottom" or name == "Button End Turn Top" then
     initEndTurnButton(obj)
+  elseif name == "Button Setup Game" then
+    disableNeutralDeckSelection()
   end
 end
 
