@@ -1064,10 +1064,8 @@ function purchaseCard(button, playerColor, altClick)
   local faction = isBottom and bottomFaction or topFaction
   local capitalizedFaction = faction:gsub("^%l", string.upper)
   local opponentFaction = isBottom and topFaction or bottomFaction
-  local capitalizedOpponentFaction = (opponentFaction:gsub("^%l", string.upper))
   local factionTag = faction
   local opponentTag = opponentFaction
-  local cardTag = isBottom and 'bottom_owner' or 'top_owner'
   local counter = isBottom and counterResourceBottom or counterResourceTop
   local counterBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
   local posCard = nil

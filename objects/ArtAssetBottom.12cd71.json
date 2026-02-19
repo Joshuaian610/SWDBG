@@ -33,7 +33,7 @@
     "LeadersCardEmpire.bebb07",
     "Checker_red.663c0d"
   ],
-  "ContainedObjects_path": "Custom_Model_Bag.12cd71",
+  "ContainedObjects_path": "ArtAssetBottom.12cd71",
   "CustomMesh": {
     "CastShadows": true,
     "ColliderURL": "https://steamusercontent-a.akamaihd.net/ugc/2020465963630159029/287EB976582923FC42A8336AAA0855148FB15754/",
@@ -61,7 +61,7 @@
   "MeasureMovement": false,
   "MeshIndex": -1,
   "Name": "Custom_Model_Bag",
-  "Nickname": "",
+  "Nickname": "Art Asset Bottom",
   "Snap": true,
   "Sticky": true,
   "Tags": [

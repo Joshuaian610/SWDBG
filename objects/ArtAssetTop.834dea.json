@@ -33,7 +33,7 @@
     "FacedownMusterPad.f812d9",
     "FacedownMusterPad.ea4e10"
   ],
-  "ContainedObjects_path": "Custom_Assetbundle_Bag.834dea",
+  "ContainedObjects_path": "ArtAssetTop.834dea",
   "CustomAssetbundle": {
     "AssetbundleSecondaryURL": "",
     "AssetbundleURL": "https://steamusercontent-a.akamaihd.net/ugc/1752432848399246240/1E137FCF0B49F02A8A3BF07B28E574B32F2E0D38/",
@@ -53,12 +53,12 @@
   "LayoutGroupSortIndex": 0,
   "Locked": true,
   "LuaScriptState": "",
-  "LuaScript_path": "Custom_Assetbundle_Bag.834dea.ttslua",
+  "LuaScript_path": "ArtAssetTop.834dea.ttslua",
   "MaterialIndex": -1,
   "MeasureMovement": false,
   "MeshIndex": -1,
   "Name": "Custom_Assetbundle_Bag",
-  "Nickname": "",
+  "Nickname": "Art Asset Top",
   "Snap": true,
   "States_path": {
     "1": "BD1.12e06c"

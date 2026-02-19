@@ -8,49 +8,49 @@
   "ColorDiffuse": {
     "b": 1,
     "g": 0.53,
-    "r": 0.118
+    "r": 0.11798
   },
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.34825182,
-      "Type": 2
+      "Thickness": 0.348251373,
+      "Type": 0
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2032858469272040756/97E98648BEFEFAB3D7D739A8FAB7A5506303C74F/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2032858469272040756/97E98648BEFEFAB3D7D739A8FAB7A5506303C74F/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2040737231388604982/E45B1F06FD104AC8A8D3E43C04A8038F806CD8B3/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2040737231388604982/E45B1F06FD104AC8A8D3E43C04A8038F806CD8B3/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "954911",
+  "GUID": "bebb07",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
   "HideWhenFaceDown": false,
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
-  "Locked": true,
-  "LuaScriptState": "[0]",
-  "LuaScript_path": "Custom_Model_Bag.12cd71/EmpireBaseDamageCounter.954911.ttslua",
+  "Locked": false,
+  "LuaScriptState": "",
+  "LuaScript_path": "ArtAssetBottom.12cd71/LeadersCardEmpire.bebb07.ttslua",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Empire Base Damage Counter",
+  "Nickname": "Leaders Card Empire",
   "Snap": true,
   "Sticky": true,
-  "Tooltip": true,
+  "Tooltip": false,
   "Transform": {
-    "posX": 2.74,
-    "posY": 15.58,
-    "posZ": -29.81,
-    "rotX": 40,
+    "posX": -45.208,
+    "posY": 6.494,
+    "posZ": -33.557,
+    "rotX": 1,
     "rotY": 0,
     "rotZ": 0,
-    "scaleX": 2.8,
+    "scaleX": 5.2,
     "scaleY": 1,
-    "scaleZ": 2.8
+    "scaleZ": 5.2
   },
   "Value": 0,
   "XmlUI": ""

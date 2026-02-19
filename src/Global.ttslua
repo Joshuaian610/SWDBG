@@ -17,16 +17,20 @@ function onLoad()
   math.randomseed(os.time())
   Turns.enable = false
 
-  local interactable = false
-  local invis = false
+  interactable = false
+  invis = false
 
-  -- set non interactables
+  -- set non interactables, run onSpawn stuff
   if interactable then
     for _, obj in pairs(getObjects()) do
       if obj.hasTag('non_interactable') then
         obj.interactable = false
       end
     end
+  end
+
+  for _, obj in pairs(getObjects()) do
+    onObjectSpawn(obj)
   end
 
   -- set always invisibles (rest need to see if game is in progress and will use game state to determine visibility)
@@ -92,7 +96,7 @@ function onLoad()
   buttonForceBottom = getObjectbyName("Button Force Bottom")
   buttonForceTop = getObjectbyName("Button Force Top")
   buttonDiscardRandomBottom = getObjectbyName("Button Discard Bottom")
-  buttonDiscardRandomTop = getObjectbyName("Button Discard Top")  
+  buttonDiscardRandomTop = getObjectbyName("Button Discard Top")
 
   counterResourceBoardBottom = getObjectbyName("Resource Counter Base Bottom")
   counterResourceBottom = getObjectbyName("Resource Counter Bottom")
@@ -139,8 +143,6 @@ function onLoad()
     getObjectbyNameAndNotes("Button Purchase", "12"),
     getObjectbyNameAndNotes("Button Purchase", "13"),
     getObjectbyNameAndNotes("Button Purchase", "14"),
-    getObjectbyNameAndNotes("Button Purchase", "15"),
-    getObjectbyNameAndNotes("Button Purchase", "16"),
   }
   -- galaxy discard (bounty hunt / sabotage)
   -- oriented same as purchase buttons - starts at player area 1 left, runs counter clockwise
@@ -258,9 +260,24 @@ function onLoad()
 end -- end onLoad()
 
 
+function onObjectSpawn(obj)
+  -- set nonInteractables
+  if obj.hasTag("non_int") and not interactable then
+    obj.interactable = false
+  end
+
+  -- init buttons
+  local name = obj.getName()
+
+  if name == "Button Purchase" then
+    initPurchaseCardButtons(obj)
+  end
+end
+
+
 function getObjectbyName(name)
   -- simply search all objects for an object named a particular string
-  for _, object in pairs(getObjects()) do
+  for _, object in ipairs(getObjects()) do
     if object.getName() == name then
       return object
     end

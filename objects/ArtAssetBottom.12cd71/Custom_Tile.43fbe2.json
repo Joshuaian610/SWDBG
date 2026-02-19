@@ -8,13 +8,13 @@
   "ColorDiffuse": {
     "b": 1,
     "g": 0.53,
-    "r": 0.11798
+    "r": 0.11799
   },
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.348251373,
+      "Thickness": 0.348251343,
       "Type": 0
     },
     "ImageScalar": 1,
@@ -25,7 +25,7 @@
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "bebb07",
+  "GUID": "43fbe2",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
@@ -34,23 +34,26 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "Custom_Model_Bag.12cd71/LeadersCardEmpire.bebb07.ttslua",
+  "LuaScript_path": "ArtAssetBottom.12cd71/Custom_Tile.43fbe2.ttslua",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Leaders Card Empire",
+  "Nickname": "",
   "Snap": true,
   "Sticky": true,
-  "Tooltip": false,
+  "Tags": [
+    "non_interactable"
+  ],
+  "Tooltip": true,
   "Transform": {
-    "posX": -45.208,
-    "posY": 6.494,
-    "posZ": -33.557,
-    "rotX": 1,
-    "rotY": 0,
+    "posX": -46.441,
+    "posY": 6.482,
+    "posZ": -32.131,
+    "rotX": 355,
+    "rotY": 90,
     "rotZ": 0,
-    "scaleX": 5.2,
+    "scaleX": 1.26,
     "scaleY": 1,
-    "scaleZ": 5.2
+    "scaleZ": 1.26
   },
   "Value": 0,
   "XmlUI": ""
