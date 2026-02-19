@@ -275,6 +275,8 @@ function onObjectSpawn(obj)
     initRowDiscardButtons(obj)
   elseif name == "Button Force Bottom" or name == "Button Force Top" then
     initForceButton(obj)
+  elseif name == "Button Discard Bottom" or name == "Button Discard Top" then
+    initRandomDiscardButton(obj)
   end
 end
 

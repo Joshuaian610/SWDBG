@@ -274,9 +274,13 @@ function dealCard(playerArea, count)
 end -- end dealCard()
 
 
-function discardRandomCard(button, playerColor)
-  animateButtonDiscardRandom({obj=button})
-  local posButton = button.getPosition()
+function discardRandomCard(button, playerColor, _)
+  -- check if game has begun, return out if not
+  if getObjectbyName("Button Setup Game") then return end
+  
+  -- animate the button click
+  animateButtonDiscardRandom(button)
+
   local isBottom = button.getName() == "Button Discard Bottom"
   local isTop = button.getName() == "Button Discard Top"
   local rotDiscard = isBottom and { 0, 180, 0 } or { 0, 0, 0 }
