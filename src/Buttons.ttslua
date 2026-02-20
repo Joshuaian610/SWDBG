@@ -32,7 +32,7 @@ function animateButtonGalaxyRow(button)
 
   Wait.time(function()
 
-    button.call('create_button') -- NEED REQUIRE
+    initPurchaseCardButtons(button)
 
   end, .5)
 end -- end animateButtonGalaxyRow()
@@ -56,8 +56,7 @@ function initAbilityButton(card)
 
   if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
     card.createButton({
-      click_function = "primaryButtonAction", -- NEED REQUIRE
-      function_owner = self,
+      click_function = "primaryButtonAction",
       label          = '',
       position       = { 0, 0.5, 1.23 },
       height         = 575,
@@ -73,7 +72,7 @@ function initAbilityButton(card)
   if card.getName() == "Jar Jar Binks" and (not card.hasTag('bottom_owner') and not card.hasTag('top_owner')) then
     color, hoverColor = getButtonColors("Purple")
     card.createButton({
-      click_function = "primaryButtonAction", -- NEED REQUIRE
+      click_function = "primaryButtonAction",
       function_owner = self,
       label          = '',
       position       = { 0, 0.5, 1.23 },
@@ -107,7 +106,7 @@ function initAbilityButtonSec(card, primaryTooltip, secondaryTooltip)
 
   if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
     card.createButton({
-      click_function = "primaryButtonAction", -- NEED REQUIRE
+      click_function = "primaryButtonAction",
       function_owner = self,
       label          = '',
       position       = { -.545, 0.5, 1.23 },
@@ -120,7 +119,7 @@ function initAbilityButtonSec(card, primaryTooltip, secondaryTooltip)
       tooltip        = "Use " .. card.getName() .. " ability for " .. primaryTooltip .. "."
     })
     card.createButton({
-      click_function = "secondaryButtonAction", -- NEED REQUIRE
+      click_function = "secondaryButtonAction",
       function_owner = self,
       label          = '',
       position       = { .545, 0.5,1.23 },
@@ -176,7 +175,7 @@ function initBHSaboButtons(card, tooltip, faction)
 
   local bottomColor, topColor = getPlayerColors()
   local buttonColor = (attackFaction == bottomFaction and bottomColor or topColor)
-  local color, hoverColor = get_button_colors({ buttonColor=buttonColor }) -- NEED HELPER
+  local color, hoverColor = getButtonColors(buttonColor)
 
   if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then
     card.createButton({
@@ -213,7 +212,7 @@ function initCancelButton(button)
 
   if button.hasTag('buttons') then
     button.createButton({
-      click_function = "cancelCardAction", -- NEED REQUIRE
+      click_function = "cancelCardAction",
       function_owner = self,
       label          = 'Cancel Action',
       position       = { 0, 0.5, 1.23 },
@@ -375,7 +374,7 @@ function removeAbilityButtons(obj)
 end -- end removeAbilityButtons()
 
 
-function removeForceButtons(obj)
+function removeXMLForceButton(obj)
   -- handles removal of XML force buttons on cards
   obj.UI.hide('force_button_blue')
   obj.UI.hide('force_button_purple')

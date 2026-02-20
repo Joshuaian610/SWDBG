@@ -43,7 +43,7 @@
   "Tags": [
     "rebel_base"
   ],
-  "Tooltip": true,
+  "Tooltip": false,
   "Transform": {
     "posX": 29.5,
     "posY": 0.141,

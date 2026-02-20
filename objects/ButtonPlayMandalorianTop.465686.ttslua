@@ -1,28 +1,28 @@
-function onLoad()
-    self.createButton({
-        click_function = "setup_faction",
-        function_owner = self,
-        label          = "",
-        color          = {1, 1, 1, .1},
-        hover_color    = {1, 1, 1, .3},
-        position       = {0, 0.351, 0.00},
-        height         = 990,
-        width          = 1390,
-        tooltip        = "Pressing this button will set your play area up for a random faction. This click is instant and permanent!",
-    })
-end -- end onLoad()
+-- function onLoad()
+--     self.createButton({
+--         click_function = "setup_faction",
+--         function_owner = self,
+--         label          = "",
+--         color          = {1, 1, 1, .1},
+--         hover_color    = {1, 1, 1, .3},
+--         position       = {0, 0.351, 0.00},
+--         height         = 990,
+--         width          = 1390,
+--         tooltip        = "Pressing this button will set your play area up for a random faction. This click is instant and permanent!",
+--     })
+-- end -- end onLoad()
 
-function setup_faction(_, playercolor, _)
-    local buttons = {}
-    for _, v in ipairs(getObjectFromGUID("2c1cc3").getObjects()) do
-        local name = v.getName()
-        if string.find(name, "Button") and v ~= self then
-            table.insert(buttons, v)
-        end
-    end
-    math.randomseed(os.time())
-    local random = math.random(1, #buttons)
-    local button = buttons[random]
-    button.call('setup_faction')
-    broadcastToAll(Player[playercolor].steam_name .. " will play a random faction.", "Purple")
-end -- end setup_factiwon()
+-- function setup_faction(_, playercolor, _)
+--     local buttons = {}
+--     for _, v in ipairs(getObjectFromGUID("2c1cc3").getObjects()) do
+--         local name = v.getName()
+--         if string.find(name, "Button") and v ~= self then
+--             table.insert(buttons, v)
+--         end
+--     end
+--     math.randomseed(os.time())
+--     local random = math.random(1, #buttons)
+--     local button = buttons[random]
+--     button.call('setup_faction')
+--     broadcastToAll(Player[playercolor].steam_name .. " will play a random faction.", "Purple")
+-- end -- end setup_factiwon()

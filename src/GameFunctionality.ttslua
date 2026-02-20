@@ -98,7 +98,7 @@ function cancelCardAction(button, playerColor, _)
   if button.hasTag('buttons') then
     button.clearButtons()
     button.createButton({
-      click_function = "primaryButtonAction", -- NEED REQUIRE
+      click_function = "primaryButtonAction",
       function_owner = self,
       label          = '',
       position       = { 0, 0.5, 1.23 },
@@ -531,19 +531,20 @@ function endTurn(button, _, _)
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
         if zoneObj.hasTag('bottom_owner') and zoneObj.hasTag('ship') then
           if zoneObj.hasTag('ability_button') or zoneObj.hasTag('ability_button_sec') then
-            remove_ability_buttons({object=zoneObj}) -- NEED REQUIRE
+            removeAbilityButtons(zoneObj)
           end
           zoneObj.clearButtons()
-          zoneObj.call('initShipCounter') -- NEED REQUIRE
+          local val = zoneObj.getVar('val')
+          initShipCounter(zoneObj, val)
         end
       end
 
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
         if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button') then
-          zoneObj.call('initAbilityButtonXML') -- NEED REQUIRE
+          initAbilityButtonXML(zoneObj)
         end
         if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button_sec') then
-          zoneObj.call('initAbilityButtonSecXML') -- NEED REQUIRE
+          initAbilityButtonSecXML(zoneObj)
         end
       end
 
@@ -552,19 +553,20 @@ function endTurn(button, _, _)
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
         if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') then
           if zoneObj.hasTag('ability_button') or zoneObj.hasTag('ability_button_sec') then
-            remove_ability_buttons({object=v}) -- NEED REQUIRE
+            removeAbilityButtons(zoneObj)
           end
           zoneObj.clearButtons()
-          zoneObj.call('initShipCounter') -- NEED REQUIRE
+          local val = zoneObj.getVar('val')
+          initShipCounter(zoneObj, val)
         end
       end
 
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
         if zoneObj.hasTag('bottom_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button') then
-          zoneObj.call('initAbilityButtonXML') -- NEED REQUIRE
+          initAbilityButtonXML(zoneObj)
         end
         if zoneObj.hasTag('bottom_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button_sec') then
-          zoneObj.call('initAbilityButtonSecXML') -- NEED REQUIRE
+          initAbilityButtonSecXML(zoneObj)
         end
       end
     end
@@ -610,7 +612,7 @@ function exileCard(playerArea, obj)
     -- handle Nute Gunray
     if nextCardNute then
       cardInRow = false
-      padGalaxyDiscard.call('handleNuteGunray', {bagExile=bagExile, color=color}) -- NEED REQUIRE
+      handleNuteGunray(bagExile, playerColor)
     end
 
     -- replace card with galaxy row card if needed
@@ -687,7 +689,7 @@ function exileRowCard(button, playerColor, zoneCard, callCardGUID)
   if callCard.hasTag('buttons') then
     callCard.clearButtons()
   elseif callCard.hasTag('ability_button') then
-    remove_ability_buttons({object=callCard}) -- NEED REQUIRE
+    removeAbilityButtons(callCard)
   end
 
   Wait.time(function()
@@ -793,7 +795,7 @@ function galaxyDiscard(button, _, altClick)
   if nextCardNute then
     Wait.time(function()
 
-      padGalaxyDiscard.call('handleNuteGunray', {bagExile=bagExile, color=playerColor}) -- NEED REQUIRE
+      handleNuteGunray(bagExile, playerColor)
 
     end, 1)
   end

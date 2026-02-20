@@ -281,6 +281,8 @@ function onObjectSpawn(obj)
     initEndTurnButton(obj)
   elseif name == "Button Setup Game" then
     disableNeutralDeckSelection()
+  elseif name:find("Button Play") then
+    initFactionSetupButton(obj)
   end
 end
 
@@ -374,13 +376,14 @@ function onObjectEnterZone(zone, obj)
 
     -- create ship counters
     if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) then
-      obj.call('initShipCounter') -- NEED REQUIRE
+      local val = obj.getVar('val')
+      initShipCounter(obj, val)
     end
   end
 
   -- remove ownership tags on cards placed back into galaxy row
   if zone.getName():find("Zone Row") then
-    -- padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEED REQUIRE... maybe?
+    -- padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEEDISH REQUIRE... maybe?
     if obj.hasTag('bottom_owner') then
       obj.removeTag('bottom_owner')
     end
@@ -392,35 +395,35 @@ function onObjectEnterZone(zone, obj)
 
   -- ability button creation
   if zone == zoneInPlay and obj.hasTag('buttons') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('initAbilityButton', {card=obj}) -- NEED REQUIRE
+    initAbilityButton(obj)
   end
   if zone == zoneInPlay and obj.hasTag('buttons_sec') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('initAbilityButtonSec', {card=obj}) -- NEED REQUIRE
+    initAbilityButtonSec(obj)
   end
 
   -- ui ability button creation creation
   if zone == zoneInPlay and obj.hasTag('ability_button') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('initAbilityButtonXML', {card=obj}) -- NEED REQUIRE
+    initAbilityButtonXML(obj)
   end
   
   -- dual ui ability buttons creation
   if zone == zoneInPlay and obj.hasTag('ability_button_sec') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and obj.getName() ~= "Jar Jar Binks" then
-    obj.call('initAbilityButtonSecXML', {card=obj}) -- NEED REQUIRE
+    initAbilityButtonSecXML(obj)
   end
 
   -- ui force buttons creation
   if zone == zoneInPlay and obj.hasTag('add_force_button') and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.call('initXMLForceButton', {card=obj}) -- NEED REQUIRE
+    initXMLForceButton(obj)
   end
 
   -- jar jar row button creation
   if (zone.getName():find("Zone Row")) and
   (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
-    obj.call('initAbilityButtonSecXML', {card=obj}) -- NEED REQUIRE
+    initAbilityButtonSecXML(obj)
   end
 
   -- bounty hunt / sabotage button creation
@@ -428,7 +431,7 @@ function onObjectEnterZone(zone, obj)
 
     if obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
     not obj.hasTag('republic_owner') and not obj.hasTag('separatist_owner') and not obj.hasTag('neutral')) then
-        obj.call('initBHSaboButtons') -- NEED REQUIRE
+        -- initBHSaboButtons(obj, tooltip, factionName)
     end
 
     -- neutral bh /sabotage button creation if required  IS THIS BLOCK ACTUALLY NEEDED
@@ -438,7 +441,7 @@ function onObjectEnterZone(zone, obj)
     --   for i = 1, 2 do
     --     for _, zoneObj in pairs(zones[i].getObjects()) do
     --       if zoneObj.getName() == "Ord Mantell" then
-    --         -- object.call('bh_neutral_create') -- NEED REQUIRE
+    --         -- object.call('bh_neutral_create') -- NEEDISH REQUIRE
     --       end
     --     end
     --   end
@@ -446,7 +449,7 @@ function onObjectEnterZone(zone, obj)
     --   -- check for assassin droids      
     --   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
     --     if zoneObj.getName() == "Assassin Droid" and (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then
-    --       -- object.call('bh_neutral_create') -- NEED REQUIRE
+    --       -- object.call('bh_neutral_create') -- NEEDISH REQUIRE
     --     end
     --   end
     end
@@ -457,7 +460,7 @@ function onObjectEnterZone(zone, obj)
     for i = 1, 6 do
       for _, zoneObj in pairs(zones[i].getObjects()) do
         if zoneObj.hasTag('neutral') and (not zoneObj.hasTag('bottom_owner') and not zoneObj.hasTag('top_owner'))then
-          zoneObj.call('bh_neutral_create') -- NEED REQUIRE
+          zoneObj.call('bh_neutral_create') -- NEEDISH REQUIRE
         end
       end
     end
@@ -532,14 +535,14 @@ function onObjectLeaveZone(zone, obj)
   -- remove xml ability / force etc buttons
   if zone == zoneInPlay and (obj.hasTag('ability_button') or obj.hasTag('ability_button_sec') or obj.hasTag('force_button')) and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEED REQUIRE
-    padGalaxyDeck.call('remove_force_buttons', {object=obj}) -- NEED REQUIRE
+    removeAbilityButtons(obj)
+    removeXMLForceButton(obj)
   end
 
   -- remove jar jar row ability
   if zone.getName():find("Zone Row") and
   obj.getName() == "Jar Jar Binks" then
-    padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEED REQUIRE
+    removeAbilityButtons(obj)
   end
 
   -- remove bounty hunt / sabotage buttons

@@ -247,745 +247,1102 @@ function enableRandomNeutralDeck()
   getObjectbyName("Button Galaxy Deck Expansion").setGMNotes("disabled")
 end -- end enableRandomNeutralDeck()
 
+
+function initFactionSetupButton(obj)
+  local factionName = string.match(obj.getName(), "Button Play (%w+) %w+")
+  obj.clearButtons()
+  obj.createButton({
+    click_function = "setupFaction",
+    function_owner = self,
+    label          = "",
+    color          = {1, 1, 1, .1},
+    hover_color    = {1, 1, 1, .3},
+    position       = {0, 0.351, 0.00},
+    height         = 990,
+    width          = 1390,
+    tooltip        = "Pressing this button will set your play area up for " .. factionName .. ". This click is instant and permanent!",
+    })
+end -- end initFactionSetupButton()
+
+
+
 -- PLAYER AREA SETUP
+
+function setupFaction(button, _, _)
+
+  -- images used for faction specific player area pad, counter, etc assets
+  local imageVars = {
+    -- [1] image for discard pad
+    -- [2] image for deck pad
+    -- [3] image for discard button
+    -- [4] image for base pad
+    -- [5] image for base damage counter
+    -- [6] image for victory pad
+    -- [7] image for "force is with me" track button
+    -- [8] image for end turn button
+    Empire = {
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942086919/01911182179C9D5FBD491DC19C614D8EDC40B901/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942089207/F1125F628012C0D27FB2231818A7E54E6BD2113F/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2033983734574288361/A7B6B2E17AA5933AB73CD8CA1530D55857829D1A/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942174350/4CDBB3A954865EE1D35F521229E7F04370470FFB/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942096350/E1220637C8437310DCD63DB56BC6F4B4A024BC15/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2033983734574257378/6B4D14965A8730B86F7A6E6E7A47716CD2110B0F/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094943153263/0E718A8F31DC07FA493BCA34065AB852435F5657/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2475380256397752863/90106661570187927AC1B4F7210EE980AEFFD615/",
+    },
+    Rebellion = {
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942113361/DEA4F312CE91131DBAA1A67BA9D2A8ABC57C0B8C/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942114462/4909F08213FD194847CB8595797A13F1201C8599/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2033983734574528588/0F5CDE860D28D9A02A9451EDAB7B9387A6CB21D8/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942176664/F29B42F76C87CA965B74B896CBA8E12DDBD8308E/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942186876/139B2CF01B60BC00F6939794900ADA7F2EB4A131/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2033983734574262794/80DE96F28A85CFADE9BA8CFCEAEB8EB641EC8FBB/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094943154389/45658DCBE23B6173A3903AFD73B4FB9F3B724970/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2475380256397753881/51F4B4558037CBA608B543F92FECDABB16093D36/",
+    },
+    Republic = {
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942104886/9D5E65C4A9D6BA9DA515F9786A6238FFA675C685/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942106004/68E7FB40F0A6B5AEF4B0125E4FE04E7769BFE695/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942107341/DE706A4BBF96E7A1EF9F31ED2479DC8858F46D17/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942178867/CFAFFC2C4EB6B9CADDE054FC0131977B31BABCB3/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942108949/820B6E07BAC134E2F8A388989AE9D1D69DD80E77/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094943235363/A6A5849A4801E3DF7C7092363D286FE325534D67/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094943155542/1BD0C601D4F5B2152B939528DFB7E6AA1E097B2E/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2475380256397755002/9614E7C73EA575EC4712584F85595CAEE9B13072/",
+    },
+    Separatist = {
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942180815/B43CE051C6E219B9746ECCBACE14346C1CF4E101/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942182683/AC036EE89BC132D1129995FF0A0ABBEBBA07F7CC/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942184406/777D24E5A7B176C3A885FF303012441F3A74520B/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942188374/EB351821189A7703EAC27FBFE71C6B72FA5FAEB6/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094942190096/9A2BA6FF66D49365BD1D1A88967F3559354BE258/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094943151067/B99EFD9E0C622FF629667437F6F9D8789FD68693/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2395440094943156597/5987A4CC1F6DA7037727D8FE1F5AE2FC9520AFC1/",
+      "https://steamusercontent-a.akamaihd.net/ugc/2475380256397756152/A2D05044A715446E39066A98D96CE5F80E958007/",
+    },
+    Mandalorian = {
+      "https://steamusercontent-a.akamaihd.net/ugc/15227359129442241496/8565C42102297C0C2F95CE297FA1C851414469D1/",
+      "https://steamusercontent-a.akamaihd.net/ugc/13580037960876028661/D8374ABF67A51F17147AA1AC482D579C0944D360/",
+      "https://steamusercontent-a.akamaihd.net/ugc/14433672160796760165/4F443CAA682B4D06FFFB2C3E52B01B1A0C646129/",
+      "https://steamusercontent-a.akamaihd.net/ugc/16242306129180742876/7EF5609841030085F5CA14BAE8EC989FE7793518/",
+      "https://steamusercontent-a.akamaihd.net/ugc/13188527176338351149/2D8530B94650666C40994BDB22EC4039CC96E105/",
+      "https://steamusercontent-a.akamaihd.net/ugc/15200146434025915933/E29B11A1704CB314D2F0AE6BB3A2ACFFFF42BCE4/",
+      "https://steamusercontent-a.akamaihd.net/ugc/14792848727831701487/D82CBED83C0E43313DBA72A11F80C0B8B5D80320/",
+      "https://steamusercontent-a.akamaihd.net/ugc/11430281910100225839/4CDB9C8E1DFA70F8CE91FB7DE09BDAE0EAA8BB9A/",
+    }
+  }
+
+  local factionVars      = {
+    Empire         = {
+      buttonColor  = { 0, 0, 1, .4 },
+      hoverColor   = { 0, 0, 1, .1 },
+      factionColor = "Blue",
+      deckStarter  = getObjectbyName("Empire Deck"),
+      deckGalaxy   = getObjectbyName("Empire Galaxy Deck"),
+      deckBases    = getObjectbyName("Empire Bases"),
+      deckShips    = getObjectbyName("Empire Ships"),
+      firstBase    = "Lothal"
+    },
+    Rebellion   = {
+      buttonColor  = { 1, 0, 0, .4 },
+      hoverColor   = { 1, 0, 0, .1 },
+      factionColor = "Red",
+      deckStarter  = getObjectbyName("Rebellion Deck"),
+      deckGalaxy   = getObjectbyName("Rebellion Galaxy Deck"),
+      deckBases    = getObjectbyName("Rebellion Bases"),
+      deckShips    = getObjectbyName("Rebellion Ships"),
+      firstBase    = "Dantooine",
+    },
+    Separatist  = {
+      buttonColor  = { 1, 0, 0, .4 },
+      hoverColor   = { 1, 0, 0, .1 },
+      factionColor = "Blue",
+      deckStarter  = getObjectbyName("Separatist Deck"),
+      deckGalaxy   = getObjectbyName("Separatist Galaxy Deck"),
+      deckBases    = getObjectbyName("Separatist Bases"),
+      deckShips    = getObjectbyName("Separatist Ships"),
+      firstBase    = "Xorrn",
+    },
+    Republic    = {
+      buttonColor  = { 1, 0, 0, .4 },
+      hoverColor   = { 1, 0, 0, .1 },
+      factionColor = "Red",
+      deckStarter  = getObjectbyName("Republic Deck"),
+      deckGalaxy   = getObjectbyName("Republic Galaxy Deck"),
+      deckBases    = getObjectbyName("Republic Bases"),
+      deckShips    = getObjectbyName("Republic Ships"),
+      firstBase    = "Rishi",
+    },
+    Mandalorian = {
+      buttonColor  = { 0, 1, 0, .4 },
+      hoverColor   = { 0, 1, 0, .1 },
+      factionColor = "Green",
+      deckStarter  = getObjectbyName("Mandalorian Deck"),
+      deckGalaxy   = getObjectbyName("Mandalorian Galaxy Deck"),
+      deckBases    = getObjectbyName("Mandalorian Bases"),
+      deckShips    = getObjectbyName("Mandalorian Ships"),
+      firstBase    = "Concord Dawn",
+    },
+  }
+
+  local playerAreaObjs = {
+    playerUI = {
+      Bottom = {
+        getObjectbyName("Pad Discard Bottom"),
+        getObjectbyName("Pad Deck Bottom"),
+        getObjectbyName("Button Discard Bottom"),
+        getObjectbyName("Pad Bases Bottom"),
+        getObjectbyName("Base Damage Counter Bottom"),
+        getObjectbyName("Pad Victory Pile Bottom"),
+        getObjectbyName("Button Force Bottom"),
+        getObjectbyName("Button End Turn Bottom"),
+        getObjectbyNameAndNotes("Exiled!", "Bottom")
+      },
+      Top = {
+        getObjectbyName("Pad Discard Top"),
+        getObjectbyName("Pad Deck Top"),
+        getObjectbyName("Button Discard Top"),
+        getObjectbyName("Pad Bases Top"),
+        getObjectbyName("Base Damage Counter Top"),
+        getObjectbyName("Pad Victory Pile Top"),
+        getObjectbyName("Button Force Top"),
+        getObjectbyName("Button End Turn Top"),
+        getObjectbyNameAndNotes("Exiled!", "Top")
+      }
+    },
+    destroyObjs = {
+      Bottom = {
+        getObjectbyName("Setup Backdrop Bottom"),
+        getObjectbyName("Zone Faction Select Bottom"),
+        getObjectbyName("Button Play Empire Bottom"),
+        getObjectbyName("Button Play Rebellion Bottom"),
+        getObjectbyName("Button Play Separatist Bottom"),
+        getObjectbyName("Button Play Republic Bottom"),
+        getObjectbyName("Button Play Mandalorian Bottom"),
+        getObjectbyName("Button Play Random Bottom"),
+      },
+      Top = {
+        getObjectbyName("Setup Backdrop Top"),
+        getObjectbyName("Zone Faction Select Top"),
+        getObjectbyName("Button Play Empire Top"),
+        getObjectbyName("Button Play Rebellion Top"),
+        getObjectbyName("Button Play Separatist Top"),
+        getObjectbyName("Button Play Republic Top"),
+        getObjectbyName("Button Play Mandalorian Top"),
+        getObjectbyName("Button Play Random Top"),
+      }
+    }
+  }
+  -- handles setup of player area upon faction selection
+
+  local buttonName = button.getName()
+  -- buttonName will be in format: "Button Play " .. <factionName> .. " " .. <area>
+  -- using regex, I need to get factionName and area
+  local factionName, playerArea = string.match(buttonName, "Button Play (%w+) (%w+)")
+
+  -- handle random into a different available
+  if factionName == "Random" then
+    local setupButtons = {}
+    for _, zoneObj in pairs(zoneFactionSelectBottom.getObjects()) do
+      if zoneObj.getName():find("Button Play") and zoneObj ~= button then
+        table.insert(setupButtons, zoneObj)
+      end
+    end
+    local randomButton = setupButtons[math.random(1, #setupButtons)]
+    factionName, _ = string.match(randomButton.getName(), "Button Play (%w+) (%w+)")
+  end
+
+  local factionColor = factionVars[factionName].factionColor
+
+  -- pull image info from backdrop, define image vars
+  local uiObjImages = imageVars[factionName]
+  
+  for i = 1, 9 do
+    -- change images, color tint on UI area assets    
+    if i ~= 9 then
+      playerAreaObjs["playerUI"][playerArea][i].setCustomObject({
+        image = uiObjImages[i],
+        imageBottom = uiObjImages[i],
+      })
+    end
+    playerAreaObjs["playerUI"][playerArea][i].setColorTint(factionColor)
+    playerAreaObjs["playerUI"][playerArea][i] = playerAreaObjs["playerUI"][playerArea][i].reload()
+
+    -- rename player area objs that require a rename
+    local objNames = {
+      "Pad Discard " .. factionName,
+      "Pad Deck " .. factionName,
+      "Button Discard " .. factionName,
+      "Pad Bases " .. factionName,
+      "Damage Counter " .. factionName,
+    }
+    local objName = nil
+    if i < 6 then
+      objName = objNames[i]
+      playerAreaObjs["playerUI"][playerArea][i].setName(objName)
+    end
+
+    playerAreaObjs["playerUI"][playerArea][i].tooltip = false
+    if i == 9 then
+      playerAreaObjs["playerUI"][playerArea][9].tooltip = true
+    end
+  end
+
+  -- set end turn button invis by default (setupGame() will show correct button)
+  playerAreaObjs["playerUI"][playerArea][8].setInvisibleTo(allColors)
+
+  -- change color on counter
+  playerAreaObjs["playerUI"][playerArea][5].clearButtons()
+  local buttonColor = factionVars[factionName].buttonColor
+  local hoverColor = factionVars[factionName].hoverColor
+  playerAreaObjs["playerUI"][playerArea][5].call('createAll', buttonColor, hoverColor)
+
+  -- place decks
+  local playerAreaVars = {
+    Bottom             = {
+      rotStarter       = { 0.00, 180.00, 180.00 },
+      posStarter       = { -3.50, 1.00, -31.00 },
+      rotBase          = { 0.00, 180.00, 180.00 },
+      posBase          = { 8.00, 0.44, -31.00 },
+      rotInitial       = { 0.00, 180.00, 0.00 },
+      posInitial       = { 8.00, 3.00, -31.00 },
+    },
+    Top                = {
+      rotStarter       = { 0.00, 0.00, 180.00 },
+      posStarter       = { 3.50, 1.00, 31.00 },
+      rotBase          = { 0.00, 0.00, 180.00 },
+      posBase          = { -8.00, 0.45, 31.00 },
+      rotInitial       = { 0.00, 0.00, 0.00 },
+      posInitial       = { -8.00, 3.00, 31.00 },
+    },
+  }
+
+  
+  local rotStarter = playerAreaVars[playerArea].rotStarter
+  local posStarter = playerAreaVars[playerArea].posStarter
+  local rotBase = playerAreaVars[playerArea].rotBase
+  local posBase = playerAreaVars[playerArea].posBase
+  local rotInitial = playerAreaVars[playerArea].rotInitial
+  local posInitial = playerAreaVars[playerArea].posInitial
+  local deckStarter = factionVars[factionName].deckStarter
+  local rotGalaxyDeck = { 0.00, 90.00, 180.00 }
+  local posGalaxyDeck = { -28.00, 3.00, 2.50 }
+  local posShipGalaxyDeck = { -28.00, 4.00, 2.50 }
+
+  -- place starter deck
+  deckStarter.setLock(false)
+  deckStarter.setRotation(rotStarter)
+  deckStarter.setPositionSmooth(posStarter)
+
+  -- bases (needs to pull and place initial base)
+  local initialBaseName = factionVars[factionName].firstBase
+  local deckBases = factionVars[factionName].deckBases
+  local deckBasesObjs = deckBases.getObjects()
+  local initialBase = nil
+  for _, deckObj in ipairs(deckBasesObjs) do
+    if deckObj.name == initialBaseName then
+      initialBase = deckBases.takeObject({guid=deckObj.guid})
+    end
+  end
+  if initialBase == nil then log("Starter Base not found in deck!!") return end
+
+  deckBases.setLock(true)
+  Wait.time(function() deckBases.setLock(false) end, 2)
+
+  deckBases.setRotation(rotBase)
+  deckBases.setPosition(posBase)
+  initialBase.setRotation(rotInitial)
+  initialBase.setPosition(posInitial)
+
+  -- place faction's galaxy deck
+  local deckGalaxy = factionVars[factionName].deckGalaxy
+  deckGalaxy.setLock(false)
+  deckGalaxy.setRotation(rotGalaxyDeck)
+  deckGalaxy.setPosition(posGalaxyDeck)
+
+  -- place faction's ships deck
+  local deckShips = factionVars[factionName].deckShips
+  deckShips.setLock(false)
+  deckShips.setRotation(rotGalaxyDeck)
+  deckShips.setPosition(posShipGalaxyDeck)
+
+  -- destroy player area setup backdrop and buttons
+  for i = 1, 8 do
+    if playerAreaObjs["destroyObjs"][playerArea][i] ~= nil then
+      playerAreaObjs["destroyObjs"][playerArea][i].destruct()
+    end
+  end
+
+  -- destroy counterpart button in other player area
+  local oppositeArea = playerArea == "Bottom" and "Top" or "Bottom"
+  if getObjectbyName("Button Play " .. factionName .. " " .. oppositeArea) ~= nil then
+    getObjectbyName("Button Play " .. factionName .. " " .. oppositeArea).destruct()
+  end
+
+  -- destroy card back buttons ** IS THIS NEEDED
+  for _, obj in pairs(getObjects()) do
+    if obj.hasTag('buttons_cardback') then
+      obj.destruct()
+    end
+  end
+
+  -- mark object for detection functions
+  -- bottom, so, uses stormtrooper helmet
+  local artAsset = playerArea == "Bottom" and artAssetBottom or artAssetTop
+  artAsset.setDescription(factionName)
+
+  -- broadcast
+  local currentHandColor = playerArea == "Bottom" and zoneHandzoneBottom.getData()["FogColor"] or zoneHandzoneTop.getData()["FogColor"]
+  if Player[currentHandColor].steam_name ~= nil then
+    broadcastToAll("[" .. Color.fromString(currentHandColor):toHex() .. "]" .. Player[currentHandColor].steam_name .. "[-] will play as [" .. Color.fromString(factionColor):toHex() .. "]" .. factionName .. ".", "White")
+  else
+    broadcastToAll("[" .. Color.fromString(currentHandColor):toHex() .. "]" .. currentHandColor .. " Player[-] will play as [" .. Color.fromString(factionColor):toHex() .. "]" .. factionName .. ".", "White")
+  end
+end -- end setupFaction()
 
 
 
 -- GAME SETUP
 
-function setup_game(button, _, _)
-    local is_ai = Global.getVar('enableLeaders')
-    -- check that both player areas have selected a faction
-    if getObjectFromGUID("17e255") ~= nil or getObjectFromGUID("16d15b") ~= nil then -- check for backdrop objects
-        broadcastToAll("Both players must select a faction before setup can continue.", "Orange")
-        return nil
-    end
-    -- check that a galaxy deck type is checked
-    if not galaxy_deck_original_enabled and not galaxy_deck_random_enabled and not galaxy_deck_expansion_enabled then
-        broadcastToAll("A galaxy deck option must be selected before setup can continue.", "Orange")
-        return nil
-    end
-    -- get factions, locations (check zones for starter deck tags)
-    local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
-    local capitalizedBottomFaction  = (bottomFaction:gsub("^%l", string.upper))
-    local capitalizedTopFaction     = (topFaction:gsub("^%l", string.upper))
-    -- set player seat colors
-    ---- empire/separatist blue, or separatist purple if both are in
-    ---- rebel/republic red, or republic orange if both are in
-    local bottom_handzone = getObjectFromGUID("dcb1f5")
-    local top_handzone    = getObjectFromGUID("f27d6d")
-    local players         = getSeatedPlayers()
-    local bottom_player   = nil
-    local top_player      = nil
-    if players[1] ~= nil then
-        bottom_player = Player[players[1]]
-    end
-    if players[2] ~= nil then
-        top_player = Player[players[2]]
-    end
-    local bottom_tint_obj = {
-        getObjectFromGUID("2ad00b"),
-        getObjectFromGUID("e0194a"),
-        getObjectFromGUID("95546b"),
-        getObjectFromGUID("bfc82c"),
-        getObjectFromGUID("1e6fc0"),
-        getObjectFromGUID("7e15f6"),
-        getObjectFromGUID("d586db"),
-        getObjectFromGUID("d2864e"),
-        getObjectFromGUID("96e6ce"),
-    }
-    local top_tint_obj = {
-        getObjectFromGUID("53bed7"),
-        getObjectFromGUID("e3e3b8"),
-        getObjectFromGUID("57f0a2"),
-        getObjectFromGUID("ded0c2"),
-        getObjectFromGUID("c0c024"),
-        getObjectFromGUID("fa055e"),
-        getObjectFromGUID("817b24"),
-        getObjectFromGUID("b6d068"),
-        getObjectFromGUID("051249"),
-    }
-    local bottomColor    = nil
-    local topColor       = nil
-    if bottomFaction == "separatist" and topFaction == "empire" then
-        bottomColor = "Purple"
-        topColor    = "Blue"
-    elseif (bottomFaction == "separatist" or bottomFaction == "empire") and
-    (topFaction == "republic" or topFaction == "rebellion") then
-        bottomColor = "Blue"
-        topColor    = "Red"
-    elseif bottomFaction == "empire" and topFaction == "separatist" then
-        bottomColor = "Blue"
-        topColor    = "Purple"
-    elseif bottomFaction == "republic" and topFaction == "rebellion" then
-        bottomColor = "Orange"
-        topColor    = "Red"
-    elseif (bottomFaction == "republic" or bottomFaction == "rebellion") and
-    (topFaction == "separatist" or topFaction == "empire") then
-        bottomColor = "Red"
-        topColor    = "Blue"
-    elseif bottomFaction == "rebellion" and topFaction == "republic" then
-        bottomColor = "Red"
-        topColor    = "Orange"
-    end
-    -- set string for get_playercolors()
-    getObjectFromGUID("12cd71").setDescription(bottomColor)
-    getObjectFromGUID("834dea").setDescription(topColor)
-    -- change hand zone colors
-    if bottom_handzone.getValue() ~= bottomColor then
-        bottom_handzone.setValue(bottomColor)
-    end
-    if top_handzone.getValue() ~= topColor then
-        top_handzone.setValue(topColor)
-    end
-    -- deploy republic reveal pad stuff
-    if bottomFaction == "republic" then
-        pad_republic_reveal.call('setup_reveal_ui', {area="Bottom"})
-    elseif topFaction == "republic" then
-        pad_republic_reveal.call('setup_reveal_ui', {area="Top"})
-    end
-    pad_republic_reveal.call('hide_reveal_ui')
-    -- set players to new hand zones
-    Wait.frames(function()
-    if bottom_player ~= nil then
-        if bottom_player.color ~= bottomColor then
-            bottom_player.changeColor(bottomColor)
-        end
-        for i = 1, 9 do
-            bottom_tint_obj[i].setColorTint(bottomColor)
-        end
-    end
-    if top_player ~= nil then
-        if top_player.color ~= top_player then
-            top_player.changeColor(topColor)
-        end
-        for i = 1, 9 do
-            top_tint_obj[i].setColorTint(topColor)
-        end
-    end
-    end, 2)
-    -- place selected galaxy deck, remove other
-    local placement_deckGalaxy = nil
-    local placement_deck_ships  = nil
-    local removal_deckGalaxy   = nil
-    local removal_deck_ships    = nil
-    local random_number = nil
-    if galaxy_deck_original_enabled then
-        placement_deckGalaxy = getObjectFromGUID("33b71a")
-        placement_deck_ships  = getObjectFromGUID("d27ec8")
-        removal_deckGalaxy   = getObjectFromGUID("7d15af")
-        removal_deck_ships    = getObjectFromGUID("98f4b5")
-    elseif galaxy_deck_expansion_enabled then
-        placement_deckGalaxy = getObjectFromGUID("7d15af")
-        placement_deck_ships  = getObjectFromGUID("98f4b5")
-        removal_deckGalaxy   = getObjectFromGUID("33b71a")
-        removal_deck_ships    = getObjectFromGUID("d27ec8")
-    elseif galaxy_deck_random_enabled then
-        random_number = math.random(1, 2)
-        if random_number == 1 then
-            placement_deckGalaxy = getObjectFromGUID("33b71a")
-            placement_deck_ships  = getObjectFromGUID("d27ec8")
-            removal_deckGalaxy   = getObjectFromGUID("7d15af")
-            removal_deck_ships    = getObjectFromGUID("98f4b5")
-        elseif random_number == 2 then
-            placement_deckGalaxy = getObjectFromGUID("7d15af")
-            placement_deck_ships  = getObjectFromGUID("98f4b5")
-            removal_deckGalaxy   = getObjectFromGUID("33b71a")
-            removal_deck_ships    = getObjectFromGUID("d27ec8")
-        end
-    end
-    placement_deckGalaxy.setRotation({0.00, 90.00, 180.00})
-    placement_deckGalaxy.setLock(false)
-    placement_deckGalaxy.setPositionSmooth({-28.00, 1.50, 2.50})
-    placement_deck_ships.setRotation({0.00, 90.00, 180.00})
-    placement_deck_ships.setLock(false)
-    placement_deck_ships.setPositionSmooth({-28.00, 1.50, 2.50})
-    getObjectFromGUID("834dea").putObject(removal_deckGalaxy)
-    getObjectFromGUID("834dea").putObject(removal_deck_ships)
-    -- shuffle galaxy deck, deal galaxy row
-    Wait.time(function()
-    local deckGalaxy = getGalaxyDeck()
-    if deckGalaxy then
-        deckGalaxy.setName('Galaxy Deck')
-        deckGalaxy.shuffle()
-    end
-    local loc_1 = {-21.00, 0.75, 0.00}
-    local loc_2 = {-14.00, 0.75, 0.00}
-    local loc_3 = {-7.00, 0.75, 0.00}
-    local loc_4 = {0.00, 0.75, 0.00}
-    local loc_5 = {7.00, 0.75, 0.00}
-    local loc_6 = {14.00, 0.75, 0.00}
-    local deal_locs = {loc_1, loc_2, loc_3, loc_4, loc_5, loc_6,}
-    for i = 1, 6 do
-        local card = deckGalaxy.takeObject()
-        local parms = {
-            card     = card,
-            position = deal_locs[i]
-        }
-        padGalaxyDeck.call('rotate_dealt_card', parms)
-    end
-    end, 2)
-    -- place selected outer rim pilot deck, remove other
-    local placement_deck_outer_rim = nil
-    local removal_deck_outer_rim   = nil
-    if galaxy_deck_original_enabled then
-        placement_deck_outer_rim = getObjectFromGUID("38a678")
-        removal_deck_outer_rim   = getObjectFromGUID("08b1b4")
-    elseif galaxy_deck_expansion_enabled then
-        placement_deck_outer_rim = getObjectFromGUID("08b1b4")
-        removal_deck_outer_rim   = getObjectFromGUID("38a678")
-    elseif galaxy_deck_random_enabled then
-        if random_number == 1 then
-            placement_deck_outer_rim = getObjectFromGUID("38a678")
-            removal_deck_outer_rim   = getObjectFromGUID("08b1b4")
-        elseif random_number == 2 then
-            placement_deck_outer_rim = getObjectFromGUID("08b1b4")
-            removal_deck_outer_rim   = getObjectFromGUID("38a678")
-        end
-    end
-    placement_deck_outer_rim.setRotation({0.00, 270.00, 0.00})
-    placement_deck_outer_rim.setLock(false)
-    placement_deck_outer_rim.setPositionSmooth({21.00, 0.50, 0.00})
-    getObjectFromGUID("12cd71").putObject(removal_deck_outer_rim)
-    -- clean up unselected faction decks, shuffle starters in play
-    local all_objects = getObjects()
-    local factions = padGalaxyDeck.call('get_factions')
-    if not factions[1] then
-        for _, object in ipairs(all_objects) do
-            if object.hasTag('empire') then
-                getObjectFromGUID("834dea").putObject(object)
-            end
-        end
-    else
-        getObjectFromGUID("021581").shuffle()
-    end
-    if not factions[4] then
-        for _, object in ipairs(all_objects) do
-            if object.hasTag('separatist') then
-                getObjectFromGUID("834dea").putObject(object)
-            end
-        end
-    else
-        getObjectFromGUID("3afb00").shuffle()
-    end
-    if not factions[2] then
-        for _, object in ipairs(all_objects) do
-            if object.hasTag('republic') then
-                getObjectFromGUID("12cd71").putObject(object)
-            end
-        end
-    else
-        getObjectFromGUID("fb6a32").shuffle()
-    end
-    if not factions[3] then
-        for _, object in ipairs(all_objects) do
-            if object.hasTag('rebel') then
-                getObjectFromGUID("12cd71").putObject(object)
-            end
-        end
-    else
-        getObjectFromGUID("adeeb4").shuffle()
-    end
-    -- un-invis purchase/discard buttons, resource counters
-    for _, object in ipairs(all_objects) do
-        if object.hasTag('row_button') then
-            object.setInvisibleTo({})
-        end
-    end
-    -- get starter decks, shuffle, deal to hand
-    local parms = {
-        playerArea = "bottom",
-        count       = 5
-    }
-    getObjectFromGUID("83b3ce").call('dealCard', parms)
-    parms.playerArea = "top"
-    if not is_ai then
-        padGalaxyDeck.call('dealCard', parms)
-    end
-    -- determine first player
-    -- enable turns, set turn to first player
-    local random_first_player    = math.random(2)
-    local board_counter_bottom   = getObjectFromGUID("5ddc6c")
-    local board_counter_top      = getObjectFromGUID("c6a07b")
-    local buttonEndTurnBottom = getObjectFromGUID("d2864e")
-    local buttonEndTurnTop    = getObjectFromGUID("b6d068")
-    local force_tracker          = getObjectFromGUID("74b511")
-    local force_track            = getObjectFromGUID("53e12c")
-    local turnTracker           = padGalaxyDeck.call('get_turnTracker')
-    local rot_tracker            = nil
-    local pos_tracker            = nil
-    local state_id               = nil
-    local tracker_color          = nil
-    -- check if start randomization required
-    local random_required = true
-    if (bottomFaction == "empire" and topFaction == "rebellion") or
-    (bottomFaction == "separatist" and topFaction == "republic") then
-        random_required = false
-        -- bottom first player set turn
-        Wait.frames(function()
-        Turns.turn_color = bottomColor
-        end,5)
-        rot_tracker = {0, 180, 0}
-        pos_tracker = {-46.00, 0.12, -21.00}
-        if bottomFaction ~= "empire" then
-            turnTracker = turnTracker.setState(2)
-        end
-        tracker_color = bottomColor
-        board_counter_bottom.setInvisibleTo({})
-        board_counter_top.setInvisibleTo(all_colors)
-        buttonEndTurnBottom.setInvisibleTo({})
-        -- top second player set force track
-        force_tracker.setColorTint(topColor)
-        force_tracker.highlightOn(topColor)
-        force_track.setColorTint(topColor)
-        broadcastToAll("The force is with " .. capitalizedTopFaction .. ".", topColor)
-        broadcastToAll(capitalizedBottomFaction .. " gets first turn.", bottomColor)
-    elseif (bottomFaction == "rebellion" and topFaction == "empire") or
-    (bottomFaction == "republic" and topFaction == "separatist") then
-        random_required = false
-        -- bottom second player set force track
-        force_tracker.setColorTint(bottomColor)
-        force_tracker.highlightOn(bottomColor)
-        force_tracker.setPosition({29.41, 1.15, -8.50})
-        force_track.setColorTint(bottomColor)
-        -- top first player set turn
-        Wait.frames(function()
-        Turns.turn_color = topColor
-        end, 5)
-        if not is_ai then
-            rot_tracker = {0, 0, 0}
-        elseif is_ai then
-            rot_tracker = {0, 180, 0}
-        end
-        pos_tracker = {46.00, 0.12, 21.00}
-        if topFaction ~= "empire" then
-            turnTracker = turnTracker.setState(2)
-        end
-        tracker_color = topColor
-        board_counter_top.setInvisibleTo({})
-        board_counter_bottom.setInvisibleTo(all_colors)
-        buttonEndTurnTop.setInvisibleTo({})
-        broadcastToAll("The force is with " .. capitalizedBottomFaction .. ".", bottomColor)
-        broadcastToAll(capitalizedTopFaction .. " gets first turn.", topColor)
-    end
-    if random_required then
-        if random_first_player == 1 then
-            -- bottom first player set turn
-            Wait.frames(function()
-            Turns.turn_color = bottomColor
-            end,5)
-            rot_tracker = {0, 180, 0}
-            pos_tracker = {-46.00, 0.12, -21.00}
-            if bottomFaction == "republic" then
-                turnTracker = turnTracker.setState(4)
-            elseif bottomFaction == "rebellion" then
-                turnTracker = turnTracker.setState(3)
-            elseif bottomFaction == "separatist" then
-                turnTracker = turnTracker.setState(2)
-            end
-            tracker_color = bottomColor
-            board_counter_bottom.setInvisibleTo({})
-            board_counter_top.setInvisibleTo(all_colors)
-            buttonEndTurnBottom.setInvisibleTo({})
-            -- top second player set force track
-            force_tracker.setColorTint(topColor)
-            force_tracker.highlightOn(topColor)
-            force_track.setColorTint(topColor)
-            broadcastToAll("The force is with " .. capitalizedTopFaction .. ".", topColor)
-            broadcastToAll(capitalizedBottomFaction .. " gets first turn.", bottomColor)
-        else
-            -- bottom second player set force track
-            force_tracker.setColorTint(bottomColor)
-            force_tracker.highlightOn(bottomColor)
-            force_tracker.setPosition({29.41, 1.15, -8.50})
-            force_track.setColorTint(bottomColor)
-            -- top first player set turn
-            Wait.frames(function()
-            Turns.turn_color = topColor
-            end, 5)
-            rot_tracker = {0, 0, 0}
-            pos_tracker = {46.00, 0.12, 21.00}
-            if topFaction == "republic" then
-                turnTracker = turnTracker.setState(4)
-            elseif topFaction == "rebellion" then
-                turnTracker = turnTracker.setState(3)
-            elseif topFaction == "separatist" then
-                turnTracker = turnTracker.setState(2)
-            end
-            tracker_color = topColor
-            board_counter_top.setInvisibleTo({})
-            board_counter_bottom.setInvisibleTo(all_colors)
-            buttonEndTurnTop.setInvisibleTo({})
-            broadcastToAll("The force is with " .. capitalizedBottomFaction .. ".", bottomColor)
-            broadcastToAll(capitalizedTopFaction .. " gets first turn.", topColor)
-        end
-    end
-    -- handle force track graphic in case of traditional matchup
-    local original_force_track  = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065188393/F54092F923F8BA59AC13E93874F92CE5C62DDC4B/"
-    local expansion_force_track = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065207212/5A5DF1FB7E5B591D9C33802D41319952F89E9CB9/"
-    if topFaction == "republic" and bottomFaction == "separatist" then
-        force_track.setCustomObject({image=expansion_force_track})
-        force_track = force_track.reload()
-    elseif topFaction == "separatist" and bottomFaction == "republic" then
-        force_track.setCustomObject({image=expansion_force_track})
-        force_track = force_track.reload()
-        force_track.setRotation({0.00, 180.00, 0.00})
-    elseif topFaction == "rebellion" and bottomFaction == "empire" then
-        force_track.setCustomObject({image=original_force_track})
-        force_track = force_track.reload()
-    elseif topFaction == "empire" and bottomFaction == "rebellion" then
-        force_track.setCustomObject({image=original_force_track})
-        force_track = force_track.reload()
-        force_track.setRotation({0.00, 180.00, 0.00})
-    end
-    -- set turn tracker to first player faction, move into position
-    turnTracker.setInvisibleTo({})
-    turnTracker.setLock(true)
-    turnTracker.interactable = false
-    if is_ai then
-        rot_tracker = {0, 180, 0}
-    end
-    turnTracker.setRotation(rot_tracker)
-    turnTracker.setPosition(pos_tracker)
-    turnTracker.setColorTint(tracker_color)
-    -- broadcast GLHF message, include plug for ratings to mod page
-    if galaxy_deck_original_enabled then
-        broadcastToAll("Original Galaxy Deck has been selected!", "Green")
-    elseif galaxy_deck_random_enabled then
-        broadcastToAll("Random Galaxy Deck has been selected!", "Green")
-    elseif galaxy_deck_expansion_enabled then
-        broadcastToAll("Expansion Galaxy Deck has been selected!", "Green")
-    end
-    Wait.time(function()
-    broadcastToAll("If you like this mod, please consider giving a thumbs up to the mod page, and purchasing physical copies of the games!", "Green")
-    end, 2)
-    Wait.time(function()
-    broadcastToAll("Good luck, have fun!", "Green")
-    end, 4)
-    -- destroy QR info placards, setup game buttons and backdrop (self)
-    getObjectFromGUID("fd9756").destruct()
-    getObjectFromGUID("19f219").destruct()
-    getObjectFromGUID("5afcda").destruct()
-    getObjectFromGUID("34535f").destruct()
-    getObjectFromGUID("492fcf").destruct()
-    getObjectFromGUID("903ad5").destruct()
-    for _, object in pairs(getObjects()) do
-        if object.hasTag('buttons_cardback') then
-            object.destruct()
-        end
-    end
-    self.destruct()
-    if is_ai then
-        setup_solo(topFaction)
-    end
-end -- end setup_game()
+function setupGame(button, _, _)
+end
+
+function setupSolo(button, _, _)
+end
+
+-- function setup_game(button, _, _)
+--     local is_ai = Global.getVar('enableLeaders')
+--     -- check that both player areas have selected a faction
+--     if getObjectFromGUID("17e255") ~= nil or getObjectFromGUID("16d15b") ~= nil then -- check for backdrop objects
+--         broadcastToAll("Both players must select a faction before setup can continue.", "Orange")
+--         return nil
+--     end
+--     -- check that a galaxy deck type is checked
+--     if not galaxy_deck_original_enabled and not galaxy_deck_random_enabled and not galaxy_deck_expansion_enabled then
+--         broadcastToAll("A galaxy deck option must be selected before setup can continue.", "Orange")
+--         return nil
+--     end
+--     -- get factions, locations (check zones for starter deck tags)
+--     local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
+--     local capitalizedBottomFaction  = (bottomFaction:gsub("^%l", string.upper))
+--     local capitalizedTopFaction     = (topFaction:gsub("^%l", string.upper))
+--     -- set player seat colors
+--     ---- empire/separatist blue, or separatist purple if both are in
+--     ---- rebel/republic red, or republic orange if both are in
+--     local bottom_handzone = getObjectFromGUID("dcb1f5")
+--     local top_handzone    = getObjectFromGUID("f27d6d")
+--     local players         = getSeatedPlayers()
+--     local bottom_player   = nil
+--     local top_player      = nil
+--     if players[1] ~= nil then
+--         bottom_player = Player[players[1]]
+--     end
+--     if players[2] ~= nil then
+--         top_player = Player[players[2]]
+--     end
+--     local bottom_tint_obj = {
+--         getObjectFromGUID("2ad00b"),
+--         getObjectFromGUID("e0194a"),
+--         getObjectFromGUID("95546b"),
+--         getObjectFromGUID("bfc82c"),
+--         getObjectFromGUID("1e6fc0"),
+--         getObjectFromGUID("7e15f6"),
+--         getObjectFromGUID("d586db"),
+--         getObjectFromGUID("d2864e"),
+--         getObjectFromGUID("96e6ce"),
+--     }
+--     local top_tint_obj = {
+--         getObjectFromGUID("53bed7"),
+--         getObjectFromGUID("e3e3b8"),
+--         getObjectFromGUID("57f0a2"),
+--         getObjectFromGUID("ded0c2"),
+--         getObjectFromGUID("c0c024"),
+--         getObjectFromGUID("fa055e"),
+--         getObjectFromGUID("817b24"),
+--         getObjectFromGUID("b6d068"),
+--         getObjectFromGUID("051249"),
+--     }
+--     local bottomColor    = nil
+--     local topColor       = nil
+--     if bottomFaction == "separatist" and topFaction == "empire" then
+--         bottomColor = "Purple"
+--         topColor    = "Blue"
+--     elseif (bottomFaction == "separatist" or bottomFaction == "empire") and
+--     (topFaction == "republic" or topFaction == "rebellion") then
+--         bottomColor = "Blue"
+--         topColor    = "Red"
+--     elseif bottomFaction == "empire" and topFaction == "separatist" then
+--         bottomColor = "Blue"
+--         topColor    = "Purple"
+--     elseif bottomFaction == "republic" and topFaction == "rebellion" then
+--         bottomColor = "Orange"
+--         topColor    = "Red"
+--     elseif (bottomFaction == "republic" or bottomFaction == "rebellion") and
+--     (topFaction == "separatist" or topFaction == "empire") then
+--         bottomColor = "Red"
+--         topColor    = "Blue"
+--     elseif bottomFaction == "rebellion" and topFaction == "republic" then
+--         bottomColor = "Red"
+--         topColor    = "Orange"
+--     end
+--     -- set string for get_playercolors()
+--     getObjectFromGUID("12cd71").setDescription(bottomColor)
+--     getObjectFromGUID("834dea").setDescription(topColor)
+--     -- change hand zone colors
+--     if bottom_handzone.getValue() ~= bottomColor then
+--         bottom_handzone.setValue(bottomColor)
+--     end
+--     if top_handzone.getValue() ~= topColor then
+--         top_handzone.setValue(topColor)
+--     end
+--     -- deploy republic reveal pad stuff
+--     if bottomFaction == "republic" then
+--         pad_republic_reveal.call('setup_reveal_ui', {area="Bottom"})
+--     elseif topFaction == "republic" then
+--         pad_republic_reveal.call('setup_reveal_ui', {area="Top"})
+--     end
+--     pad_republic_reveal.call('hide_reveal_ui')
+--     -- set players to new hand zones
+--     Wait.frames(function()
+--     if bottom_player ~= nil then
+--         if bottom_player.color ~= bottomColor then
+--             bottom_player.changeColor(bottomColor)
+--         end
+--         for i = 1, 9 do
+--             bottom_tint_obj[i].setColorTint(bottomColor)
+--         end
+--     end
+--     if top_player ~= nil then
+--         if top_player.color ~= top_player then
+--             top_player.changeColor(topColor)
+--         end
+--         for i = 1, 9 do
+--             top_tint_obj[i].setColorTint(topColor)
+--         end
+--     end
+--     end, 2)
+--     -- place selected galaxy deck, remove other
+--     local placement_deckGalaxy = nil
+--     local placement_deck_ships  = nil
+--     local removal_deckGalaxy   = nil
+--     local removal_deck_ships    = nil
+--     local random_number = nil
+--     if galaxy_deck_original_enabled then
+--         placement_deckGalaxy = getObjectFromGUID("33b71a")
+--         placement_deck_ships  = getObjectFromGUID("d27ec8")
+--         removal_deckGalaxy   = getObjectFromGUID("7d15af")
+--         removal_deck_ships    = getObjectFromGUID("98f4b5")
+--     elseif galaxy_deck_expansion_enabled then
+--         placement_deckGalaxy = getObjectFromGUID("7d15af")
+--         placement_deck_ships  = getObjectFromGUID("98f4b5")
+--         removal_deckGalaxy   = getObjectFromGUID("33b71a")
+--         removal_deck_ships    = getObjectFromGUID("d27ec8")
+--     elseif galaxy_deck_random_enabled then
+--         random_number = math.random(1, 2)
+--         if random_number == 1 then
+--             placement_deckGalaxy = getObjectFromGUID("33b71a")
+--             placement_deck_ships  = getObjectFromGUID("d27ec8")
+--             removal_deckGalaxy   = getObjectFromGUID("7d15af")
+--             removal_deck_ships    = getObjectFromGUID("98f4b5")
+--         elseif random_number == 2 then
+--             placement_deckGalaxy = getObjectFromGUID("7d15af")
+--             placement_deck_ships  = getObjectFromGUID("98f4b5")
+--             removal_deckGalaxy   = getObjectFromGUID("33b71a")
+--             removal_deck_ships    = getObjectFromGUID("d27ec8")
+--         end
+--     end
+--     placement_deckGalaxy.setRotation({0.00, 90.00, 180.00})
+--     placement_deckGalaxy.setLock(false)
+--     placement_deckGalaxy.setPositionSmooth({-28.00, 1.50, 2.50})
+--     placement_deck_ships.setRotation({0.00, 90.00, 180.00})
+--     placement_deck_ships.setLock(false)
+--     placement_deck_ships.setPositionSmooth({-28.00, 1.50, 2.50})
+--     getObjectFromGUID("834dea").putObject(removal_deckGalaxy)
+--     getObjectFromGUID("834dea").putObject(removal_deck_ships)
+--     -- shuffle galaxy deck, deal galaxy row
+--     Wait.time(function()
+--     local deckGalaxy = getGalaxyDeck()
+--     if deckGalaxy then
+--         deckGalaxy.setName('Galaxy Deck')
+--         deckGalaxy.shuffle()
+--     end
+--     local loc_1 = {-21.00, 0.75, 0.00}
+--     local loc_2 = {-14.00, 0.75, 0.00}
+--     local loc_3 = {-7.00, 0.75, 0.00}
+--     local loc_4 = {0.00, 0.75, 0.00}
+--     local loc_5 = {7.00, 0.75, 0.00}
+--     local loc_6 = {14.00, 0.75, 0.00}
+--     local deal_locs = {loc_1, loc_2, loc_3, loc_4, loc_5, loc_6,}
+--     for i = 1, 6 do
+--         local card = deckGalaxy.takeObject()
+--         local parms = {
+--             card     = card,
+--             position = deal_locs[i]
+--         }
+--         padGalaxyDeck.call('rotate_dealt_card', parms)
+--     end
+--     end, 2)
+--     -- place selected outer rim pilot deck, remove other
+--     local placement_deck_outer_rim = nil
+--     local removal_deck_outer_rim   = nil
+--     if galaxy_deck_original_enabled then
+--         placement_deck_outer_rim = getObjectFromGUID("38a678")
+--         removal_deck_outer_rim   = getObjectFromGUID("08b1b4")
+--     elseif galaxy_deck_expansion_enabled then
+--         placement_deck_outer_rim = getObjectFromGUID("08b1b4")
+--         removal_deck_outer_rim   = getObjectFromGUID("38a678")
+--     elseif galaxy_deck_random_enabled then
+--         if random_number == 1 then
+--             placement_deck_outer_rim = getObjectFromGUID("38a678")
+--             removal_deck_outer_rim   = getObjectFromGUID("08b1b4")
+--         elseif random_number == 2 then
+--             placement_deck_outer_rim = getObjectFromGUID("08b1b4")
+--             removal_deck_outer_rim   = getObjectFromGUID("38a678")
+--         end
+--     end
+--     placement_deck_outer_rim.setRotation({0.00, 270.00, 0.00})
+--     placement_deck_outer_rim.setLock(false)
+--     placement_deck_outer_rim.setPositionSmooth({21.00, 0.50, 0.00})
+--     getObjectFromGUID("12cd71").putObject(removal_deck_outer_rim)
+--     -- clean up unselected faction decks, shuffle starters in play
+--     local all_objects = getObjects()
+--     local factions = padGalaxyDeck.call('get_factions')
+--     if not factions[1] then
+--         for _, object in ipairs(all_objects) do
+--             if object.hasTag('empire') then
+--                 getObjectFromGUID("834dea").putObject(object)
+--             end
+--         end
+--     else
+--         getObjectFromGUID("021581").shuffle()
+--     end
+--     if not factions[4] then
+--         for _, object in ipairs(all_objects) do
+--             if object.hasTag('separatist') then
+--                 getObjectFromGUID("834dea").putObject(object)
+--             end
+--         end
+--     else
+--         getObjectFromGUID("3afb00").shuffle()
+--     end
+--     if not factions[2] then
+--         for _, object in ipairs(all_objects) do
+--             if object.hasTag('republic') then
+--                 getObjectFromGUID("12cd71").putObject(object)
+--             end
+--         end
+--     else
+--         getObjectFromGUID("fb6a32").shuffle()
+--     end
+--     if not factions[3] then
+--         for _, object in ipairs(all_objects) do
+--             if object.hasTag('rebel') then
+--                 getObjectFromGUID("12cd71").putObject(object)
+--             end
+--         end
+--     else
+--         getObjectFromGUID("adeeb4").shuffle()
+--     end
+--     -- un-invis purchase/discard buttons, resource counters
+--     for _, object in ipairs(all_objects) do
+--         if object.hasTag('row_button') then
+--             object.setInvisibleTo({})
+--         end
+--     end
+--     -- get starter decks, shuffle, deal to hand
+--     local parms = {
+--         playerArea = "bottom",
+--         count       = 5
+--     }
+--     getObjectFromGUID("83b3ce").call('dealCard', parms)
+--     parms.playerArea = "top"
+--     if not is_ai then
+--         padGalaxyDeck.call('dealCard', parms)
+--     end
+--     -- determine first player
+--     -- enable turns, set turn to first player
+--     local random_first_player    = math.random(2)
+--     local board_counter_bottom   = getObjectFromGUID("5ddc6c")
+--     local board_counter_top      = getObjectFromGUID("c6a07b")
+--     local buttonEndTurnBottom = getObjectFromGUID("d2864e")
+--     local buttonEndTurnTop    = getObjectFromGUID("b6d068")
+--     local force_tracker          = getObjectFromGUID("74b511")
+--     local force_track            = getObjectFromGUID("53e12c")
+--     local turnTracker           = padGalaxyDeck.call('get_turnTracker')
+--     local rot_tracker            = nil
+--     local pos_tracker            = nil
+--     local state_id               = nil
+--     local tracker_color          = nil
+--     -- check if start randomization required
+--     local random_required = true
+--     if (bottomFaction == "empire" and topFaction == "rebellion") or
+--     (bottomFaction == "separatist" and topFaction == "republic") then
+--         random_required = false
+--         -- bottom first player set turn
+--         Wait.frames(function()
+--         Turns.turn_color = bottomColor
+--         end,5)
+--         rot_tracker = {0, 180, 0}
+--         pos_tracker = {-46.00, 0.12, -21.00}
+--         if bottomFaction ~= "empire" then
+--             turnTracker = turnTracker.setState(2)
+--         end
+--         tracker_color = bottomColor
+--         board_counter_bottom.setInvisibleTo({})
+--         board_counter_top.setInvisibleTo(all_colors)
+--         buttonEndTurnBottom.setInvisibleTo({})
+--         -- top second player set force track
+--         force_tracker.setColorTint(topColor)
+--         force_tracker.highlightOn(topColor)
+--         force_track.setColorTint(topColor)
+--         broadcastToAll("The force is with " .. capitalizedTopFaction .. ".", topColor)
+--         broadcastToAll(capitalizedBottomFaction .. " gets first turn.", bottomColor)
+--     elseif (bottomFaction == "rebellion" and topFaction == "empire") or
+--     (bottomFaction == "republic" and topFaction == "separatist") then
+--         random_required = false
+--         -- bottom second player set force track
+--         force_tracker.setColorTint(bottomColor)
+--         force_tracker.highlightOn(bottomColor)
+--         force_tracker.setPosition({29.41, 1.15, -8.50})
+--         force_track.setColorTint(bottomColor)
+--         -- top first player set turn
+--         Wait.frames(function()
+--         Turns.turn_color = topColor
+--         end, 5)
+--         if not is_ai then
+--             rot_tracker = {0, 0, 0}
+--         elseif is_ai then
+--             rot_tracker = {0, 180, 0}
+--         end
+--         pos_tracker = {46.00, 0.12, 21.00}
+--         if topFaction ~= "empire" then
+--             turnTracker = turnTracker.setState(2)
+--         end
+--         tracker_color = topColor
+--         board_counter_top.setInvisibleTo({})
+--         board_counter_bottom.setInvisibleTo(all_colors)
+--         buttonEndTurnTop.setInvisibleTo({})
+--         broadcastToAll("The force is with " .. capitalizedBottomFaction .. ".", bottomColor)
+--         broadcastToAll(capitalizedTopFaction .. " gets first turn.", topColor)
+--     end
+--     if random_required then
+--         if random_first_player == 1 then
+--             -- bottom first player set turn
+--             Wait.frames(function()
+--             Turns.turn_color = bottomColor
+--             end,5)
+--             rot_tracker = {0, 180, 0}
+--             pos_tracker = {-46.00, 0.12, -21.00}
+--             if bottomFaction == "republic" then
+--                 turnTracker = turnTracker.setState(4)
+--             elseif bottomFaction == "rebellion" then
+--                 turnTracker = turnTracker.setState(3)
+--             elseif bottomFaction == "separatist" then
+--                 turnTracker = turnTracker.setState(2)
+--             end
+--             tracker_color = bottomColor
+--             board_counter_bottom.setInvisibleTo({})
+--             board_counter_top.setInvisibleTo(all_colors)
+--             buttonEndTurnBottom.setInvisibleTo({})
+--             -- top second player set force track
+--             force_tracker.setColorTint(topColor)
+--             force_tracker.highlightOn(topColor)
+--             force_track.setColorTint(topColor)
+--             broadcastToAll("The force is with " .. capitalizedTopFaction .. ".", topColor)
+--             broadcastToAll(capitalizedBottomFaction .. " gets first turn.", bottomColor)
+--         else
+--             -- bottom second player set force track
+--             force_tracker.setColorTint(bottomColor)
+--             force_tracker.highlightOn(bottomColor)
+--             force_tracker.setPosition({29.41, 1.15, -8.50})
+--             force_track.setColorTint(bottomColor)
+--             -- top first player set turn
+--             Wait.frames(function()
+--             Turns.turn_color = topColor
+--             end, 5)
+--             rot_tracker = {0, 0, 0}
+--             pos_tracker = {46.00, 0.12, 21.00}
+--             if topFaction == "republic" then
+--                 turnTracker = turnTracker.setState(4)
+--             elseif topFaction == "rebellion" then
+--                 turnTracker = turnTracker.setState(3)
+--             elseif topFaction == "separatist" then
+--                 turnTracker = turnTracker.setState(2)
+--             end
+--             tracker_color = topColor
+--             board_counter_top.setInvisibleTo({})
+--             board_counter_bottom.setInvisibleTo(all_colors)
+--             buttonEndTurnTop.setInvisibleTo({})
+--             broadcastToAll("The force is with " .. capitalizedBottomFaction .. ".", bottomColor)
+--             broadcastToAll(capitalizedTopFaction .. " gets first turn.", topColor)
+--         end
+--     end
+--     -- handle force track graphic in case of traditional matchup
+--     local original_force_track  = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065188393/F54092F923F8BA59AC13E93874F92CE5C62DDC4B/"
+--     local expansion_force_track = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065207212/5A5DF1FB7E5B591D9C33802D41319952F89E9CB9/"
+--     if topFaction == "republic" and bottomFaction == "separatist" then
+--         force_track.setCustomObject({image=expansion_force_track})
+--         force_track = force_track.reload()
+--     elseif topFaction == "separatist" and bottomFaction == "republic" then
+--         force_track.setCustomObject({image=expansion_force_track})
+--         force_track = force_track.reload()
+--         force_track.setRotation({0.00, 180.00, 0.00})
+--     elseif topFaction == "rebellion" and bottomFaction == "empire" then
+--         force_track.setCustomObject({image=original_force_track})
+--         force_track = force_track.reload()
+--     elseif topFaction == "empire" and bottomFaction == "rebellion" then
+--         force_track.setCustomObject({image=original_force_track})
+--         force_track = force_track.reload()
+--         force_track.setRotation({0.00, 180.00, 0.00})
+--     end
+--     -- set turn tracker to first player faction, move into position
+--     turnTracker.setInvisibleTo({})
+--     turnTracker.setLock(true)
+--     turnTracker.interactable = false
+--     if is_ai then
+--         rot_tracker = {0, 180, 0}
+--     end
+--     turnTracker.setRotation(rot_tracker)
+--     turnTracker.setPosition(pos_tracker)
+--     turnTracker.setColorTint(tracker_color)
+--     -- broadcast GLHF message, include plug for ratings to mod page
+--     if galaxy_deck_original_enabled then
+--         broadcastToAll("Original Galaxy Deck has been selected!", "Green")
+--     elseif galaxy_deck_random_enabled then
+--         broadcastToAll("Random Galaxy Deck has been selected!", "Green")
+--     elseif galaxy_deck_expansion_enabled then
+--         broadcastToAll("Expansion Galaxy Deck has been selected!", "Green")
+--     end
+--     Wait.time(function()
+--     broadcastToAll("If you like this mod, please consider giving a thumbs up to the mod page, and purchasing physical copies of the games!", "Green")
+--     end, 2)
+--     Wait.time(function()
+--     broadcastToAll("Good luck, have fun!", "Green")
+--     end, 4)
+--     -- destroy QR info placards, setup game buttons and backdrop (self)
+--     getObjectFromGUID("fd9756").destruct()
+--     getObjectFromGUID("19f219").destruct()
+--     getObjectFromGUID("5afcda").destruct()
+--     getObjectFromGUID("34535f").destruct()
+--     getObjectFromGUID("492fcf").destruct()
+--     getObjectFromGUID("903ad5").destruct()
+--     for _, object in pairs(getObjects()) do
+--         if object.hasTag('buttons_cardback') then
+--             object.destruct()
+--         end
+--     end
+--     self.destruct()
+--     if is_ai then
+--         setup_solo(topFaction)
+--     end
+-- end -- end setup_game()
 
 
-function setup_solo(faction)
-    -- set up solo snap points
-    local snap_board_top_mp     = getObjectFromGUID("876d39")
-    local bag                   = getObjectFromGUID("834dea") -- bd droid
-    local snap_board_solo_pos   = {-5.25, -0.25, 14.50}
-    local snap_board_solo       = bag.takeObject({guid="41cfbf", rotation={0.00, 180.00, 0.00}})
-    snap_board_solo.setLock(true)
-    snap_board_solo.setPosition(snap_board_solo_pos)
-    bag.putObject(snap_board_top_mp)
-    -- get top player color, drop cubes to leader board *** WILL ONLY WORK WHEN RUNNING OFF MAIN SETUP FUNCTION ***
-    -- bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
-    -- so, declare var instead to test
-    bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
-    -- faction vars
-    -- [1]      = inq/jedi etc
-    -- [2],[3]  = troopers
-    -- [4]-[10] = shuttles
-    -- [11]     = starter deck
-    -- [12]     = leader board
-    -- [13]     = base deck
-    -- [14]     = starter base
-    -- [15]     = galaxy deck
-    -- [16]     = leader
-    -- [17]     = companion
-    local all_faction_guids = {
-        separatist          = {
-            "1ae413", -- 1
-            "52eb6e", -- 2
-            "030201", -- 3
-            "fdfcb1", -- 4
-            "875fc2", -- 5
-            "83a820", -- 6
-            "63eb05", -- 7
-            "9c6846", -- 8
-            "9bbdab", -- 9
-            "af0067", -- 10
-            "3afb00", -- 11
-            "f001ad", -- 12
-            "ef04b2", -- 13
-            "25769c", -- 14
-            "fe508a", -- 15
-            "6bd9bd", -- 16
-            "4b3f93", -- 17
-        },
-        empire              = {
-            "118a7e", -- 1
-            "8e59cd", -- 2
-            "d7f87f", -- 3
-            "05a037", -- 4
-            "f98eb4", -- 5
-            "c0f9aa", -- 6
-            "6a89fe", -- 7
-            "ba88f9", -- 8
-            "7db6d7", -- 9
-            "18a05a", -- 10
-            "021581", -- 11
-            "adf064", -- 12
-            "cc1a9c", -- 13
-            "0b3ee3", -- 14
-            "c4783d", -- 15
-            "e9f053", -- 16
-            "xxxxxx", -- 17
-        },
-        republic            = {
-            "530c8a", -- 1
-            "f353c3", -- 2
-            "467fba", -- 3
-            "86898c", -- 4
-            "31ca94", -- 5
-            "c0e093", -- 6
-            "c18485", -- 7
-            "7a2935", -- 8
-            "f8324c", -- 9
-            "fdce2c", -- 10
-            "fb6a32", -- 11
-            "b5ca34", -- 12
-            "389e30", -- 13
-            "7022f2", -- 14
-            "0503ab", -- 15
-            "077662", -- 16
-            "38ac2f", -- 17
-        },
-        rebellion           = {
-            "95313f", -- 1
-            "e53f87", -- 2
-            "5aec1f", -- 3
-            "e4cae1", -- 4
-            "009d9f", -- 5
-            "76ecc9", -- 6
-            "fbdb57", -- 7
-            "ae318f", -- 9
-            "eb8260", -- 9
-            "ccfa31", -- 10
-            "adeeb4", -- 11
-            "a41512", -- 12
-            "7aa8b1", -- 13
-            "70ba75", -- 14
-            "aa8011", -- 15
-            "9074a9", -- 16
-            "xxxxxx", -- 17
-        },
-    }
-    local faction_guids     = all_faction_guids[faction]
-    -- place leader_board
-    local leader_board      = bag.takeObject({guid=faction_guids[12], rotation={0.00, 180.00, 0.00}})
-    local pos_leader_board  = {-11.28, 0.10, 17.14}
-    leader_board.setLock(true)
-    leader_board.setPosition(pos_leader_board)
-    leader_board.interactable = false
-    -- pull troopers from starter deck, place to start
-    local starter_deck      = getObjectFromGUID(faction_guids[11])
-    local pos_trooper_1     = {-1.88, 0.25, 13.89} -- play area, faceup
-    local pos_trooper_2     = {-1.88, 0.25, 20.39} -- muster area, facedown
-    local pos_reserves      = {
-        {-20.78, 0.25, 20.39},
-        {-20.78, 0.35, 20.39},
-        {-20.78, 0.45, 20.39},
-        {-20.78, 0.55, 20.39},
-        {-20.78, 0.65, 20.39},
-        {-20.78, 0.75, 20.39},
-    }
-    local trooper_1         = starter_deck.takeObject({guid=faction_guids[2], rotation={0.00, 180.00, 0.00}})
-    trooper_1.setPositionSmooth(pos_trooper_1, false, false)
-    local trooper_2         = starter_deck.takeObject({guid=faction_guids[3], rotation={0.00, 180.00, 180.00}})
-    trooper_2.setPositionSmooth(pos_trooper_2, false, false)
-    -- pull shuttles, drop into pile
-    local pos_shuttles      = {-20.78, 0.25, 13.89}
-    local starter_shuttles  = {shuttle_1, shuttle_2, shuttle_3}
-    for i = 1, 3 do
-        starter_shuttles[i] = starter_deck.takeObject({guid=faction_guids[i+3], rotation={0.00, 180.00, 0.00}})
-        starter_shuttles[i].setPositionSmooth(pos_shuttles, false, false)
-    end
-    -- create reserves deck
-    -- bottom to top - shuttle X3, maybe companion, inq/jedi, shuttle
-    -- bottom shuttles
-    local reserve_shuttles  = {shuttle_1, shuttle_2, shuttle_3}
-    local deckGalaxy       = getObjectFromGUID(faction_guids[15])
-    -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
-    if deckGalaxy == nil then
-        deckGalaxy = getGalaxyDeck()
-    end
-    for i = 1, 3 do
-        reserve_shuttles[i] = starter_deck.takeObject({guid=faction_guids[i+6], rotation={0.00, 180.00, 180.00}})
-        reserve_shuttles[i].setPositionSmooth(pos_reserves[i], false, false)
-    end
-    if faction == "separatist" or faction == "republic" then
-        -- companion
-        local companion     = deckGalaxy.takeObject({guid=faction_guids[17], rotation={0.00, 180.00, 180.00}})
-        companion.setPositionSmooth(pos_reserves[4], false, false)
-        -- agent (dark side agent / jedi knight)
-        local agent         = starter_deck.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
-        agent.setPositionSmooth(pos_reserves[5], false, false)
-        -- top shuttle
-        getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[6], false, false)
-    else
-        -- agent (inquisitor / temple guardian)
-        local agent         = starter_deck.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
-        agent.setPositionSmooth(pos_reserves[4], false, false)
-        -- top shuttle
-        getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[5], false, false)
-    end
-    -- place leader
-    local leader            = deckGalaxy.takeObject({guid=faction_guids[16], rotation={0.00, 180.00, 0.00}})
-    local pos_leader        = {-7.70, 0.60, 16.67}
-    leader.setPositionSmooth(pos_leader, false, false)
-    -- base setup
-    local base_deck         = getObjectFromGUID(faction_guids[13])
-    local pos_starter_base  = {-14.09, 0.63, 15.88}
-    local pos_bases         = {-14.09, 0.58, 15.90}
-    -- temporarily lock starter base, position
-    local starter_base      = getObjectFromGUID(faction_guids[14])
-    starter_base.setLock(true)
-    starter_base.setRotation({0.00, 180.00, 0.00})
-    starter_base.setPositionSmooth(pos_starter_base, false, false)
-    -- shuffle base deck. draw 2, place (should form deck on each other)
-    base_deck.shuffle()
-    local base_3            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
-    base_3.setPositionSmooth(pos_bases, false, false)
-    local base_2            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
-    pos_bases.y = 0.60
-    base_2.setPositionSmooth(pos_bases, false, false)
-    bag.putObject(base_deck)
-    -- position rules
-    local rot_rules         = {60.00, 180.00, 0.00}
-    local rules_positions   = {
-        {-8.00, 5.85, 28.03},
-        {8.00, 5.85, 28.03},
-    }
-    local rules_guids       = {
-        ((faction == "separatist" or faction == "republic") and "ac18e9" or "53020e"),
-        ((faction == "separatist" or faction == "republic") and "b7e197" or "4d7745"),
-    }
+-- function setup_solo(faction)
+--     -- set up solo snap points
+--     local snap_board_top_mp     = getObjectFromGUID("876d39")
+--     local bag                   = getObjectFromGUID("834dea") -- bd droid
+--     local snap_board_solo_pos   = {-5.25, -0.25, 14.50}
+--     local snap_board_solo       = bag.takeObject({guid="41cfbf", rotation={0.00, 180.00, 0.00}})
+--     snap_board_solo.setLock(true)
+--     snap_board_solo.setPosition(snap_board_solo_pos)
+--     bag.putObject(snap_board_top_mp)
+--     -- get top player color, drop cubes to leader board *** WILL ONLY WORK WHEN RUNNING OFF MAIN SETUP FUNCTION ***
+--     -- bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
+--     -- so, declare var instead to test
+--     bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
+--     -- faction vars
+--     -- [1]      = inq/jedi etc
+--     -- [2],[3]  = troopers
+--     -- [4]-[10] = shuttles
+--     -- [11]     = starter deck
+--     -- [12]     = leader board
+--     -- [13]     = base deck
+--     -- [14]     = starter base
+--     -- [15]     = galaxy deck
+--     -- [16]     = leader
+--     -- [17]     = companion
+--     local all_faction_guids = {
+--         separatist          = {
+--             "1ae413", -- 1
+--             "52eb6e", -- 2
+--             "030201", -- 3
+--             "fdfcb1", -- 4
+--             "875fc2", -- 5
+--             "83a820", -- 6
+--             "63eb05", -- 7
+--             "9c6846", -- 8
+--             "9bbdab", -- 9
+--             "af0067", -- 10
+--             "3afb00", -- 11
+--             "f001ad", -- 12
+--             "ef04b2", -- 13
+--             "25769c", -- 14
+--             "fe508a", -- 15
+--             "6bd9bd", -- 16
+--             "4b3f93", -- 17
+--         },
+--         empire              = {
+--             "118a7e", -- 1
+--             "8e59cd", -- 2
+--             "d7f87f", -- 3
+--             "05a037", -- 4
+--             "f98eb4", -- 5
+--             "c0f9aa", -- 6
+--             "6a89fe", -- 7
+--             "ba88f9", -- 8
+--             "7db6d7", -- 9
+--             "18a05a", -- 10
+--             "021581", -- 11
+--             "adf064", -- 12
+--             "cc1a9c", -- 13
+--             "0b3ee3", -- 14
+--             "c4783d", -- 15
+--             "e9f053", -- 16
+--             "xxxxxx", -- 17
+--         },
+--         republic            = {
+--             "530c8a", -- 1
+--             "f353c3", -- 2
+--             "467fba", -- 3
+--             "86898c", -- 4
+--             "31ca94", -- 5
+--             "c0e093", -- 6
+--             "c18485", -- 7
+--             "7a2935", -- 8
+--             "f8324c", -- 9
+--             "fdce2c", -- 10
+--             "fb6a32", -- 11
+--             "b5ca34", -- 12
+--             "389e30", -- 13
+--             "7022f2", -- 14
+--             "0503ab", -- 15
+--             "077662", -- 16
+--             "38ac2f", -- 17
+--         },
+--         rebellion           = {
+--             "95313f", -- 1
+--             "e53f87", -- 2
+--             "5aec1f", -- 3
+--             "e4cae1", -- 4
+--             "009d9f", -- 5
+--             "76ecc9", -- 6
+--             "fbdb57", -- 7
+--             "ae318f", -- 9
+--             "eb8260", -- 9
+--             "ccfa31", -- 10
+--             "adeeb4", -- 11
+--             "a41512", -- 12
+--             "7aa8b1", -- 13
+--             "70ba75", -- 14
+--             "aa8011", -- 15
+--             "9074a9", -- 16
+--             "xxxxxx", -- 17
+--         },
+--     }
+--     local faction_guids     = all_faction_guids[faction]
+--     -- place leader_board
+--     local leader_board      = bag.takeObject({guid=faction_guids[12], rotation={0.00, 180.00, 0.00}})
+--     local pos_leader_board  = {-11.28, 0.10, 17.14}
+--     leader_board.setLock(true)
+--     leader_board.setPosition(pos_leader_board)
+--     leader_board.interactable = false
+--     -- pull troopers from starter deck, place to start
+--     local starter_deck      = getObjectFromGUID(faction_guids[11])
+--     local pos_trooper_1     = {-1.88, 0.25, 13.89} -- play area, faceup
+--     local pos_trooper_2     = {-1.88, 0.25, 20.39} -- muster area, facedown
+--     local pos_reserves      = {
+--         {-20.78, 0.25, 20.39},
+--         {-20.78, 0.35, 20.39},
+--         {-20.78, 0.45, 20.39},
+--         {-20.78, 0.55, 20.39},
+--         {-20.78, 0.65, 20.39},
+--         {-20.78, 0.75, 20.39},
+--     }
+--     local trooper_1         = starter_deck.takeObject({guid=faction_guids[2], rotation={0.00, 180.00, 0.00}})
+--     trooper_1.setPositionSmooth(pos_trooper_1, false, false)
+--     local trooper_2         = starter_deck.takeObject({guid=faction_guids[3], rotation={0.00, 180.00, 180.00}})
+--     trooper_2.setPositionSmooth(pos_trooper_2, false, false)
+--     -- pull shuttles, drop into pile
+--     local pos_shuttles      = {-20.78, 0.25, 13.89}
+--     local starter_shuttles  = {shuttle_1, shuttle_2, shuttle_3}
+--     for i = 1, 3 do
+--         starter_shuttles[i] = starter_deck.takeObject({guid=faction_guids[i+3], rotation={0.00, 180.00, 0.00}})
+--         starter_shuttles[i].setPositionSmooth(pos_shuttles, false, false)
+--     end
+--     -- create reserves deck
+--     -- bottom to top - shuttle X3, maybe companion, inq/jedi, shuttle
+--     -- bottom shuttles
+--     local reserve_shuttles  = {shuttle_1, shuttle_2, shuttle_3}
+--     local deckGalaxy       = getObjectFromGUID(faction_guids[15])
+--     -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
+--     if deckGalaxy == nil then
+--         deckGalaxy = getGalaxyDeck()
+--     end
+--     for i = 1, 3 do
+--         reserve_shuttles[i] = starter_deck.takeObject({guid=faction_guids[i+6], rotation={0.00, 180.00, 180.00}})
+--         reserve_shuttles[i].setPositionSmooth(pos_reserves[i], false, false)
+--     end
+--     if faction == "separatist" or faction == "republic" then
+--         -- companion
+--         local companion     = deckGalaxy.takeObject({guid=faction_guids[17], rotation={0.00, 180.00, 180.00}})
+--         companion.setPositionSmooth(pos_reserves[4], false, false)
+--         -- agent (dark side agent / jedi knight)
+--         local agent         = starter_deck.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
+--         agent.setPositionSmooth(pos_reserves[5], false, false)
+--         -- top shuttle
+--         getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[6], false, false)
+--     else
+--         -- agent (inquisitor / temple guardian)
+--         local agent         = starter_deck.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
+--         agent.setPositionSmooth(pos_reserves[4], false, false)
+--         -- top shuttle
+--         getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[5], false, false)
+--     end
+--     -- place leader
+--     local leader            = deckGalaxy.takeObject({guid=faction_guids[16], rotation={0.00, 180.00, 0.00}})
+--     local pos_leader        = {-7.70, 0.60, 16.67}
+--     leader.setPositionSmooth(pos_leader, false, false)
+--     -- base setup
+--     local base_deck         = getObjectFromGUID(faction_guids[13])
+--     local pos_starter_base  = {-14.09, 0.63, 15.88}
+--     local pos_bases         = {-14.09, 0.58, 15.90}
+--     -- temporarily lock starter base, position
+--     local starter_base      = getObjectFromGUID(faction_guids[14])
+--     starter_base.setLock(true)
+--     starter_base.setRotation({0.00, 180.00, 0.00})
+--     starter_base.setPositionSmooth(pos_starter_base, false, false)
+--     -- shuffle base deck. draw 2, place (should form deck on each other)
+--     base_deck.shuffle()
+--     local base_3            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
+--     base_3.setPositionSmooth(pos_bases, false, false)
+--     local base_2            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
+--     pos_bases.y = 0.60
+--     base_2.setPositionSmooth(pos_bases, false, false)
+--     bag.putObject(base_deck)
+--     -- position rules
+--     local rot_rules         = {60.00, 180.00, 0.00}
+--     local rules_positions   = {
+--         {-8.00, 5.85, 28.03},
+--         {8.00, 5.85, 28.03},
+--     }
+--     local rules_guids       = {
+--         ((faction == "separatist" or faction == "republic") and "ac18e9" or "53020e"),
+--         ((faction == "separatist" or faction == "republic") and "b7e197" or "4d7745"),
+--     }
 
-    for i = 1, 2 do
-        local rules         = bag.takeObject({guid=rules_guids[i], rotation=rot_rules})
-        rules.setLock(true)
-        rules.setPosition(rules_positions[i])
-    end
-    -- flip, move, or delete required top UI objects for solo play
-    local manipulate_objects = {
-        getObjectFromGUID("c6a07b"), -- [1]  = board resource counter
-        getObjectFromGUID("34be5a"), -- [2]  = player area resource counter (needs to be dropped under table, flipped upside down to prevent button hit)
-        getObjectFromGUID("b6d068"), -- [3]  = end turn button
-        getObjectFromGUID("817b24"), -- [4]  = force with me button (make force with them graphics for buttons lol)
-        getObjectFromGUID("fa055e"), -- [5]  = base damage counter (also needs to be repositioned)
-        getObjectFromGUID("53bed7"), -- [6]  = victory_pad
-        getObjectFromGUID("b282b4"), -- [7]  = purchase button 1 (left to right, galaxy deck to OR deck)
-        getObjectFromGUID("123425"), -- [8]  = purchase button 2
-        getObjectFromGUID("d2d527"), -- [9]  = purchase button 3
-        getObjectFromGUID("e3da81"), -- [10] = purchase button 4
-        getObjectFromGUID("65f0e5"), -- [11] = purchase button 5
-        getObjectFromGUID("d6ff12"), -- [12] = purchase button 6
-        getObjectFromGUID("0fc9b2"), -- [13] = purchase button outer rim
+--     for i = 1, 2 do
+--         local rules         = bag.takeObject({guid=rules_guids[i], rotation=rot_rules})
+--         rules.setLock(true)
+--         rules.setPosition(rules_positions[i])
+--     end
+--     -- flip, move, or delete required top UI objects for solo play
+--     local manipulate_objects = {
+--         getObjectFromGUID("c6a07b"), -- [1]  = board resource counter
+--         getObjectFromGUID("34be5a"), -- [2]  = player area resource counter (needs to be dropped under table, flipped upside down to prevent button hit)
+--         getObjectFromGUID("b6d068"), -- [3]  = end turn button
+--         getObjectFromGUID("817b24"), -- [4]  = force with me button (make force with them graphics for buttons lol)
+--         getObjectFromGUID("fa055e"), -- [5]  = base damage counter (also needs to be repositioned)
+--         getObjectFromGUID("53bed7"), -- [6]  = victory_pad
+--         getObjectFromGUID("b282b4"), -- [7]  = purchase button 1 (left to right, galaxy deck to OR deck)
+--         getObjectFromGUID("123425"), -- [8]  = purchase button 2
+--         getObjectFromGUID("d2d527"), -- [9]  = purchase button 3
+--         getObjectFromGUID("e3da81"), -- [10] = purchase button 4
+--         getObjectFromGUID("65f0e5"), -- [11] = purchase button 5
+--         getObjectFromGUID("d6ff12"), -- [12] = purchase button 6
+--         getObjectFromGUID("0fc9b2"), -- [13] = purchase button outer rim
 
-    }
-    local destroy_objects = {
-        getObjectFromGUID("57f0a2"), -- [1]  = player area deck pad
-        getObjectFromGUID("e3e3b8"), -- [2]  = player area discard pad
-        getObjectFromGUID("c0c024"), -- [3]  = player area base pad
-        getObjectFromGUID("ded0c2"), -- [4]  = player area discard random card button
-        getObjectFromGUID("2db9de"), -- [5]  = discard button 1 (left to right, galaxy deck to OR deck)
-        getObjectFromGUID("14443b"), -- [6]  = discard button 2
-        getObjectFromGUID("5f79fd"), -- [7]  = discard button 3
-        getObjectFromGUID("f371cf"), -- [8]  = discard button 4
-        getObjectFromGUID("8ce5e3"), -- [9]  = discard button 5
-        getObjectFromGUID("5534ea"), -- [10] = discard button 6
-    }
-    -- rotate board resource counter
-    manipulate_objects[1].setRotation({0.00, 180.00, 0.00})
-    -- drop, flip player area resource counter (hide object, button)
-    manipulate_objects[2].setRotation({0.00, 0.00, 180.00})
-    -- rotate end turn button
-    manipulate_objects[3].setRotation({0.00, 180.00, 0.00})
-    -- rotate force with me button
-    manipulate_objects[4].setRotation({0.00, 180.00, 0.00})
-    local force_button_images = {
-        separatist = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296864303/52D7C7B1ACFB4D767CE5334D661D85FEB6401EAC/",
-        republic   = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866003/3EE1657DEAA4B1B54F832270AB029EB182B3A41B/",
-        empire     = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296865269/B758EF2809731A8FE9E76FCF295FB2E00EEC95BA/",
-        rebellion  = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866592/E1C0458973E5499BA1D23BC561AC3ECB4A930E33/",
-    }
-    local force_button_image = force_button_images[faction]
-    manipulate_objects[4].setCustomObject({image=force_button_image})
-    manipulate_objects[4].reload()
-    -- rotate, position base damage counter
-    manipulate_objects[5].setRotation({0.00, 180.00, 0.00})
-    manipulate_objects[5].setPosition({-20.83, 0.10, 7.69})
-    -- rotate victory pad
-    manipulate_objects[6].setRotation({0.00, 180.00, 0.00})
-    -- rotate, tint purchase buttons
-    for i = 7, 13 do
-        manipulate_objects[i].setRotation({0.00, 180.00, 0.00})
-        manipulate_objects[i].setColorTint(topColor)
-    end
-    -- destroy no longer required UI objects
-    for i = 1, #destroy_objects do
-        destroy_objects[i].destruct()
-    end
-    -- pull leader board marker cubes
-    local cube_progress = bag.takeObject({
-        guid        =
-        ((topColor == "Blue" and "4863a8") or
-        (topColor  == "Purple" and "59278f") or
-        (topColor  == "Red" and "4fd77b") or
-        (topColor  == "Orange" and "fa5ca7")),
-        rotation    = {0.00, 180.00, 0.00}
-    })
-    cube_progress.setPosition({-17.76, 0.85, 21.88})
-    local cube_resource = bag.takeObject({guid="590c7d", rotation={0.00, 180.00, 0.00}})
-    cube_resource.setPosition({-15.74, 0.85, 12.85})
-    -- tint leaderboard
-    getObjectFromGUID(faction_guids[12]).setColorTint(topColor)
-    -- place muster pad, reimage, tint
-    local muster_pad_guid = (
-        (faction == "empire" and "5e3df3") or
-        (faction == "rebellion" and "ea4e10") or
-        (faction == "separatist" and "f812d9") or
-        (faction == "republic" and "5248ed")
-    )
-    local muster_pad = bag.takeObject({guid=muster_pad_guid})
-    Wait.frames(function()
-    muster_pad.setLock(true)
-    muster_pad.interactable = false
-    print(faction_image)
-    muster_pad.setRotation({0.00, 180.00, 180.00})
-    muster_pad.setPosition({-1.88, 0.10, 20.39})
-    muster_pad.setColorTint(topColor)
-    muster_pad.setCustomObject({image=faction_image})
-    muster_pad.reload()
-    end, 1)
-    -- A FEW MOMENTS LATER...
-    -- wait 3 seconds, unlock starter base, ### NEED TO MAKE ZONES ETC > name reserves, shuttle, muster
-    Wait.time(function() starter_base.setLock(false) end, 3)
-    Wait.time(function()
-    local zone_reserves = getObjectFromGUID("85aa75")
-    local zone_shuttles = getObjectFromGUID("a82234")
-    for _, object in pairs(zone_reserves.getObjects()) do
-        if object.hasTag('unit') then
-            object.setName("Reserves")
-        end
-    end
-    for _, object in pairs(zone_shuttles.getObjects()) do
-        if object.hasTag('unit') then
-            object.setName("Shuttles")
-        end
-    end
-    end, 3)
-end -- end setup_solo()
+--     }
+--     local destroy_objects = {
+--         getObjectFromGUID("57f0a2"), -- [1]  = player area deck pad
+--         getObjectFromGUID("e3e3b8"), -- [2]  = player area discard pad
+--         getObjectFromGUID("c0c024"), -- [3]  = player area base pad
+--         getObjectFromGUID("ded0c2"), -- [4]  = player area discard random card button
+--         getObjectFromGUID("2db9de"), -- [5]  = discard button 1 (left to right, galaxy deck to OR deck)
+--         getObjectFromGUID("14443b"), -- [6]  = discard button 2
+--         getObjectFromGUID("5f79fd"), -- [7]  = discard button 3
+--         getObjectFromGUID("f371cf"), -- [8]  = discard button 4
+--         getObjectFromGUID("8ce5e3"), -- [9]  = discard button 5
+--         getObjectFromGUID("5534ea"), -- [10] = discard button 6
+--     }
+--     -- rotate board resource counter
+--     manipulate_objects[1].setRotation({0.00, 180.00, 0.00})
+--     -- drop, flip player area resource counter (hide object, button)
+--     manipulate_objects[2].setRotation({0.00, 0.00, 180.00})
+--     -- rotate end turn button
+--     manipulate_objects[3].setRotation({0.00, 180.00, 0.00})
+--     -- rotate force with me button
+--     manipulate_objects[4].setRotation({0.00, 180.00, 0.00})
+--     local force_button_images = {
+--         separatist = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296864303/52D7C7B1ACFB4D767CE5334D661D85FEB6401EAC/",
+--         republic   = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866003/3EE1657DEAA4B1B54F832270AB029EB182B3A41B/",
+--         empire     = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296865269/B758EF2809731A8FE9E76FCF295FB2E00EEC95BA/",
+--         rebellion  = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866592/E1C0458973E5499BA1D23BC561AC3ECB4A930E33/",
+--     }
+--     local force_button_image = force_button_images[faction]
+--     manipulate_objects[4].setCustomObject({image=force_button_image})
+--     manipulate_objects[4].reload()
+--     -- rotate, position base damage counter
+--     manipulate_objects[5].setRotation({0.00, 180.00, 0.00})
+--     manipulate_objects[5].setPosition({-20.83, 0.10, 7.69})
+--     -- rotate victory pad
+--     manipulate_objects[6].setRotation({0.00, 180.00, 0.00})
+--     -- rotate, tint purchase buttons
+--     for i = 7, 13 do
+--         manipulate_objects[i].setRotation({0.00, 180.00, 0.00})
+--         manipulate_objects[i].setColorTint(topColor)
+--     end
+--     -- destroy no longer required UI objects
+--     for i = 1, #destroy_objects do
+--         destroy_objects[i].destruct()
+--     end
+--     -- pull leader board marker cubes
+--     local cube_progress = bag.takeObject({
+--         guid        =
+--         ((topColor == "Blue" and "4863a8") or
+--         (topColor  == "Purple" and "59278f") or
+--         (topColor  == "Red" and "4fd77b") or
+--         (topColor  == "Orange" and "fa5ca7")),
+--         rotation    = {0.00, 180.00, 0.00}
+--     })
+--     cube_progress.setPosition({-17.76, 0.85, 21.88})
+--     local cube_resource = bag.takeObject({guid="590c7d", rotation={0.00, 180.00, 0.00}})
+--     cube_resource.setPosition({-15.74, 0.85, 12.85})
+--     -- tint leaderboard
+--     getObjectFromGUID(faction_guids[12]).setColorTint(topColor)
+--     -- place muster pad, reimage, tint
+--     local muster_pad_guid = (
+--         (faction == "empire" and "5e3df3") or
+--         (faction == "rebellion" and "ea4e10") or
+--         (faction == "separatist" and "f812d9") or
+--         (faction == "republic" and "5248ed")
+--     )
+--     local muster_pad = bag.takeObject({guid=muster_pad_guid})
+--     Wait.frames(function()
+--     muster_pad.setLock(true)
+--     muster_pad.interactable = false
+--     print(faction_image)
+--     muster_pad.setRotation({0.00, 180.00, 180.00})
+--     muster_pad.setPosition({-1.88, 0.10, 20.39})
+--     muster_pad.setColorTint(topColor)
+--     muster_pad.setCustomObject({image=faction_image})
+--     muster_pad.reload()
+--     end, 1)
+--     -- A FEW MOMENTS LATER...
+--     -- wait 3 seconds, unlock starter base, ### NEED TO MAKE ZONES ETC > name reserves, shuttle, muster
+--     Wait.time(function() starter_base.setLock(false) end, 3)
+--     Wait.time(function()
+--     local zone_reserves = getObjectFromGUID("85aa75")
+--     local zone_shuttles = getObjectFromGUID("a82234")
+--     for _, object in pairs(zone_reserves.getObjects()) do
+--         if object.hasTag('unit') then
+--             object.setName("Reserves")
+--         end
+--     end
+--     for _, object in pairs(zone_shuttles.getObjects()) do
+--         if object.hasTag('unit') then
+--             object.setName("Shuttles")
+--         end
+--     end
+--     end, 3)
+-- end -- end setup_solo()
