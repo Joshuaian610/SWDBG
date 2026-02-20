@@ -5,11 +5,13 @@
 -- Leaders AI Solo mode by AzureDeath
 
 
+require("CardData")
 require("Buttons")
 require("GameFunctionality")
 require("GameSetup")
 require("HelperFuncs")
 require("Leaders")
+
 
 
 function onLoad()
@@ -431,7 +433,7 @@ function onObjectEnterZone(zone, obj)
 
     if obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
     not obj.hasTag('republic_owner') and not obj.hasTag('separatist_owner') and not obj.hasTag('neutral')) then
-        -- initBHSaboButtons(obj, tooltip, factionName)
+        -- initBHSaboButtons(obj, tooltip, factionName) -- NEED TO SUPPLY TOOLTIP & FACTION
     end
 
     -- neutral bh /sabotage button creation if required  IS THIS BLOCK ACTUALLY NEEDED

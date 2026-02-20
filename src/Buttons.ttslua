@@ -161,7 +161,7 @@ function initAbilityButtonSecXML(card)
 end -- end initAbilityButtonSecXML()
 
 
-function initBHSaboButtons(card, tooltip, faction)
+function initBHSaboButtons(card, tooltip, factionName)
   -- handles the creation of bounty hunt /sabotage buttons while in galaxy row
   local bottomFaction, topFaction = getPlayerAreas()
   local attackFaction = (faction == bottomFaction and topFaction or bottomFaction)

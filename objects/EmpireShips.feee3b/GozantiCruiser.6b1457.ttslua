@@ -1,8 +1,4 @@
-cost           = 3
-produce        = 2
-force          = 0
-fight          = 0
-faction        = "empire"
+
 MIN_VALUE      = 0
 MAX_VALUE      = 5
 MAX_HP         = 3

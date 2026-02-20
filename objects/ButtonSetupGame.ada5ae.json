@@ -34,6 +34,7 @@
   "LayoutGroupSortIndex": 0,
   "Locked": true,
   "LuaScript": "",
+  "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
   "Nickname": "Button Setup Game",

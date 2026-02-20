@@ -3,7 +3,6 @@ produce = 0
 force   = 0
 fight   = 0
 faction = "separatist"
-attack_tooltip = 'Gain 1 Resource'
 
 function onLoad()
     padGalaxyDeck    = getObjectFromGUID("83b3ce")
