@@ -1128,11 +1128,27 @@ function purchaseCard(button, playerColor, altClick)
     end
   end
 
-  local currentResources = counter.getVar('val')  
+  local currentResources = counter.getVar('val')
   local cardObj = nil
   local cardCost = nil
   local baseCardCost = nil
-  local zoneCard = button.getVar('checkzone') -- NEED DATA TABLE
+  local zoneCards = {
+    zoneGalaxyRow1,
+    zoneGalaxyRow2,
+    zoneGalaxyRow3,
+    zoneGalaxyRow4,
+    zoneGalaxyRow5,
+    zoneGalaxyRow6,
+    zoneGalaxyRow7,
+    zoneGalaxyRow7,
+    zoneGalaxyRow6,
+    zoneGalaxyRow5,
+    zoneGalaxyRow4,
+    zoneGalaxyRow3,
+    zoneGalaxyRow2,
+    zoneGalaxyRow1,
+  }
+  local zoneCard = zoneCards[tonumber(button.getGMNotes())]
   local forFree = altClick and true or false
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
 
@@ -1142,7 +1158,7 @@ function purchaseCard(button, playerColor, altClick)
     if zoneObj.tag == "Card" then
       cardInZone = true
       cardObj = zoneObj
-      cardCost = cardObj.getVar('cost') -- NEED DATA TABLE
+      cardCost = cardData[cardObj.getName()].cost
       baseCardCost = cardCost
       -- if tarkin ability adding card, check if empire card
       if nextCardTarkin and not zoneObj.hasTag('empire') then        
@@ -1713,7 +1729,7 @@ function setBoard(playerColor)
   -- add capital ships resources
   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
     if zoneObj.hasTag(ownerTag) and zoneObj.hasTag('ship') then
-      toAdd = toAdd + zoneObj.getVar('produce') -- NEED DATA TABLE
+      toAdd = toAdd + cardData[zoneObj.getName()].produce
     end
   end
 

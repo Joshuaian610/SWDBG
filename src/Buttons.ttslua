@@ -1615,8 +1615,8 @@ function primaryButtonAction(button, playercolor, _)
       local function maceReveal(revealCard)
         local plusAttack = nil
         Wait.frames(function()
-          showRevealUI(false, false)
-          plusAttack = revealCard.getVar('cost') -- NEED DATA TABLE
+          showRevealUI(false, false)          
+          plusAttack = cardData[revealCard.getName()].cost
           if plusAttack > 5 then plusAttack = 5 end
         end,1)
         if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
@@ -1984,8 +1984,8 @@ end -- end secondaryButtonAction()
 
 
 function bhAction(button, _, _)
-  local cardName = button.getName()
-  local targetFaction = button.getVar('faction') -- NEED DATA TABLE
+  local cardName = button.getName()  
+  local targetFaction = cardData[button.getName()].faction
   local bottomFaction, topFaction = getPlayerAreas()
   local bottomColor, topColor = getPlayerColors()
   local attackFaction = bottomFaction ~= targetFaction and bottomFaction or topFaction

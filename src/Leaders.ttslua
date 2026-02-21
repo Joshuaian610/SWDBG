@@ -24,7 +24,7 @@ function discardAICard(isRandom)
     local tieBreakMultiples = {}
 
     for i = 1, #musterCards do
-      local cardCost = musterCards[i].getVar('cost') -- NEED DATA TABLE
+      local cardCost = cardData[musterCards[i].getName()].cost
       if i == 1 then
         lowestCost = cardCost
         table.insert(multiples, musterCards[i])
