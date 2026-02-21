@@ -296,6 +296,31 @@ function initRandomDiscardButton(button)
 end -- end initRandomDiscardButton()
 
 
+function initRepublicRevealPadButtons(obj)
+  local buttonType = obj.getName():match("Button Reveal (.*)")
+  local func    = {
+    ["Return"]  = "returnRevealed",
+    ["Draw"]    = "drawRevealed",
+    ["Discard"] = "discardRevealed"
+  }
+  log(func)
+  local tTipAction = string.lower(buttonType)
+
+  obj.clearButtons()
+  obj.createButton({
+    click_function = func[buttonType],
+    function_owner = self,
+    label          = "",
+    color          = { 0.6, 0.78, 0.73, 0.0 },
+    hover_color    = { 0.6, 0.78, 0.73, 0.4 },
+    position       = { 0, 0.2, 0 },
+    height         = 750,
+    width          = 2900,
+    tooltip = "Pressing this button will " .. tTipAction .. " the revealed card to top of Republic deck.",
+  })
+end
+
+
 function initRowDiscardButtons(button)
   -- handles init of galaxy row discard buttons
   button.clearButtons()

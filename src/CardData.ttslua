@@ -2,13 +2,15 @@
 
 cardData                        = {
   -- EMPIRE
+  
   ["Imperial Shuttle"]          = {
     cost                        = 0,
     produce                     = 1,
     force                       = 0,
     fight                       = 0,
-    faction                     = "empire",
+    faction                     = "empire",  
   },
+
   ["Inquisitor"]                = {
     cost                        = 0,
     produce                     = 0,
@@ -16,6 +18,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "empire",
   },
+  
   ["Stormtrooper"]              = {
     cost                        = 0,
     produce                     = 0,
@@ -23,6 +26,7 @@ cardData                        = {
     fight                       = 2,
     faction                     = "empire",
   },
+  
   ["Admiral Piett"]             = {
     cost                        = 2,
     produce                     = 2,
@@ -31,6 +35,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 1 Force",
   },
+  
   ["AT-AT"]                     = {
     cost                        = 6,
     produce                     = 0,
@@ -39,6 +44,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "May Purchase Faction Card Free",
   },
+  
   ["AT-ST"]                     = {
     cost                        = 4,
     produce                     = 0,
@@ -47,6 +53,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "May Manually Exile Up To 2 Cards",
   },
+  
   ["Boba Fett"]                 = {
     cost                        = 5,
     produce                     = 0,
@@ -55,6 +62,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["Darth Vader"]               = {
     cost                        = 8,
     produce                     = 0,
@@ -63,6 +71,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 4 Resources, 4 Force",
   },
+  
   ["Death Trooper"]             = {
     cost                        = 3,
     produce                     = 0,
@@ -71,6 +80,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["Director Krennic"]          = {
     cost                        = 5,
     produce                     = 2,
@@ -79,6 +89,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["General Veers"]             = {
     cost                        = 4,
     produce                     = 0,
@@ -87,6 +98,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 3 Force",
   },
+  
   ["Grand Moff Tarkin"]         = {
     cost                        = 6,
     produce                     = 2,
@@ -95,6 +107,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 3 Resources, 3 Force",
   },
+  
   ["Landing Craft"]             = {
     cost                        = 4,
     produce                     = 0,
@@ -103,6 +116,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 4 Resources",
   },
+  
   ["Moff Jerjerrod"]            = {
     cost                        = 4,
     produce                     = 2,
@@ -111,6 +125,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 3 Force",
   },
+  
   ["Scout Trooper"]             = {
     cost                        = 2,
     produce                     = 2,
@@ -119,6 +134,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Tie Bomber"]                = {
     cost                        = 2,
     produce                     = 0,
@@ -127,6 +143,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Tie Fighter"]               = {
     cost                        = 1,
     produce                     = 0,
@@ -135,6 +152,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 1 Resource",
   },
+  
   ["Tie Interceptor"]           = {
     cost                        = 1,
     produce                     = 0,
@@ -143,6 +161,7 @@ cardData                        = {
     faction                     = "empire",
     attackTTip                  = "Gain 1 Resource",
   },
+  
   ["Gozanti Cruiser"]           = {
     cost                        = 3,
     produce                     = 2,
@@ -153,6 +172,7 @@ cardData                        = {
     maxVal                      = 5,
     maxHP                       = 3,
   },
+  
   ["Imperial Carrier"]          = {
     cost                        = 5,
     produce                     = 3,
@@ -163,6 +183,7 @@ cardData                        = {
     maxVal                      = 7,
     maxHP                       = 5,
   },
+  
   ["Star Destroyer"]            = {
     cost                        = 7,
     produce                     = 0,
@@ -175,7 +196,11 @@ cardData                        = {
     maxHP                       = 7,
   },
 
+
+
+
   -- SEPARATIST
+  
   ["B1 Battle Droid"]           = {
     cost                        = 0,
     produce                     = 0,
@@ -183,6 +208,7 @@ cardData                        = {
     fight                       = 2,
     faction                     = "separatist",
   },
+  
   ["Dark Side Agent"]           = {
     cost                        = 0,
     produce                     = 0,
@@ -190,6 +216,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "separatist",
   },
+  
   ["Separatist Shuttle"]        = {
     cost                        = 0,
     produce                     = 1,
@@ -197,6 +224,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "separatist",
   },
+  
   ["AAT"]                       = {
     cost                        = 5,
     produce                     = 0,
@@ -205,6 +233,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "May Exile Up To 2 Cards",
   },
+  
   ["Admiral Trench"]            = {
     cost                        = 5,
     produce                     = 2,
@@ -213,6 +242,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["Asajj Ventress"]            = {
     cost                        = 7,
     produce                     = 0,
@@ -221,6 +251,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "May Purchase Faction Card Free",
   },
+  
   ["B2 Battle Droid"]           = {
     cost                        = 1,
     produce                     = 0,
@@ -229,6 +260,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 1 Resource",
   },
+  
   ["Count Dooku"]               = {
     cost                        = 8,
     produce                     = 0,
@@ -237,6 +269,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 4 Resources, 4 Force",
   },
+  
   ["Droideka"]                  = {
     cost                        = 3,
     produce                     = 0,
@@ -245,6 +278,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["General Grievous"]          = {
     cost                        = 5,
     produce                     = 0,
@@ -253,6 +287,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["Magnaguard"]                = {
     cost                        = 4,
     produce                     = 0,
@@ -261,6 +296,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 3 Force",
   },
+  
   ["MTT"]                       = {
     cost                        = 4,
     produce                     = 3,
@@ -269,6 +305,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 4 Resources",
   },
+  
   ["Nute Gunray"]               = {
     cost                        = 2,
     produce                     = 2,
@@ -277,6 +314,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 1 Force",
   },
+  
   ["STAP"]                      = {
     cost                        = 2,
     produce                     = 2,
@@ -285,6 +323,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Tri-Fighter"]               = {
     cost                        = 3,
     produce                     = 0,
@@ -293,6 +332,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 3 Resources",
   },
+  
   ["Vulture Droid"]             = {
     cost                        = 2,
     produce                     = 0,
@@ -301,6 +341,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Wat Tambor"]                = {
     cost                        = 3,
     produce                     = 2,
@@ -309,6 +350,7 @@ cardData                        = {
     faction                     = "separatist",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["Droid Control Ship"]        = {
     cost                        = 4,
     produce                     = 2,
@@ -319,6 +361,7 @@ cardData                        = {
     maxVal                      = 6,
     maxHP                       = 4,
   },
+  
   ["Munificent-Class Frigate"]  = {
     cost                        = 3,
     produce                     = 1,
@@ -329,6 +372,7 @@ cardData                        = {
     maxVal                      = 5,
     maxHP                       = 3,
   },
+  
   ["Separatist Dreadnought"]    = {
     cost                        = 6,
     produce                     = 0,
@@ -340,7 +384,11 @@ cardData                        = {
     maxHP                       = 5
   },
 
+
+  
+
   -- REBELLION
+  
   ["Alliance Shuttle"]          = {
     cost                        = 0,
     produce                     = 1,
@@ -348,6 +396,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "rebellion",
   },
+  
   ["Rebel Trooper"]             = {
     cost                        = 0,
     produce                     = 0,
@@ -355,6 +404,7 @@ cardData                        = {
     fight                       = 2,
     faction                     = "rebellion",
   },
+  
   ["Temple Guardian"]           = {
     cost                        = 0,
     produce                     = 0,
@@ -362,6 +412,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "rebellion",
   },
+  
   ["B-Wing"]                    = {
     cost                        = 5,
     produce                     = 0,
@@ -370,6 +421,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "May Manually Exile Up To 2 Cards",
   },
+  
   ["Baze Malbus"]               = {
     cost                        = 2,
     produce                     = 0,
@@ -378,6 +430,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 1 Force",
   },
+  
   ["Cassian Andor"]             = {
     cost                        = 5,
     produce                     = 0,
@@ -386,6 +439,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["Chewbacca"]                 = {
     cost                        = 4,
     produce                     = 0,
@@ -394,6 +448,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 3 Force",
   },
+  
   ["Chirrut Imwe"]              = {
     cost                        = 3,
     produce                     = 0,
@@ -402,6 +457,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["Duros Spy"]                 = {
     cost                        = 2,
     produce                     = 2,
@@ -410,6 +466,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Han Solo"]                  = {
     cost                        = 5,
     produce                     = 2,
@@ -418,6 +475,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["Jyn Erso"]                  = {
     cost                        = 4,
     produce                     = 0,
@@ -426,6 +484,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 3 Force",
   },
+  
   ["Luke Skywalker"]            = {
     cost                        = 8,
     produce                     = 0,
@@ -434,6 +493,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 4 Resources, 4 Force",
   },
+  
   ["Millenium Falcon"]          = {
     cost                        = 7,
     produce                     = 2,
@@ -442,6 +502,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "May Purchase Faction Card Free",
   },
+  
   ["Princess Leia"]             = {
     cost                        = 6,
     produce                     = 2,
@@ -450,6 +511,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 3 Resources, 3 Force",
   },
+  
   ["Rebel Commando"]            = {
     cost                        = 3,
     produce                     = 0,
@@ -458,6 +520,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["Snowspeeder"]               = {
     cost                        = 2,
     produce                     = 0,
@@ -466,6 +529,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["U-Wing"]                    = {
     cost                        = 4,
     produce                     = 3,
@@ -474,6 +538,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 4 Resources",
   },
+  
   ["X-Wing"]                    = {
     cost                        = 3,
     produce                     = 0,
@@ -482,6 +547,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 3 Resources",
   },
+  
   ["Y-Wing"]                    = {
     cost                        = 1,
     produce                     = 0,
@@ -490,6 +556,7 @@ cardData                        = {
     faction                     = "rebellion",
     attackTTip                  = "Gain 1 Resource",
   },
+  
   ["Hammerhead Corvette"]       = {
     cost                        = 4,
     produce                     = 2,
@@ -500,6 +567,7 @@ cardData                        = {
     maxVal                      = 6,
     maxHP                       = 4,
   },
+  
   ["Mon Calamari Cruiser"]      = {
     cost                        = 6,
     produce                     = 0,
@@ -510,6 +578,7 @@ cardData                        = {
     maxVal                      = 8,
     maxHP                       = 6,
   },
+  
   ["Rebel Transport"]           = {
     cost                        = 2,
     produce                     = 0,
@@ -521,7 +590,11 @@ cardData                        = {
     maxHP                       = 2,
   },
 
+
+
+
   -- REPUBLIC
+  
   ["Clone Trooper"]             = {
     cost                        = 0,
     produce                     = 0,
@@ -529,6 +602,7 @@ cardData                        = {
     fight                       = 2,
     faction                     = "republic",
   },
+  
   ["Jedi Knight"]               = {
     cost                        = 0,
     produce                     = 0,
@@ -536,6 +610,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "republic",
   },
+  
   ["Republic Shuttle"]          = {
     cost                        = 0,
     produce                     = 1,
@@ -543,6 +618,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "republic",
   },
+  
   ["Aayla Secura"]              = {
     cost                        = 3,
     produce                     = 0,
@@ -551,6 +627,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["Ahsoka Tano"]               = {
     cost                        = 4,
     produce                     = 0,
@@ -559,6 +636,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 3 Force",
   },
+  
   ["Anakin Skywalker"]          = {
     cost                        = 5,
     produce                     = 0,
@@ -567,6 +645,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["ARC-170"]                   = {
     cost                        = 4,
     produce                     = 0,
@@ -575,6 +654,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "May Manually Exile Up To 2 Cards",
   },
+  
   ["ARC Trooper"]               = {
     cost                        = 3,
     produce                     = 0,
@@ -583,6 +663,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 3 Resources",
   },
+  
   ["AT-RT"]                     = {
     cost                        = 2,
     produce                     = 0,
@@ -591,6 +672,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["AT-TE"]                     = {
     cost                        = 6,
     produce                     = 0,
@@ -599,6 +681,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "May Purchase Card Free",
   },
+  
   ["BARC Trooper"]              = {
     cost                        = 2,
     produce                     = 2,
@@ -607,6 +690,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Captain Rex"]               = {
     cost                        = 3,
     produce                     = 2,
@@ -615,6 +699,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["Clone Commander Cody"]      = {
     cost                        = 4,
     produce                     = 2,
@@ -623,6 +708,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 3 Force",
   },
+  
   ["Delta-7B"]                  = {
     cost                        = 3,
     produce                     = 0,
@@ -631,6 +717,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["LAAT Gunship"]              = {
     cost                        = 4,
     produce                     = 4,
@@ -639,6 +726,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 4 Resources",
   },
+  
   ["Mace Windu"]                = {
     cost                        = 8,
     produce                     = 0,
@@ -647,6 +735,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 4 Resources, 4 Force",
   },
+  
   ["Obi-Wan Kenobi"]            = {
     cost                        = 6,
     produce                     = 0,
@@ -654,6 +743,7 @@ cardData                        = {
     fight                       = 4,
     faction                     = "republic",
     attackTTip                  = "Gain 3 Resources, 3 Force",
+  
   },
   ["Padmé Amidala"]             = {
     cost                        = 5,
@@ -663,6 +753,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+  
   ["V-19 Torrent"]              = {
     cost                        = 1,
     produce                     = 0,
@@ -671,6 +762,7 @@ cardData                        = {
     faction                     = "republic",
     attackTTip                  = "Gain 1 Resource",
   },
+  
   ["Acclamator-Class Ship"]     = {
     cost                        = 5,
     produce                     = 3,
@@ -681,6 +773,7 @@ cardData                        = {
     maxVal                      = 7,
     maxHP                       = 5,
   },
+  
   ["Consular-Class Cruiser"]    = {
     cost                        = 2,
     produce                     = 2,
@@ -691,6 +784,7 @@ cardData                        = {
     maxVal                      = 4,
     maxHP                       = 2,
   },
+  
   ["Venator-Class Destroyer"]   = {
     cost                        = 7,
     produce                     = 0,
@@ -702,7 +796,11 @@ cardData                        = {
     maxHP                       = 7,
   },
 
+
+
+
   -- MANDALORIAN
+  
   ["Child of the Watch"]        = {
     cost                        = 0,
     produce                     = 0,
@@ -710,6 +808,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "mandalorian",
   },
+  
   ["Mandalorian Shuttle"]       = {
     cost                        = 0,
     produce                     = 1,
@@ -717,6 +816,7 @@ cardData                        = {
     fight                       = 0,
     faction                     = "mandalorian",
   },
+  
   ["Mandalorian Soldier"]       = {
     cost                        = 0,
     produce                     = 0,
@@ -724,6 +824,7 @@ cardData                        = {
     fight                       = 2,
     faction                     = "mandalorian",
   },
+  
   ["Axe Woves"]                 = {
     cost                        = 3,
     produce                     = 0,
@@ -732,6 +833,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 2 Force",
   },
+  
   ["Balutar Swoop Rider"]       = {
     cost                        = 2,
     produce                     = 2,
@@ -740,6 +842,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Bo-Katan"]                  = {
     cost                        = 8,
     produce                     = 2,
@@ -748,6 +851,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 4 Resources, 4 Force",
   },
+  
   ["Clan Kryze Commando"]       = {
     cost                        = 2,
     produce                     = 0,
@@ -756,6 +860,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "May Manually Exile 1 Card",
   },
+  
   ["Din's Starfighter"]         = {
     cost                        = 6,
     produce                     = 0,
@@ -764,6 +869,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 3 Resources, 3 Force",
   },
+
   ["Foundling"]                 = {
     cost                        = 1,
     produce                     = 2,
@@ -772,6 +878,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 1 Resource",
   },
+
   ["Gauntlet Dropship"]         = {
     cost                        = 5,
     produce                     = 2,
@@ -780,6 +887,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "May Manually Exile Up To 2 Cards",
   },
+
   ["Grogu"]                     = {
     cost                        = 5,
     produce                     = 0,
@@ -788,6 +896,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+
   ["Koska Reeves"]              = {
     cost                        = 4,
     produce                     = 0,
@@ -796,6 +905,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 3 Force",
   },
+
   ["Mandalorian Hijacker"]      = {
     cost                        = 4,
     produce                     = 0,
@@ -804,6 +914,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 3 Force",
   },
+
   ["Mandalorian Hunter"]        = {
     cost                        = 3,
     produce                     = 0,
@@ -812,6 +923,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 2 Force",
   },
+
   ["Paz Vizsla"]                = {
     cost                        = 2,
     produce                     = 0,
@@ -820,6 +932,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 1 Force",
   },
+
   ["Protectorate Fighter"]      = {
     cost                        = 4,
     produce                     = 0,
@@ -828,6 +941,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 4 Resources",
   },
+
   ["Razorcrest"]                = {
     cost                        = 7,
     produce                     = 3,
@@ -836,6 +950,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "May Purchase Card Free",
   },
+
   ["Survivor Langskib"]         = {
     cost                        = 3,
     produce                     = 0,
@@ -844,6 +959,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["The Armorer"]               = {
     cost                        = 6,
     produce                     = 3,
@@ -852,6 +968,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 3 Resources, 3 Force",
   },
+
   ["The Mandalorian"]           = {
     cost                        = 5,
     produce                     = 0,
@@ -860,6 +977,7 @@ cardData                        = {
     faction                     = "mandalorian",
     attackTTip                  = "Gain 3 Resources, 2 Force",
   },
+
   ["Arquitens Command Cruiser"] = {
     cost                        = 5,
     produce                     = 2,
@@ -870,6 +988,7 @@ cardData                        = {
     maxVal                      = 7,
     maxHP                       = 5,
   },
+
   ["Captured Gozanti Cruiser"]  = {
     cost                        = 3,
     produce                     = 2,
@@ -881,6 +1000,9 @@ cardData                        = {
     maxHP                       = 3,
   },
 
+
+
+
   -- ORIGINAL NEUTRALS
   ["Bossk"]                     = {
     cost                        = 3,
@@ -890,6 +1012,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["Dengar"]                    = {
     cost                        = 4,
     produce                     = 0,
@@ -898,6 +1021,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 4 Resources",
   },
+
   ["Fang Fighter"]              = {
     cost                        = 3,
     produce                     = 0,
@@ -906,6 +1030,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["HWK-290"]                   = {
     cost                        = 4,
     produce                     = 4,
@@ -914,6 +1039,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 4 Resources",
   },
+
   ["IG-88"]                     = {
     cost                        = 5,
     produce                     = 0,
@@ -922,6 +1048,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 5 Resources",
   },
+
   ["Jabba's Sail Barge"]        = {
     cost                        = 7,
     produce                     = 3,
@@ -930,6 +1057,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 7 Resources",
   },
+
   ["Jabba the Hutt"]            = {
     cost                        = 8,
     produce                     = 2,
@@ -938,6 +1066,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 8 Resources",
   },
+
   ["Jawa Scavenger"]            = {
     cost                        = 1,
     produce                     = 2,
@@ -946,6 +1075,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 1 Resource",
   },
+
   ["Kel Dor Mystic"]            = {
     cost                        = 2,
     produce                     = 0,
@@ -954,6 +1084,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 2 Resources",
   },
+
   ["Lando Calrissian"]          = {
     cost                        = 6,
     produce                     = 3,
@@ -962,6 +1093,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 6 Resources",
   },
+
   ["Lobot"]                     = {
     cost                        = 3,
     produce                     = 0,
@@ -970,6 +1102,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["Quarren Mercenary"]         = {
     cost                        = 4,
     produce                     = 0,
@@ -978,6 +1111,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 4 Resources",
   },
+
   ["Rodian Gunslinger"]         = {
     cost                        = 2,
     produce                     = 0,
@@ -986,6 +1120,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 2 Resources",
   },
+
   ["Twi'lek Smuggler"]          = {
     cost                        = 3,
     produce                     = 0,
@@ -994,6 +1129,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["Z-95 Headhunter"]           = {
     cost                        = 1,
     produce                     = 0,
@@ -1002,6 +1138,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 1 Resource",
   },
+
   ["Blockade Runner"]           = {
     cost                        = 4,
     produce                     = 1,
@@ -1012,6 +1149,7 @@ cardData                        = {
     maxVal                      = 6,
     maxHP                       = 4,
   },
+
   ["C-Roc Cruiser"]             = {
     cost                        = 3,
     produce                     = 1,
@@ -1022,6 +1160,7 @@ cardData                        = {
     maxVal                      = 5,
     maxHP                       = 3,
   },
+
   ["Nebulon-B Frigate"]         = {
     cost                        = 3,
     produce                     = 1,
@@ -1033,6 +1172,9 @@ cardData                        = {
     maxHP                       = 3,
   },
 
+
+
+  
   -- CW NEUTRALS
   ["Assassin Droid"]            = {
     cost                        = 4,
@@ -1042,6 +1184,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 4 Resources",
   },
+
   ["Aurra Sing"]                = {
     cost                        = 2,
     produce                     = 0,
@@ -1050,6 +1193,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 2 Resources",
   },
+
   ["Cad Bane"]                  = {
     cost                        = 6,
     produce                     = 2,
@@ -1058,6 +1202,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 6 Resources",
   },
+
   ["Embo"]                      = {
     cost                        = 4,
     produce                     = 2,
@@ -1066,6 +1211,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 4 Resources",
   },
+
   ["Fett's Firespray"]          = {
     cost                        = 7,
     produce                     = 3,
@@ -1074,6 +1220,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 7 Resources",
   },
+
   ["Gauntlet Starfighter"]      = {
     cost                        = 4,
     produce                     = 4,
@@ -1082,6 +1229,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 4 Resources",
   },
+
   ["Hondo Ohnaka"]              = {
     cost                        = 4,
     produce                     = 0,
@@ -1090,6 +1238,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 8 Resources",
   },
+
   ["Hutt Fighter"]              = {
     cost                        = 3,
     produce                     = 3,
@@ -1098,6 +1247,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["Jango Fett"]                = {
     cost                        = 5,
     produce                     = 0,
@@ -1106,6 +1256,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 5 Resources",
   },
+
   ["Jar Jar Binks"]             = {
     cost                        = 0,
     produce                     = 0,
@@ -1114,6 +1265,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 0 Resources",
   },
+
   ["Latts Razzi"]               = {
     cost                        = 3,
     produce                     = 0,
@@ -1122,6 +1274,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["Protocol Droid"]            = {
     cost                        = 1,
     produce                     = 2,
@@ -1130,6 +1283,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 1 Resource",
   },
+
   ["Super Commando"]            = {
     cost                        = 3,
     produce                     = 0,
@@ -1138,6 +1292,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["Underworld Contact"]        = {
     cost                        = 2,
     produce                     = 1,
@@ -1146,6 +1301,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 2 Resources",
   },
+
   ["Weequay Pirate"]            = {
     cost                        = 1,
     produce                     = 0,
@@ -1154,6 +1310,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 1 Resource",
   },
+
   ["Zam Wessell"]               = {
     cost                        = 3,
     produce                     = 0,
@@ -1162,6 +1319,7 @@ cardData                        = {
     faction                     = "neutral",
     attackTTip                  = "Gain 3 Resources",
   },
+
   ["Aurore-Class Freighter"]    = {
     cost                        = 3,
     produce                     = 2,
@@ -1172,6 +1330,7 @@ cardData                        = {
     maxVal                      = 5,
     maxHP                       = 3,
   },
+
   ["Dreadnought-Class Carrier"] = {
     cost                        = 5,
     produce                     = 0,
@@ -1182,6 +1341,7 @@ cardData                        = {
     maxVal                      = 7,
     maxHP                       = 5,
   },
+
   ["Space Yacht"]               = {
     cost                        = 4,
     produce                     = 2,

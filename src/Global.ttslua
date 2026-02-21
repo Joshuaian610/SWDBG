@@ -285,6 +285,8 @@ function onObjectSpawn(obj)
     disableNeutralDeckSelection()
   elseif name:find("Button Play") then
     initFactionSetupButton(obj)
+  elseif name:find("Button Reveal") then
+    initRepublicRevealPadButtons(obj)
   end
 end
 
@@ -429,9 +431,9 @@ function onObjectEnterZone(zone, obj)
   end
 
   -- bounty hunt / sabotage button creation
-  if zone.getName():find("Zone Row") then
+  if zone.getName():find("Zone Row") and zone.getName() ~= "Zone Row Deck" and zone.getName() ~= "Zone Row Discard" then
 
-    if obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
+    if obj.type == "Card" and obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
     not obj.hasTag('republic_owner') and not obj.hasTag('separatist_owner') and not obj.hasTag('neutral')) then
       local tooltip = cardData[obj.getName()].attackTTip
       local factionName = cardData[obj.getName()].attackTTip
