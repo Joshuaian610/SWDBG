@@ -1,27 +1,27 @@
-cost           = 2
-produce        = 2
-force          = 0
-fight          = 0
-faction        = "empire"
-attack_tooltip = 'Gain 1 Force'
+-- cost           = 2
+-- produce        = 2
+-- force          = 0
+-- fight          = 0
+-- faction        = "empire"
+-- attack_tooltip = 'Gain 1 Force'
 
-function onLoad()
-    padGalaxyDeck    = getObjectFromGUID("83b3ce")
-    padGalaxyDiscard = getObjectFromGUID("a03936")
-    padOuterRim     = getObjectFromGUID("606e92")
-    self.addContextMenuItem("Exile Card", exileCard)
-end
+-- function onLoad()
+--     padGalaxyDeck    = getObjectFromGUID("83b3ce")
+--     padGalaxyDiscard = getObjectFromGUID("a03936")
+--     padOuterRim     = getObjectFromGUID("606e92")
+--     -- self.addContextMenuItem("Exile Card", exileCard)
+-- end
 
-function exileCard(playerArea, position, object)
-    padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
-end
-
-
-function initAbilityButton()
-    padGalaxyDeck.call('initAbilityButton', {card=self})
-end -- end initAbilityButton()
+-- function exileCard(playerArea, position, object)
+--     padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
+-- end
 
 
-function initBHSaboButtons()
-    padGalaxyDeck.call('initBHSaboButtons', {card=self, tooltip=attack_tooltip, faction=faction})
-end -- end initBHSaboButtons()
+-- function initAbilityButton()
+--     padGalaxyDeck.call('initAbilityButton', {card=self})
+-- end -- end initAbilityButton()
+
+
+-- function initBHSaboButtons()
+--     padGalaxyDeck.call('initBHSaboButtons', {card=self, tooltip=attack_tooltip, faction=faction})
+-- end -- end initBHSaboButtons()

@@ -24,7 +24,7 @@
   },
   "Description": "",
   "DragSelectable": true,
-  "GMNotes": "",
+  "GMNotes": "disabled",
   "GUID": "903ad5",
   "Grid": true,
   "GridProjection": false,
@@ -37,7 +37,7 @@
   "LuaScript_path": "ButtonEnableLeaders.903ad5.ttslua",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Button Enable Leaders ",
+  "Nickname": "Button Enable Leaders",
   "Snap": true,
   "Sticky": true,
   "Tags": [

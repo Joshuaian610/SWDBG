@@ -1,4 +1,4 @@
--- this require page will contain non setup button related functions and functionality
+-- this require page will contain non setup or XML button related functions and functionality
 
 -- ANIMATE, INIT, AND REMOVE FUNCTIONS
 
@@ -38,143 +38,20 @@ function animateButtonGalaxyRow(button)
 end -- end animateButtonGalaxyRow()
 
 
-function initAbilityButton(card)
-  -- handles creation of lua buttons on cards
-  -- these buttons perform the actual click action underlying the XML graphics
-  local bottomColor, topColor = getPlayerColors()
-  local tags = card.getTags()
-  local isBottom = false
-
-  for _, tag in ipairs(tags) do
-    if tag == "bottom_owner" then
-      isBottom = true
-    end
-  end
-
-  local buttonColor = isBottom and bottomColor or topColor
-  local color, hoverColor = getButtonColors(buttonColor)
-
-  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
-    card.createButton({
-      click_function = "primaryButtonAction",
-      label          = '',
-      position       = { 0, 0.5, 1.23 },
-      height         = 575,
-      width          = 1800,
-      color          = color,
-      hover_color    = hoverColor,
-      rotation       = { 0, 0, 0 },
-      scale          = { x=0.5, y=0.5, z=0.5 },
-      tooltip        = "Use " .. card.getName() .. " ability.",
-    })
-  end
-
-  if card.getName() == "Jar Jar Binks" and (not card.hasTag('bottom_owner') and not card.hasTag('top_owner')) then
-    color, hoverColor = getButtonColors("Purple")
-    card.createButton({
-      click_function = "primaryButtonAction",
-      function_owner = self,
-      label          = '',
-      position       = { 0, 0.5, 1.23 },
-      height         = 575,
-      width          = 1800,
-      color          = color,
-      hover_color    = hoverColor,
-      rotation       = { 0, 0, 0 },
-      scale          = { x=0.5, y=0.5, z=0.5 },
-      tooltip        = "Use " .. card.getName() .. " ability.",
-    })
-  end
-end -- end initAbilityButton()
-
-
-function initAbilityButtonSec(card, primaryTooltip, secondaryTooltip)
-  -- handles creation of lua buttons on cards that require multiple buttons
-  -- these buttons perform the actual click action underlying the XML graphics
-  local bottomColor, topColor = getPlayerColors()
-  local tags = card.getTags()
-  local isBottom = false
-
-  for _, tag in pairs(tags) do
-    if tag == 'bottom_owner' then
-      isBottom = true
-    end
-  end
-
-  local buttonColor = isBottom and bottomColor or topColor
-  local color, hoverColor = getButtonColors(buttonColor)
-
-  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
-    card.createButton({
-      click_function = "primaryButtonAction",
-      function_owner = self,
-      label          = '',
-      position       = { -.545, 0.5, 1.23 },
-      height         = 575,
-      width          = 1000,
-      color          = color,
-      hover_color    = hoverColor,
-      rotation       = { 0, 0, 0 },
-      scale          = { x=0.5, y=0.5, z=0.5 },
-      tooltip        = "Use " .. card.getName() .. " ability for " .. primaryTooltip .. "."
-    })
-    card.createButton({
-      click_function = "secondaryButtonAction",
-      function_owner = self,
-      label          = '',
-      position       = { .545, 0.5,1.23 },
-      height         = 575,
-      width          = 1000,
-      color          = { 0.7569, 0.6863, 0.1020, .8 },
-      hover_color    = { 0.7569, 0.6863, 0.1020, .9 },
-      rotation       = { 0, 0, 0 },
-      scale          = { x=0.5, y=0.5, z=0.5 },
-      tooltip        = "Use " .. card.getName() .. " ability for " .. secondaryTooltip .. ".",
-    })
-  end
-end -- end initAbilityButtonSec()
-
-
-function initAbilityButtonXML(card)
-  -- handles creation of primary (or only) XML graphic for card ability buttons
-  local bottomColor, topColor = getPlayerColors()
-  local isBottom = card.hasTag('bottom_owner') and true or false
-  local buttonColor = isBottom and bottomColor or topColor
-
-  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
-    card.UI.show('ability_button_' .. string.lower(buttonColor))
-  end
-end -- end initAbilityButtonXML()
-
-
-function initAbilityButtonSecXML(card)
-  -- handles creation of secondary XML graphic, if required, for card ability buttons
-  local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
-  local isBottom = card.hasTag('bottom_owner') and true or false
-  local buttonColor = isBottom and bottomColor or topColor
-
-  -- only create if card is owned, Jar Jar creates sec XML button while in row
-  if card.hasTag('bottom_owner') or card.hasTag('top_owner') and card.getName() ~= "Jar Jar Binks" then
-    card.UI.show('ability_button_' .. string.lower(buttonColor))
-    card.UI.show('ability_button_gold')
-  end
-end -- end initAbilityButtonSecXML()
-
-
 function initBHSaboButtons(card, tooltip, factionName)
   -- handles the creation of bounty hunt /sabotage buttons while in galaxy row
   local bottomFaction, topFaction = getPlayerAreas()
-  local attackFaction = (faction == bottomFaction and topFaction or bottomFaction)
+  local attackFaction = factionName == bottomFaction and topFaction or bottomFaction
+    
   local attackAction = nil
-
-  if attackFaction == "republic" or attackFaction == "rebellion" then
+  if attackFaction == "Republic" or attackFaction == "Rebellion" then
     attackAction = "Sabotage"
-  elseif attackFaction == "empire" or attackFaction == "separatist" then
+  elseif attackFaction == "Empire" or attackFaction == "Separatist" or attackFaction == "Mandalorian" then
     attackAction = "Bounty Hunt"
   end
 
   local bottomColor, topColor = getPlayerColors()
-  local buttonColor = (attackFaction == bottomFaction and bottomColor or topColor)
+  local buttonColor = attackFaction == bottomFaction and bottomColor or topColor
   local color, hoverColor = getButtonColors(buttonColor)
 
   if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then
@@ -303,7 +180,6 @@ function initRepublicRevealPadButtons(obj)
     ["Draw"]    = "drawRevealed",
     ["Discard"] = "discardRevealed"
   }
-  log(func)
   local tTipAction = string.lower(buttonType)
 
   obj.clearButtons()
@@ -336,25 +212,6 @@ function initRowDiscardButtons(button)
     tooltip = "Pressing this button will send it's card to the galaxy discard pile, and automatically replace with a new card. Right clicking discards without automatic replacement.",
   })
 end -- end initRowDiscardButtons()
-
-
-function initXMLForceButton(card)
-  -- handles creation of card force buttons    
-  local bottomColor, topColor = getPlayerColors()
-  local tags = card.getTags()
-  local isBottom = false
-  for _, tag in ipairs(tags) do
-    if tag == "bottom_owner" then
-      isBottom = true
-    end
-  end
-
-  local buttonColor = isBottom and bottomColor or topColor  
-
-  if card.hasTag('bottom_owner') or card.hasTag('top_owner') then
-    card.UI.show('force_button_' .. buttonColor)
-  end
-end -- end initXMLForceButton()
 
 
 function initShipCounter(card, val)

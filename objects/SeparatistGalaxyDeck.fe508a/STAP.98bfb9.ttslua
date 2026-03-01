@@ -9,7 +9,7 @@ function onLoad()
     padGalaxyDeck    = getObjectFromGUID("83b3ce")
     padGalaxyDiscard = getObjectFromGUID("a03936")
     padOuterRim     = getObjectFromGUID("606e92")
-    self.addContextMenuItem("Exile Card", exileCard)
+    -- self.addContextMenuItem("Exile Card", exileCard)
 end
 
 function exileCard(playerArea, position, object)

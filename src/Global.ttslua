@@ -6,6 +6,7 @@
 
 
 require("CardData")
+require("CardXML")
 require("Buttons")
 require("GameFunctionality")
 require("GameSetup")
@@ -20,7 +21,7 @@ function onLoad()
   Turns.enable = false
 
   interactable = false
-  invis = false
+  invis = true
 
   -- set non interactables, run onSpawn stuff
   if interactable then
@@ -397,46 +398,25 @@ function onObjectEnterZone(zone, obj)
     nextCardNute = false
   end
 
-  -- ability button creation
-  if zone == zoneInPlay and obj.hasTag('buttons') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    initAbilityButton(obj)
-  end
-  if zone == zoneInPlay and obj.hasTag('buttons_sec') and
-  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    initAbilityButtonSec(obj)
-  end
-
-  -- ui ability button creation creation
-  if zone == zoneInPlay and obj.hasTag('ability_button') and
-  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    initAbilityButtonXML(obj)
-  end
-  
-  -- dual ui ability buttons creation
-  if zone == zoneInPlay and obj.hasTag('ability_button_sec') and
-  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and obj.getName() ~= "Jar Jar Binks" then
-    initAbilityButtonSecXML(obj)
-  end
-
-  -- ui force buttons creation
-  if zone == zoneInPlay and obj.hasTag('add_force_button') and
-  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    initXMLForceButton(obj)
+  -- card XML ability button creation
+  if zone == zoneInPlay and (obj.hasTag('ability_button') or obj.hasTag('ability_button_sec') or obj.hasTag('add_force_button')) and
+  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and obj.type == "Card" then
+    -- initCardXML(obj)
   end
 
   -- jar jar row button creation
   if (zone.getName():find("Zone Row")) and
   (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
-    initAbilityButtonSecXML(obj)
+    -- initAbilityButtonSecXML(obj)
   end
 
   -- bounty hunt / sabotage button creation
   if zone.getName():find("Zone Row") and zone.getName() ~= "Zone Row Deck" and zone.getName() ~= "Zone Row Discard" then
 
     if obj.type == "Card" and obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
-    not obj.hasTag('republic_owner') and not obj.hasTag('separatist_owner') and not obj.hasTag('neutral')) then
+    not obj.hasTag('neutral')) then
       local tooltip = cardData[obj.getName()].attackTTip
-      local factionName = cardData[obj.getName()].attackTTip
+      local factionName = cardData[obj.getName()].faction
       initBHSaboButtons(obj, tooltip, factionName)
     end
 
@@ -532,23 +512,23 @@ function onObjectLeaveZone(zone, obj)
     end
   end
 
-  -- remove lua ability buttons
-  if zone == zoneInPlay and obj.hasTag('buttons') and
-  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    obj.clearButtons()
-  end
+  -- -- remove lua ability buttons
+  -- if zone == zoneInPlay and obj.hasTag('buttons') and
+  -- (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
+  --   obj.clearButtons()
+  -- end
 
   -- remove xml ability / force etc buttons
   if zone == zoneInPlay and (obj.hasTag('ability_button') or obj.hasTag('ability_button_sec') or obj.hasTag('force_button')) and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    removeAbilityButtons(obj)
-    removeXMLForceButton(obj)
+    -- removeAbilityButtons(obj)
+    -- removeXMLForceButton(obj)
   end
 
   -- remove jar jar row ability
   if zone.getName():find("Zone Row") and
   obj.getName() == "Jar Jar Binks" then
-    removeAbilityButtons(obj)
+    -- removeAbilityButtons(obj)
   end
 
   -- remove bounty hunt / sabotage buttons
@@ -576,13 +556,14 @@ function onObjectLeaveZone(zone, obj)
     -- removeBHbuttons()
   end
 
-  -- handles republic reveal UI hide
-  local areaRevealPad = getArea()
-  local isBottom = areaRevealPad == "Bottom"
-  local zonerepublicReveal = isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop
-  if zone == zonerepublicReveal and obj.hasTag(isBottom and 'bottom_owner' or 'top_owner') then
-    hideRevealUI()
-  end
+  -- handles republic reveal UI hide  
+  -- local zoneRepublicReveal = isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop
+  -- if zone == zoneRepublicReveal and obj.hasTag(isBottom and 'bottom_owner' or 'top_owner') then
+  --   local areaRevealPad = getArea()
+  --   local isBottom = areaRevealPad == "Bottom"
+    
+  --   hideRevealUI()
+  -- end
 end -- end onObjectLeaveZone()
 
 

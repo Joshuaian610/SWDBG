@@ -213,15 +213,15 @@ function dealCard(playerArea, count)
 
   if playerArea == "bottom" then
     zoneDeck = zoneDeckBottom
-    zoneGalaxyDiscard = zoneDiscardBottom
+    zoneDiscard = zoneDiscardBottom
     zoneHandzone = zoneHandzoneBottom
     posDeck = { -3.50, 1.50, -31.00 }
     faction = bottomFaction
       
   elseif playerArea == "top" then
     zoneDeck = zoneDeckTop
-    zoneGalaxyDiscard = zoneDiscardTop
-    zoneHandzone = zoneHandzoneBottom
+    zoneDiscard = zoneDiscardTop
+    zoneHandzone = zoneHandzoneTop
     posDeck = { 3.50, 2.50, 31.00 }
     faction = topFaction
   end
@@ -258,9 +258,9 @@ function dealCard(playerArea, count)
   if deckOrCardFound == false or countDeck < count then
     Wait.time(function()
 
-      for k, v in pairs(zoneGalaxyDiscard.getObjects()) do
+      for k, zoneObj in pairs(zoneGalaxyDiscard.getObjects()) do
         if zoneObj.type == "Deck" then
-          deckDeal = v
+          deckDeal = zoneObj
           deckDeal.flip()
           deckDeal.shuffle()
           Wait.time(function() deckDeal.setPosition(posDeck) end, 1)
@@ -903,9 +903,14 @@ function moveForceTrack(button, count)
     nil,
     nil
   }
-  local isBottom = button == buttonForceBottom and true or false
+  local isBottom = button == getObjectbyName("Button Force Bottom") and true or false
+  log("moveForceTrack() isBottom: " .. tostring(isBottom))
   local trackerForce = getObjectbyName("Force Tracker")
   local forceTrack = getObjectbyName("Force Track")
+
+  log("moveForceTrack() found : " .. trackerForce.getName())
+  log("moveForceTrack() found : " .. forceTrack.getName())
+
   local posStart = trackerForce.getPosition()
   local bottomColor, topColor = getPlayerColors()
 
@@ -962,13 +967,18 @@ function moveForceTrack(button, count)
   end
 
   local bottomFaction, topFaction = getPlayerAreas()
-  local capitalizedBottomFaction = (bottomFaction:gsub("^%l", string.upper))
-  local capitalizedTopFaction = (topFaction:gsub("^%l", string.upper))
-  local faction = isBottom and capitalizedBottomFaction or capitalizedTopFaction
+
+  log("moveForceTrack() bottomFaction: " .. bottomFaction)
+  log("moveForceTrack() topFaction: " .. topFaction)
+  
+  local faction = isBottom and bottomFaction or topFaction
   local playerColor = isBottom and bottomColor or topColor
 
+  log("moveForceTrack() faction: " .. faction)
+  log("moveForceTrack() playerColor: " .. playerColor)
+
   for i = 1, count do
-    if button == buttonForceBottom then
+    if button == getObjectbyName("Button Force Bottom") then
       if posStart.z < -7.5 and posStart.z > -9.5 then
         return
 
@@ -1005,7 +1015,7 @@ function moveForceTrack(button, count)
         trackerForce.highlightOff()
       end
 
-    elseif button == buttonForceTop then
+    elseif button == getObjectbyName("Button Force Top") then
       if posStart.z < -7.5 and posStart.z > -9.5 then
         posStart.z = posForceTrackZ[6]
         trackerForce.setColorTint(colorsForceTrack[6])
@@ -1042,6 +1052,9 @@ function moveForceTrack(button, count)
         return
       end
     end
+
+    log("posStart:")
+    log(posStart)
 
     trackerForce.setPosition(posStart)
   end
@@ -1555,6 +1568,9 @@ function rotateDealtCard(card, position)
   local rotTopUnit = { 0.00, 90.00, 0.00 }
   local rotTopShip = { 0.00, 270.00, 0.00 }
 
+  bottomFaction = string.lower(bottomFaction)
+  topFaction = string.lower(topFaction)
+
   if bottomFaction == "rebellion" then bottomFaction = "rebel" end
   if topFaction == "rebellion" then topFaction = "rebel" end
 
@@ -1565,7 +1581,8 @@ function rotateDealtCard(card, position)
     card.setRotation(rotNeutralShip)
 
   elseif card.hasTag('empire') or card.hasTag('rebel') or
-  card.hasTag('republic') or card.hasTag('separatist') then
+  card.hasTag('republic') or card.hasTag('separatist') or
+  card.hasTag('mandalorian') then
     local tags = card.getTags()
     if card.hasTag('unit') then
       for _, tag in ipairs(tags) do

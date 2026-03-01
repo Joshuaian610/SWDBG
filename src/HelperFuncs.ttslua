@@ -31,7 +31,8 @@ end -- end checkIfAI()
 
 function getArea()
   -- related to Republic Reveal Pad functionality
-  local posPad = getObjectbyName("Pad Republic Reveal").getPosition()
+  local padRepublicReveal = getObjectbyName("Pad Republic Reveal")
+  local posPad = padRepublicReveal.getPosition()
   local area = nil
   if posPad.x > -18.50 and posPad.x < -16.50 then
     area = "Bottom"
@@ -101,7 +102,6 @@ end -- end getGalaxyDeck()
 
 
 function getFactions()
-  -- checks player area base counter .getName()
   -- returns table of boolean values of currently in game factions
   local factions = {
     false, -- empire
@@ -111,19 +111,30 @@ function getFactions()
     false, -- mandalorian
   }
 
-  local stringBottom = counterBaseBottom.getName()
-  local stringTop = counterBaseTop.getName()
-  local strings = {stringBottom, stringTop}
-  
-  for i = 1, 2 do
-    local str = strings[i]
-    factions[1] = factions[1] or str:find("Empire")
-    factions[2] = factions[2] or str:find("Republic")
-    factions[3] = factions[3] or str:find("Rebellion")
-    factions[4] = factions[4] or str:find("Separatist")
-    factions[5] = factions[5] or str:find("Mandalorian")
-  end
+  -- faction lookup by name
+  local indexByName = {
+    Empire = 1,
+    Republic = 2,
+    Rebellion = 3,
+    Separatist = 4,
+    Mandalorian = 5,
+  }
 
+  -- tolerance for determining Z position match
+  local tolerance = 1
+
+  for _, obj in ipairs(getObjects()) do
+    local name = obj.getName()
+    if name:find("^Pad Discard ") then
+      -- extract factionName from "Pad Discard X"
+      local factionName = name:sub(13)
+
+      local idx = indexByName[factionName]
+      if idx then
+        factions[idx] = true
+      end
+    end
+  end
   return factions
 end -- end getFactions()
 
@@ -155,8 +166,8 @@ end -- end getForceOwner()
 function getPlayerAreas()
   -- checks art asset descriptions for current factions assigned to player areas
   -- GameSetup.ttslua scripting sets the description on the art assets
-  local bottomFaction = artAssetBottom.getDescription()
-  local topFaction = artAssetTop.getDescription()
+  local bottomFaction = artAssetBottom.getGMNotes()
+  local topFaction = artAssetTop.getGMNotes()
   return bottomFaction, topFaction
 end -- end getPlayerAreas()
 

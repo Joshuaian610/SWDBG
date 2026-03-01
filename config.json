@@ -91,7 +91,7 @@
     "ButtonDiscard.14443b",
     "ButtonDiscard.2db9de",
     "PadOuterRim.606e92",
-    "ExpansionOuterRimPilotDeck.08b1b4",
+    "CloneWarsOuterRimPilotDeck.08b1b4",
     "RepublicDeck.fb6a32",
     "OriginalNeutralUnits.33b71a",
     "SeparatistBases.ef04b2",
@@ -122,7 +122,7 @@
     "PadVictoryPileTop.53bed7",
     "ButtonPlayRandomBottom.3bc620",
     "ButtonPlayRandomTop.9c39bf",
-    "Custom_Tile.fd9756",
+    "PurchaseGamePlacard.fd9756",
     "RepublicGalaxyDeck.0503ab",
     "SeparatistGalaxyDeck.fe508a",
     "CloneWarsNeutralUnits.7d15af",
@@ -164,8 +164,8 @@
     "ButtonPlayMandalorianBottom.3679a5",
     "ButtonPlayMandalorianTop.465686",
     "EmpireTurn.c4c708",
-    "CounterBagBottom.bc5804",
-    "CounterBagBottom.72d549"
+    "CounterBagBottom.72d549",
+    "CounterBagTop.bc5804"
   ],
   "PlayArea": 0.5,
   "PlayerCounts": [

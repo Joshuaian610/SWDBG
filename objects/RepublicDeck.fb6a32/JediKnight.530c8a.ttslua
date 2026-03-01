@@ -1,28 +1,28 @@
-cost    = 0
-produce = 0
-force   = 0
-fight   = 0
-faction = "republic"
-attack_tooltip = 'Gain 1 Resource'
+-- cost    = 0
+-- produce = 0
+-- force   = 0
+-- fight   = 0
+-- faction = "republic"
+-- attack_tooltip = 'Gain 1 Resource'
 
-function onLoad()
-    padGalaxyDeck    = getObjectFromGUID("83b3ce")
-    padGalaxyDiscard = getObjectFromGUID("a03936")
-    padOuterRim     = getObjectFromGUID("606e92")
-    self.addContextMenuItem("Exile Card", exileCard)
-end
+-- function onLoad()
+--     padGalaxyDeck    = getObjectFromGUID("83b3ce")
+--     padGalaxyDiscard = getObjectFromGUID("a03936")
+--     padOuterRim     = getObjectFromGUID("606e92")
+--     -- self.addContextMenuItem("Exile Card", exileCard)
+-- end
 
-function exileCard(playerArea, position, object)
-    padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
-end
-
-
-function initAbilityButtonSecXML()
-    padGalaxyDeck.call('initAbilityButtonSecXML', {card=self, pri_tooltip="Force", sec_tooltip="Resource"})
-end -- end initAbilityButton()
+-- function exileCard(playerArea, position, object)
+--     padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
+-- end
 
 
-function initXMLForceButton()
-    padGalaxyDeck.call('initXMLForceButton', {card=self})
-end -- end initXMLForceButton()
+-- function initAbilityButtonSecXML()
+--     padGalaxyDeck.call('initAbilityButtonSecXML', {card=self, pri_tooltip="Force", sec_tooltip="Resource"})
+-- end -- end initAbilityButton()
+
+
+-- function initXMLForceButton()
+--     padGalaxyDeck.call('initXMLForceButton', {card=self})
+-- end -- end initXMLForceButton()
 

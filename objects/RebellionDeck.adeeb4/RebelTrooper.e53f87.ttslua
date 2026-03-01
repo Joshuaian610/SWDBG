@@ -1,17 +1,17 @@
-cost    = 0
-produce = 0
-force   = 0
-fight   = 2
-faction = "rebellion"
+-- cost    = 0
+-- produce = 0
+-- force   = 0
+-- fight   = 2
+-- faction = "rebellion"
 
-function onLoad()
-    padGalaxyDeck    = getObjectFromGUID("83b3ce")
-    padGalaxyDiscard = getObjectFromGUID("a03936")
-    padOuterRim     = getObjectFromGUID("606e92")
-    self.addContextMenuItem("Exile Card", exileCard)
-end
+-- function onLoad()
+--     padGalaxyDeck    = getObjectFromGUID("83b3ce")
+--     padGalaxyDiscard = getObjectFromGUID("a03936")
+--     padOuterRim     = getObjectFromGUID("606e92")
+--     -- self.addContextMenuItem("Exile Card", exileCard)
+-- end
 
-function exileCard(playerArea, position, object)
-    padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
-end
+-- function exileCard(playerArea, position, object)
+--     padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
+-- end
 

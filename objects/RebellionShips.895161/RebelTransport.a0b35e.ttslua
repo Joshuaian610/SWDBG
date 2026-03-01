@@ -9,11 +9,11 @@ MAX_HP         = 2
 
 
 function onload(saved_data)
-    self.addContextMenuItem("Exile Card", exileCard)
+    -- self.addContextMenuItem("Exile Card", exileCard)
     padGalaxyDeck    = getObjectFromGUID("83b3ce")
     padGalaxyDiscard = getObjectFromGUID("a03936")
     padOuterRim     = getObjectFromGUID("606e92")
-    play_zone          = zoneInPlay
+    play_zone          = Global.getVar('zoneInPlay')
     val                = 0
     if saved_data ~= 0 then
         local loaded_data = JSON.decode(saved_data)
@@ -43,19 +43,19 @@ function update_save()
 end -- end function update_save()
 
 
-function exileCard(playerArea, position, object)
-    padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
-end -- end exileCard()
+-- function exileCard(playerArea, position, object)
+--     padGalaxyDeck.call('exileCard', {p_area=playerArea, obj=object})
+-- end -- end exileCard()
 
 
-function initShipCounter()
-    padGalaxyDeck.call('initShipCounter', {ship_card=self, val=val})
-end -- end function createAll()
+-- function initShipCounter()
+--     padGalaxyDeck.call('initShipCounter', {ship_card=self, val=val})
+-- end -- end function createAll()
 
 
-function initAbilityButtonSecXML()
-    padGalaxyDeck.call('initAbilityButtonSecXML', {card=self})
-end -- end initAbilityButton()
+-- function initAbilityButtonSecXML()
+--     padGalaxyDeck.call('initAbilityButtonSecXML', {card=self})
+-- end -- end initAbilityButton()
 
 
 function add_subtract(_obj, _color, alt_click)

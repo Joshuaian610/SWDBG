@@ -1,0 +1,307 @@
+-- this require page will contain the XML data and functions to manage the XML card buttons
+
+function initCardXML(card)
+  local isBottom = card.hasTag("bottom_owner") and true or false
+  local bottomColor, topColor = getPlayerColors()
+  local buttonColor = isBottom and bottomColor or topColor
+  local cardGUID = card.getGUID()
+  local finalXML = {}
+  local finalImg = {}
+  local rotPri = card.hasTag('unit') and "0 0 180" or "0 0 90"
+  local posPri = card.hasTag('unit') and "63 175 -20" or "133 -75 -30"
+  local rotSec = card.hasTag('unit') and "0 0 180" or "0 0 90"
+  local posSec = card.hasTag('unit') and "-23 175 -30" or "133 75 -30"
+
+  local abilityButtonXML  = {
+    ["Blue"]              = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "ability_button_blue",
+        active            = "false",
+        height            = "40",
+        width             = "85",
+        position          = posPri,
+        rotation          = rotPri,
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            image         = "Ability Blue"
+          }
+        }
+      }
+    },
+    ["Gold"]              = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "ability_button_gold",
+        active            = "false",
+        height            = "40",
+        width             = "85",
+        position          = posSec,
+        rotation          = rotSec,
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            image         = "Ability Gold"
+          }
+        }
+      }
+    },
+    ["Orange"]            = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "ability_button_orange",
+        active            = "false",
+        height            = "40",
+        width             = "85",
+        position          = posPri,
+        rotation          = rotPri,
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            image         = "Ability Orange"
+          }
+        }
+      }
+    },
+    ["Purple"]            = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "ability_button_purple",
+        active            = "false",
+        height            = "40",
+        width             = "85",
+        position          = posPri,
+        rotation          = rotPri,
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            image         = "Ability Purple"
+          }
+        }
+      }
+    },
+    ["Red"]               = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "ability_button_red",
+        active            = "false",
+        height            = "40",
+        width             = "85",
+        position          = posPri,
+        rotation          = rotPri,
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            image         = "Ability Red"
+          }
+        }
+      }
+    }
+  }
+
+  local forceButtonXML    = {
+    ["Blue"] = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "force_button_blue",
+        active            = "false",
+        height            = "40",
+        width             = "40",
+        position          = "-87 175 -30",
+        rotation          = "0 0 180",
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "addUnitForce(" .. cardGUID .. ")",
+            image         = "Force Blue"
+          }
+        }
+      }
+    },
+    ["Orange"] = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "force_button_orange",
+        active            = "false",
+        height            = "40",
+        width             = "40",
+        position          = "-87 175 -30",
+        rotation          = "0 0 180",
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "addUnitForce(" .. cardGUID .. ")",
+            image         = "Force Orange"
+          }
+        }
+      }
+    },
+    ["Purple"] = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "force_button_purple",
+        active            = "false",
+        height            = "40",
+        width             = "40",
+        position          = "-87 175 -30",
+        rotation          = "0 0 180",
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "addUnitForce(" .. cardGUID .. ")",
+            image         = "Force Purple"
+          }
+        }
+      }
+    },
+    ["Red"] = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "force_button_red",
+        active            = "false",
+        height            = "40",
+        width             = "40",
+        position          = "-87 175 -30",
+        rotation          = "0 0 180",
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "addUnitForce(" .. cardGUID .. ")",
+            image         = "Force Red"
+          }
+        }
+      }
+    },
+
+  }
+
+  local abilityButtonImg = {
+    ["Blue"]             = {
+      name               = "Ability Blue",
+      url                = "https://steamusercontent-a.akamaihd.net/ugc/2478760492098020635/CBAC1A3BE3DC97CD70BB5378757A484BFAE07F15/"
+    },
+    ["Gold"]             = {
+      name               = "Ability Gold",
+      url                = "https://steamusercontent-a.akamaihd.net/ugc/2478760492098021684/4F63BB5AAB161DB6C1ED62C896AF4050EA7747A7/"
+    },
+    ["Orange"]           = {
+      name               = "Ability Orange",
+      url                = "https://steamusercontent-a.akamaihd.net/ugc/2478760492098250844/EAF0FBDF62C2F1D8664627B67A7236996B44655A/"
+    },
+    ["Purple"]           = {
+      name               = "Ability Purple",
+      url                = "https://steamusercontent-a.akamaihd.net/ugc/2478760492098022943/EC866655AA1787D09DF2F98006899409E69D0CC5/"
+    },
+    ["Red"]              = {
+      name               = "Ability Red",
+      url                = "https://steamusercontent-a.akamaihd.net/ugc/2478760492098249644/A4BAFD0365F26BE3671477F23BDB3F1F1FE6F467/"
+    },
+  }
+
+  local forceButtonImg   = {
+    ["Blue"]             = {
+      name = "Force Blue",
+      url  = "https://steamusercontent-a.akamaihd.net/ugc/2478760492086174365/A65556DB7C107631AE894811FD3A315B927CBE24/"
+    },
+    ["Orange"]           = {
+      name = "Force Orange",
+      url  = "https://steamusercontent-a.akamaihd.net/ugc/2478760492098252100/A3FA49EDF4C5F7B8562A79FE9CDDD4D4ED2ECD31/"
+    },
+    ["Purple"]           = {
+      name = "Force Purple",
+      url  = "https://steamusercontent-a.akamaihd.net/ugc/2478760492086175592/5E499E4478784CF279356E6F018E52B2283B9E6A/"
+    },
+    ["Red"]              = {
+      name = "Force Red",
+      url  = "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
+    },
+  }
+
+  if buttonColor then
+    -- Insert ability buttons
+    if card.hasTag("ability_button") then
+      table.insert(finalXML, abilityButtonXML[buttonColor])
+      table.insert(finalImg, abilityButtonImg[buttonColor])
+    end
+
+    if card.hasTag("ability_button_sec") then
+      table.insert(finalXML, abilityButtonXML["Gold"])
+      table.insert(finalImg, abilityButtonImg["Gold"])
+    end
+
+    -- Insert force buttons
+    if card.hasTag("add_force_button") then
+      table.insert(finalXML, forceButtonXML[buttonColor])
+      table.insert(finalImg, forceButtonImg[buttonColor])
+    end
+
+    log(finalImg)
+    log(finalXML)
+
+    -- Apply XML & assets
+    if #finalXML > 0 and #finalImg > 0 then
+      card.UI.setCustomAssets(finalImg)
+      card.UI.setXmlTable(finalXML)
+
+      -- Show all panels to trigger Grow animation
+      Wait.time(function()
+        for _, panel in ipairs(finalXML) do
+          card.UI.show(panel.attributes.id)
+        end
+      end, 0.5)
+    end
+  end
+end -- end initCardXML()
+
+
