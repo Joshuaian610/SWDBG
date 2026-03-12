@@ -53,7 +53,7 @@
   "Name": "Deck",
   "Nickname": "Mandalorian Ships",
   "SidewaysCard": true,
-  "Snap": false,
+  "Snap": true,
   "Sticky": true,
   "Tags": [
     "mandalorian",

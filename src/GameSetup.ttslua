@@ -738,7 +738,7 @@ function setupGame(button, _, _)
         tintObjTop[i].setColorTint(topColor)
       end
     end
-  end) -- was previously 2 frames, revert if issue comes up
+  end, 2) -- was previously 2 frames, revert if issue comes up
 
   -- place selected galaxy deck, remove other
   local deckPlacementGalaxy = nil
@@ -906,12 +906,6 @@ function setupGame(button, _, _)
     dealCard("top", 5)
   end
   
-  log(allColors)
-  log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
-  log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
-  log("counterBoardResourceBottom: " .. counterResourceBoardBottom.getName())
-  log("counterBoardResourceTop: " .. counterResourceBoardTop.getName())
-
   -- determine first player
   -- enable turns, set turn to first player
   local randomFirstPlayer = math.random(2)
@@ -926,7 +920,7 @@ function setupGame(button, _, _)
   local requireRandom = true
   if (bottomFaction == "Empire" and topFaction == "Rebellion") or
   (bottomFaction == "Separatist" and topFaction == "Republic") then
-    log("static setup 1 running")
+
     requireRandom = false
     
     -- bottom first player set turn
@@ -942,33 +936,21 @@ function setupGame(button, _, _)
     trackerColor = bottomColor
     counterResourceBoardBottom.setInvisibleTo({})
     counterResourceBoardTop.setInvisibleTo(allColors)
-
-    log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
-    log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
-
-    buttonEndTurnBottom.setInvisibleTo({})
-    buttonEndTurnTop.setInvisibleTo(allColors)
+    
+    getObjectbyName("Button End Turn Bottom").setInvisibleTo({})
+    getObjectbyName("Button End Turn Top").setInvisibleTo(allColors)
 
     -- top second player set force track
     trackerForce.setColorTint(topColor)
     trackerForce.highlightOn(topColor)
     forceTrack.setColorTint(topColor)
 
-    log("bottomColor: " .. bottomColor)
-    log("topColor: " .. topColor)
-    log("bottomFaction: " .. bottomFaction)
-    log("topFaction: " .. topFaction)
-    log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
-    log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
-
-    broadcastToAll("The Force is with " .. topFaction .. ".", "White")
-    broadcastToAll(bottomFaction .. " gets first turn.", "White")
-    -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
-    -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+    broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+    broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
 
   elseif (bottomFaction == "Rebellion" and topFaction == "Empire") or
   (bottomFaction == "Republic" and topFaction == "Separatist") then
-    log("static setup 2 running")
+    
     requireRandom = false
 
     -- bottom second player set force track
@@ -996,26 +978,12 @@ function setupGame(button, _, _)
     counterResourceBoardTop.setInvisibleTo({})
     counterResourceBoardBottom.setInvisibleTo(allColors)
 
-    log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
-    log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
+    getObjectbyName("Button End Turn Top").setInvisibleTo({})
+    getObjectbyName("Button End Turn Bottom").setInvisibleTo(allColors)
 
-    buttonEndTurnTop.setInvisibleTo({})
-    buttonEndTurnBottom.setInvisibleTo(allColors)
-    
-    log("bottomColor: " .. bottomColor)
-    log("topColor: " .. topColor)
-    log("bottomFaction: " .. bottomFaction)
-    log("topFaction: " .. topFaction)
-    log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
-    log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
-  
-    broadcastToAll("The Force is with " .. topFaction .. ".", "White")
-    broadcastToAll(bottomFaction .. " gets first turn.", "White")
-    -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
-    -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+    broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+    broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
   end
-
-  log("requireRandom: " .. tostring(requireRandom))
 
   if requireRandom then
     if randomFirstPlayer == 1 then
@@ -1039,29 +1007,16 @@ function setupGame(button, _, _)
       counterResourceBoardBottom.setInvisibleTo({})
       counterResourceBoardTop.setInvisibleTo(allColors)
 
-      log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
-      log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
-
-      buttonEndTurnBottom.setInvisibleTo({})
-      buttonEndTurnTop.setInvisibleTo(allColors)
+      getObjectbyName("Button End Turn Bottom").setInvisibleTo({})
+      getObjectbyName("Button End Turn Top").setInvisibleTo(allColors)
 
       -- top second player set force track      
       trackerForce.setColorTint(topColor)
       trackerForce.highlightOn(topColor)
       forceTrack.setColorTint(topColor)
-      log("still with us")
-
-      log("bottomColor: " .. bottomColor)
-      log("topColor: " .. topColor)
-      log("bottomFaction: " .. bottomFaction)
-      log("topFaction: " .. topFaction)
-      log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
-      log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
-
-      broadcastToAll("The Force is with " .. topFaction .. ".", "White")
-      broadcastToAll(bottomFaction .. " gets first turn.", "White")
-      -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
-      -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+      
+      broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+      broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
 
     else
       -- bottom second player set force track
@@ -1090,27 +1045,12 @@ function setupGame(button, _, _)
       trackerColor = topColor
       counterResourceBoardTop.setInvisibleTo({})
       counterResourceBoardBottom.setInvisibleTo(allColors)
-
-      log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
-      log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
       
-      buttonEndTurnTop.setInvisibleTo({})
-      buttonEndTurnBottom.setInvisibleTo(allColors)
-      log("still with us")
-
-      log("bottomColor: " .. bottomColor)
-      log("topColor: " .. topColor)
-      log("bottomFaction: " .. bottomFaction)
-      log("topFaction: " .. topFaction)
-      log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
-      log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
-
-      local broadcastString1 = "The Force is with " .. topFaction .. "."
-      local broadcastString2 = bottomFaction .. " gets first turn."
-      broadcastToAll(broadcastString1, "White")
-      broadcastToAll(broadcastString2, "White")
-      -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
-      -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+      getObjectbyName("Button End Turn Top").setInvisibleTo({})
+      getObjectbyName("Button End Turn Bottom").setInvisibleTo(allColors)
+      
+      broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+      broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
     end
   end
 

@@ -256,6 +256,8 @@ function dealCard(playerArea, count)
 
   -- if original deal deck count was insufficient, refill deck & continue dealing
   if deckOrCardFound == false or countDeck < count then
+    log("countDeck: " .. countDeck)
+    log("count: " .. count)
     Wait.time(function()
 
       for k, zoneObj in pairs(zoneGalaxyDiscard.getObjects()) do

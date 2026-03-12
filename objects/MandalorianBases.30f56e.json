@@ -63,7 +63,7 @@
   "Name": "Deck",
   "Nickname": "Mandalorian Bases",
   "SidewaysCard": false,
-  "Snap": false,
+  "Snap": true,
   "Sticky": true,
   "Tags": [
     "mandalorian",

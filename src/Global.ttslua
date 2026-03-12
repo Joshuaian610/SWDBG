@@ -21,7 +21,7 @@ function onLoad()
   Turns.enable = false
 
   interactable = false
-  invis = false
+  invis = true
 
   -- set non interactables, run onSpawn stuff
   if interactable then
