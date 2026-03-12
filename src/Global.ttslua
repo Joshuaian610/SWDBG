@@ -51,12 +51,9 @@ function onLoad()
   nextCardToHandBottom = false
   nextCardTarkin = false
   nextCardLeia = false
-  nextCardATAT = false
-  nextCardFalcon = false
   nextCardContact = false
-  nextCardATTE = false
-  nextCardAsajj = false
   nextCardNute = false
+  
   metConditionDroideka = false
   metConditionWat = false
   metConditionHondo = false

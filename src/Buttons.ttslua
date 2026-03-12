@@ -57,7 +57,7 @@ function initBHSaboButtons(card, tooltip, factionName)
   if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then
     card.createButton({
       click_function = "bhAction", -- REVISIT
-      function_owner = padGalaxyDiscard,
+      function_owner = self,
       label          = '',
       position       = { 0, 0.5, 1.23 },
       height         = 575,
@@ -250,10 +250,20 @@ function removeAbilityButtons(obj)
   obj.UI.hide('ability_button_purple')
   obj.UI.hide('ability_button_orange')
   obj.UI.hide('ability_button_red')
+  obj.UI.hide('ability_button_green')
   obj.UI.hide('ability_button_gold')
   obj.UI.hide('ability_button_white')
   obj.UI.hide('ability_button_cancel')
 end -- end removeAbilityButtons()
+
+
+function removeForceButtons(obj)
+  obj.UI.hide('force_button_blue')
+  obj.UI.hide('force_button_purple')
+  obj.UI.hide('force_button_orange')
+  obj.UI.hide('force_button_red')  
+  obj.UI.hide('force_button_green')
+end -- end removeForceButtons()
 
 
 function removeXMLForceButton(obj)
@@ -1872,9 +1882,8 @@ function bhAction(button, _, _)
   local bottomColor, topColor = getPlayerColors()
   local attackFaction = bottomFaction ~= targetFaction and bottomFaction or topFaction
   local isBottom = attackFaction == bottomFaction
-  local buttonForce = isBottom and buttonForceBottom or buttonForceTop
+  local buttonForce = isBottom and getObjectbyName("Button Force Bottom") or getObjectbyName("Button Force Top")
   local attackFactionColor = isBottom and bottomColor or topColor
-  local capitalizedAttackFaction = attackFaction:gsub("^%l", string.upper)
   local area = isBottom and "bottom" or "top"
   local attackAction = nil
   local zoneButton = nil
@@ -1895,74 +1904,78 @@ function bhAction(button, _, _)
     end
   end
   
-  if attackFaction == "empire" or attackFaction == "separatist" or attackFaction == "mandalorian" then
+  if attackFaction == "Empire" or attackFaction == "Separatist" or attackFaction == "Mandalorian" then
     attackAction = "Bounty Hunted"
   
-  elseif attackFaction == "republic" or attackFaction == "rebellion" then
+  elseif attackFaction == "Republic" or attackFaction == "Rebellion" then
     attackAction = "Sabotaged"
   end
 
-  local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
+  local prefix = "[" .. Color.fromString(attackFactionColor):toHex() .. "]*[-]: "
 
   -- EMPIRE TARGETS
   if cardName == "Tie Fighter" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Tie Fighter[/b]: gained 1 Resource.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Tie Fighter[/b]: gained 1 Resource.", "White")
     addResource(area, 1)
   
   elseif cardName == "Admiral Piett" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Admiral Piett[/b]: gained 1 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Admiral Piett[/b]: gained 1 Force.", "White")
     moveForceTrack(buttonForce, 1)
   
   elseif cardName == "Scout Trooper" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Scout Trooper[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Scout Trooper[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "Tie Bomber" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Tie Bomber[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Tie Bomber[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "Death Trooper" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Death Trooper[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Death Trooper[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Tie Interceptor" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Tie Interceptor[/b]: gained 3 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Tie Interceptor[/b]: gained 3 Resources.", "White")
     addResource(area, 3)
   
   elseif cardName == "AT-ST" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]AT-ST[/b]: may manually exile up to 2 cards from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]AT-ST[/b]: may manually exile up to 2 cards from hand or discard.", "White")
   
   elseif cardName == "General Veers" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]General Veers[/b]: gained 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]General Veers[/b]: gained 3 Force.", "White")
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "Landing Craft" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Landing Craft[/b]: gained 4 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Landing Craft[/b]: gained 4 Resources.", "White")
     addResource(area, 4)
   
   elseif cardName == "Moff Jerjerrod" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Moff Jerjerrod[/b]: gained 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Moff Jerjerrod[/b]: gained 3 Force.", "White")
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "Boba Fett" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Boba Fett[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Boba Fett[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Director Krennic" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Director Krennic[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Director Krennic[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "AT-AT" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]AT-AT[/b]: may purchase " .. capitalized_attack_faction ..  " card for free.", "White")
-    nextCardATAT = true
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]AT-AT[/b]: may purchase " .. capitalized_attack_faction ..  " card for free.", "White")
+    Wait.time(function()
+      
+      broadcastToAll("Hint: Row Purchase buttons may be right clicked to Purchase for free! ", "White")
+
+    end, 2)
   
   elseif cardName == "Grand Moff Tarkin" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Grand Moff Tarkin[/b]: gained 3 Resources, 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Grand Moff Tarkin[/b]: gained 3 Resources, 3 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "Darth Vader" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Darth Vader[/b]: gained 4 Resources, 4 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Darth Vader[/b]: gained 4 Resources, 4 Force.", "White")
     addResource(area, 4)
     moveForceTrack(buttonForce, 4)
   end
@@ -1970,67 +1983,71 @@ function bhAction(button, _, _)
 
   -- REBEL TARGETS
   if cardName == "Y-Wing" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Y-Wing[/b]: gained 1 Resource.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Y-Wing[/b]: gained 1 Resource.", "White")
     addResource(area, 1)
   
   elseif cardName == "Baze Malbus" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Baze Malbus[/b]: gained 1 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Baze Malbus[/b]: gained 1 Force.", "White")
     moveForceTrack(buttonForce, 1)
   
   elseif cardName == "Duros Spy" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Duros Spy[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Duros Spy[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "Snowspeeder" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Snowspeeder[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Snowspeeder[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "Chirrut Imwe" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Chirrut Imwe[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Chirrut Imwe[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Rebel Commando" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Rebel Commando[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Rebel Commando[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "X-Wing" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]X-Wing[/b]: gained 3 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]X-Wing[/b]: gained 3 Resources.", "White")
     addResource(area, 3)
   
   elseif cardName == "Chewbacca" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Chewbacca[/b]: gained 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Chewbacca[/b]: gained 3 Force.", "White")
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "Jyn Erso" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Jyn Erso[/b]: gained 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Jyn Erso[/b]: gained 3 Force.", "White")
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "U-Wing" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]U-Wing[/b]: gained 4 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]U-Wing[/b]: gained 4 Resources.", "White")
     addResource(area, 4)
   
   elseif cardName == "B-Wing" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]B-Wing[/b]: may manually exile up to 2 cards from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]B-Wing[/b]: may manually exile up to 2 cards from hand or discard.", "White")
   
   elseif cardName == "Cassian Andor" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Cassian Andor[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Cassian Andor[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Han Solo" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Han Solo[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Han Solo[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Princess Leia" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Princess Leia[/b]: gained 3 Resources, 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Princess Leia[/b]: gained 3 Resources, 3 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "Millenium Falcon" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Millenium Falcon[/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] card for free", "White")
-    nextCardFalcon = true
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Millenium Falcon[/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] card for free", "White")
+    Wait.time(function()
+      
+      broadcastToAll("Hint: Row Purchase buttons may be right clicked to Purchase for free! ", "White")
+
+    end, 2)
   
   elseif cardName == "Luke Skywalker" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Luke Skywalker[/b]: gained 4 Resources, 4 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Luke Skywalker[/b]: gained 4 Resources, 4 Force.", "White")
     addResource(area, 4)
     moveForceTrack(buttonForce, 4)
   end
@@ -2038,67 +2055,71 @@ function bhAction(button, _, _)
 
   -- REPUBLIC TARGETS
   if cardName == "V-19 Torrent" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]V-19 Torrent[/b]: gained 1 Resource.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]V-19 Torrent[/b]: gained 1 Resource.", "White")
     addResource(area, 1)
   
   elseif cardName == "AT-RT" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]AT-RT[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]AT-RT[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "BARC Trooper" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]BARC Trooper[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]BARC Trooper[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "ARC Trooper" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]ARC Trooper[/b]: gained 3 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]ARC Trooper[/b]: gained 3 Resources.", "White")
     addResource(area, 3)
   
   elseif cardName == "Aayla Secura" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Aayla Secura[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Aayla Secura[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Captain Rex" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Captain Rex[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Captain Rex[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Delta-7B" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Delta-7B[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Delta-7B[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Ahsoka Tano" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Ahsoka Tano[/b]: gained 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Ahsoka Tano[/b]: gained 3 Force.", "White")
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "ARC-170" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]ARC-170[/b]: may manually exile up to 2 cards from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]ARC-170[/b]: may manually exile up to 2 cards from hand or discard.", "White")
   
   elseif cardName == "Clone Commander Cody" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Clone Commander Cody[/b]: gained 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Clone Commander Cody[/b]: gained 3 Force.", "White")
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "LAAT Gunship" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]LAAT Gunship[/b]: gained 4 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]LAAT Gunship[/b]: gained 4 Resources.", "White")
     addResource(area, 4)
   
   elseif cardName == "Anakin Skywalker" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Anakin Skywalker[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Anakin Skywalker[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Padmé Amidala" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Padmé Amidala[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Padmé Amidala[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "AT-TE" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]AT-TE[/b]: may right click to purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] card for free", "White")
-    nextCardATTE = true
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]AT-TE[/b]: may right click to purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] card for free", "White")
+    Wait.time(function()
+      
+      broadcastToAll("Hint: Row Purchase buttons may be right clicked to Purchase for free! ", "White")
+
+    end, 2)
   
   elseif cardName == "Obi-Wan Kenobi" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Obi-Wan Kenobi[/b]: gained 3 Resources, 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Obi-Wan Kenobi[/b]: gained 3 Resources, 3 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "Mace Windu" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Mace Windu[/b]: gained 4 Resources, 4 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Mace Windu[/b]: gained 4 Resources, 4 Force.", "White")
     addResource(area, 4)
     moveForceTrack(buttonForce, 4)
   end
@@ -2106,58 +2127,139 @@ function bhAction(button, _, _)
 
   -- SEPARATIST TARGETS
   if cardName == "B2 Battle Droid" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]B2 Battle Droid[/b]: gained 1 Resource.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]B2 Battle Droid[/b]: gained 1 Resource.", "White")
     addResource(area, 1)
   
   elseif cardName == "Nute Gunray" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Nute Gunray[/b]: gained 1 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Nute Gunray[/b]: gained 1 Force.", "White")
     moveForceTrack(buttonForce, 1)
   
   elseif cardName == "STAP" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]STAP[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]STAP[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "Vulture Droid" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Vulture Droid[/b]: may manually exile a card from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Vulture Droid[/b]: may manually exile a card from hand or discard.", "White")
   
   elseif cardName == "Droideka" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Droideka[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Droideka[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Tri-Fighter" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Tri-Fighter[/b]: gained 3 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Tri-Fighter[/b]: gained 3 Resources.", "White")
     addResource(area, 3)
   
   elseif cardName == "Wat Tambor" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Wat Tambor[/b]: gained 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Wat Tambor[/b]: gained 2 Force.", "White")
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Magnaguard" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Magnaguard[/b]: gained 3 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Magnaguard[/b]: gained 3 Force.", "White")
     moveForceTrack(buttonForce, 3)
   
   elseif cardName == "MTT" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]MTT[/b]: gained 4 Resources.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]MTT[/b]: gained 4 Resources.", "White")
     addResource(area, 4)
   
   elseif cardName == "AAT" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]AAT[/b]: may manually exile up to 2 cards from hand or discard.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]AAT[/b]: may manually exile up to 2 cards from hand or discard.", "White")
   
   elseif cardName == "Admiral Trench" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Admiral Trench[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Admiral Trench[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "General Grievous" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]General Grievous[/b]: gained 3 Resources, 2 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]General Grievous[/b]: gained 3 Resources, 2 Force.", "White")
     addResource(area, 3)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Asajj Ventress" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Asajj Ventress[/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-]card for free", "White")
-    nextCardAsajj = true
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Asajj Ventress[/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-]card for free", "White")
+    Wait.time(function()
+      
+      broadcastToAll("Hint: Row Purchase buttons may be right clicked to Purchase for free! ", "White")
+
+    end, 2)
   
   elseif cardName == "Count Dooku" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Count Dooku[/b]: gained 4 Resources, 4 Force.", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Count Dooku[/b]: gained 4 Resources, 4 Force.", "White")
+    addResource(area, 4)
+    moveForceTrack(buttonForce, 4)
+  end
+
+
+  -- MANDALORIAN TARGETS
+  if cardName == "Foundling" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Foundling[/b]: gained 1 Resource.", "White")
+    addResource(area, 1)
+
+  elseif cardName == "Paz Vizsla" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Paz Vizsla[/b]: gained 1 Force.", "White")
+    moveForceTrack(buttonForce, 1)
+
+  elseif cardName == "Clan Kryze Commando" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Clan Kryze Commando[/b]: may manually exile a card from hand or discard.", "White")
+
+  elseif cardName == "Balutar Swoop Rider" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Balutar Swoop Rider[/b]: may manually exile a card from hand or discard.", "White")
+
+  elseif cardName == "Axe Woves" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Axe Woves[/b]: gained 2 Force.", "White")
+    moveForceTrack(buttonForce, 2)
+
+  elseif cardName == "Mandalorian Hunter" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Mandalorian Hunter[/b]: gained 2 Force.", "White")
+    moveForceTrack(buttonForce, 2)
+
+  elseif cardName == "Survivor Langskib" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Survivor Langskib[/b]: gained 3 Resources.", "White")
+    addResource(area, 3)
+
+  elseif cardName == "Koska Reeves" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Koska Reeves[/b]: gained 3 Force.", "White")
+    moveForceTrack(buttonForce, 3)
+
+  elseif cardName == "Mandalorian Hijacker" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Mandalorian Hijacker[/b]: gained 3 Force.", "White")
+    moveForceTrack(buttonForce, 3)
+
+  elseif cardName == "Protectorate Fighter" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Protectorate Fighter[/b]: gained 4 Resources.", "White")
+    addResource(area, 4)
+
+  elseif cardName == "The Mandalorian" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]The Mandalorian[/b]: gained 3 Resources, 2 Force.", "White")
+    addResource(area, 3)
+    moveForceTrack(buttonForce, 2)    
+
+  elseif cardName == "Grogu" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Grogu[/b]: gained 3 Resources, 2 Force.", "White")
+    addResource(area, 3)
+    moveForceTrack(buttonForce, 2)
+
+  elseif cardName == "Gauntlet Dropship" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Gauntlet Dropship[/b]: may manually exile up to 2 cards from hand or discard.", "White")
+
+  elseif cardName == "The Armorer" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]The Armorer[/b]: gained 3 Resources, 3 Force.", "White")
+    addResource(area, 3)
+    moveForceTrack(buttonForce, 3)
+
+  elseif cardName == "Din's Starfighter" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Din's Starfighter[/b]: gained 3 Resources, 3 Force.", "White")
+    addResource(area, 3)
+    moveForceTrack(buttonForce, 3)
+
+  elseif cardName == "Razorcrest" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Razorcrest/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-]card for free", "White")
+    Wait.time(function()
+      
+      broadcastToAll("Hint: Row Purchase buttons may be right clicked to Purchase for free! ", "White")
+
+    end, 2)
+
+  elseif cardName == "Bo-Katan" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Bo-Katan[/b]: gained 4 Resources, 4 Force.", "White")
     addResource(area, 4)
     moveForceTrack(buttonForce, 4)
   end
@@ -2165,111 +2267,111 @@ function bhAction(button, _, _)
 
   -- NEUTRAL TARGETS IF ORD MANTELL OR ASSASSIN DROID IN PLAY
   if cardName == "Jawa Scavenger" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Jawa Scavenger: gained 1 Resource.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Jawa Scavenger: gained 1 Resource.", color)
     addResource(area, 1)
   
   elseif cardName == "Z-95 Headhunter" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Z-95 Headhunter: gained 1 Resource.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Z-95 Headhunter: gained 1 Resource.", color)
     addResource(area, 1)
   
   elseif cardName == "Kel-Dor Mystic" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Kel Dor Mystic: gained 2 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Kel Dor Mystic: gained 2 Resources.", color)
     addResource(area, 2)
   
   elseif cardName == "Rodian Gunslinger" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Rodian Gunslinger: gained 2 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Rodian Gunslinger: gained 2 Resources.", color)
     addResource(area, 2)
   
   elseif cardName == "Bossk" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Bossk: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Bossk: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Fang Fighter" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Fang Fighter: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Fang Fighter: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Lobot"  then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Lobot: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Lobot: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Twi'Lek Smuggler" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Twi'lek Smuggler: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Twi'lek Smuggler: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Dengar" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Dengar: gained 4 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Dengar: gained 4 Resources.", color)
     addResource(area, 4)
   
   elseif cardName == "HWK 290" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]HWK 290: gained 4 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]HWK 290: gained 4 Resources.", color)
     addResource(area, 4)
   
   elseif cardName == "Quarren Mercenary" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Quarren Mercenary: gained 4 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Quarren Mercenary: gained 4 Resources.", color)
     addResource(area, 4)
   
   elseif cardName == "IG-88" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]IG-88: gained 5 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]IG-88: gained 5 Resources.", color)
     addResource(area, 5)
   
   elseif cardName == "Lando Calrissian" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Lando Calrissian: gained 6 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Lando Calrissian: gained 6 Resources.", color)
     addResource(area, 6)
   
   elseif cardName == "Jabba's Sail Barge" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Jabba's Sail Barge: gained 7 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Jabba's Sail Barge: gained 7 Resources.", color)
     addResource(area, 7)
   
   elseif cardName == "Jabba the Hutt" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Jabba the Hutt: gained 8 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Jabba the Hutt: gained 8 Resources.", color)
     addResource(area, 8)
   
   elseif cardName == "Protocol Droid" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Protocol Droid: gained 1 Resource.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Protocol Droid: gained 1 Resource.", color)
     addResource(area, 1)
   
   elseif cardName == "Weequay Pirate" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Weequay Pirate: gained 1 Resource.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Weequay Pirate: gained 1 Resource.", color)
     addResource(area, 1)
   
   elseif cardName == "Underworld Contact" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Underworld Contact: gained 2 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Underworld Contact: gained 2 Resources.", color)
     addResource(area, 2)
   
   elseif cardName == "Hutt Fighter" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Hutt Fighter: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Hutt Fighter: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Super Commando" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Super Commando: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Super Commando: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Zam Wesell" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Zem Wesell: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Zem Wesell: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Latts Razzi"  then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Latts Razzi: gained 3 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Latts Razzi: gained 3 Resources.", color)
     addResource(area, 3)
   
   elseif cardName == "Assassin Droid" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Assassin Droid: gained 4 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Assassin Droid: gained 4 Resources.", color)
     addResource(area, 4)
   
   elseif cardName == "Gauntlet Starfighter" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Gauntlet Starfighter: gained 4 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Gauntlet Starfighter: gained 4 Resources.", color)
     addResource(area, 4)
   
   elseif cardName == "Jango Fett" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Jango Fett: gained 5 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Jango Fett: gained 5 Resources.", color)
     addResource(area, 5)
   
   elseif cardName == "Cad Bane" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Cad Bane: gained 6 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Cad Bane: gained 6 Resources.", color)
     addResource(area, 6)
   
   elseif cardName == "Fett's Firespray" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Fett's Firespray: gained 7 Resources.", color)
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Fett's Firespray: gained 7 Resources.", color)
     addResource(area, 7)
   
   elseif cardName == "Hondo Onaka" then
@@ -2292,7 +2394,7 @@ function bhAction(button, _, _)
           local nuteColor = bottomColor == "Blue" or bottomColor == "Purple" and bottomColor or topColor
           handleNuteGunray({bagExile, color=nuteColor})
         else
-          padGalaxyDeck.call('draw_galaxy_card')
+          drawGalaxyCard()
         end
 
       end, 1)
