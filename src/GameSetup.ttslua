@@ -755,14 +755,14 @@ function setupGame(button, _, _)
     deckRemovalGalaxy = getObjectbyName("Clone Wars Neutral Units")
     deckRemovalShips = getObjectbyName("Clone Wars Neutral Ships")
     deckPlacementOuterRim = getObjectbyName("Original Outer Rim Pilot Deck")
-    deckRemovalOuterRim = getObjectbyName("Expansion Outer Rim Pilot Deck")
+    deckRemovalOuterRim = getObjectbyName("Clone Wars Outer Rim Pilot Deck")
 
   elseif getObjectbyName("Button Galaxy Deck Expansion").getGMNotes() == "enabled" then
     deckPlacementGalaxy = getObjectbyName("Clone Wars Neutral Units")
     deckPlacementShips = getObjectbyName("Original Neutral Ships")
     deckRemovalGalaxy = getObjectbyName("Original Neutral Units")
     deckRemovalShips = getObjectbyName("Original Neutral Ships")
-    deckPlacementOuterRim = getObjectbyName("Expansion Outer Rim Pilot Deck")
+    deckPlacementOuterRim = getObjectbyName("Clone Wars Outer Rim Pilot Deck")
     deckRemovalOuterRim = getObjectbyName("Original Outer Rim Pilot Deck")
 
   elseif getObjectbyName("Button Galaxy Deck Random").getGMNotes() == "enabled" then
@@ -1049,8 +1049,8 @@ function setupGame(button, _, _)
       getObjectbyName("Button End Turn Top").setInvisibleTo({})
       getObjectbyName("Button End Turn Bottom").setInvisibleTo(allColors)
       
-      broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
-      broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+      broadcastToAll("The force is with [" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-].", "White")
+      broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] gets first turn.", "White")
     end
   end
 
