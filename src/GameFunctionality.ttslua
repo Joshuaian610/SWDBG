@@ -904,13 +904,8 @@ function moveForceTrack(button, count)
     nil
   }
   local isBottom = button == getObjectbyName("Button Force Bottom") and true or false
-  log("moveForceTrack() isBottom: " .. tostring(isBottom))
   local trackerForce = getObjectbyName("Force Tracker")
   local forceTrack = getObjectbyName("Force Track")
-
-  log("moveForceTrack() found : " .. trackerForce.getName())
-  log("moveForceTrack() found : " .. forceTrack.getName())
-
   local posStart = trackerForce.getPosition()
   local bottomColor, topColor = getPlayerColors()
 
@@ -967,15 +962,8 @@ function moveForceTrack(button, count)
   end
 
   local bottomFaction, topFaction = getPlayerAreas()
-
-  log("moveForceTrack() bottomFaction: " .. bottomFaction)
-  log("moveForceTrack() topFaction: " .. topFaction)
-  
   local faction = isBottom and bottomFaction or topFaction
   local playerColor = isBottom and bottomColor or topColor
-
-  log("moveForceTrack() faction: " .. faction)
-  log("moveForceTrack() playerColor: " .. playerColor)
 
   for i = 1, count do
     if button == getObjectbyName("Button Force Bottom") then
@@ -1052,9 +1040,6 @@ function moveForceTrack(button, count)
         return
       end
     end
-
-    log("posStart:")
-    log(posStart)
 
     trackerForce.setPosition(posStart)
   end

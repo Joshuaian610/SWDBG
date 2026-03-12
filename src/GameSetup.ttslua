@@ -690,9 +690,9 @@ function setupGame(button, _, _)
   end
 
   -- deploy republic reveal pad stuff
-  if bottomFaction == "republic" then
+  if bottomFaction == "Republic" then
     setupRevealUI("Bottom")
-  elseif topFaction == "republic" then
+  elseif topFaction == "Republic" then
     setupRevealUI("Top")
   end
   hideRevealUI()
@@ -852,7 +852,7 @@ function setupGame(button, _, _)
   -- separatist
   if not factions[4] then
     for _, object in ipairs(getObjects()) do
-      if object.hasTag('separatist') and not checkIfInGalaxyDeckSlot(object) then
+      if object.hasTag('Separatist') and not checkIfInGalaxyDeckSlot(object) then
         artAssetTop.putObject(object)
       end
     end
@@ -860,10 +860,10 @@ function setupGame(button, _, _)
     getObjectbyName("Separatist Deck").shuffle()
   end
 
-  -- republic
+  -- Republic
   if not factions[2] then
     for _, object in ipairs(getObjects()) do
-      if object.hasTag('republic') and not checkIfInGalaxyDeckSlot(object) then
+      if object.hasTag('Republic') and not checkIfInGalaxyDeckSlot(object) then
         artAssetTop.putObject(object)
       end
     end
@@ -905,6 +905,12 @@ function setupGame(button, _, _)
   if not isAI then
     dealCard("top", 5)
   end
+  
+  log(allColors)
+  log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
+  log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
+  log("counterBoardResourceBottom: " .. counterResourceBoardBottom.getName())
+  log("counterBoardResourceTop: " .. counterResourceBoardTop.getName())
 
   -- determine first player
   -- enable turns, set turn to first player
@@ -914,37 +920,55 @@ function setupGame(button, _, _)
   local rotTracker = nil
   local posTracker = nil
   local trackerColor = nil
+  local turnTracker = getTurnTracker()
 
   -- check if start randomization required
   local requireRandom = true
-  if (bottomFaction == "empire" and topFaction == "rebellion") or
-  (bottomFaction == "separatist" and topFaction == "republic") then
+  if (bottomFaction == "Empire" and topFaction == "Rebellion") or
+  (bottomFaction == "Separatist" and topFaction == "Republic") then
+    log("static setup 1 running")
     requireRandom = false
-
+    
     -- bottom first player set turn
     Wait.frames(function()
-      Turns.turn_color = bottomColor
-    end) -- was 5 frames, if issue, revert
+      if Turns.enable then Turns.turn_color = bottomColor end
+    end, 5) -- was 5 frames, if issue, revert
 
-    rotTracker = {0, 180, 0}
-    posTracker = {-46.00, 0.12, -21.00}
-    if bottomFaction ~= "empire" then
+    rotTracker = { 0, 180, 0 }
+    posTracker = { -46.00, 0.12, -21.00 }
+    if bottomFaction == "Separatist" then
       turnTracker = turnTracker.setState(2)
     end
     trackerColor = bottomColor
-    counterResourceBottom.setInvisibleTo({})
-    counterResourceTop.setInvisibleTo(allColors)
+    counterResourceBoardBottom.setInvisibleTo({})
+    counterResourceBoardTop.setInvisibleTo(allColors)
+
+    log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
+    log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
+
     buttonEndTurnBottom.setInvisibleTo({})
+    buttonEndTurnTop.setInvisibleTo(allColors)
 
     -- top second player set force track
     trackerForce.setColorTint(topColor)
     trackerForce.highlightOn(topColor)
     forceTrack.setColorTint(topColor)
-    broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
-    broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
 
-  elseif (bottomFaction == "rebellion" and topFaction == "empire") or
-  (bottomFaction == "republic" and topFaction == "separatist") then
+    log("bottomColor: " .. bottomColor)
+    log("topColor: " .. topColor)
+    log("bottomFaction: " .. bottomFaction)
+    log("topFaction: " .. topFaction)
+    log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
+    log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
+
+    broadcastToAll("The Force is with " .. topFaction .. ".", "White")
+    broadcastToAll(bottomFaction .. " gets first turn.", "White")
+    -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+    -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+
+  elseif (bottomFaction == "Rebellion" and topFaction == "Empire") or
+  (bottomFaction == "Republic" and topFaction == "Separatist") then
+    log("static setup 2 running")
     requireRandom = false
 
     -- bottom second player set force track
@@ -956,52 +980,89 @@ function setupGame(button, _, _)
 
     -- top first player set turn
     Wait.frames(function()
-      Turns.turn_color = topColor
-    end) -- was 5 frames, if issue, revert
+      if Turns.enable then Turns.turn_color = topColor end
+    end, 5) -- was 5 frames, if issue, revert
+
     if not isAI then
       rotTracker = { 0, 0, 0 }
     elseif isAI then
       rotTracker = { 0, 180, 0 }
     end
     posTracker = { 46.00, 0.12, 21.00 }
-    if topFaction ~= "empire" then
+    if topFaction ~= "Empire" then
       turnTracker = turnTracker.setState(2)
     end
     trackerColor = topColor
-    counterResourceTop.setInvisibleTo({})
-    counterResourceBottom.setInvisibleTo(allColors)
+    counterResourceBoardTop.setInvisibleTo({})
+    counterResourceBoardBottom.setInvisibleTo(allColors)
+
+    log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
+    log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
+
     buttonEndTurnTop.setInvisibleTo({})
-    broadcastToAll("The force is with [" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-].", "White")
-    broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] gets first turn.", "White")
+    buttonEndTurnBottom.setInvisibleTo(allColors)
+    
+    log("bottomColor: " .. bottomColor)
+    log("topColor: " .. topColor)
+    log("bottomFaction: " .. bottomFaction)
+    log("topFaction: " .. topFaction)
+    log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
+    log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
+  
+    broadcastToAll("The Force is with " .. topFaction .. ".", "White")
+    broadcastToAll(bottomFaction .. " gets first turn.", "White")
+    -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+    -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
   end
+
+  log("requireRandom: " .. tostring(requireRandom))
 
   if requireRandom then
     if randomFirstPlayer == 1 then
       -- bottom first player set turn
       Wait.frames(function()
-        Turns.turn_color = bottomColor
-      end) -- was 5 frames, if issue, revert
+        if Turns.enable then Turns.turn_color = bottomColor end
+      end, 5) -- was 5 frames, if issue, revert
 
       rotTracker = { 0, 180, 0 }
       posTracker = { -46.00, 0.12, -21.00 }
-      if bottomFaction == "republic" then
+      if bottomFaction == "Republic" then
         turnTracker = turnTracker.setState(4)
-      elseif bottomFaction == "rebellion" then
+      elseif bottomFaction == "Rebellion" then
         turnTracker = turnTracker.setState(3)
-      elseif bottomFaction == "separatist" then
+      elseif bottomFaction == "Separatist" then
         turnTracker = turnTracker.setState(2)
+      elseif bottomFaction == "Mandalorian" then
+        turnTracker = turnTracker.setState(5)
       end
       trackerColor = bottomColor
-      counterResourceBottom.setInvisibleTo({})
-      counterResourceTop.setInvisibleTo(allColors)
+      counterResourceBoardBottom.setInvisibleTo({})
+      counterResourceBoardTop.setInvisibleTo(allColors)
+
+      log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
+      log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
+
       buttonEndTurnBottom.setInvisibleTo({})
+      buttonEndTurnTop.setInvisibleTo(allColors)
 
       -- top second player set force track      
       trackerForce.setColorTint(topColor)
       trackerForce.highlightOn(topColor)
       forceTrack.setColorTint(topColor)
-      broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
-      broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+      log("still with us")
+
+      log("bottomColor: " .. bottomColor)
+      log("topColor: " .. topColor)
+      log("bottomFaction: " .. bottomFaction)
+      log("topFaction: " .. topFaction)
+      log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
+      log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
+
+      broadcastToAll("The Force is with " .. topFaction .. ".", "White")
+      broadcastToAll(bottomFaction .. " gets first turn.", "White")
+      -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+      -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
+
     else
       -- bottom second player set force track
       posTracker = { 29.41, 1.15, -8.50 }
@@ -1012,41 +1073,61 @@ function setupGame(button, _, _)
 
       -- top first player set turn
       Wait.frames(function()
-        Turns.turn_color = topColor
+        if Turns.enable then Turns.turn_color = topColor end
       end, 5)
 
       rotTracker = { 0, 0, 0 }
       posTracker = { 46.00, 0.12, 21.00 }
-      if topFaction == "republic" then
+      if topFaction == "Republic" then
         turnTracker = turnTracker.setState(4)
-      elseif topFaction == "rebellion" then
+      elseif topFaction == "Rebellion" then
         turnTracker = turnTracker.setState(3)
-      elseif topFaction == "separatist" then
+      elseif topFaction == "Separatist" then
         turnTracker = turnTracker.setState(2)
+      elseif topFaction == "Mandalorian" then
+        turnTracker = turnTracker.setState(5)
       end
       trackerColor = topColor
-      counterResourceTop.setInvisibleTo({})
-      counterResourceBottom.setInvisibleTo(allColors)
+      counterResourceBoardTop.setInvisibleTo({})
+      counterResourceBoardBottom.setInvisibleTo(allColors)
+
+      log("buttonEndTurnTop: " .. buttonEndTurnTop.getName())
+      log("buttonEndTurnBottom: " .. buttonEndTurnBottom.getName())
+      
       buttonEndTurnTop.setInvisibleTo({})
-      broadcastToAll("The force is with [" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-].", "White")
-      broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] gets first turn.", "White")
+      buttonEndTurnBottom.setInvisibleTo(allColors)
+      log("still with us")
+
+      log("bottomColor: " .. bottomColor)
+      log("topColor: " .. topColor)
+      log("bottomFaction: " .. bottomFaction)
+      log("topFaction: " .. topFaction)
+      log("hexTop: " .. tostring(Color.fromString(topColor):toHex()))
+      log("hexBottom: " .. tostring(Color.fromString(bottomColor):toHex()))
+
+      local broadcastString1 = "The Force is with " .. topFaction .. "."
+      local broadcastString2 = bottomFaction .. " gets first turn."
+      broadcastToAll(broadcastString1, "White")
+      broadcastToAll(broadcastString2, "White")
+      -- broadcastToAll("The force is with [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-].", "White")
+      -- broadcastToAll("[" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] gets first turn.", "White")
     end
   end
 
   -- handle force track graphic in case of traditional matchup
   local forceTrackOriginal  = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065188393/F54092F923F8BA59AC13E93874F92CE5C62DDC4B/"
   local forceTrackExpansion = "https://steamusercontent-a.akamaihd.net/ugc/2478760129065207212/5A5DF1FB7E5B591D9C33802D41319952F89E9CB9/"
-  if topFaction == "republic" and bottomFaction == "separatist" then
+  if topFaction == "Republic" and bottomFaction == "Separatist" then
     forceTrack.setCustomObject({ image = forceTrackExpansion })
     forceTrack = forceTrack.reload()
-  elseif topFaction == "separatist" and bottomFaction == "republic" then
+  elseif topFaction == "Separatist" and bottomFaction == "Republic" then
     forceTrack.setCustomObject({ image = forceTrackExpansion })
     forceTrack = forceTrack.reload()
     forceTrack.setRotation({ 0.00, 180.00, 0.00 })
-  elseif topFaction == "rebellion" and bottomFaction == "empire" then
+  elseif topFaction == "Rebellion" and bottomFaction == "Empire" then
     forceTrack.setCustomObject({ image = forceTrackOriginal })
     forceTrack = forceTrack.reload()
-  elseif topFaction == "empire" and bottomFaction == "rebellion" then
+  elseif topFaction == "Empire" and bottomFaction == "Rebellion" then
     forceTrack.setCustomObject({ image = forceTrackOriginal })
     forceTrack = forceTrack.reload()
     forceTrack.setRotation({ 0.00, 180.00, 0.00 })

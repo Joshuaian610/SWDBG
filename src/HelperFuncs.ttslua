@@ -200,6 +200,17 @@ function getTurn()
 end -- end getTurn()
 
 
+function getTurnTracker()
+  -- handles get of turnTracker object
+  turnTracker = nil
+  for _, zoneObj in pairs(getObjects()) do
+    if zoneObj.hasTag('turnTracker') then
+      turnTracker = zoneObj
+      return turnTracker
+    end
+  end
+end
+
 
 
 

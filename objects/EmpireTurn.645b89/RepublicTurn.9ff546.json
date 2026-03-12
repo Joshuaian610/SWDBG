@@ -6,26 +6,26 @@
   },
   "Autoraise": true,
   "ColorDiffuse": {
-    "b": 0.094,
-    "g": 0.1,
-    "r": 0.856
+    "b": 0.09412,
+    "g": 0.09804,
+    "r": 0.8549
   },
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.2,
+      "Thickness": 1,
       "Type": 3
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574768439/D847C8F155CF3F753BBE34C8CC69550A2434838F/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574768439/D847C8F155CF3F753BBE34C8CC69550A2434838F/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939850702/5098275228518DF8DC865366F8FD689659107CDA/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939850702/5098275228518DF8DC865366F8FD689659107CDA/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "563044",
+  "GUID": "9ff546",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
@@ -37,7 +37,7 @@
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Rebellion Turn",
+  "Nickname": "Republic Turn",
   "Snap": true,
   "Sticky": true,
   "Tags": [
@@ -46,12 +46,12 @@
   ],
   "Tooltip": false,
   "Transform": {
-    "posX": -46.739,
-    "posY": 0.324,
+    "posX": -46.65,
+    "posY": 0.124,
     "posZ": -1.121,
     "rotX": 0,
     "rotY": 180,
-    "rotZ": 180,
+    "rotZ": 0,
     "scaleX": 7.24,
     "scaleY": 1,
     "scaleZ": 7.24

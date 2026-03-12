@@ -6,38 +6,38 @@
   },
   "Autoraise": true,
   "ColorDiffuse": {
-    "b": 0.094,
-    "g": 0.1,
-    "r": 0.856
+    "b": 1,
+    "g": 0.52941,
+    "r": 0.12157
   },
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.2,
+      "Thickness": 1,
       "Type": 3
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939850702/5098275228518DF8DC865366F8FD689659107CDA/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939850702/5098275228518DF8DC865366F8FD689659107CDA/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939849222/70A7F1B99AA2D9F75ED43A97B0A29F2CE4FAB071/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939849222/70A7F1B99AA2D9F75ED43A97B0A29F2CE4FAB071/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "974696",
+  "GUID": "c40ce8",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
   "HideWhenFaceDown": false,
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
-  "Locked": false,
+  "Locked": true,
   "LuaScript": "",
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Republic Turn",
+  "Nickname": "Separatist Turn",
   "Snap": true,
   "Sticky": true,
   "Tags": [
@@ -46,12 +46,12 @@
   ],
   "Tooltip": false,
   "Transform": {
-    "posX": -46.739,
-    "posY": 0.324,
+    "posX": -46.65,
+    "posY": 0.124,
     "posZ": -1.121,
     "rotX": 0,
     "rotY": 180,
-    "rotZ": 180,
+    "rotZ": 0,
     "scaleX": 7.24,
     "scaleY": 1,
     "scaleZ": 7.24

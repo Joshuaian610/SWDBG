@@ -1,0 +1,61 @@
+{
+  "AltLookAngle": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "Autoraise": true,
+  "ColorDiffuse": {
+    "b": 0.168,
+    "g": 0.701,
+    "r": 0.192
+  },
+  "CustomImage": {
+    "CustomTile": {
+      "Stackable": false,
+      "Stretch": true,
+      "Thickness": 1,
+      "Type": 3
+    },
+    "ImageScalar": 1,
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/11612060652659581126/710A460C2B4226CC20D9326A5BDED8C76FD20572/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/11612060652659581126/710A460C2B4226CC20D9326A5BDED8C76FD20572/",
+    "WidthScale": 0
+  },
+  "Description": "",
+  "DragSelectable": true,
+  "GMNotes": "",
+  "GUID": "721194",
+  "Grid": true,
+  "GridProjection": false,
+  "Hands": false,
+  "HideWhenFaceDown": false,
+  "IgnoreFoW": false,
+  "LayoutGroupSortIndex": 0,
+  "Locked": true,
+  "LuaScript": "",
+  "LuaScriptState": "",
+  "MeasureMovement": false,
+  "Name": "Custom_Tile",
+  "Nickname": "Mandalorian Turn",
+  "Snap": true,
+  "Sticky": true,
+  "Tags": [
+    "non_interactable",
+    "turnTracker"
+  ],
+  "Tooltip": false,
+  "Transform": {
+    "posX": -46.65,
+    "posY": 0.124,
+    "posZ": -1.121,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 0,
+    "scaleX": 7.24,
+    "scaleY": 1,
+    "scaleZ": 7.24
+  },
+  "Value": 0,
+  "XmlUI": ""
+}

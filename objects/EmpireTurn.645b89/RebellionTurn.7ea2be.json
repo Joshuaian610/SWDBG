@@ -6,38 +6,38 @@
   },
   "Autoraise": true,
   "ColorDiffuse": {
-    "b": 1,
-    "g": 0.53,
-    "r": 0.118
+    "b": 0.09412,
+    "g": 0.09804,
+    "r": 0.8549
   },
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.2,
+      "Thickness": 1,
       "Type": 3
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939849222/70A7F1B99AA2D9F75ED43A97B0A29F2CE4FAB071/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939849222/70A7F1B99AA2D9F75ED43A97B0A29F2CE4FAB071/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081779226/D847C8F155CF3F753BBE34C8CC69550A2434838F/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081779226/D847C8F155CF3F753BBE34C8CC69550A2434838F/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "48dbb6",
+  "GUID": "7ea2be",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
   "HideWhenFaceDown": false,
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
-  "Locked": false,
+  "Locked": true,
   "LuaScript": "",
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Separatist Turn",
+  "Nickname": "Rebellion Turn",
   "Snap": true,
   "Sticky": true,
   "Tags": [
@@ -46,12 +46,12 @@
   ],
   "Tooltip": false,
   "Transform": {
-    "posX": -46.739,
-    "posY": 0.324,
+    "posX": -46.65,
+    "posY": 0.124,
     "posZ": -1.121,
     "rotX": 0,
     "rotY": 180,
-    "rotZ": 180,
+    "rotZ": 0,
     "scaleX": 7.24,
     "scaleY": 1,
     "scaleZ": 7.24

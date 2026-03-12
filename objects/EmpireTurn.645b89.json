@@ -7,26 +7,26 @@
   "Autoraise": true,
   "ColorDiffuse": {
     "b": 1,
-    "g": 0.53,
-    "r": 0.11796
+    "g": 0.52941,
+    "r": 0.12157
   },
-  "ContainedObjects_path": "EmpireTurn.c4c708",
+  "ContainedObjects_path": "EmpireTurn.645b89",
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.2,
+      "Thickness": 1,
       "Type": 3
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574766785/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2033983734574766785/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081780700/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081780700/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "c4c708",
+  "GUID": "645b89",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
@@ -41,9 +41,10 @@
   "Nickname": "Empire Turn",
   "Snap": true,
   "States_path": {
-    "2": "SeparatistTurn.48dbb6",
-    "3": "RebellionTurn.563044",
-    "4": "RepublicTurn.974696"
+    "2": "SeparatistTurn.c40ce8",
+    "3": "RebellionTurn.7ea2be",
+    "4": "RepublicTurn.9ff546",
+    "5": "MandalorianTurn.721194"
   },
   "Sticky": true,
   "Tags": [
@@ -53,11 +54,11 @@
   "Tooltip": false,
   "Transform": {
     "posX": -46.65,
-    "posY": 0.324,
+    "posY": 0.124,
     "posZ": -1.121,
     "rotX": 0,
     "rotY": 180,
-    "rotZ": 180,
+    "rotZ": 0,
     "scaleX": 7.24,
     "scaleY": 1,
     "scaleZ": 7.24

@@ -21,7 +21,7 @@ function onLoad()
   Turns.enable = false
 
   interactable = false
-  invis = true
+  invis = false
 
   -- set non interactables, run onSpawn stuff
   if interactable then
@@ -119,12 +119,7 @@ function onLoad()
   deckGalaxy = getGalaxyDeck()
   
   -- get, assign turn tracker
-  turnTracker = nil
-  for _, zoneObj in pairs(getObjects()) do
-    if zoneObj.hasTag('turnTracker') then
-      turnTracker = zoneObj
-    end
-  end
+  turnTracker = getTurnTracker()
 
   -- ensure Republic Reveal UI stuff is hidden
   Wait.frames(function() hideRevealUI() end)
@@ -169,14 +164,17 @@ function onLoad()
 
   -- using the existence of buttonSetupGame as a check to see if game has started:
   -- game has not yet started:
-  if buttonSetupGame ~= nil then
+  if buttonSetupGame then
     -- broadcast pregame welcome message
     broadcastToAll("Welcome to Star Wars: The Deckbuilding Game!", "White")
 
     -- set pregame invisibles
     if invis then
       buttonEndTurnBottom.setInvisibleTo(allColors)
-      buttonEndTurnTop.setInvisibleTo(allColors)    
+      buttonEndTurnTop.setInvisibleTo(allColors)
+      counterResourceBoardBottom.setInvisibleTo(allColors)
+      counterResourceBoardTop.setInvisibleTo(allColors)
+      turnTracker.setInvisibleTo(allColors)
       for _, object in pairs(getObjects()) do
         if object.hasTag('row_button') then
           object.setInvisibleTo(allColors)
@@ -185,14 +183,15 @@ function onLoad()
     end
 
   -- game has started:
-  elseif buttonSetupGame == nil then
+  elseif not buttonSetupGame then
     -- create counters on ship cards when reloaded
     for _, obj in pairs(zoneInPlay.getObjects()) do
       -- *** DO WE REALLY NEED REPUBLIC / SEPARATIST CHECKS
       -- if v.hasTag('ship') and (v.hasTag('bottom_owner') or v.hasTag('top_owner')) or
       -- v.hasTag('republic_owner') or v.hasTag('separatist_owner') then
       if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-        obj.call('createAll')
+        local val = obj.getVar('val')
+        initShipCounter(obj, val)
       end
     end
     
@@ -209,11 +208,11 @@ function onLoad()
     if currentTurn == "Bottom" then
       buttonEndTurnBottom.setInvisibleTo({})
       if invis then buttonEndTurnTop.setInvisibleTo(allColors) end
-      counterResourceBoardBottom.setInvisibleTo({}) -- bottom board counter
+      counterResourceBoardBottom.setInvisibleTo({})
     elseif currentTurn == "Top" then
       buttonEndTurnTop.setInvisibleTo({})
       if invis then buttonEndTurnBottom.setInvisibleTo(allColors) end
-      counterResourceBoardTop.setInvisibleTo({}) -- top board counter
+      counterResourceBoardTop.setInvisibleTo({})
     end
   end
 
