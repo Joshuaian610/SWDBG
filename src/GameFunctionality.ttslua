@@ -1091,16 +1091,10 @@ function purchaseCard(button, playerColor, altClick)
   local counterBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
   local posCard = nil
   local rotCard = nil
-  local attackAction = nil
   local isAI = checkIfAI()
 
   if factionTag == "rebellion" then factionTag = "rebel" end
   if opponentTag == "rebellion" then opponentTag = "rebel" end
-  if faction == "Rebellion" or faction == "Republic" then
-    attackAction = "Sabotage"
-  elseif faction == "Empire" or faction == "Separatist" then
-    attackAction = "Bounty Hunt"
-  end
 
   animateButtonGalaxyRow(button)
 
@@ -1237,17 +1231,15 @@ function purchaseCard(button, playerColor, altClick)
 
   -- tag card, send purchased card home, deal next
   local ownerTag = nil
-  local checkIfEnemy = nil
   local cardTags = cardObj.getTags()
-  local factions = getFactions()
   local currentFaction = nil
   local enemyFaction = nil
   if isBottom then
-    currentFaction = artAssetBottom.getName()
-    enemyFaction   = artAssetTop.getName()
+    currentFaction = artAssetBottom.getGMNotes()
+    enemyFaction   = artAssetTop.getGMNotes()
   elseif isTop or isAI then
-    currentFaction = artAssetTop.getName()
-    enemyFaction   = artAssetBottom.getName()
+    currentFaction = artAssetTop.getGMNotes()
+    enemyFaction   = artAssetBottom.getGMNotes()
   end
   
   ownerTag = isBottom and "bottom_owner" or "top_owner"
@@ -1256,7 +1248,6 @@ function purchaseCard(button, playerColor, altClick)
   end
   for _, tag in pairs(cardTags) do
     if tag == enemyFaction then
-      checkIfEnemy = true
       broadcastToAll(prefix .. "Unable to purchase enemy faction card!", "Yellow")
       return
     end
@@ -1271,20 +1262,21 @@ function purchaseCard(button, playerColor, altClick)
     local originalCardCost = cardCost
     cardCost = cardCost -2
 
-    -- need to call the below stuff here as well to prevent discount message in case of not enough resources
-    if not forFree and currentResources < cardCost then      
-      broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")      
-      return
-    end
+  -- need to call the below stuff here as well to prevent discount message in case of not enough resources
+  if not forFree and currentResources < cardCost then
+    broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")
+    return
+  end
 
-    if cardCost < 0 then cardCost = 0 end
+  if cardCost < 0 then cardCost = 0 end
     broadcastToAll(prefix .. "Original card cost of " .. originalCardCost .. " has been discounted by 2 to " .. cardCost .. ".", "White")
   end
 
-  if not forFree and currentResources < cardCost then    
-    broadcastToAll(prefix .. "Not enough resources to purchase this card!", "White")
+  if not forFree and currentResources < cardCost then
+    broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")
     return
   end
+
   if not forFree then
     if currentResources >= cardCost then
       newTotal = currentResources - cardCost
@@ -1417,20 +1409,24 @@ function purchaseCard(button, playerColor, altClick)
   end
 
   if not forFree then
-    if Player[color].steam_name ~= nil then
+    if Player[playerColor].steam_name ~= nil then
       broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
     else
       if isAI then
         broadcastToAll("AI [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
+      else
+        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
       end
     end
 
   elseif forFree then
-    if Player[color].steam_name ~= nil then
+    if Player[playerColor].steam_name ~= nil then
       broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
     else
       if isAI then
         broadcastToAll("AI [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
+      else
+        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
       end
     end
   end

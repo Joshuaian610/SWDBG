@@ -2174,7 +2174,7 @@ function bhAction(button, _, _)
     moveForceTrack(buttonForce, 2)
   
   elseif cardName == "Asajj Ventress" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Asajj Ventress[/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-]card for free", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Asajj Ventress[/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] card for free", "White")
     Wait.time(function()
       
       broadcastToAll("Hint: Row Purchase buttons may be right clicked to Purchase for free! ", "White")
@@ -2251,7 +2251,7 @@ function bhAction(button, _, _)
     moveForceTrack(buttonForce, 3)
 
   elseif cardName == "Razorcrest" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Razorcrest/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-]card for free", "White")
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Razorcrest[/b]: may purchase [" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] card for free", "White")
     Wait.time(function()
       
       broadcastToAll("Hint: Row Purchase buttons may be right clicked to Purchase for free! ", "White")

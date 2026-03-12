@@ -53,7 +53,6 @@ function onLoad()
   nextCardLeia = false
   nextCardContact = false
   nextCardNute = false
-  
   metConditionDroideka = false
   metConditionWat = false
   metConditionHondo = false
