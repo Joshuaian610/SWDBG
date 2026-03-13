@@ -410,7 +410,6 @@ function endTurn(button, _, _)
   local isAI = checkIfAI()
   local rotDiscard = isBottom and { 0, 180, 0 } or { 0, 0, 0 }
   local posDiscard = isBottom and { -8.50, 2.00, -31.00 } or { 8.50, 2.00, 31.00 }
-  -- local posDeck = isBottom and { -3.50, 2.00, -31.00 } or { 3.50, 2.00, 31.00 }
 
   -- discard cards
   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
@@ -495,11 +494,8 @@ function endTurn(button, _, _)
       end
 
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
-        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button') then
-          initAbilityButtonXML(zoneObj)
-        end
-        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and zoneObj.hasTag('ability_button_sec') then
-          initAbilityButtonSecXML(zoneObj)
+        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and (zoneObj.hasTag('ability_button') or zoneObj.hasTag('ability_button_sec')) then
+          initCardXML(zoneObj)
         end
       end
 

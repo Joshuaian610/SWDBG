@@ -1,10 +1,5 @@
 [
   {
-    "Name": "Empire Turn",
-    "Type": 0,
-    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081780700/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/"
-  },
-  {
     "Name": "Rebel Turn",
     "Type": 0,
     "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081779226/D847C8F155CF3F753BBE34C8CC69550A2434838F/"
@@ -18,5 +13,255 @@
     "Name": "Republic Turn",
     "Type": 0,
     "URL": "https://steamusercontent-a.akamaihd.net/ugc/2395440094939850702/5098275228518DF8DC865366F8FD689659107CDA/"
+  },
+  {
+    "Name": "Ability Large Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098324064/EFA3D454799F0BFA8FF0974222193752069A978B/"
+  },
+  {
+    "Name": "Ability Large Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098326569/E44005DEF51A0680CC9B51AC70DF821BB3756819/"
+  },
+  {
+    "Name": "Ability Large Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098333057/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
+  },
+  {
+    "Name": "Ability Large Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098329187/7058ECC9C3A8CEB53EC411223B8C11B9EC7B0093/"
+  },
+  {
+    "Name": "Ability Large Gold",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098345554/8C9C31A2B4CC4690F79F86D06A2BEC331305D802/"
+  },
+  {
+    "Name": "Ability Cancel",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492087450051/E22B9555C97FBDF989BA28A92D56C267120D0728/"
+  },
+  {
+    "Name": "Discard Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126848310716/0421D160540641E48CD40F21D8D164216EB4E227/"
+  },
+  {
+    "Name": "Discard Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/10407394423821863457/CA55B2DB611B6F3A53DFD19C169F30CC6D6C488F/"
+  },
+  {
+    "Name": "Draw Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100804281/627A606D21D704C684FA0468C58BD3F3E505881C/"
+  },
+  {
+    "Name": "Draw Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100813346/62D3BCE0A6991EE95C1E245D3FA519EF4F13780E/"
+  },
+  {
+    "Name": "Draw Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100809758/50DF631912295A5F124D92F02B46C5CE3DADAAD4/"
+  },
+  {
+    "Name": "Draw Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100806817/AADBB76B88F4082EAD0FC8FC9D88A4184A984736/"
+  },
+  {
+    "Name": "Draw Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/12302818455208614571/297DC9A57E6F25A29B0297595FAF518DF1F75060/"
+  },
+  {
+    "Name": "Exile Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/17247588188394791784/D5F339D164283545A5EC3ABA2A4B970CD5294285/"
+  },
+  {
+    "Name": "Exile Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100488199/014464FFEF094DCF207C858586EAC8718E76EF6B/"
+  },
+  {
+    "Name": "Exile Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100483586/4F854465808F636FFB64CE9C6BA70AA0B72AA2B5/"
+  },
+  {
+    "Name": "Exile Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100493032/E4CB47D0A10996F008A9B3A4500D9C8225DEAF13/"
+  },
+  {
+    "Name": "Force Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086174365/A65556DB7C107631AE894811FD3A315B927CBE24/"
+  },
+  {
+    "Name": "Force Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/13112886553763697750/3507FD43629DBEC382D38D8EEE0A04F0474EBBF8/"
+  },
+  {
+    "Name": "Force Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098252100/A3FA49EDF4C5F7B8562A79FE9CDDD4D4ED2ECD31/"
+  },
+  {
+    "Name": "Force Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086175592/5E499E4478784CF279356E6F018E52B2283B9E6A/"
+  },
+  {
+    "Name": "Force Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
+  },
+  {
+    "Name": "Empire Turn",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081780700/77CCE6534A9240BD6E5EA0303C1CE1921EADFCB7/"
+  },
+  {
+    "Name": "Mandalorian Turn",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/11612060652659581126/710A460C2B4226CC20D9326A5BDED8C76FD20572/"
+  },
+  {
+    "Name": "Repair Large Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098674484/36364E4B4080035D8E63D3265601D8561A60D7F0/"
+  },
+  {
+    "Name": "Repair Large Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/15090033617924043658/C9966878BB579FC3D09BA8531AB78A7FAAE57FD5/"
+  },
+  {
+    "Name": "Repair Large Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098676648/CAF1A0C0C6B55B370759BC190A3DB50FB749BDA1/"
+  },
+  {
+    "Name": "Repair Large Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098675709/9DAB7260C1D3F7F34F4BC2D3B88CB85E4D90C31E/"
+  },
+  {
+    "Name": "Repair Large Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098677516/5B2A174FFDCC0BCF69F760409D3B2B184F18C6FD/"
+  },
+  {
+    "Name": "Reveal Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126848281109/487C6DB2F7B140C8ECF15DE5D9AFE83A7C62E2C7/"
+  },
+  {
+    "Name": "Reveal Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/10490324216442612068/06A992B569B6387C00DE56464C5919E81CA820D7/"
+  },
+  {
+    "Name": "Reveal Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126847919667/0A06CD151F2F62FFDF0241FDDF130D4ACC301071/"
+  },
+  {
+    "Name": "Reveal Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/14811334574883470034/36172780C4AEA57C9693CA48ABAE5192299F1B75/"
+  },
+  {
+    "Name": "Reveal Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126847916218/1F97495766E93A8FD8F2E753498B666049CAD8E9/"
+  },
+  {
+    "Name": "Ability Small Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086614753/11E41BB9608A9246604F4BAFDE7B8B9AE87FDD2D/"
+  },
+  {
+    "Name": "Ability Small Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/17370298845864829261/76BEB78F4B62C11E4B7A827D9C09AF8FF2A341E6/"
+  },
+  {
+    "Name": "Ability Small Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086613706/4D14DE804998AFF331F48604EE04C1A0274986D3/"
+  },
+  {
+    "Name": "Ability Small Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086611818/3F87E3527E022EB8A91660B899F3447DB4EF6300/"
+  },
+  {
+    "Name": "Ability Small Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086612749/C7B482244EDA885B058E2F84E5027FFB3E5D9E18/"
+  },
+  {
+    "Name": "Attack Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098020635/CBAC1A3BE3DC97CD70BB5378757A484BFAE07F15/"
+  },
+  {
+    "Name": "Attack Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/15403600879630955401/FB7294C2C867AF1BD2AFB7A6F58014AD84C82165/"
+  },
+  {
+    "Name": "Attack Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098250844/EAF0FBDF62C2F1D8664627B67A7236996B44655A/"
+  },
+  {
+    "Name": "Attack Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098022943/EC866655AA1787D09DF2F98006899409E69D0CC5/"
+  },
+  {
+    "Name": "Attack Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098249644/A4BAFD0365F26BE3671477F23BDB3F1F1FE6F467/"
+  },
+  {
+    "Name": "Repair Small Blue",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492099079961/DE87A5389A0AB7C953A872E08857F70945D8559F/"
+  },
+  {
+    "Name": "Repair Small Green",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/13531301208268228429/FE4BC642431B1F84BDA1342E6766D0DDB63B3C93/"
+  },
+  {
+    "Name": "Repair Small Orange",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/17300346116669985462/58715AA010B9A4F5E0AD563E7A4E563B27524087/"
+  },
+  {
+    "Name": "Repair Small Purple",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/15134582243733097791/0D679BFE5BB233AAB447342DF4B9D8C46022D4FA/"
+  },
+  {
+    "Name": "Repair Small Red",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/13514356873577765984/5CF5D5AC7449D5FD5C07FB1691D8F0A4C268A7B4/"
+  },
+  {
+    "Name": "Ability Small Gold",
+    "Type": 0,
+    "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098021684/4F63BB5AAB161DB6C1ED62C896AF4050EA7747A7/"
   }
 ]

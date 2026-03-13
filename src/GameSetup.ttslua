@@ -826,7 +826,14 @@ function setupGame(button, _, _)
       Wait.frames(function() rotateDealtCard(card, posDeal[i]) end)
     end
 
-  end, 2)
+    -- show previously invis purchase/discard buttons
+    for _, object in ipairs(getObjects()) do
+      if object.hasTag('row_button') then
+        object.setInvisibleTo({})
+      end
+    end
+
+  end, 1)
 
   -- clean up unselected faction decks, shuffle starters in play  
   local factions = getFactions()
@@ -891,13 +898,6 @@ function setupGame(button, _, _)
     end
   else
     getObjectbyName("Mandalorian Deck").shuffle()
-  end
-
-  -- show previously invis purchase/discard buttons
-  for _, object in ipairs(getObjects()) do
-    if object.hasTag('row_button') then
-      object.setInvisibleTo({})
-    end
   end
 
   -- shuffle, deal to hand

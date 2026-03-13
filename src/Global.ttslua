@@ -20,8 +20,8 @@ function onLoad()
   math.randomseed(os.time())
   Turns.enable = false
 
-  interactable = true
-  invis = false
+  interactable = false
+  invis = true
 
   -- set non interactables, run onSpawn stuff
   if interactable then
@@ -327,33 +327,35 @@ function onObjectEnterZone(zone, obj)
 
   if zone == zoneInPlay then
 
-    toAddResource = obj.getVar('produce')
+    if obj.type == "Card" then
+      toAddResource = cardData[obj.getName()].produce
 
-    if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and not obj.hasTag('just_bought') then
+      if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and not obj.hasTag('just_bought') then
 
-      if obj.hasTag('bottom_owner') then
-        counterPlayer = counterResourceBottom
-        counterBoard = counterResourceBoardBottom
+        if obj.hasTag('bottom_owner') then
+          counterPlayer = counterResourceBottom
+          counterBoard = counterResourceBoardBottom
 
-      elseif obj.hasTag('top_owner') then
-        counterPlayer = counterResourceTop
-        counterBoard = counterResourceBoardTop
+        elseif obj.hasTag('top_owner') then
+          counterPlayer = counterResourceTop
+          counterBoard = counterResourceBoardTop
+        end
+
+        -- get counter value
+        local currentValue = counterPlayer.getVar('val')
+        if toAddResource ~= nil then
+          currentValue = currentValue + toAddResource
+        end
+
+        counterPlayer.call('setValue', currentValue)
+        counterBoard.call('setValue', currentValue)
       end
 
-      -- get counter value
-      local currentValue = counterPlayer.getVar('val')
-      if toAddResource ~= nil then
-        currentValue = currentValue + toAddResource
+      -- create ship counters
+      if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) then
+        local val = obj.getVar('val')
+        initShipCounter(obj, val)
       end
-
-      counterPlayer.call('setValue', currentValue)
-      counterBoard.call('setValue', currentValue)
-    end
-
-    -- create ship counters
-    if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) then
-      local val = obj.getVar('val')
-      initShipCounter(obj, val)
     end
   end
 
@@ -372,13 +374,13 @@ function onObjectEnterZone(zone, obj)
   -- card XML ability button creation
   if zone == zoneInPlay and (obj.hasTag('ability_button') or obj.hasTag('ability_button_sec') or obj.hasTag('add_force_button')) and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and obj.type == "Card" then
-    -- initCardXML(obj)
+    initCardXML(obj)
   end
 
   -- jar jar row button creation
   if (zone.getName():find("Zone Row")) and
   (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
-    -- initAbilityButtonSecXML(obj)
+    initCardXML(obj)
   end
 
   -- bounty hunt / sabotage button creation
@@ -452,18 +454,18 @@ function onObjectLeaveZone(zone, obj)
       return
     end
 
-    if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
+    if obj.type == "Card" and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
     not obj.hasTag('just_bought') and not obj.hasTag('exiled') then
 
       if obj.hasTag('bottom_owner') then
         counter = counterResourceBottom
         counterBoard = counterResourceBoardBottom
-        toRemove = obj.getVar('produce')
+        toRemove = cardData[obj.getName()].produce
 
       elseif obj.hasTag('top_owner') then
         counter = counterResourceTop
         counterBoard = counterResourceBoardTop
-        toRemove = obj.getVar('produce')
+        toRemove = cardData[obj.getName()].produce
       end
 
       -- get counter value
@@ -483,23 +485,16 @@ function onObjectLeaveZone(zone, obj)
     end
   end
 
-  -- -- remove lua ability buttons
-  -- if zone == zoneInPlay and obj.hasTag('buttons') and
-  -- (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-  --   obj.clearButtons()
-  -- end
-
   -- remove xml ability / force etc buttons
   if zone == zoneInPlay and (obj.hasTag('ability_button') or obj.hasTag('ability_button_sec') or obj.hasTag('force_button')) and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    -- removeAbilityButtons(obj)
-    -- removeXMLForceButton(obj)
+    removeAbilityButtons(obj)
   end
 
   -- remove jar jar row ability
   if zone.getName():find("Zone Row") and
   obj.getName() == "Jar Jar Binks" then
-    -- removeAbilityButtons(obj)
+    removeAbilityButtons(obj)
   end
 
   -- remove bounty hunt / sabotage buttons

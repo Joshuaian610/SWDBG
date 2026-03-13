@@ -127,6 +127,29 @@ function initCardXML(card)
           }
         }
       }
+    },
+    ["Green"]               = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "ability_button_green",
+        active            = "false",
+        height            = "40",
+        width             = "85",
+        position          = posPri,
+        rotation          = rotPri,
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            image         = "Ability Green"
+          }
+        }
+      }
     }
   }
 
