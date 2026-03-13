@@ -287,30 +287,6 @@ function onObjectSpawn(obj)
 end
 
 
-function getObjectbyName(name)
-  -- simply search all objects for an object named a particular string
-  for _, object in ipairs(getObjects()) do
-    if object.getName() == name then
-      return object
-    end
-  end
-  log("getObjectFromName() object not found via " .. name)
-  return nil
-end -- end getObjectFromName()
-
-
-function getObjectbyNameAndNotes(name, gmNotes)
-  -- simply search all objects for an object named a particular string that have a particular GMnotes string
-  for _, object in pairs(getObjects()) do
-    if object.getName() == name and object.getGMNotes() == gmNotes then
-      return object
-    end
-  end
-  log("getObjectFromNameAndTag() object not found via " .. name .. ", " .. gmNotes)
-  return nil
-end -- end getObjectByNameAndNotes()
-
-
 function onObjectEnterZone(zone, obj)
   -- this function handles the discard operations, card button creation, resource management,
   -- adding ownership tags, and the rotation of ship cards while in hand zones
