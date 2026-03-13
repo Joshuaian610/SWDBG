@@ -1034,7 +1034,7 @@ function ai_begin_turn(faction)
 
     if current_base_found == false then
         replace_base = true
-        counter.call('set_val', 0)
+        counter', 0)
         -- get position of destroyed base, determine which base to place next if any
         local position = destroyed_base.getPosition()
         if position.y > 8.5 and position.y < 8.9 then
@@ -1290,7 +1290,7 @@ function ai_begin_turn(faction)
     (force_tracker_position.z > 8 and force_tracker_position.z < 9 and isBottom == false) then
         local new_resource_total = resource_counter.getVar('val') + 1
         Wait.time(function()
-        resource_counter.call('set_val', new_resource_total)
+        resource_counter', new_resource_total)
         broadcastToAll("The Force is with AI " .. faction .. ", who gains +1 Resource at the start of their turn.", ai_color)
         end,ai_speed * 2)
     end
@@ -1575,7 +1575,7 @@ function ai_purchase(faction)
                     current_highest_ship = tied_ships[random_index]
                 end
                 if current_highest_ship ~= nil then
-                    resource_counter.call('set_val', current_resources - 4)
+                    resource_counter', current_resources - 4)
                     add_tag("ai_top_owner", current_highest_ship)
                     current_highest_ship.call('exileCard', "Red")
                     broadcastToAll("AI Empire has used it's base ability to spend 4 resources to destroy" .. current_highest_ship.getName() .. ".", "Blue")
@@ -1611,9 +1611,9 @@ function ai_purchase(faction)
                     current_highest_ship = tied_ships[random_index]
                 end
                 if current_highest_ship ~= nil then
-                    resource_counter.call('set_val', current_resources - 4)
+                    resource_counter', current_resources - 4)
                     add_tag("ai_top_owner", current_highest_ship)
-                    current_highest_ship.call('set_val', current_highest_ship.getVar("MAX_VALUE")-1)
+                    current_highest_ship', current_highest_ship.getVar("MAX_VALUE")-1)
                     current_highest_ship.call('add_subtract')
                     broadcastToAll("AI Empire has used it's base ability to spend 4 resources to destroy " .. current_highest_ship.getName() .. ".", "Blue")
                 end
@@ -1804,7 +1804,7 @@ function ai_attack(faction)
                             if resource_value > 0 then
                                 local current = resource_counter.getVar('val')
                                 local final = current + resource_value
-                                resource_counter.call('set_val', final)
+                                resource_counter', final)
                                 broadcastToAll("AI " .. faction .. " has earned " .. resource_value .. " resources from it's " .. attack_string .. " of " .. attack_card.getName() ..  ", going from " .. current .. ", to " .. final .. ".", ai_color)
                             end
                             if force_value > 0 then
@@ -1834,7 +1834,7 @@ function ai_attack(faction)
                 if v.getGUID() == "5f007b" then
                     local ship = check_ships(faction, opponent_is_ai)
                     if ship ~= nil then
-                        ship.call('set_val', 10)
+                        ship', 10)
                         ship.call('add_subtract')
                         broadcastToAll("AI Rebels have used Luke Skywalker ability to destroy " .. ship.getName(), "Red")
                     end
@@ -2068,7 +2068,7 @@ function ai_end_of_turn(faction)
     -- end turn
     Wait.time(function()
     phase_tracker.setInvisibleTo({}) -- change back to all_colors
-    resource_counter.call('set_val', 0)
+    resource_counter', 0)
     broadcastToAll("The AI " .. faction .. " turn has ended.", ai_color)
 
     local end_turn_button = (isBottom and button_end_turn_empire or button_end_turn_rebel)
@@ -2221,7 +2221,7 @@ function check_row(faction, type, check)
             return_object = current_highest_ship
             if check == true then return return_object end
             remaining_resources = current_resources - highest_cost
-            counter.call('set_val', remaining_resources)
+            counter', remaining_resources)
             broadcastToAll("AI " .. faction .. " has purchased " .. return_object.getName() .. " for " .. highest_cost .. " resources, ending with " .. remaining_resources .. ".", ai_color)
             add_tag(ai_owner_tag, return_object)
             to_muster(return_object, faction, "facedown")
@@ -2252,7 +2252,7 @@ function check_row(faction, type, check)
             return_object = current_highest_unit
             if check == true then return return_object end
             remaining_resources = current_resources - highest_cost
-            counter.call('set_val', remaining_resources)
+            counter', remaining_resources)
             broadcastToAll("AI " .. faction .. " has purchased " .. return_object.getName() .. " for " .. highest_cost .. " resources, ending with " .. remaining_resources .. ".", ai_color)
             add_tag(ai_owner_tag, return_object)
             to_muster(return_object, faction, "facedown")
@@ -2330,7 +2330,7 @@ function ai_purchase_card(faction)
                 outer_rim_pilot = outer_rim_pilot_deck.takeObject()
                 add_tag(ai_owner_tag, outer_rim_pilot)
                 to_muster(outer_rim_pilot, faction, "facedown")
-                resource_counter.call('set_val', resource_counter.getVar('val')-2)
+                resource_counter', resource_counter.getVar('val')-2)
                 broadcastToAll("AI " .. faction .. " has purchased an Outer Rim Pilot for 2 resources, ending with " .. resource_counter.getVar('val') .. ".", ai_color)
                 outer_rim_pilot_count = outer_rim_pilot_count +1
                 Wait.time(function() ai_purchase_card(faction) end, ai_speed)
@@ -2478,7 +2478,7 @@ function apply_base_damage(faction, amount)
     if amount > 0 then
         broadcastToAll("AI " .. faction .. "has dealt " .. amount .. " to the Rebellion base, bringing it from " .. start_damage .. " damage to " .. end_damage .. " damage.", "Blue")
     end
-    opposing_counter.call('set_val', end_damage-1)
+    opposing_counter', end_damage-1)
     opposing_counter.call('add_subtract')
     for k, v in pairs(base_zone.getObjects()) do
         if v.hasTag(owner_tag) and v.tag == "Card" then
@@ -2984,7 +2984,7 @@ function add_ai_resources(faction, amount)
     for i = 1, amount do
         local current_counter_value = resource_counter.getVar('val')
         current_counter_value = current_counter_value + 1
-        resource_counter.call('set_val', current_counter_value)
+        resource_counter', current_counter_value)
         wait_timer = wait_timer + .5
     end
     end, wait_timer)

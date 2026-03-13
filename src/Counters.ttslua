@@ -131,6 +131,46 @@ local DATA     = {
     COLOR      = { 0.627, 0.125, 0.941, .8 },
     HOVERCOLOR = { 0.627, 0.125, 0.941, .4 }
   },
+  ["Resource Counter Bottom"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 99,
+    SIZE       = 750,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 1.59, 0.00 },
+    FONTCOLOR  = { 0.7569, 0.6863, 0.1020, 255 },
+    COLOR      = { 0, 0, 0, 0 },
+    HOVERCOLOR = {0, 0, 0, .7}
+  },
+  ["Resource Counter Board Bottom"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 99,
+    SIZE       = 750,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 1.59, 0.00 },
+    FONTCOLOR  = { 0.7569, 0.6863, 0.1020, 255 },
+    COLOR      = { 0, 0, 0, 0 },
+    HOVERCOLOR = {0, 0, 0, .7}
+  },
+  ["Resource Counter Top"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 99,
+    SIZE       = 750,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 1.59, 0.00 },
+    FONTCOLOR  = { 0.7569, 0.6863, 0.1020, 255 },
+    COLOR      = { 0, 0, 0, 0 },
+    HOVERCOLOR = {0, 0, 0, .7}
+  },
+  ["Resource Counter Board Top"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 99,
+    SIZE       = 750,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 1.59, 0.00 },
+    FONTCOLOR  = { 0.7569, 0.6863, 0.1020, 255 },
+    COLOR      = { 0, 0, 0, 0 },
+    HOVERCOLOR = {0, 0, 0, .7}
+  },
   
 }
 
@@ -190,6 +230,7 @@ end -- end updateVal()
 
 function addOrSubtract(counterObj, _, isRightClick)
   modifyValue(isRightClick and -1 or 1)
+
   -- handle base damage counter actions
   if counterObj.getName():find("Damage") then
     handleBaseDamageCounter(counterObj)
@@ -198,11 +239,31 @@ end -- end addOrSubtract()
 
 
 function modifyValue(mod)
+  -- sets counter value, also runs resource counter sync
   val = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, val + tonumber(mod)))
   self.editButton({ index = 0, label = tostring(val), font_size = getFontSize(val) })
   updateSave()
+
+  -- handle resource counter actions
+  if self.getName():find("Resource Counter") then handleResourceCounter(self) end
 end -- end modifyValue()
 
+
+function setCounterpartValue(val, counterpart)
+  -- sets counter value on resource counter counterpart
+  newVal = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, val))
+  counterpart.editButton({ index = 0, label = tostring(newVal), font_size = getFontSize(newVal) })
+  counterpart.setVar('val', newVal)
+  counterpart.call("updateSave")
+end
+
+
+function setValue(newVal)
+  clampedVal = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, newVal))
+  self.editButton({ index = 0, label = tostring(clampedVal), font_size = getFontSize(clampedVal) })
+  val = clampedVal
+  updateSave()
+end
 
 function handleBaseDamageCounter(counterObj)
   -- this function handles the action of checking for and handling defeated bases
@@ -246,10 +307,13 @@ function handleBaseDamageCounter(counterObj)
     end
   end
 
-  if not baseFound then  
+  if not baseFound then
     return nil
   end
-  
+
+  -- if game not started yet, gracefully exit
+  if playerColor == "" then return end
+
   if val >= baseMaxHP then
     broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. foundBase.getName() .. "[-] has been destroyed!", "White")
     foundBase.setRotation(rot)
@@ -258,5 +322,20 @@ function handleBaseDamageCounter(counterObj)
     updateVal()
     updateSave()
   end
-
 end -- end handleBaseDamageCounter()
+
+
+function handleResourceCounter(self)  
+  -- handles synchronization of board & base resource counters
+  local counterpart = nil
+  if self.getName() == "Resource Counter Bottom" then
+    counterpart = Global.call("getObjectbyName", "Resource Counter Board Bottom")
+  elseif self.getName() == "Resource Counter Board Bottom" then
+    counterpart = Global.call("getObjectbyName", "Resource Counter Bottom")
+  elseif self.getName() == "Resource Counter Top" then
+    counterpart = Global.call("getObjectbyName", "Resource Counter Board Top")
+  elseif self.getName() == "Resource Counter Board Top" then
+    counterpart = Global.call("getObjectbyName", "Resource Counter Top")
+  end
+  setCounterpartValue(val, counterpart)
+end -- end handleResourceCounter()

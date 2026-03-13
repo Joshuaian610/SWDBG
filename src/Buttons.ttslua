@@ -32,7 +32,8 @@ function animateButtonGalaxyRow(button)
 
   Wait.time(function()
 
-    initPurchaseCardButtons(button)
+    if button.getName():find("Purchase") then initPurchaseCardButtons(button) end
+    if button.getName():find("Discard") then initRowDiscardButtons(button) end
 
   end, .5)
 end -- end animateButtonGalaxyRow()
@@ -113,7 +114,7 @@ function initEndTurnButton(button)
   button.clearButtons()
   button.createButton({
     click_function = "endTurn",
-    function_owner = padGalaxyDeck,
+    function_owner = self,
     label          = "",
     color          = { 1, 1, 1, 0 },
     hover_color    = { 1, 1, 1, 0.2 },
@@ -579,8 +580,8 @@ function primaryButtonAction(button, playercolor, _)
         button.setRotation(rotOpponentDIscard)
         button.setPosition(posOpponentDiscard)
         local newResourceCount = currentResourceCount - 2
-        counter.call('set_val', newResourceCount)
-        counterBoard.call('set_val', newResourceCount)
+        counter.call('setValue', newResourceCount)
+        counterBoard.call('setValue', newResourceCount)
         -- if used from row, draw replacement row card
         if not button.hasTag('bottom_owner') and not button.hasTag('top_owner') then
           drawGalaxyCard()
@@ -650,8 +651,8 @@ function primaryButtonAction(button, playercolor, _)
       end
       broadcastToAll(prefix .. "[b]Hutt Fighter[/b] ability used by [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-]., Hutt Fighter gains +2 Attack.", "White")
       currentResourceCount = currentResourceCount - 2
-      counter.call('set_val', currentResourceCount)
-      counterBoard.call('set_val', currentResourceCount)
+      counter.call('setValue', currentResourceCount)
+      counterBoard.call('setValue', currentResourceCount)
 
     elseif cardName == "Latts Razzi" then
       local bhCount = 0
@@ -1106,7 +1107,7 @@ function primaryButtonAction(button, playercolor, _)
     elseif cardName == "U-Wing" then
       if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
         broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]U-Wing[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] repairs 3 base damage.", "White")
-        padGalaxyDeck.call('repair_base', {playerArea="Red", count=3, tags=button.getTags()})
+        repairBase(3, button.getTags())
       else
         broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]U-Wing[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] did not repair base damage.", "White")
       end

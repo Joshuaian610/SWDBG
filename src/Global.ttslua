@@ -20,8 +20,8 @@ function onLoad()
   math.randomseed(os.time())
   Turns.enable = false
 
-  interactable = false
-  invis = true
+  interactable = true
+  invis = false
 
   -- set non interactables, run onSpawn stuff
   if interactable then
@@ -38,8 +38,8 @@ function onLoad()
 
   -- set always invisibles (rest need to see if game is in progress and will use game state to determine visibility)
   if invis then
-    getObjectbyName("Resource Counter Base Bottom").setInvisibleTo(allColors)
-    getObjectbyName("Resource Counter Base Top").setInvisibleTo(allColors)
+    getObjectbyName("Resource Counter Board Bottom").setInvisibleTo(allColors)
+    getObjectbyName("Resource Counter Board Top").setInvisibleTo(allColors)
     getObjectbyName("Bag Button Exile").setInvisibleTo(allColors)
   end
 
@@ -97,9 +97,9 @@ function onLoad()
   buttonDiscardRandomBottom = getObjectbyName("Button Discard Bottom")
   buttonDiscardRandomTop = getObjectbyName("Button Discard Top")
 
-  counterResourceBoardBottom = getObjectbyName("Resource Counter Base Bottom")
+  counterResourceBoardBottom = getObjectbyName("Resource Counter Board Bottom")
   counterResourceBottom = getObjectbyName("Resource Counter Bottom")
-  counterResourceBoardTop = getObjectbyName("Resource Counter Base Top")
+  counterResourceBoardTop = getObjectbyName("Resource Counter Board Top")
   counterResourceTop = getObjectbyName("Resource Counter Top")
   counterBaseBottom = getObjectbyName("Base Damage Counter Bottom")
   counterBaseTop = getObjectbyName("Base Damage Counter Top")
@@ -154,7 +154,7 @@ function onLoad()
     getObjectbyNameAndNotes("Button Discard", "11"),
     getObjectbyNameAndNotes("Button Discard", "12"),
   }
-
+  getObjectFromGUID()
   -- setup stuff
   buttonSetupGame = getObjectbyName("Button Setup Game")
 
@@ -346,8 +346,8 @@ function onObjectEnterZone(zone, obj)
         currentValue = currentValue + toAddResource
       end
 
-      counterPlayer.call('set_val', currentValue)
-      counterBoard.call('set_val', currentValue)
+      counterPlayer.call('setValue', currentValue)
+      counterBoard.call('setValue', currentValue)
     end
 
     -- create ship counters
@@ -473,8 +473,8 @@ function onObjectLeaveZone(zone, obj)
       end
       if currentValue < 0 then currentValue = 0 end
 
-      counter.call('set_val', currentValue)
-      counterBoard.call('set_val', currentValue)
+      counter.call('setValue', currentValue)
+      counterBoard.call('setValue', currentValue)
     end
 
     -- remove ship counter
@@ -542,7 +542,7 @@ function onObjectEnterContainer(container, obj)
   -- this function handles the broadcast of exiled cards
   -- done via onObjectEnterContainer to not miss manual drops into exile bag
   if container.getName() == "Exiled!" and obj.type == "Card" then
-    local bottomColor, topColor = padGalaxyDeck.call('getPlayerColors')    
+    local bottomColor, topColor = getPlayerColors()
     local ownerColor = (obj.hasTag('bottom_owner') and bottomColor or topColor)
     local cardName = obj.getName()
 

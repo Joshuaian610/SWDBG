@@ -3,14 +3,14 @@
 
 function addResource(area, count)
   -- this function handles adding a resource to both related counters simultaneously  
-  isBottom = (area == "bottom")
-  counter = isBottom and counterResourceBottom or counterResourceTop
-  counterBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
+  isBottom = (area == "bottom")  
+  counter = isBottom and getObjectbyName("Resource Counter Bottom") or getObjectbyName("Resource Counter Top")
+  counterBoard = isBottom and getObjectbyName("Resource Counter Board Bottom") or getObjectbyName("Resource Counter Board Top")
   local currentValue = counter.getVar('val')
   currentValue = currentValue + count
-  counter.call('set_val', currentValue)
-  counterBoard.call('set_val', currentValue)
-end -- end add_resource()
+  counter.call('setValue', currentValue)
+  counterBoard.call('setValue', currentValue)
+end -- end addResource()
 
 
 function addUnitForce(player, value)
@@ -43,7 +43,7 @@ function addUnitForce(player, value)
   -- handle removal of all XML ability buttons in case of multiple other XML ability buttons
   if cardName == "Temple Guardian" or cardName == "Inquisitor" or cardName == "Jedi Knight" or
   cardName == "Dark Side Agent" or cardName == "Lobot" or cardName == "Zam Wesell" then
-    padGalaxyDeck.call('remove_ability_buttons', {object=card})
+    removeAbilityButtons(card)
   end
 end -- end addUnitForce()
 
@@ -119,7 +119,7 @@ end -- end cardExhaust()
 
 
 function damageBase(isBottom, count, playerColor, faction)
-  -- handles damaging and movement of defeated  bases
+  -- handles damaging and movement of defeated bases
   local counter = isBottom and counterBaseBottom or counterBaseTop
   local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
   local isAI = checkIfAI()
@@ -131,7 +131,7 @@ function damageBase(isBottom, count, playerColor, faction)
   local baseFound = false -- boolean to determine if base object is found
   local foundBase = nil -- the base object that may or may not be found
 
-  counter.call('set_val', currentValue)
+  counter.call('setValue', currentValue)
 
   for _, obj in pairs(checkZone.getObjects()) do
     if obj.type == "Card" and obj.hasTag(faction .. '_base') then
@@ -150,44 +150,7 @@ function damageBase(isBottom, count, playerColor, faction)
     local posTop = { 29.50, 3.50, 21.00 }
     foundBase.setRotation(isBottom and rotBottom or rotTop)
     foundBase.setPositionSmooth((isBottom and posBottom or posTop), false, true)
-    counter.call('set_val', 0)
-  end
-end -- end damageBase()
-
-
-function damageBase(isBottom, count, playerColor, faction)
-  -- handles damaging and movement of defeated  bases
-  local counter = isBottom and counterBaseBottom or counterBaseTop
-  local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
-  local isAI = checkIfAI()
-  if isBottom and isAI then zone = zoneLeadersBases end
-  if faction == "rebellion" then faction = "rebel" end  
-  local currentValue = counter.getVar('val')
-  local currentValue = currentValue + count
-  local maxHP = nil
-  local baseFound = false -- boolean to determine if base object is found
-  local foundBase = nil -- the base object that may or may not be found
-
-  counter.call('set_val', currentValue)
-
-  for _, obj in pairs(checkZone.getObjects()) do
-    if obj.type == "Card" and obj.hasTag(faction .. '_base') then
-      maxHP = obj.getVar('max_hp')
-      baseFound = true
-      foundBase = obj
-    end
-  end
-  if not baseFound then log("damageBase() base not found!") return end
-  
-  if currentValue >= maxHP then
-    broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. foundBase.getName() .. "[-] has been destroyed!", "White")
-    local rotBottom = { 0.00, 180.00, 0.00 }
-    local rotTop = { 0.00, 0.00, 0.00 }
-    local posBottom = { 29.50, 3.50, -21.00 }
-    local posTop = { 29.50, 3.50, 21.00 }
-    foundBase.setRotation(isBottom and rotBottom or rotTop)
-    foundBase.setPositionSmooth((isBottom and posBottom or posTop), false, true)
-    counter.call('set_val', 0)
+    counter.call('setValue', 0)
   end
 end -- end damageBase()
 
@@ -247,11 +210,9 @@ function dealCard(playerArea, count)
 
   -- if original deal deck count was insufficient, refill deck & continue dealing
   if deckOrCardFound == false or countDeck < count then
-    log("countDeck: " .. countDeck)
-    log("count: " .. count)
     Wait.time(function()
 
-      for k, zoneObj in pairs(zoneGalaxyDiscard.getObjects()) do
+      for _, zoneObj in pairs(zoneDiscard.getObjects()) do
         if zoneObj.type == "Deck" then
           deckDeal = zoneObj
           deckDeal.flip()
@@ -449,7 +410,7 @@ function endTurn(button, _, _)
   local isAI = checkIfAI()
   local rotDiscard = isBottom and { 0, 180, 0 } or { 0, 0, 0 }
   local posDiscard = isBottom and { -8.50, 2.00, -31.00 } or { 8.50, 2.00, 31.00 }
-  local posDeck = isBottom and { -3.50, 2.00, -31.00 } or { 3.50, 2.00, 31.00 }
+  -- local posDeck = isBottom and { -3.50, 2.00, -31.00 } or { 3.50, 2.00, 31.00 }
 
   -- discard cards
   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
@@ -490,16 +451,16 @@ function endTurn(button, _, _)
   local counterResourceBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
 
   if not mygeetoInPlay then
-    counterResource.call('set_val', 0)
-    counterResourceBoard.call('set_val', 0)
+    counterResource.call('setValue', 0)
+    counterResourceBoard.call('setValue', 0)
 
   else
     local countResource = counterResource.getVar('val')
     broadcastToAll("Mygeeto is in play, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] resources have not been reset.", "White")
     Wait.time(function()
       
-      counterResource.call('set_val',  countResource)
-      counterResourceBoard.call('set_val',  countResource)
+      counterResource.call('setValue',  countResource)
+      counterResourceBoard.call('setValue',  countResource)
 
     end, 1)
   end
@@ -1279,8 +1240,8 @@ function purchaseCard(button, playerColor, altClick)
   if not forFree then
     if currentResources >= cardCost then
       newTotal = currentResources - cardCost
-      counter.call('set_val', newTotal)
-      counterBoard.call('set_val', newTotal)
+      counter.call('setValue', newTotal)
+      counterBoard.call('setValue', newTotal)
     end
   end
 
@@ -1476,7 +1437,7 @@ function repairBase(count, tags)
   local currentValue = counter.getVar('val')
   currentValue = currentValue - count
   if currentValue < 0 then currentValue = 0 end
-  counter.call('set_val', currentValue)
+  counter.call('setValue', currentValue)
 end -- end repairBase()
 
 
@@ -1585,26 +1546,21 @@ function setBoard(playerColor)
   end
 
   -- set end turn button visibility
-  buttonEndTurnBottom.setInvisibleTo(setBoardToBottom and {} or allColors)
-  buttonEndTurnTop.setInvisibleTo(setBoardToBottom and allColors or {})
+  getObjectbyName("Button End Turn Bottom").setInvisibleTo(setBoardToBottom and {} or allColors)
+  getObjectbyName("Button End Turn Top").setInvisibleTo(setBoardToBottom and allColors or {})
 
   -- get, position, and set turn tracker
-  local turnTracker = nil
-  for _, object in pairs(getObjects()) do
-    if object.hasTag('turnTracker') then
-      turnTracker = object
-    end
-  end
+  local turnTracker = getTurnTracker()
 
   local bottomFaction, topFaction = getPlayerAreas()
   local nextFaction = setBoardToBottom and bottomFaction or topFaction
   local stateID = nil
 
-  if nextFaction == "empire" then
+  if nextFaction == "Empire" then
     stateID = 1
     metConditionTrench = false
 
-  elseif nextFaction == "separatist" then
+  elseif nextFaction == "Separatist" then
     stateID = 2
     for _, zoneObj in pairs(zoneInPlay.getObjects()) do
       if zoneObj.hasTag(ownerTag) and zoneObj.hasTag('ship') then
@@ -1612,12 +1568,16 @@ function setBoard(playerColor)
       end
     end
 
-  elseif nextFaction == "rebellion" then
+  elseif nextFaction == "Rebellion" then
     stateID = 3
     metConditionTrench = false
 
-  elseif nextFaction == "republic" then
+  elseif nextFaction == "Republic" then
     stateID = 4
+    metConditionTrench = false
+  
+  elseif nextFaction == "Mandalorian" then
+    stateID = 5
     metConditionTrench = false
   end
 
@@ -1675,8 +1635,8 @@ function setBoard(playerColor)
     currentValue = 0
   end
 
-  counter.call('set_val', currentValue)
-  counterBoard.call('set_val', currentValue)
+  counter.call('setValue', currentValue)
+  counterBoard.call('setValue', currentValue)
 
   -- check for base, force search base deck if no base
   local baseCard = nil
