@@ -1,0 +1,39 @@
+function initGameSetupButton(obj)  
+  obj.createButton({
+    label          = "",
+    click_function = setupGame,
+    function_owner = self,
+    scale          = { 1.5, 1.5, 1.5 },
+    position       = { 0, 0.31, 0 },
+    height         = 650,
+    width          = 1950,
+    color          = { 1, 1, 1, 0 },
+    hover_color    = { 1, 1, 1, 0.4 },
+    tooltip        = "Click to Setup Game\n\nSelect at least one character, set your desired unlocks and ascension above, and then click this button to begin the game." 
+  })
+end
+
+function initClassSetupButton(obj)
+  local name = obj.getName()
+  local class, playerColor = name:match("^Button Setup%s+(%S+)%s+(%S+)$")
+  obj.createButton({
+    label          = "",
+    click_function = setupClass,
+    function_owner = self,
+    scale          = { 1.5, 1.5, 1.5 },
+    position       = { 0, 0.10, 0 },
+    height         = 650,
+    width          = 1950,
+    color          = { 1, 1, 1, 0 },
+    hover_color    = { 1, 1, 1, 0.4 },
+    tooltip        = "Click to Setup Game\n\nSelect at least one character, set your desired unlocks and ascension above, and then click this button to begin the game." 
+  })
+end
+
+function setupGame()
+  print("Setting up game")
+end
+
+function setupClass()
+  print("Setting up class")
+end

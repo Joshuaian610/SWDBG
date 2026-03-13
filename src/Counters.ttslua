@@ -1,0 +1,193 @@
+local MathLib = require("util/MathLib")
+
+local DATA     = {
+  ["Damage Counter Empire"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 20,
+    FONTSIZE   = 1000,
+    SIZE       = 725,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 0.36, 0.00 },
+    COLOR      = { 0.118, 0.53, 1, .8 },
+    HOVERCOLOR = { 0.118, 0.53, 1, .4 }
+  },
+  ["Damage Counter Separatist"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 20,
+    FONTSIZE   = 1000,
+    SIZE       = 725,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 0.36, 0.00 },
+    COLOR      = { 0.118, 0.53, 1, .8 },
+    HOVERCOLOR = { 0.118, 0.53, 1, .4 }
+  },
+  ["Damage Counter Rebellion"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 20,
+    FONTSIZE   = 1000,
+    SIZE       = 725,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 0.36, 0.00 },
+    COLOR      = { 0.856, 0.1, 0.094, .8 },
+    HOVERCOLOR = { 0.856, 0.1, 0.094, .4 }
+  },
+  ["Damage Counter Republic"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 20,
+    FONTSIZE   = 1000,
+    SIZE       = 725,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 0.36, 0.00 },
+    COLOR      = { 0.856, 0.1, 0.094, .8 },
+    HOVERCOLOR = { 0.856, 0.1, 0.094, .4 }
+  },
+  ["Damage Counter Mandalorian"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 20,
+    FONTSIZE   = 1000,
+    SIZE       = 725,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 0.36, 0.00 },
+    COLOR      = { 0.192, 0.701, 0.168, .8 },
+    HOVERCOLOR = { 0.192, 0.701, 0.168, .4 }
+  },
+  ["Base Damage Counter Bottom"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 20,
+    FONTSIZE   = 1000,
+    SIZE       = 725,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 0.36, 0.00 },
+    COLOR      = { 0.627, 0.125, 0.941, .8 },
+    HOVERCOLOR = { 0.627, 0.125, 0.941, .4 }
+  },
+  ["Base Damage Counter Top"] = {
+    MIN_VALUE  = 0,
+    MAX_VALUE  = 20,
+    FONTSIZE   = 1000,
+    SIZE       = 725,
+    SCALE      = { 1.00, 1.00, 1.00 },
+    POSITION   = { 0.00, 0.36, 0.00 },
+    COLOR      = { 0.627, 0.125, 0.941, .8 },
+    HOVERCOLOR = { 0.627, 0.125, 0.941, .4 }
+  },
+  
+}
+
+function onDestroy()
+  updateSave()
+end
+
+function updateSave()
+  self.script_state = val
+end
+
+function onLoad(savedData)
+  d = DATA[self.getName()]
+  val = tonumber(savedData) or 0
+
+  self.createButton({
+    label          = tostring(val),
+    click_function = "addOrSubtract",
+    function_owner = self,
+    scale          = d.SCALE or { 1.5, 1.5, 1.5 },
+    position       = d.POSITION or { 0, 0.06, 0 },
+    rotation       = d.ROTATION or { 0, 0, 0 },
+    height         = d.SIZE or 800,
+    width          = d.SIZE or 800,
+    font_size      = d.FONTSIZE or getFontSize(val),
+    font_color     = d.FONTCOLOR or { 1, 1, 1, 100 },
+    color          = d.COLOR or { 0, 0, 0, 0 },
+    hover_color    = d.HOVERCOLOR or { 0, 0, 0, 0 }
+  })
+
+
+  -- add context menu entries
+  self.addContextMenuItem("Add 5", function() updateVal(val + 5) end)
+  self.addContextMenuItem("Subtract 5", function() updateVal(val - 5) end)
+  self.addContextMenuItem("Add 10", function() updateVal(val + 10) end)
+  self.addContextMenuItem("Subtract 10", function() updateVal(val - 10) end)
+end -- end onLoad()
+
+
+function getFontSize(val)
+  local fontSize = (d.SIZE or 800) * 0.95
+  if val > 9 then
+    fontSize = fontSize * 0.9
+  end
+  return fontSize
+end -- end getFontSize()
+
+
+function updateVal(newVal)
+  if tonumber(newVal) then
+    val = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, newVal))
+    self.editButton({ index = 0, label = tostring(val), font_size = getFontSize(val) })
+    updateSave()
+  end
+end -- end updateVal()
+
+
+function addOrSubtract(_, _, isRightClick)
+  modifyValue(isRightClick and -1 or 1)
+end -- end addOrSubtract()
+
+
+function modifyValue(mod)
+  log("mod: " .. mod)
+  val = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, val + tonumber(mod)))
+  self.editButton({ index = 0, label = tostring(val), font_size = getFontSize(val) })
+  updateSave()
+end -- end modifyValue()
+
+
+function handleBaseDamageCounter(obj)
+  -- this function handles the action of checking for and handling defeated bases
+
+    -- check to see max HP on related base, discard & reset counter if destroyed
+  local baseMaxHP = 999
+  local faction = nil
+  local playerColor = nil
+  local bottomFaction, topFaction = padGalaxyDeck.call('get_playerareas')
+  local bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
+  local baseFound = false
+  local foundBase = nil
+
+  if bottomFaction == 'Rebellion' then bottomFaction = 'rebel' end
+  if topFaction == 'Rebellion' then topFaction = 'rebel' end
+
+  local posCounter = self.getPosition()
+
+  if posCounter.z < 0 then
+    faction = bottomFaction
+    playerColor = topColor
+    zone = getObjectbyName("Zone Bases Bottom")
+    rot = { 0.00, 0.00, 0.00 }
+    pos = { 29.50, 3.50, 21.00 }
+  else
+    faction = topFaction
+    playerColor = bottomColor
+    zone = getObjectbyName("Zone Bases Top")
+    rot = { 0.00, 180.00, 0.00 }
+    pos = { 29.50, 3.50, -21.00 }
+  end
+  for _, object in pairs(zone.getObjects()) do
+    if object.type == "Card" and object.hasTag(faction .. '_base') then
+      baseMaxHP = object.getVar('max_hp')
+      baseFound  = true
+      foundBase  = object
+    end
+  end
+  if not baseFound then
+    return nil
+  end
+  if val >= baseMaxHP then
+    broadcastToAll(foundBase.getName() .. " has been destroyed!", color)
+    foundBase.setRotation(rot)
+    foundBase.setPositionSmooth(pos, false, true)
+    val = 0
+    updateVal()
+    updateSave()
+  end
+
+end -- end handleBaseDamageCounter()

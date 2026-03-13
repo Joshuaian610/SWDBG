@@ -61,14 +61,12 @@ function cancelCardAction(button, playerColor, _)
     nextCardTarkin = false
     button.removeTag('nextCardTarkin')
 
-  elseif cardName == 'Princess Leia' then    
+  elseif cardName == 'Princess Leia' then
     nextCardLeia = false
-    button.removeTag('nextCardLeia')  
 
   elseif cardName == 'Underworld Contaact' then
     nextCardContact = false
-    button.removeTag('next_card_contact')
-
+    
   elseif cardName == 'Nute Gunray' then
     nextCardNute = false
 
@@ -472,6 +470,7 @@ function endTurn(button, _, _)
     -- handle tarkin exile
     if zoneObj.hasTag('tarkin_exile') then
       zoneObj.setDescription("")
+      zoneObj.removeTag('tarkin_exile')
       zoneObj.highlightOff()
       exileCard("Blue", zoneObj)
     end
@@ -1161,7 +1160,7 @@ function purchaseCard(button, playerColor, altClick)
       cardCost = cardData[cardObj.getName()].cost
       baseCardCost = cardCost
       -- if tarkin ability adding card, check if empire card
-      if nextCardTarkin and not zoneObj.hasTag('empire') then        
+      if nextCardTarkin and not zoneObj.hasTag('empire') then
         broadcastToAll(prefix .. "Next card purchased for free must be [" .. Color.fromString(playerColor) .. "]Empire[-] card, using [b]Grand Moff Tarkin[/b] ability", "White")
         return
       end
@@ -1352,7 +1351,7 @@ function purchaseCard(button, playerColor, altClick)
   if not isAI or (isBottom and isAI) then
     for _, zoneObj in ipairs(zoneInPlay.getObjects()) do
       if zoneObj.getName() == "Hondo Onaka" and
-      (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then        
+      (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then
         if costOver4 then
           metConditionHondo = true
           zoneObj.highlightOn(playerColor)
@@ -1452,19 +1451,7 @@ function purchaseCard(button, playerColor, altClick)
   nextCardContact = false
   nextCardNute = false
 
-  for _, obj in ipairs(getObjects()) do    
-    if obj.hasTag('nextCardLeia') then
-      removeAbilityButtons(obj)
-      if obj.hasTag('nextCardLeia') then
-        obj.removeTag('nextCardLeia')
-      end
-    end
-    if obj.hasTag('nextCardTarkin') then
-      removeAbilityButtons(obj)
-      if obj.hasTag('nextCardTarkin') then
-        obj.removeTag('nextCardTarkin')
-      end
-    end
+  for _, obj in ipairs(getObjects()) do
     if obj.hasTag('nextCardContact') then
       removeAbilityButtons(obj)
       if obj.hasTag('nextCardContact') then

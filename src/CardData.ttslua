@@ -196,9 +196,6 @@ cardData                        = {
     maxHP                       = 7,
   },
 
-
-
-
   -- SEPARATIST
   
   ["B1 Battle Droid"]           = {
@@ -1362,4 +1359,64 @@ cardData                        = {
     faction                     = "Neutral",
     attackTTip                  = "Gain 2 Resources",
   },
+}
+
+baseHPData             = {
+
+  -- EMPIRE
+  ["Lothal"]           = 8,
+  ["Corellia"]         = 10,
+  ["Kessel"]           = 12,
+  ["Kafrene"]          = 14,
+  ["Mustafar"]         = 14, -- also 14 for Separatists
+  ["Ord Mantell"]      = 14,
+  ["Coruscant"]        = 16, -- also 16 for Republic
+  ["Death Star"]       = 16,
+  ["Endor"]            = 16,
+  ["Rodia Empire"]     = 16, -- conflict, needs faction identifier
+
+  -- SEPARATIST
+  ["Xorrn"]            = 8,
+  ["Dac"]              = 10,
+  ["Onderon"]          = 12,
+  ["Cato Neimoidia"]   = 14,
+  ["Felucia"]          = 14,
+  ["Lola Sayu"]        = 14,
+  ["Serenno"]          = 14,
+  ["Geonosis"]         = 16,
+  ["Mygeeto"]          = 18,
+
+  -- REBELLION
+  ["Dantooine"]        = 8,
+  ["Mon Cala"]         = 10,
+  ["Dagobah"]          = 12,
+  ["Alderaan"]         = 14,
+  ["Bespin"]           = 14,
+  ["Hoth"]             = 14,
+  ["Jedha"]            = 14,
+  ["Tatooine"]         = 14, -- also 14 for Mandalorian
+  ["Sullust"]          = 16,
+  ["Yavin 4"]          = 16,
+
+  -- REPUBLIC
+  ["Rishi"]            = 8,
+  ["Anaxes"]           = 10,
+  ["Kashyyyk"]         = 12,
+  ["Naboo"]            = 12,
+  ["Christophsis"]     = 14,
+  ["Ilum"]             = 14,
+  ["Kamino"]           = 14,
+  ["Rodia Republic"]   = 14, -- conflict, needs faction identifier
+  ["Ryloth"]           = 16,
+
+  -- MANDALORIAN
+  ["Concord Dawn"]     = 8,
+  ["Mandalore"]        = 10,
+  ["Concordia"]        = 12,
+  ["Nevarro"]          = 14,
+  ["Trask"]            = 14,
+  ["Tython"]           = 14,
+  ["Arvala VII"]       = 16,
+  ["Glavis Ringworld"] = 16,
+  ["Kalevala"]         = 16,
 }

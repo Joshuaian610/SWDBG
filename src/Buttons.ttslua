@@ -1005,7 +1005,7 @@ function primaryButtonAction(button, playercolor, _)
     elseif cardName == "Grand Moff Tarkin" then
       nextCardTarkin = true
       broadcastToAll(prefix .. "[b]Grand Moff Tarkin[/b] ability used. [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] may right click purchase button to add an [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card in the galaxy row to hand.", "White")
-      Wait.time(function() broadcastToAll(prefix .. "Next purchased card will be purchased for free, added to [" .. Color.fromString(playerColor):toHex() .. "]Empire's[-] hand, and exiled at the end of the turn.", "White") end, 1)
+      Wait.time(function() broadcastToAll(prefix .. "Next purchased card will be purchased for free, added to [" .. Color.fromString(playerColor):toHex() .. "]Empire's[-] hand, and exiled at the end of the turn.", "White") end, 2)
 
 
 ----- REBELLION PRIMARY ACTION BUTTONS -----
@@ -1164,7 +1164,7 @@ function primaryButtonAction(button, playercolor, _)
         
           broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] while [b]Princess Leia[/b] ability used, the purchased [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card will go to top of deck.", "White")
 
-        end,1)
+        end, 2)
       end
 
     elseif cardName == "Millenium Falcon" then
