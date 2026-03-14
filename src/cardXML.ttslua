@@ -20,7 +20,10 @@ function initCardXML(card)
   end
   local rotSec = card.hasTag('unit') and "0 0 180" or "0 0 90"
   local posSec = card.hasTag('unit') and "-23 175 -30" or "133 75 -30"
+  local rotForce = "0 0 180"
+  local posForce = "40 -43 -30"
   local clickFunc = "Global/buttonActionXML(" .. cardGUID .. ")"
+  local clickFuncForce = "Global/addUnitForce(" .. cardGUID .. ")"
 
   local abilityButtonXML = {
 
@@ -709,9 +712,9 @@ function initCardXML(card)
         id                = "force_blue",
         active            = "false",
         height            = "40",
-        width             = buttonWidth,
-        position          = posPri,
-        rotation          = rotPri,
+        width             = "40",
+        position          = posForce,
+        rotation          = rotForce,
         showAnimation     = "Grow",
         hideAnimation     = "Shrink",
         animationDuration = ".25"
@@ -720,7 +723,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = clickFunc,
+            onClick       = clickFuncForce,
             image         = "Force Blue"
           }
         }
@@ -733,9 +736,9 @@ function initCardXML(card)
         id                = "force_orange",
         active            = "false",
         height            = "40",
-        width             = buttonWidth,
-        position          = posPri,
-        rotation          = rotPri,
+        width             = "40",
+        position          = posForce,
+        rotation          = rotForce,
         showAnimation     = "Grow",
         hideAnimation     = "Shrink",
         animationDuration = ".25"
@@ -744,7 +747,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = clickFunc,
+            onClick       = clickFuncForce,
             image         = "Force Orange"
           }
         }
@@ -757,9 +760,9 @@ function initCardXML(card)
         id                = "force_purple",
         active            = "false",
         height            = "40",
-        width             = buttonWidth,
-        position          = posPri,
-        rotation          = rotPri,
+        width             = "40",
+        position          = posForce,
+        rotation          = rotForce,
         showAnimation     = "Grow",
         hideAnimation     = "Shrink",
         animationDuration = ".25"
@@ -768,7 +771,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = clickFunc,
+            onClick       = clickFuncForce,
             image         = "Force Purple"
           }
         }
@@ -781,9 +784,9 @@ function initCardXML(card)
         id                = "force_red",
         active            = "false",
         height            = "40",
-        width             = buttonWidth,
-        position          = posPri,
-        rotation          = rotPri,
+        width             = "40",
+        position          = posForce,
+        rotation          = rotForce,
         showAnimation     = "Grow",
         hideAnimation     = "Shrink",
         animationDuration = ".25"
@@ -792,7 +795,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = clickFunc,
+            onClick       = clickFuncForce,
             image         = "Force Red"
           }
         }
@@ -805,9 +808,9 @@ function initCardXML(card)
         id                = "force_green",
         active            = "false",
         height            = "40",
-        width             = buttonWidth,
-        position          = posPri,
-        rotation          = rotPri,
+        width             = "40",
+        position          = posForce,
+        rotation          = rotForce,
         showAnimation     = "Grow",
         hideAnimation     = "Shrink",
         animationDuration = ".25"
@@ -816,7 +819,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = clickFunc,
+            onClick       = clickFuncForce,
             image         = "Force Green"
           }
         }
@@ -1618,8 +1621,8 @@ function initCardXML(card)
 
     -- Insert force buttons
     if card.hasTag("add_force_button") then
-      table.insert(finalXML, forceButtonXML[buttonColor])
-      table.insert(finalImg, forceButtonImg[buttonColor])
+      table.insert(finalXML, abilityButtonXML["Force " .. buttonColor])
+      table.insert(finalImg, abilityButtonImg["Force " .. buttonColor])
     end
 
     -- log("\nfinalImg:")

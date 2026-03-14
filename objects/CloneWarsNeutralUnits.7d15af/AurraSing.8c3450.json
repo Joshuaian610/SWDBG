@@ -22,28 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Force Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086174365/A65556DB7C107631AE894811FD3A315B927CBE24/"
-    },
-    {
-      "Name": "Force Purple",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086175592/5E499E4478784CF279356E6F018E52B2283B9E6A/"
-    },
-    {
-      "Name": "Force Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098252100/A3FA49EDF4C5F7B8562A79FE9CDDD4D4ED2ECD31/"
-    },
-    {
-      "Name": "Force Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -55,8 +33,8 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
+  "LuaScript": "",
   "LuaScriptState": "",
-  "LuaScript_path": "CloneWarsNeutralUnits.7d15af/AurraSing.8c3450.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Aurra Sing",
@@ -72,16 +50,16 @@
   ],
   "Tooltip": true,
   "Transform": {
-    "posX": 23.057,
-    "posY": 3.489,
-    "posZ": 10.605,
-    "rotX": 0,
-    "rotY": 90,
-    "rotZ": 0,
+    "posX": 99.934,
+    "posY": 2.983,
+    "posZ": 43.128,
+    "rotX": 17,
+    "rotY": 181,
+    "rotZ": 2,
     "scaleX": 2.1,
     "scaleY": 1,
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "CloneWarsNeutralUnits.7d15af/AurraSing.8c3450.xml"
+  "XmlUI": ""
 }

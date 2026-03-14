@@ -13,22 +13,22 @@ function addResource(area, count)
 end -- end addResource()
 
 
-function addUnitForce(player, value)
+function addUnitForce(player, GUID)
   -- handles the manipulation of the force track
   -- called via XML force ability buttons on cards
-  local card = getObjectFromGUID(value)
+  local card = getObjectFromGUID(GUID)
   local playerColor = player.color
   local isBottom = card.hasTag('bottom_owner') and true or false
-  local buttonForceTrack = isBottom and buttonForceBottom or buttonForceTop
+  local buttonForceTrack = isBottom and getObjectbyName("Button Force Bottom") or getObjectbyName("Button Force Top")
   local cardName = card.getName()
-
-  broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. cardName .. "[-] has generated Force.", "White")
+  local count = nil
 
   -- 1 force value cards
   if cardName == "Dark Side Agent" or cardName == "Inquisitor" or cardName == "Temple Guardian" or cardName == "Jedi Knight" or
   cardName == "Underworld Contact" or cardName == "Aurra Sing" or cardName == "Wat Tambor" or cardName == "Ahsoka Tano" or
   cardName == "Magnaguard" or cardName == "Aayla Secura" or cardName == "Anakin Skywalker" then
     moveForceTrack(buttonForceTrack, 1)
+    count = 1
 
   -- 2 force value cards
   elseif cardName == "Lobot" or cardName == "Zam Wesell" or cardName == "Jabba the Hutt" or cardName == "Count Dooku" or
@@ -36,7 +36,12 @@ function addUnitForce(player, value)
   cardName == "Luke Skywalker" or cardName == "Princess Leia" or cardName == "Grand Moff Tarkin" or cardName == "Chirrut Imwe" or
   cardName == "Obi-Wan Kenobi" then
     moveForceTrack(buttonForceTrack, 2)
+    count = 2
   end
+
+  local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
+
+  broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. cardName .. "[-] has generated Force x" .. count .. ".", "White")
 
   removeForceButtons(card)
 

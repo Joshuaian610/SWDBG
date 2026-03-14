@@ -325,11 +325,11 @@ end -- end removeAbilityButtons()
 
 
 function removeForceButtons(obj)
-  obj.UI.hide('force_button_blue')
-  obj.UI.hide('force_button_purple')
-  obj.UI.hide('force_button_orange')
-  obj.UI.hide('force_button_red')  
-  obj.UI.hide('force_button_green')
+  obj.UI.hide('force_blue')
+  obj.UI.hide('force_purple')
+  obj.UI.hide('force_orange')
+  obj.UI.hide('force_red')  
+  obj.UI.hide('force_green')
 end -- end removeForceButtons()
 
 
