@@ -759,7 +759,7 @@ function setupGame(button, _, _)
 
   elseif getObjectbyName("Button Galaxy Deck Expansion").getGMNotes() == "enabled" then
     deckPlacementGalaxy = getObjectbyName("Clone Wars Neutral Units")
-    deckPlacementShips = getObjectbyName("Original Neutral Ships")
+    deckPlacementShips = getObjectbyName("Clone Wars Neutral Ships")
     deckRemovalGalaxy = getObjectbyName("Original Neutral Units")
     deckRemovalShips = getObjectbyName("Original Neutral Ships")
     deckPlacementOuterRim = getObjectbyName("Clone Wars Outer Rim Pilot Deck")

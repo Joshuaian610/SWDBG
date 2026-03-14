@@ -457,6 +457,9 @@ end -- end kenobiMace()
 
 
 function primaryButtonAction(button, playercolor)
+
+  log("primaryButtonAction(" .. button.getName() .. ", " .. playercolor .. ") IS RUNNING")
+
   local isBottom = button.hasTag('bottom_owner')
   local isTop = button.hasTag('top_owner')
   local bottomColor, topColor = getPlayerColors()
@@ -833,14 +836,14 @@ function primaryButtonAction(button, playercolor)
         end
       end
 
-    elseif cardName == "Hondo Onaka" then
+    elseif cardName == "Hondo Ohnaka" then
       if metConditionHondo then
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .." has met [b]Hondo Onaka[/b] ability condition, and draws a card.", "White")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .."[-] has met [b]Hondo Ohnaka[/b] ability condition, and draws a card.", "White")
         dealCard(area, 1)
         metConditionHondo = false
         button.highlightOff()
       else
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has not met [b]Hondo Onaka[/b] ability condition, no card drawn.", "White")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has not met [b]Hondo Ohnaka[/b] ability condition, no card drawn.", "White")
       end
 
 
@@ -1854,13 +1857,11 @@ function primaryButtonAction(button, playercolor)
       end
     end
     
-  if cardName ~= "Hondo Onaka" then
-    if button.hasTag('buttons') then
-      button.clearButtons()
+  if button.hasTag('buttons') then
+    button.clearButtons()
 
-    elseif button.hasTag('ability_button_large') or button.hasTag('ability_button_sec') then
-      removeAbilityButtons(button)
-    end
+  elseif button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('ability_button_sec') then
+    removeAbilityButtons(button)
   end
 
   if cardName == "Temple Guardian" or cardName == "Inquisitor" or cardName == "Jedi Knight" or
@@ -2457,8 +2458,8 @@ function bhAction(button, _, _)
     broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. attackFaction .. "[-] has " .. attackAction .. " [b]Fett's Firespray: gained 7 Resources.", color)
     addResource(area, 7)
   
-  elseif cardName == "Hondo Onaka" then
-    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Hondo Onaka: gained 8 Resources.", color)
+  elseif cardName == "Hondo Ohnaka" then
+    broadcastToAll(prefix .. "[" .. Color.fromString(attackFactionColor):toHex() .. "]" .. capitalizedAttackFaction .. "[-] has " .. attackAction .. " [b]Hondo Ohnaka: gained 8 Resources.", color)
     addResource(area, 8)
   end
   

@@ -1228,8 +1228,8 @@ cardData                        = {
   },
 
   ["Hondo Ohnaka"]              = {
-    cost                        = 4,
-    produce                     = 0,
+    cost                        = 8,
+    produce                     = 4,
     force                       = 0,
     fight                       = 4,
     faction                     = "Neutral",
@@ -1308,7 +1308,7 @@ cardData                        = {
     attackTTip                  = "Gain 1 Resource",
   },
 
-  ["Zam Wessell"]               = {
+  ["Zam Wesell"]               = {
     cost                        = 3,
     produce                     = 0,
     force                       = 0,

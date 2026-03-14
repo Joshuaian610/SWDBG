@@ -1308,11 +1308,11 @@ function purchaseCard(button, playerColor, altClick)
     removeAbilityButtons(getObjectbyName("Princess Leia"))
   end
 
-  -- handle Hondo Onaka
+  -- handle Hondo Ohnaka
   local costOver4 = baseCardCost > 3 and true or false
   if not isAI or (isBottom and isAI) then
     for _, zoneObj in ipairs(zoneInPlay.getObjects()) do
-      if zoneObj.getName() == "Hondo Onaka" and
+      if zoneObj.getName() == "Hondo Ohnaka" and
       (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then
         if costOver4 then
           metConditionHondo = true
