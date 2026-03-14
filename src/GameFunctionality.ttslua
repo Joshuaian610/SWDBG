@@ -471,7 +471,7 @@ function endTurn(button, _, _)
 
   -- deal new hand
   local zoneDeck = isBottom and zoneDeckBottom or zoneDeckTop
-  local zoneGalaxyDiscard = isBottom and zoneDiscardBottom or zoneDiscardTop
+  local zoneDiscard = isBottom and zoneDiscardBottom or zoneDiscardTop
   
   Wait.time(function()
 

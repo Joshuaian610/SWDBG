@@ -1,6 +1,9 @@
 -- this require page will contain the XML data and functions to manage the XML card buttons
 
 function initCardXML(card)
+
+  log("initCardXML(" .. card.getName() .. ") IS RUNNING")
+
   local isBottom = card.hasTag("bottom_owner") and true or false
   local bottomColor, topColor = getPlayerColors()
   local buttonColor = isBottom and bottomColor or topColor
@@ -8,20 +11,27 @@ function initCardXML(card)
   local finalXML = {}
   local finalImg = {}
   local rotPri = card.hasTag('unit') and "0 0 180" or "0 0 90"
+  -- default posPri, buttonWidth assumes multiple button config
   local posPri = card.hasTag('unit') and "63 175 -20" or "133 -75 -30"
+  -- check card tags to determine XML UI scheme on card
+  if card.hasTag('XML1Button') then
+    posPri = card.hasTag('unit') and "0 175 -20" or "0 -75 -30"
+    buttonWidth = 150
+  end
   local rotSec = card.hasTag('unit') and "0 0 180" or "0 0 90"
   local posSec = card.hasTag('unit') and "-23 175 -30" or "133 75 -30"
+  local clickFunc = "Global/buttonActionXML(" .. cardGUID .. ")"
 
-  local abilityButtonXML  = {
+  local abilityButtonXML = {
 
     -- LARGE ABILITY BUTTONS
-    ["Ability Large Blue "]              = {
+    ["Ability Large Blue"] = {
       tag                 = "Panel",
       attributes          = {
         id                = "ability_button_blue_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -32,7 +42,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Large Blue"
           }
         }
@@ -45,7 +55,7 @@ function initCardXML(card)
         id                = "ability_button_gold_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posSec,
         rotation          = rotSec,
         showAnimation     = "Grow",
@@ -56,7 +66,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Large Gold"
           }
         }
@@ -69,7 +79,7 @@ function initCardXML(card)
         id                = "ability_button_orange_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -80,7 +90,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Large Orange"
           }
         }
@@ -93,7 +103,7 @@ function initCardXML(card)
         id                = "ability_button_purple_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -104,7 +114,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Large Purple"
           }
         }
@@ -117,7 +127,7 @@ function initCardXML(card)
         id                = "ability_button_red_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -128,7 +138,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Large Red"
           }
         }
@@ -141,7 +151,7 @@ function initCardXML(card)
         id                = "ability_button_green_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -152,7 +162,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Large Green"
           }
         }
@@ -166,7 +176,7 @@ function initCardXML(card)
         id                = "ability_button_blue_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -177,7 +187,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Small Blue"
           }
         }
@@ -190,7 +200,7 @@ function initCardXML(card)
         id                = "ability_button_gold_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posSec,
         rotation          = rotSec,
         showAnimation     = "Grow",
@@ -201,7 +211,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Small Gold"
           }
         }
@@ -214,7 +224,7 @@ function initCardXML(card)
         id                = "ability_button_orange_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -225,7 +235,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Small Orange"
           }
         }
@@ -238,7 +248,7 @@ function initCardXML(card)
         id                = "ability_button_purple_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -249,7 +259,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Small Purple"
           }
         }
@@ -262,7 +272,7 @@ function initCardXML(card)
         id                = "ability_button_red_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -273,7 +283,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Small Red"
           }
         }
@@ -286,7 +296,7 @@ function initCardXML(card)
         id                = "ability_button_green_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -297,7 +307,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Small Green"
           }
         }
@@ -311,7 +321,7 @@ function initCardXML(card)
         id                = "ability_button_cancel",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -322,7 +332,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Ability Cancel"
           }
         }
@@ -336,7 +346,7 @@ function initCardXML(card)
         id                = "draw_blue",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -347,7 +357,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Draw Blue"
           }
         }
@@ -360,7 +370,7 @@ function initCardXML(card)
         id                = "draw_orange",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -371,7 +381,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Draw Orange"
           }
         }
@@ -384,7 +394,7 @@ function initCardXML(card)
         id                = "draw_purple",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -395,7 +405,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Draw Purple"
           }
         }
@@ -408,7 +418,7 @@ function initCardXML(card)
         id                = "draw_red",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -419,7 +429,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Draw Red"
           }
         }
@@ -432,7 +442,7 @@ function initCardXML(card)
         id                = "draw_green",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -443,7 +453,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Draw Green"
           }
         }
@@ -457,7 +467,7 @@ function initCardXML(card)
         id                = "discard_blue",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -468,7 +478,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Discard Blue"
           }
         }
@@ -481,7 +491,7 @@ function initCardXML(card)
         id                = "discard_orange",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -492,7 +502,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Discard Orange"
           }
         }
@@ -505,7 +515,7 @@ function initCardXML(card)
         id                = "discard_purple",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -516,7 +526,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Discard Purple"
           }
         }
@@ -529,7 +539,7 @@ function initCardXML(card)
         id                = "discard_red",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -540,7 +550,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Discard Red"
           }
         }
@@ -553,7 +563,7 @@ function initCardXML(card)
         id                = "discard_green",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -564,7 +574,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Discard Green"
           }
         }
@@ -578,7 +588,7 @@ function initCardXML(card)
         id                = "exile_blue",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -589,7 +599,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Exile Blue"
           }
         }
@@ -602,7 +612,7 @@ function initCardXML(card)
         id                = "exile_orange",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -613,7 +623,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Exile Orange"
           }
         }
@@ -626,7 +636,7 @@ function initCardXML(card)
         id                = "exile_purple",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -637,7 +647,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Exile Purple"
           }
         }
@@ -650,7 +660,7 @@ function initCardXML(card)
         id                = "exile_red",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -661,7 +671,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Exile Red"
           }
         }
@@ -674,7 +684,7 @@ function initCardXML(card)
         id                = "exile_green",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -685,7 +695,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Exile Green"
           }
         }
@@ -699,7 +709,7 @@ function initCardXML(card)
         id                = "force_blue",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -710,7 +720,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Force Blue"
           }
         }
@@ -723,7 +733,7 @@ function initCardXML(card)
         id                = "force_orange",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -734,7 +744,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Force Orange"
           }
         }
@@ -747,7 +757,7 @@ function initCardXML(card)
         id                = "force_purple",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -758,7 +768,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Force Purple"
           }
         }
@@ -771,7 +781,7 @@ function initCardXML(card)
         id                = "force_red",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -782,7 +792,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Force Red"
           }
         }
@@ -795,7 +805,7 @@ function initCardXML(card)
         id                = "force_green",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -806,7 +816,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Force Green"
           }
         }
@@ -820,7 +830,7 @@ function initCardXML(card)
         id                = "repair_blue_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -831,7 +841,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Large Blue"
           }
         }
@@ -844,7 +854,7 @@ function initCardXML(card)
         id                = "repair_orange_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -855,7 +865,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Large Orange"
           }
         }
@@ -868,7 +878,7 @@ function initCardXML(card)
         id                = "repair_purple_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -879,7 +889,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Large Purple"
           }
         }
@@ -892,7 +902,7 @@ function initCardXML(card)
         id                = "repair_red_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -903,7 +913,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Large Red"
           }
         }
@@ -916,7 +926,7 @@ function initCardXML(card)
         id                = "repair_green_large",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -927,7 +937,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Large Green"
           }
         }
@@ -941,7 +951,7 @@ function initCardXML(card)
         id                = "repair_blue_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -952,7 +962,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Small Blue"
           }
         }
@@ -965,7 +975,7 @@ function initCardXML(card)
         id                = "repair_orange_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -976,7 +986,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Small Orange"
           }
         }
@@ -989,7 +999,7 @@ function initCardXML(card)
         id                = "repair_purple_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1000,7 +1010,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Small Purple"
           }
         }
@@ -1013,7 +1023,7 @@ function initCardXML(card)
         id                = "repair_red_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1024,7 +1034,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Small Red"
           }
         }
@@ -1037,7 +1047,7 @@ function initCardXML(card)
         id                = "repair_green_small",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1048,7 +1058,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Repair Small Green"
           }
         }
@@ -1062,7 +1072,7 @@ function initCardXML(card)
         id                = "reveal_blue",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1073,7 +1083,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Reveal Blue"
           }
         }
@@ -1086,7 +1096,7 @@ function initCardXML(card)
         id                = "reveal_orange",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1097,7 +1107,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Reveal Orange"
           }
         }
@@ -1110,7 +1120,7 @@ function initCardXML(card)
         id                = "reveal_purple",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1121,7 +1131,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Reveal Purple"
           }
         }
@@ -1134,7 +1144,7 @@ function initCardXML(card)
         id                = "reveal_red",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1145,7 +1155,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Reveal Red"
           }
         }
@@ -1158,7 +1168,7 @@ function initCardXML(card)
         id                = "reveal_green",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1169,7 +1179,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Reveal Green"
           }
         }
@@ -1183,7 +1193,7 @@ function initCardXML(card)
         id                = "attack_blue",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1194,7 +1204,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Attack Blue"
           }
         }
@@ -1207,7 +1217,7 @@ function initCardXML(card)
         id                = "attack_orange",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1218,7 +1228,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Attack Orange"
           }
         }
@@ -1231,7 +1241,7 @@ function initCardXML(card)
         id                = "attack_purple",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1242,7 +1252,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Attack Purple"
           }
         }
@@ -1255,7 +1265,7 @@ function initCardXML(card)
         id                = "attack_red",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1266,7 +1276,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Attack Red"
           }
         }
@@ -1279,7 +1289,7 @@ function initCardXML(card)
         id                = "attack_green",
         active            = "false",
         height            = "40",
-        width             = "85",
+        width             = buttonWidth,
         position          = posPri,
         rotation          = rotPri,
         showAnimation     = "Grow",
@@ -1290,112 +1300,13 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = "buttonActionXML(" .. cardGUID .. ")",
+            onClick       = clickFunc,
             image         = "Attack Green"
           }
         }
       }
     },
-
   }
-
-  -- local forceButtonXML    = {
-  --   ["Blue"] = {
-  --     tag                 = "Panel",
-  --     attributes          = {
-  --       id                = "force_button_blue",
-  --       active            = "false",
-  --       height            = "40",
-  --       width             = "40",
-  --       position          = "-87 175 -30",
-  --       rotation          = "0 0 180",
-  --       showAnimation     = "Grow",
-  --       hideAnimation     = "Shrink",
-  --       animationDuration = ".25"
-  --     },
-  --     children            = {
-  --       {
-  --         tag             = "Button",
-  --         attributes      = {
-  --           onClick       = "addUnitForce(" .. cardGUID .. ")",
-  --           image         = "Force Blue"
-  --         }
-  --       }
-  --     }
-  --   },
-
-  --   ["Orange"] = {
-  --     tag                 = "Panel",
-  --     attributes          = {
-  --       id                = "force_button_orange",
-  --       active            = "false",
-  --       height            = "40",
-  --       width             = "40",
-  --       position          = "-87 175 -30",
-  --       rotation          = "0 0 180",
-  --       showAnimation     = "Grow",
-  --       hideAnimation     = "Shrink",
-  --       animationDuration = ".25"
-  --     },
-  --     children            = {
-  --       {
-  --         tag             = "Button",
-  --         attributes      = {
-  --           onClick       = "addUnitForce(" .. cardGUID .. ")",
-  --           image         = "Force Orange"
-  --         }
-  --       }
-  --     }
-  --   },
-
-  --   ["Purple"] = {
-  --     tag                 = "Panel",
-  --     attributes          = {
-  --       id                = "force_button_purple",
-  --       active            = "false",
-  --       height            = "40",
-  --       width             = "40",
-  --       position          = "-87 175 -30",
-  --       rotation          = "0 0 180",
-  --       showAnimation     = "Grow",
-  --       hideAnimation     = "Shrink",
-  --       animationDuration = ".25"
-  --     },
-  --     children            = {
-  --       {
-  --         tag             = "Button",
-  --         attributes      = {
-  --           onClick       = "addUnitForce(" .. cardGUID .. ")",
-  --           image         = "Force Purple"
-  --         }
-  --       }
-  --     }
-  --   },
-
-  --   ["Red"] = {
-  --     tag                 = "Panel",
-  --     attributes          = {
-  --       id                = "force_button_red",
-  --       active            = "false",
-  --       height            = "40",
-  --       width             = "40",
-  --       position          = "-87 175 -30",
-  --       rotation          = "0 0 180",
-  --       showAnimation     = "Grow",
-  --       hideAnimation     = "Shrink",
-  --       animationDuration = ".25"
-  --     },
-  --     children            = {
-  --       {
-  --         tag             = "Button",
-  --         attributes      = {
-  --           onClick       = "addUnitForce(" .. cardGUID .. ")",
-  --           image         = "Force Red"
-  --         }
-  --       }
-  --     }
-  --   }
-  -- }
 
   local abilityButtonImg = {
     -- LARGE ABILITY BUTTONS
@@ -1498,31 +1409,10 @@ function initCardXML(card)
       url  = "https://steamusercontent-a.akamaihd.net/ugc/2478761126848310716/0421D160540641E48CD40F21D8D164216EB4E227/"
     },
 
-    -- ["Discard Orange"] = {
-    --   name = "Discard Orange",
-    --   url  = ""
-    -- },
-
     ["Discard Purple"] = {
       name = "Discard Purple",
-      url  = ""
+      url  = "https://steamusercontent-a.akamaihd.net/ugc/10407394423821863457/CA55B2DB611B6F3A53DFD19C169F30CC6D6C488F/"
     },
-
-    -- ["Discard Red"] = {
-    --   name = "Discard Red",
-    --   url  = ""
-    -- },
-
-    -- ["Discard Green"] = {
-    --   name = "Discard Green",
-    --   url  = ""
-    -- },
-
-    -- EXILE BUTTONS
-    -- ["Exile Blue"] = {
-    --   name = "Exile Blue",
-    --   url  = ""
-    -- },
 
     ["Exile Orange"] = {
       name = "Exile Orange",
@@ -1675,11 +1565,50 @@ function initCardXML(card)
     }
   }
 
+  -- cardUsesXML = {
+  --   ["Ability Large"] = {
+  --     "Assassin Droid",
+
+  --   },
+  --   ["Ability Small"] = {
+
+  --   },
+  --   ["Cancel"] = {},
+  --   ["Draw"] = {
+
+  --   },
+  --   ["Discard"] = {
+
+  --   },
+  --   ["Exile"] = {
+
+  --   },
+  --   ["Force"] = {
+
+  --   },
+  --   ["Repair Large"] = {
+
+  --   },
+  --   ["Repair Small"] = {
+
+  --   },
+  --   ["Reveal"] = {
+
+  --   },
+  --   ["Attack"] = {
+
+  --   },
+
+  -- }
+
   if buttonColor then
+
+    -- log("found buttonColor: " .. buttonColor)
+
     -- Insert ability buttons
-    if card.hasTag("ability_button") then
-      table.insert(finalXML, abilityButtonXML[buttonColor])
-      table.insert(finalImg, abilityButtonImg[buttonColor])
+    if card.hasTag("ability_button_large") then
+      table.insert(finalXML, abilityButtonXML["Ability Large " .. buttonColor])
+      table.insert(finalImg, abilityButtonImg["Ability Large " .. buttonColor])
     end
 
     if card.hasTag("ability_button_sec") then
@@ -1693,8 +1622,10 @@ function initCardXML(card)
       table.insert(finalImg, forceButtonImg[buttonColor])
     end
 
-    log(finalImg)
-    log(finalXML)
+    -- log("\nfinalImg:")
+    -- log(finalImg)
+    -- log("\nfinalXML:")
+    -- log(finalXML)
 
     -- Apply XML & assets
     if #finalXML > 0 and #finalImg > 0 then

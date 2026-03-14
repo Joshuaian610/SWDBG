@@ -171,6 +171,14 @@
     {
       "displayed": "empire_owner",
       "normalized": "empire_owner"
+    },
+    {
+      "displayed": "ability_button_large",
+      "normalized": "ability_button_large"
+    },
+    {
+      "displayed": "XML1Button",
+      "normalized": "xml1button"
     }
   ]
 }
