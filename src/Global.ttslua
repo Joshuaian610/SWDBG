@@ -373,7 +373,7 @@ function onObjectEnterZone(zone, obj)
 
   -- card XML ability button creation
   if zone == zoneInPlay and
-  (obj.hasTag('ability_button_large') or obj.hasTag('ability_button_sec') or obj.hasTag('add_force_button')) and
+  (obj.hasTag('ability_button_large') or obj.hasTag('exile_button') or obj.hasTag('ability_button_sec') or obj.hasTag('add_force_button')) and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and obj.type == "Card" then
     initCardXML(obj)
   end
@@ -488,7 +488,7 @@ function onObjectLeaveZone(zone, obj)
 
   -- remove xml ability / force etc buttons
   if zone == zoneInPlay and
-  (obj.hasTag('ability_button_large') or obj.hasTag('ability_button_sec') or obj.hasTag('force_button')) and
+  (obj.hasTag('ability_button_large') or obj.hasTag('exile_button') or obj.hasTag('ability_button_sec') or obj.hasTag('add_force_button')) and
   (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
     removeAbilityButtons(obj)
   end
