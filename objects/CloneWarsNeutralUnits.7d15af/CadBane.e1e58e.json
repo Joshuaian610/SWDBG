@@ -34,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "CloneWarsNeutralUnits.7d15af/CadBane.e1e58e.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Cad Bane",
@@ -62,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "CloneWarsNeutralUnits.7d15af/CadBane.e1e58e.xml"
+  "XmlUI": ""
 }
