@@ -52,7 +52,6 @@ function add_subtract(_obj, _color, alt_click)
       val = new_value
       updateVal()
       updateSave()
-      getObjectFromGUID("c6a07b")', val)
   end
 end -- end function add_subtract()
 
