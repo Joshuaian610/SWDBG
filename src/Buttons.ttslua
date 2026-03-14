@@ -807,7 +807,7 @@ function primaryButtonAction(button, playercolor)
         broadcastToAll(prefix .. neutralCount .. " Neutral " .. plural .. " in play for [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-], unable to meet requirements for [b]Cad Bane[/b] ability.", "White")
       else
         -- broadcast to manually destroy capital ship or exile card
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has " .. neutralCount .. " neutral cards in play, and may manually destroy enemy ship, or exile a card from hand or discard via [b]Cad Bane[/b] ability.", "White")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has " .. neutralCount .. " neutral cards in play, and may manually destroy enemy ship, or, exile a card from hand or discard via [b]Cad Bane[/b] ability.", "White")
       end
 
     elseif cardName == "Fett's Firespray" then
