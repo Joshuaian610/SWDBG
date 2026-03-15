@@ -155,7 +155,6 @@ end -- end damageBase()
 function dealCard(playerArea, count)
   -- handles the deal of player cards up to count
   local zoneDeck = nil
-  local zoneGalaxyDiscard = nil
   local zoneHandzone = nil
   local posDeck = nil
   local faction = nil
