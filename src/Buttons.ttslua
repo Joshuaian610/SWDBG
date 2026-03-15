@@ -345,7 +345,7 @@ end -- end removeForceButtons()
 
 -- BUTTION ACTION FUNCTIONS
 
-function buttonActionXML(_, cardGUID, _)
+function buttonActionXML(player, cardGUID, _)
 
   log("buttonActionXML(" .. cardGUID .. ") IS RUNNING")
 
@@ -353,13 +353,21 @@ function buttonActionXML(_, cardGUID, _)
   local card = getObjectFromGUID(cardGUID)
   local bottomColor, topColor = getPlayerColors()
   local isBottom = card.hasTag("bottom_owner") and true or false
-  local playerColor = isBottom and bottomColor or topColor
+  local isTop = card.hasTag("top_owner") and true or false  
+
+  -- handle jar jar, who won't have an ownership tag
+  if card.getName() == "Jar Jar Binks" and
+  (not card.hasTag("bottom_owner") and not card.hasTag("top_owner")) then
+    playerColor = player.color
+  else
+    playerColor = isBottom and bottomColor or topColor
+  end
   
   primaryButtonAction(card, playerColor)
 end -- end buttonActionXML()
 
 
-function buttonActionSecXML(_, cardGUID, _)
+function buttonActionSecXML(player, cardGUID, _)
 
   log("buttonActionSecXML(" .. cardGUID .. ") IS RUNNING")
 
@@ -460,18 +468,19 @@ function primaryButtonAction(button, playercolor)
 
   log("primaryButtonAction(" .. button.getName() .. ", " .. playercolor .. ") IS RUNNING")
 
-  local isBottom = button.hasTag('bottom_owner')
-  local isTop = button.hasTag('top_owner')
+  local isBottom = nil
+  local isTop = nil
   local bottomColor, topColor = getPlayerColors()
   if playercolor == bottomColor then
     isBottom = true
   else
     isTop = true
   end
+  
   local isAI = checkIfAI()
   local rotOpponentDIscard = isBottom and { 0.00, 0.00, 0.00 } or { 0.00, 180.00, 0.00 }
-  local counter = isBottom and counterResourceBottom or counterResourceTop
-  local counterBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
+  local counter = isBottom and getObjectbyName("Resource Counter Bottom") or getObjectbyName("Resource Counter Top")
+  local counterBoard = isBottom and getObjectbyName("Resource Counter Board Bottom") or getObjectbyName("Resource Counter Board Top")
   local currentResourceCount = counter.getVar('val')
   local posOpponentDiscard = isBottom and { 8.50, 1.50, 31.00 } or { -8.50, 1.50, -31.00 }
   local forceOwner = getForceOwner()
@@ -480,7 +489,7 @@ function primaryButtonAction(button, playercolor)
   local opponentFaction = isBottom and topFaction or bottomFaction
   local playerColor = isBottom and bottomColor or topColor
   local opponentColor = isBottom and topColor or bottomColor
-  local buttonForce = isBottom and buttonForceBottom or buttonForceTop
+  local buttonForce = isBottom and getObjectbyName("Button Force Bottom") or getObjectbyName("Button Force Top")
   local cardName = button.getName()
   local attackAction = (faction == "Empire" or faction == "Separatist" or faction == "Mandalorian") and "Bounty Hunt" or "Sabotage"
   local area = isBottom and "bottom" or "top"
@@ -650,7 +659,7 @@ function primaryButtonAction(button, playercolor)
     elseif cardName == "Jar Jar Binks" then
       -- costs 2 resources when using button
       if currentResourceCount < 2 then
-        broadcastToAll(prefix .. "2 Resources are required to use this ability.", "White")
+        broadcastToAll(prefix .. "2 Resources are required to use this ability.", "Yellow")
         return
       else
         local discardLocation = isAI and "muster" or "discard"
@@ -661,16 +670,16 @@ function primaryButtonAction(button, playercolor)
         if isAI then
           rotOpponentDIscard = { 0.00, 0.00, 180.00 }
           posOpponentDiscard = { -1.88, 0.50, 20.39 }
-        end
+        end        
         button.setRotation(rotOpponentDIscard)
         button.setPosition(posOpponentDiscard)
+        
+        Wait.time(function() drawGalaxyCard() end, .5)
+
         local newResourceCount = currentResourceCount - 2
         counter.call('setValue', newResourceCount)
         counterBoard.call('setValue', newResourceCount)
-        -- if used from row, draw replacement row card
-        if not button.hasTag('bottom_owner') and not button.hasTag('top_owner') then
-          drawGalaxyCard()
-        end
+        -- if used from row, draw replacement row card        
         if button.hasTag('bottom_owner') then button.removeTag('bottom_owner') end
         if button.hasTag('top_owner') then button.removeTag('top_owner') end
       end

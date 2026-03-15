@@ -385,19 +385,16 @@ function onObjectEnterZone(zone, obj)
     if (obj.hasTag('ability_button_large') or obj.hasTag('exile_button') or obj.hasTag('ability_button_sec') or
     obj.hasTag('add_force_button') or obj.hasTag('draw_button')) and
     (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
-    obj.type == "Card" then
-    log("bottom_owner: " .. tostring(obj.hasTag('bottom_owner')))
-    log("top_owner: " .. tostring(obj.hasTag('top_owner')))
-    initCardXML(obj)
-  end
-
-    -- jar jar row button creation
-    if (zone.getName():find("Zone Row")) and
-    (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
-      log("running jarjar")
+    obj.type == "Card" then    
       initCardXML(obj)
     end
+  end
 
+  -- jar jar row button creation
+  if zone.getName():find("Zone Row") and
+  (zone.getName() ~= "Zone Row Deck" and zone.getName() ~= "Zone Row Discard") and
+  (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
+    initCardXML(obj)
   end
 
   -- remove ownership tags on cards placed back into galaxy row
@@ -472,7 +469,7 @@ function onObjectLeaveZone(zone, obj)
     return
   end
 
-  if zone == zoneInPlay then
+  if zone == zoneInPlay and obj.type == "Card" then
 
     -- remove just_bought tag
     local counter = nil
@@ -543,6 +540,7 @@ function onObjectLeaveZone(zone, obj)
 
   -- remove jar jar row ability
   if zone.getName():find("Zone Row") and
+  (zone.getName() ~= "Zone Row Deck" and zone.getName() ~= "Zone Row Discard") and
   obj.getName() == "Jar Jar Binks" then
     removeAbilityButtons(obj)
   end

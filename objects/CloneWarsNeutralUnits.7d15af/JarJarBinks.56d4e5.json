@@ -22,33 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Ability Blue Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098324064/EFA3D454799F0BFA8FF0974222193752069A978B/"
-    },
-    {
-      "Name": "Ability Purple Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098326569/E44005DEF51A0680CC9B51AC70DF821BB3756819/"
-    },
-    {
-      "Name": "Ability Orange Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098329187/7058ECC9C3A8CEB53EC411223B8C11B9EC7B0093/"
-    },
-    {
-      "Name": "Ability Red Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098333057/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
-    },
-    {
-      "Name": "Ability White Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492081782979/B8CD7D5C1D924FA08B3278CEEB31D10E415EE6DC/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -61,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "CloneWarsNeutralUnits.7d15af/JarJarBinks.56d4e5.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Jar Jar Binks",
@@ -69,8 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
-    "ability_button_sec",
+    "ability_button_large",
+    "XML1Button",
     "neutral",
     "outcast",
     "unique",
@@ -89,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "CloneWarsNeutralUnits.7d15af/JarJarBinks.56d4e5.xml"
+  "XmlUI": ""
 }

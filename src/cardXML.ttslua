@@ -171,6 +171,30 @@ function initCardXML(card)
         }
       }
     },
+    -- White used only for Jar Jar?
+    ["Ability Large White"]               = {
+      tag                 = "Panel",
+      attributes          = {
+        id                = "ability_button_green_white",
+        active            = "false",
+        height            = "40",
+        width             = "150",
+        position          = "0 -45 -30",
+        rotation          = "0 0 180",
+        showAnimation     = "Grow",
+        hideAnimation     = "Shrink",
+        animationDuration = ".25"
+      },
+      children            = {
+        {
+          tag             = "Button",
+          attributes      = {
+            onClick       = clickFunc,
+            image         = "Ability Large White"
+          }
+        }
+      }
+    },
 
     -- SMALL ABILITY BUTTONS
     ["Ability Small Blue "]              = {
@@ -1342,6 +1366,10 @@ function initCardXML(card)
       name = "Ability Large Green",
       url  = "https://steamusercontent-a.akamaihd.net/ugc/13417239896628219002/48258C52752EE22F43C3A491234C839E7022BF9F/"
     },
+    ["Ability Large White"] = {
+      name = "Ability Large White",
+      url  = "https://steamusercontent-a.akamaihd.net/ugc/2478760492081782979/B8CD7D5C1D924FA08B3278CEEB31D10E415EE6DC/"
+    },
 
     -- SMALL ABILITY BUTTONS    
     ["Ability Small Blue"] = {
@@ -1568,52 +1596,27 @@ function initCardXML(card)
     }
   }
 
-  -- cardUsesXML = {
-  --   ["Ability Large"] = {
-  --     "Assassin Droid",
-
-  --   },
-  --   ["Ability Small"] = {
-
-  --   },
-  --   ["Cancel"] = {},
-  --   ["Draw"] = {
-
-  --   },
-  --   ["Discard"] = {
-
-  --   },
-  --   ["Exile"] = {
-
-  --   },
-  --   ["Force"] = {
-
-  --   },
-  --   ["Repair Large"] = {
-
-  --   },
-  --   ["Repair Small"] = {
-
-  --   },
-  --   ["Reveal"] = {
-
-  --   },
-  --   ["Attack"] = {
-
-  --   },
-
-  -- }
+  -- first check if Jar Jar and is in zone row
+  local cardInZoneRow = false
+  for _, zone in pairs(card.getZones()) do
+    if zone.getName():find("Zone Row") then
+      cardInZoneRow = true
+    end
+  end
+  if card.getName() == "Jar Jar Binks" and cardInZoneRow and
+  (not card.hasTag('bottom_owner') and not card.hasTag('top_owner')) then
+    table.insert(finalXML, abilityButtonXML["Ability Large White"])
+    table.insert(finalImg, abilityButtonImg["Ability Large White"])
+  end
 
   if buttonColor then
 
-    -- log("found buttonColor: " .. buttonColor)
-
     -- Insert ability buttons
-    if card.hasTag("ability_button_large") then
+    if card.hasTag("ability_button_large") and (card.hasTag("bottom_owner") or card.hasTag("top_owner")) then -- extra check is to not fire jar jar
       table.insert(finalXML, abilityButtonXML["Ability Large " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Ability Large " .. buttonColor])
     end
-
+    
     if card.hasTag("exile_button") then
       table.insert(finalXML, abilityButtonXML["Exile " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Exile " .. buttonColor])
