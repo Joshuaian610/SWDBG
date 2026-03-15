@@ -1085,24 +1085,26 @@ function purchaseCard(button, playerColor, altClick)
   local cardCost = nil
   local baseCardCost = nil
   local zoneCards = {
-    zoneGalaxyRow1,
-    zoneGalaxyRow2,
-    zoneGalaxyRow3,
-    zoneGalaxyRow4,
-    zoneGalaxyRow5,
-    zoneGalaxyRow6,
-    zoneGalaxyRow7,
-    zoneGalaxyRow7,
-    zoneGalaxyRow6,
-    zoneGalaxyRow5,
-    zoneGalaxyRow4,
-    zoneGalaxyRow3,
-    zoneGalaxyRow2,
-    zoneGalaxyRow1,
+    getObjectbyName("Zone Row 1"),
+    getObjectbyName("Zone Row 2"),
+    getObjectbyName("Zone Row 3"),
+    getObjectbyName("Zone Row 4"),
+    getObjectbyName("Zone Row 5"),
+    getObjectbyName("Zone Row 6"),
+    getObjectbyName("Zone Outer Rim"),
+    getObjectbyName("Zone Outer Rim"),
+    getObjectbyName("Zone Row 6"),
+    getObjectbyName("Zone Row 5"),
+    getObjectbyName("Zone Row 4"),
+    getObjectbyName("Zone Row 3"),
+    getObjectbyName("Zone Row 2"),
+    getObjectbyName("Zone Row 1")
   }
   local zoneCard = zoneCards[tonumber(button.getGMNotes())]
   local forFree = altClick and true or false
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
+
+  log("zoneCard: " .. zoneCard.getName())
 
   if nextCardTarkin then forFree = true end
 
@@ -1155,7 +1157,7 @@ function purchaseCard(button, playerColor, altClick)
         end
       end
 
-      if v.tag == "Card" then
+      if zoneObj.tag == "Card" then
         if forFree ~= true then
             if currentResources >= 2 then
               cardInZone = true
@@ -1340,6 +1342,8 @@ function purchaseCard(button, playerColor, altClick)
   cardObj.setRotation(rotCard)
   cardObj.setPositionSmooth(posCard, false, true)
   cardObj.addTag(ownerTag)
+
+  -- add just bought tag
   if not isAI then
     cardObj.addTag('just_bought')
   end

@@ -22,28 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Exile Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100474631/E099A6762D5874B1FD0AB26F53A95C1B1E75CFAA/"
-    },
-    {
-      "Name": "Exile Purple",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100483586/4F854465808F636FFB64CE9C6BA70AA0B72AA2B5/"
-    },
-    {
-      "Name": "Exile Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100488199/014464FFEF094DCF207C858586EAC8718E76EF6B/"
-    },
-    {
-      "Name": "Exile Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100493032/E4CB47D0A10996F008A9B3A4500D9C8225DEAF13/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -64,7 +42,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "exile_button",
+    "XML1Button",
     "neutral",
     "or_pilot",
     "unit"
@@ -82,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "CloneWarsOuterRimPilotDeck.08b1b4/OuterRimPilot.20ba33.xml"
+  "XmlUI": ""
 }
