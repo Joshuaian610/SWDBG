@@ -288,11 +288,12 @@ end
 
 
 function onObjectEnterZone(zone, obj)
+  
   -- this function handles the discard operations, card button creation, resource management,
   -- adding ownership tags, and the rotation of ship cards while in hand zones
 
   -- bottom hand zone ship straighten
-  if zone == zoneHandzoneBottom then
+  if zone == zoneHandzoneBottom and obj.type == "Card" then
     if obj.hasTag('ship') then
       local rotShip = { 0, 180, 0 }
       obj.setRotation(rotShip)
@@ -300,7 +301,7 @@ function onObjectEnterZone(zone, obj)
   end
 
   -- top hand zone ship straighten
-  if zone == zoneHandzoneTop then
+  if zone == zoneHandzoneTop and obj.type == "Card" then
     if obj.hasTag('ship') then
       local rotShip = { 0, 0, 0 }
       obj.setRotation(rotShip)
@@ -337,7 +338,7 @@ function onObjectEnterZone(zone, obj)
 
     toAddResource = cardData[obj.getName()].produce
 
-    if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and not obj.hasTag('just_bought') then       
+    if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and not obj.hasTag('just_bought') and obj.type == "Card" then
 
       if obj.hasTag('bottom_owner') then
         counterPlayer = counterResourceBottom
@@ -376,7 +377,7 @@ function onObjectEnterZone(zone, obj)
     end
 
     -- create ship counters
-    if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) then
+    if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) and obj.type == "Card" then
       local val = obj.getVar('val')
       initShipCounter(obj, val)
     end
@@ -385,7 +386,7 @@ function onObjectEnterZone(zone, obj)
     if (obj.hasTag('ability_button_large') or obj.hasTag('exile_button') or obj.hasTag('ability_button_sec') or
     obj.hasTag('add_force_button') or obj.hasTag('draw_button')) and
     (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
-    obj.type == "Card" then    
+    obj.type == "Card" then
       initCardXML(obj)
     end
   end
@@ -393,18 +394,20 @@ function onObjectEnterZone(zone, obj)
   -- jar jar row button creation
   if zone.getName():find("Zone Row") and
   (zone.getName() ~= "Zone Row Deck" and zone.getName() ~= "Zone Row Discard") and
-  (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" then
+  (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" and
+  obj.type == "Card" then
     initCardXML(obj)
   end
 
   -- remove ownership tags on cards placed back into galaxy row
-  if zone.getName():find("Zone Row") then
-    removeAbilityButtons(obj)
+  if zone.getName():find("Zone Row") and obj.type == "Card" then
     if obj.hasTag('bottom_owner') then
       obj.removeTag('bottom_owner')
+      removeAbilityButtons(obj)
     end
     if obj.hasTag('top_owner') then
       obj.removeTag('top_owner')
+      removeAbilityButtons(obj)
     end
     nextCardNute = false
   end
@@ -528,7 +531,10 @@ function onObjectLeaveZone(zone, obj)
       obj.hasTag('add_force_button') or obj.hasTag('draw_button')) and
       (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
       obj.type == "Card" then
-        removeAbilityButtons(obj)
+        local objXML = obj.getXmlTable()
+        if #objXML > 0 then
+          removeAbilityButtons(obj)
+        end
       end
     end
 

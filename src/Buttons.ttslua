@@ -429,11 +429,13 @@ function handleProtocolDroid(matchTag, button, faction, playerColor)
     card.setPosition({ -33.52, 0.15, 0.00 })
 
   elseif not card.hasTag(matchTag) then
-    broadcastToAll("Non [" .. Color.fromString(playerColor):toHex() .. "]" .. capitalizedFaction .. "[-] card drawn: " .. card.getName() .. ". It has been discarded.", "White")
+    broadcastToAll("Non [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] card drawn: " .. card.getName() .. ". It has been discarded.", "White")
     card.setRotation({ 0.00, 90.00, 0.00 })
     card.setPositionSmooth({ -28.00, 3.50, -2.5 }, false, true)
     Wait.time(function()
-    handleProtocolDroid(match_tag, button, faction, color)
+
+      handleProtocolDroid(matchTag, button, faction, playerColor)
+
     end, 1)
   end
 end -- end handleProtocolDroid()
