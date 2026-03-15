@@ -355,21 +355,21 @@ function onObjectEnterZone(zone, obj)
 
         counterPlayer.call('setValue', currentValue)
         counterBoard.call('setValue', currentValue)
-      end
 
-      local bottomColor, topColor = getPlayerColors()
-      local bottomFaction, topFaction = getPlayerAreas()
-      local playerColor = isBottom and bottomColor or topColor
-      local faction = isBottom and bottomFaction or topFaction
-      local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]+[-]: "
+        local bottomColor, topColor = getPlayerColors()
+        local bottomFaction, topFaction = getPlayerAreas()
+        local playerColor = isBottom and bottomColor or topColor
+        local faction = isBottom and bottomFaction or topFaction
+        local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]+[-]: "
 
-      -- broadcast card in play
-      if toAddResource == 1 then
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play, gains " .. toAddResource .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
-      elseif toAddResource > 1 then
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play, gains " .. toAddResource .. " Resources. (" .. origValue .. " > " .. currentValue .. ")")
-      else
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play.")
+        -- broadcast card in play
+        if toAddResource == 1 then
+          broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play, gains " .. toAddResource .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
+        elseif toAddResource > 1 then
+          broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play, gains " .. toAddResource .. " Resources. (" .. origValue .. " > " .. currentValue .. ")")
+        else
+          broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play.")
+        end
       end
 
       -- create ship counters
@@ -479,6 +479,9 @@ function onObjectLeaveZone(zone, obj)
     if obj.type == "Card" and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
     not obj.hasTag('just_bought') and not obj.hasTag('exiled') then
 
+      local origValue = 0
+      local currentValue = 0
+
       if obj.hasTag('bottom_owner') then
         counter = counterResourceBottom
         counterBoard = counterResourceBoardBottom
@@ -491,14 +494,30 @@ function onObjectLeaveZone(zone, obj)
       end
 
       -- get counter value
-      local currentValue = counter.getVar('val')
+      origValue = counter.getVar('val')
       if toRemove ~= nil then
-        currentValue = currentValue - toRemove
+        currentValue = origValue - toRemove
       end
       if currentValue < 0 then currentValue = 0 end
 
       counter.call('setValue', currentValue)
       counterBoard.call('setValue', currentValue)
+      
+      -- broadcast card removed from play
+      local bottomColor, topColor = getPlayerColors()
+      local bottomFaction, topFaction = getPlayerAreas()
+      local isBottom = obj.hasTag('bottom_owner') and true or false
+      local playerColor = isBottom and bottomColor or topColor
+      local faction = isBottom and bottomFaction or topFaction
+      local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]-[-]: "
+      
+      if toRemove == 1 then
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed " .. obj.getName() .. " from play, loses " .. toRemove .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
+      elseif toRemove > 1 then
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed " .. obj.getName() .. " from play, loses " .. toRemove .. " Resources. (" .. origValue .. " > " .. currentValue .. ")")
+      else
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed " .. obj.getName() .. " from play.")
+      end
     end
 
     -- remove ship counter
