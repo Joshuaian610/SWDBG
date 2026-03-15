@@ -359,7 +359,7 @@ function initCardXML(card)
         {
           tag             = "Button",
           attributes      = {
-            onClick       = clickFunc,
+            onClick       = "Global/cancelCardActionXML(" .. cardGUID .. ")",
             image         = "Ability Cancel"
           }
         }
@@ -1631,11 +1631,15 @@ function initCardXML(card)
       table.insert(finalXML, abilityButtonXML["Gold"])
       table.insert(finalImg, abilityButtonImg["Gold"])
     end
-
-    -- Insert force buttons
+    
     if card.hasTag("add_force_button") then
       table.insert(finalXML, abilityButtonXML["Force " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Force " .. buttonColor])
+    end
+
+    if card.hasTag("requires_cancel") then
+      table.insert(finalXML, abilityButtonXML["Ability Cancel"])
+      table.insert(finalImg, abilityButtonImg["Ability Cancel"])
     end
 
     -- log("\nfinalImg:")
@@ -1651,7 +1655,9 @@ function initCardXML(card)
       -- Show all panels to trigger Grow animation
       Wait.time(function()
         for _, panel in ipairs(finalXML) do
-          card.UI.show(panel.attributes.id)
+          if panel.attributes.id ~= "ability_button_cancel" then
+            card.UI.show(panel.attributes.id)
+          end
         end
       end, 0.5)
     end

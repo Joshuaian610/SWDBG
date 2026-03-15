@@ -74,39 +74,9 @@ end -- end initBHSaboButtons()
 
 
 function initCancelButton(button)
-  -- handles creation of XML cancel button for certain card ability buttons
-  local bottomColor, topColor = getPlayerColors()
-  local tags = button.getTags()
-  local isBottom = false
-
-  for _, tag in ipairs(tags) do
-      if tag == "bottom_owner" then
-          isBottom = true
-      end
-  end
-
-  local buttonColor = (isBottom and bottomColor or topColor)
-  local color, hoverColor = getButtonColors(buttonColor)
-
-  if button.hasTag('buttons') then
-    button.createButton({
-      click_function = "cancelCardAction",
-      function_owner = self,
-      label          = 'Cancel Action',
-      position       = { 0, 0.5, 1.23 },
-      height         = 575,
-      width          = 1800,
-      font_size      = 275,
-      color          = { 0, 0, 0, .9 },
-      hover_color    = { 0, 0, 0, .5 },
-      font_color     = { 1, 1, 1 },
-      rotation       = { 0, 0, 0 },
-      scale          = { x=0.5, y=0.5, z=0.5 },
-      tooltip        = "Cancel use of " .. button.getName() .. " ability.",
-    })
-  elseif button.hasTag('ability_button') then
-    button.UI.show('ability_button_cancel')
-  end
+  -- handles creation of XML cancel button for certain card ability buttons  
+  
+  
 end -- end initCancelButton()
 
 
@@ -1884,12 +1854,26 @@ function primaryButtonAction(button, playercolor)
 
   -- create cancel buttons on requiring cards
   if cardName == 'Grand Moff Tarkin' or cardName == 'Princess Leia' or
-  cardName == 'Millenium Falcon' or cardName == 'Underworld Contact' or
-  cardName == 'Acclamator-Class Ship' or cardName == "Twi'lek Smuggler" or
-  cardName == 'B2 Battle Droid' or cardName == 'Munificent-Class Frigate' or
-  cardName == 'Tri-Fighter' or cardName == 'AAT' or cardName == "Nute Gunray" or
-  cardName == 'Wat Tambor' then
-    initCancelButton(button)
+  cardName == 'Millenium Falcon'or cardName == 'Acclamator-Class Ship' or
+  cardName == "Twi'lek Smuggler" or cardName == 'B2 Battle Droid' or
+  cardName == 'Munificent-Class Frigate' or cardName == 'Tri-Fighter' or
+  cardName == 'AAT' or cardName == "Nute Gunray" or cardName == 'Wat Tambor' then    
+    button.UI.show('ability_button_cancel')
+    button.addTag('cancel_live')
+  end
+
+  -- Underworld Contact special Cancel handling (do not create Cancel button if not force owner)
+  if cardName == "Underworld Contact" then
+    local isForceOwner = true
+    if not (forceOwner == "Bottom" and bottomFaction == faction) and
+    not (forceOwner == "Top" and topFaction == faction) then
+      isForceOwner = false
+    end
+    log("isForceOwner: " .. tostring(isForceOwner))
+    if isForceOwner then
+      button.UI.show('ability_button_cancel')
+      button.addTag('cancel_live')
+    end
   end
 end -- end primaryButtonAction()
 

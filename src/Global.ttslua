@@ -331,7 +331,10 @@ function onObjectEnterZone(zone, obj)
   local toAddResource = nil
   local isBottom = false
 
-  if zone == zoneInPlay and obj.type == "Card" then
+  if zone == zoneInPlay and obj.type == "Card" and
+  not obj.hasTag("empire_base") and not obj.hasTag("rebel_base") and
+  not obj.hasTag("separatist_base") and not obj.hasTag("republic_base") and
+  not obj.hasTag("mandalorian_base") then
   
     local origValue = 0
     local currentValue = 0
@@ -531,10 +534,7 @@ function onObjectLeaveZone(zone, obj)
       obj.hasTag('add_force_button') or obj.hasTag('draw_button')) and
       (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
       obj.type == "Card" then
-        local objXML = obj.getXmlTable()
-        if #objXML > 0 then
-          removeAbilityButtons(obj)
-        end
+        removeAbilityButtons(obj)
       end
     end
 

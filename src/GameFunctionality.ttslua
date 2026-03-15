@@ -91,26 +91,18 @@ function cancelCardAction(button, playerColor, _)
     metConditionWat = false
   end
 
-  if button.hasTag('buttons') then
-    button.clearButtons()
-    button.createButton({
-      click_function = "primaryButtonAction",
-      function_owner = self,
-      label          = '',
-      position       = { 0, 0.5, 1.23 },
-      height         = 575,
-      width          = 1800,
-      color          = color,
-      hover_color    = hoverColor,
-      rotation       = { 0, 0, 0 },
-      scale          = { x=0.5, y=0.5, z=0.5 },
-      tooltip        = "Use " .. button.getName() .. " ability.",
-    })
+  button.removeTag("cancel_live")
+  removeAbilityButtons(button)
+  initCardXML(button)
 
-  elseif button.hasTag('ability_button') then
-    removeAbilityButtons(button)
-    initAbilityButtonXML(button)
-  end
+  -- broadcast  
+  local bottomFaction, topFaction = getPlayerAreas()
+  local isBottom = button.hasTag("bottom_owner")
+  local faction = isBottom and bottomFaction or topFaction
+  local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]-[-]: "
+  broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has cancelled [b]" .. cardName .. "[/b] ability.", "Yellow")
+  
+
 end -- end cancelCardAction()
 
 
@@ -1223,13 +1215,13 @@ function purchaseCard(button, playerColor, altClick)
     local originalCardCost = cardCost
     cardCost = cardCost -2
 
-  -- need to call the below stuff here as well to prevent discount message in case of not enough resources
-  if not forFree and currentResources < cardCost then
-    broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")
-    return
-  end
+    -- need to call the below stuff here as well to prevent discount message in case of not enough resources
+    if not forFree and currentResources < cardCost then
+      broadcastToAll(prefix .. "Not enough resources to purchase this card!", "Yellow")
+      return
+    end
 
-  if cardCost < 0 then cardCost = 0 end
+    if cardCost < 0 then cardCost = 0 end
     broadcastToAll(prefix .. "Original card cost of " .. originalCardCost .. " has been discounted by 2 to " .. cardCost .. ".", "White")
   end
 
@@ -1251,8 +1243,11 @@ function purchaseCard(button, playerColor, altClick)
     nextCardContact = false
     for _, obj in ipairs(getObjects()) do
       if obj.hasTag('nextCardContact') then
-        obj.clearButtons()
         obj.removeTag('nextCardContact')
+      end
+      if obj.getName() == "Underworld Contact" and obj.hasTag("cancel_live") then
+        removeAbilityButtons(obj)
+        obj.removeTag("cancel_live")
       end
     end
   end
