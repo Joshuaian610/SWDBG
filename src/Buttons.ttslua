@@ -482,7 +482,7 @@ function primaryButtonAction(button, playercolor)
   local opponentColor = isBottom and topColor or bottomColor
   local buttonForce = isBottom and buttonForceBottom or buttonForceTop
   local cardName = button.getName()
-  local attackAction = (faction == "empire" or faction == "separatist" or faction == "mandalorian") and "Bounty Hunt" or "Sabotage"
+  local attackAction = (faction == "Empire" or faction == "Separatist" or faction == "Mandalorian") and "Bounty Hunt" or "Sabotage"
   local area = isBottom and "bottom" or "top"
   local zoneBase = isBottom and zoneBaseBottom or zoneBaseTop
   local deckGalaxy = getGalaxyDeck()
@@ -1860,7 +1860,7 @@ function primaryButtonAction(button, playercolor)
   if button.hasTag('buttons') then
     button.clearButtons()
 
-  elseif button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('ability_button_sec') then
+  elseif button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('draw_button') or button.hasTag('ability_button_sec') then
     removeAbilityButtons(button)
   end
 
