@@ -129,6 +129,7 @@ function enableExpansionNeutralDeck()
   local buttonSetupGame = getObjectbyName("Button Setup Game")
   if not buttonSetupGame then return end -- exit out if game is already in progress
 
+  buttonSetupGame.clearButtons()
   buttonSetupGame.createButton({
     click_function = 'enableOriginalNeutralDeck',
     function_owner = self,
@@ -191,6 +192,7 @@ function enableRandomNeutralDeck()
   local buttonSetupGame = getObjectbyName("Button Setup Game")
   if not buttonSetupGame then return end -- exit out if game is already in progress
 
+  buttonSetupGame.clearButtons()
   buttonSetupGame.createButton({
     click_function = 'enableOriginalNeutralDeck',
     function_owner = self,

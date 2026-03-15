@@ -399,7 +399,7 @@ function onObjectEnterZone(zone, obj)
 
   -- remove ownership tags on cards placed back into galaxy row
   if zone.getName():find("Zone Row") then
-    -- padGalaxyDeck.call('remove_ability_buttons', {object=obj}) -- NEEDISH REQUIRE... maybe?
+    removeAbilityButtons(obj)
     if obj.hasTag('bottom_owner') then
       obj.removeTag('bottom_owner')
     end
