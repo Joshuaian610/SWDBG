@@ -171,7 +171,122 @@ local DATA     = {
     COLOR      = { 0, 0, 0, 0 },
     HOVERCOLOR = {0, 0, 0, .7}
   },
+
+  -- SHIP HP COUNTERS
+
+  -- clone wars neutrals
+  ["Aurore-Class Freighter"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 3,
+    MAX_HP = 3,
+  },
+  ["Dreadnought-Class Carrier"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 5,
+    MAX_HP = 5,
+  },
+  ["Space Yacht"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 4,
+    MAX_HP = 4,
+  },
   
+  -- orig neutrals
+  ["C-Roc Cruiser"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 3,
+    MAX_HP = 3,
+  },
+  ["Blockade Runner"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 4,
+    MAX_HP = 4,
+  },
+  ["Nebulon-B Frigate"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 5,
+    MAX_HP = 5,
+  },
+
+  -- empire
+  ["Gozanti Cruiser"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 3,
+    MAX_HP = 3,
+  },
+  ["Imperial Carrier"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 5,
+    MAX_HP = 5,
+  },
+  ["Star Destroyer"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 7,
+    MAX_HP = 7,
+  },
+
+  -- separatist
+  ["Munificent-Class Frigate"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 3,
+    MAX_HP = 3,
+  },
+  ["Droid Control Ship"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 4,
+    MAX_HP = 4,
+  },
+  ["Separatist Dreadnought"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 5,
+    MAX_HP = 5,
+  },
+
+  -- rebellion
+  ["Rebel Transport"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 2,
+    MAX_HP = 2,
+  },
+  ["Hammerhead Corvette"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 4,
+    MAX_HP = 4,
+  },
+  ["Mon Calamari Cruiser"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 6,
+    MAX_HP = 6,
+  },
+
+  -- republic
+  ["Consular-Class Cruiser"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 4,
+    MAX_HP = 2,
+  },
+  ["Acclamator-Class Ship"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 7,
+    MAX_HP = 5,
+  },
+  ["Venator-Class Destroyer"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 9,
+    MAX_HP = 7,
+  },
+
+  -- mandalorian
+  ["Captured Gozanti Cruiser"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 3,
+    MAX_HP = 3,
+  },
+  ["Arquitens Command Cruiser"] = {
+    MIN_VALUE = 0,
+    MAX_VALUE = 5,
+    MAX_HP = 5,
+  },
 }
 
 function onDestroy()
@@ -185,22 +300,22 @@ end
 function onLoad(savedData)
   d = DATA[self.getName()]
   val = tonumber(savedData) or 0
-
-  self.createButton({
-    label          = tostring(val),
-    click_function = "addOrSubtract",
-    function_owner = self,
-    scale          = d.SCALE or { 1.5, 1.5, 1.5 },
-    position       = d.POSITION or { 0, 0.06, 0 },
-    rotation       = d.ROTATION or { 0, 0, 0 },
-    height         = d.SIZE or 800,
-    width          = d.SIZE or 800,
-    font_size      = d.FONTSIZE or getFontSize(val),
-    font_color     = d.FONTCOLOR or { 1, 1, 1, 100 },
-    color          = d.COLOR or { 0, 0, 0, 0 },
-    hover_color    = d.HOVERCOLOR or { 0, 0, 0, 0 }
-  })
-
+  if not self.hasTag('ship') then -- ships are initialized via initShipCounter() in GameFunctionality.ttslua, this is for all non ship counters
+    self.createButton({
+      label          = tostring(val),
+      click_function = "addOrSubtract",
+      function_owner = self,
+      scale          = d.SCALE or { 1.5, 1.5, 1.5 },
+      position       = d.POSITION or { 0, 0.06, 0 },
+      rotation       = d.ROTATION or { 0, 0, 0 },
+      height         = d.SIZE or 800,
+      width          = d.SIZE or 800,
+      font_size      = d.FONTSIZE or getFontSize(val),
+      font_color     = d.FONTCOLOR or { 1, 1, 1, 100 },
+      color          = d.COLOR or { 0, 0, 0, 0 },
+      hover_color    = d.HOVERCOLOR or { 0, 0, 0, 0 }
+    })
+  end
 
   -- add context menu entries
   self.addContextMenuItem("Add 5", function() updateVal(val + 5) end)
@@ -222,7 +337,7 @@ end -- end getFontSize()
 function updateVal(newVal)
   if tonumber(newVal) then
     val = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, newVal))
-    self.editButton({ index = 0, label = tostring(val), font_size = getFontSize(val) })
+    self.editButton({ index = 0, label = tostring(val), font_size = self.hasTag('ship') and 550 or getFontSize(val) })
     updateSave()
   end
 end -- end updateVal()
@@ -235,13 +350,16 @@ function addOrSubtract(counterObj, _, isRightClick)
   if counterObj.getName():find("Damage") then
     handleBaseDamageCounter(counterObj)
   end
+  if counterObj.hasTag('ship') then
+    handleShipCounter(counterObj)
+  end
 end -- end addOrSubtract()
 
 
 function modifyValue(mod)
   -- sets counter value, also runs resource counter sync
   val = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, val + tonumber(mod)))
-  self.editButton({ index = 0, label = tostring(val), font_size = getFontSize(val) })
+  self.editButton({ index = 0, label = tostring(val), font_size = self.hasTag('ship') and 550 or getFontSize(val) })
   updateSave()
 
   -- handle resource counter actions
@@ -252,18 +370,19 @@ end -- end modifyValue()
 function setCounterpartValue(val, counterpart)
   -- sets counter value on resource counter counterpart
   newVal = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, val))
-  counterpart.editButton({ index = 0, label = tostring(newVal), font_size = getFontSize(newVal) })
+  counterpart.editButton({ index = 0, label = tostring(newVal), font_size = self.hasTag('ship') and 550 or getFontSize(val) })
   counterpart.setVar('val', newVal)
   counterpart.call("updateSave")
-end
+end -- end setCounterpartValue()
 
 
 function setValue(newVal)
   clampedVal = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, newVal))
-  self.editButton({ index = 0, label = tostring(clampedVal), font_size = getFontSize(clampedVal) })
+  self.editButton({ index = 0, label = tostring(clampedVal), font_size = self.hasTag('ship') and 550 or getFontSize(val) })
   val = clampedVal
   updateSave()
-end
+end -- end setValue()
+
 
 function handleBaseDamageCounter(counterObj)
   -- this function handles the action of checking for and handling defeated bases
@@ -319,13 +438,11 @@ function handleBaseDamageCounter(counterObj)
     foundBase.setRotation(rot)
     foundBase.setPositionSmooth(pos, false, true)
     setValue(0)
-    updateVal()
-    updateSave()
   end
 end -- end handleBaseDamageCounter()
 
 
-function handleResourceCounter(self)  
+function handleResourceCounter(self)
   -- handles synchronization of board & base resource counters
   local counterpart = nil
   if self.getName() == "Resource Counter Bottom" then
@@ -339,3 +456,48 @@ function handleResourceCounter(self)
   end
   setCounterpartValue(val, counterpart)
 end -- end handleResourceCounter()
+
+
+function handleShipCounter(self)
+  -- handle check for ship's max HP, discard etc
+  local isBottom = (self.hasTag('bottom_owner'))
+  local isTop = (self.hasTag('top_owner'))
+  local bottomFaction, topFaction = Global.call('getPlayerAreas')
+  local bottomColor, topColor = Global.call('getPlayerColors')
+  local faction = isBottom and bottomFaction or topFaction
+  local playerColor = isBottom and bottomColor or topColor
+  local isAI = (self.hasTag('ai_owner'))
+  local maxHP = DATA[self.getName()].MAX_HP
+
+  if isBottom or isTop then
+    posDiscard = (isBottom and { -8.50, 2, -31.00 } or { 8.50, 2, 31.00 })
+    rotDiscard = (isBottom and { 0, 180, 0 } or { 0, 0, 0 })
+  end
+
+  local nabooCheckZone = nil
+  nabooCheckZone = (isBottom and Global.call('getObjectbyName', "Zone Bases Bottom")) or (isTop and Global.call('getObjectbyName', "Zone Bases Top")) or (isAI and Global.call('getObjectbyName', "Zone Leaders Bases"))
+  if nabooCheckZone ~= nil then
+    for _, object in pairs(nabooCheckZone.getObjects()) do
+      if object.getName() == "Naboo" and not isAI then
+        maxHP = maxHP + 2
+      end
+    end
+  end
+  
+  if val == maxHP then
+    if not isAI then
+      self.setRotation(rotDiscard)
+      self.setPositionSmooth(posDiscard, false, true)
+      self.addTag('defeated_ship')
+      setValue(0)
+    else
+      self.addTag('defeated_ship')
+      setValue(0)
+      getObjectFromGUID("051249").putObject(self)
+    end
+    broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] Capital Ship [b]" .. self.getName() .. "[/b] has been defeated!")
+  end
+  
+end -- end handleShipCounter()
+
+

@@ -185,31 +185,30 @@ function initRowDiscardButtons(button)
 end -- end initRowDiscardButtons()
 
 
-function initShipCounter(card, val)
+function initShipCounter(obj, value)
   -- handles creation of ship damage counters
   local bottomColor, topColor = getPlayerColors()
-  local isBottom = card.hasTag('bottom_owner')
-  local isTop = card.hasTag('top_owner') or card.hasTag('ai_owner')
+  local isBottom = obj.hasTag('bottom_owner')
   local ownerColor = isBottom and bottomColor or topColor
   local fColor = { 1, 1, 1, 255 }
   local sColor, hColor = getButtonColors(ownerColor)
 
-  card.clearButtons()
-
-  if card.hasTag('bottom_owner') or card.hasTag('top_owner') or card.hasTag('ai_owner') then
-    card.createButton({
-      label          = tostring(val),
-      click_function = "add_subtract",
-      function_owner = card,
-      position       = { .55, 0.5,-.65 },
+  obj.clearButtons()
+  
+  if obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner') then
+    obj.createButton({
+      label          = tostring(value),
+      click_function = "addOrSubtract",
+      function_owner = obj,
+      scale          = { 0.5, 0.5, 0.5 },
+      position       = { 0.55, 0.50, -0.65 },
+      rotation       = { 0, 90, 0 },
       height         = 600,
       width          = 600,
-      font_size      = 600,
+      font_size      = 550,
       font_color     = fColor,
-      hover_color    = hColor,
       color          = sColor,
-      rotation       = { 0,90,0 },
-      scale          = { x=0.5, y=0.5, z=0.5 },
+      hover_color    = hColor
     })
   end
 end -- end initShipCounter()

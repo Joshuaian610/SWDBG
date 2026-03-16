@@ -269,20 +269,39 @@ function onObjectSpawn(obj)
 
   if name == "Button Purchase" then
     initPurchaseCardButtons(obj)
+
   elseif name == "Button Discard" then
     initRowDiscardButtons(obj)
+
   elseif name == "Button Force Bottom" or name == "Button Force Top" then
     initForceButton(obj)
+
   elseif name == "Button Discard Bottom" or name == "Button Discard Top" then
     initRandomDiscardButton(obj)
+
   elseif name == "Button End Turn Bottom" or name == "Button End Turn Top" then
     initEndTurnButton(obj)
+    
   elseif name == "Button Setup Game" then
     disableNeutralDeckSelection()
+
   elseif name:find("Button Play") then
     initFactionSetupButton(obj)
+
   elseif name:find("Button Reveal") then
     initRepublicRevealPadButtons(obj)
+
+  elseif obj.hasTag('ship') and obj.type == "Card" and (obj.hasTag("bottom_owner") or obj.hasTag("topOwner")) then
+    for _, zone in pairs(obj.getZones()) do
+      if zone.getName() == "Zone In Play" then
+        Wait.time(function()
+
+          local val = obj.getVar('val')
+          initShipCounter(obj, val)
+
+        end, .5)
+      end
+    end
   end
 end
 
@@ -381,6 +400,7 @@ function onObjectEnterZone(zone, obj)
 
     -- create ship counters
     if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) and obj.type == "Card" then
+      log("ship counter onObjectEnterZone trigger met")
       local val = obj.getVar('val')
       initShipCounter(obj, val)
     end
@@ -490,7 +510,7 @@ function onObjectLeaveZone(zone, obj)
     end
 
     if obj.type == "Card" and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
-    not obj.hasTag('just_bought') and not obj.hasTag('exiled') then
+    not obj.hasTag('just_bought') and not obj.hasTag('exiled') and not obj.hasTag('defeated_ship') then
 
       local origValue = 0
       local currentValue = 0
@@ -523,7 +543,7 @@ function onObjectLeaveZone(zone, obj)
       local playerColor = isBottom and bottomColor or topColor
       local faction = isBottom and bottomFaction or topFaction
       local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]-[-]: "
-      
+            
       if toRemove == 1 then
         broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed [b]" .. obj.getName() .. "[/b] from play, loses " .. toRemove .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
       elseif toRemove > 1 then
@@ -555,6 +575,9 @@ function onObjectLeaveZone(zone, obj)
   obj.getName() == "Jar Jar Binks" then
     removeAbilityButtons(obj)
   end
+
+  -- remove defeated ship tag (used so manually removing ship removes resources while defeating does not)
+  if zone == getObjectbyName("Zone In Play") and obj.hasTag('defeated_ship') then obj.removeTag('defeated_ship') end
 
   -- remove bounty hunt / sabotage buttons
   if obj.hasTag('unit') and zone.getName():find("Zone Row") then
