@@ -22,18 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Repair Blue Small",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492099079961/DE87A5389A0AB7C953A872E08857F70945D8559F/"
-    },
-    {
-      "Name": "Resource Small",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098021684/4F63BB5AAB161DB6C1ED62C896AF4050EA7747A7/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -46,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "EmpireGalaxyDeck.c4783d/LandingCraft.053f47.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Landing Craft",
@@ -54,6 +41,7 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "repair_button_small",
     "ability_button_sec",
     "empire",
     "transport",
@@ -72,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "EmpireGalaxyDeck.c4783d/LandingCraft.053f47.xml"
+  "XmlUI": ""
 }

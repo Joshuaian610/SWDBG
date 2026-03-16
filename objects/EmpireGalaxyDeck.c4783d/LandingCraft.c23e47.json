@@ -46,7 +46,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "EmpireGalaxyDeck.c4783d/LandingCraft.c23e47.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Landing Craft",
@@ -54,6 +53,7 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "repair_button_small",
     "ability_button_sec",
     "empire",
     "transport",
@@ -72,5 +72,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "EmpireGalaxyDeck.c4783d/LandingCraft.c23e47.xml"
+  "XmlUI": ""
 }

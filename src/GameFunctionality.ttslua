@@ -1432,7 +1432,8 @@ function repairBase(count, tags)
       isBottom = true
     end
   end
-  local counter = isBottom and counterResourceBottom or counterResourceTop
+  local faction = isBottom and bottomFaction or topFaction
+  local counter = getObjectbyName("Damage Counter " .. faction)
   local currentValue = counter.getVar('val')
   currentValue = currentValue - count
   if currentValue < 0 then currentValue = 0 end

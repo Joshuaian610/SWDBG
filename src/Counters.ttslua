@@ -57,7 +57,7 @@ baseHPData             = {
   ["Tython"]           = 14,
   ["Arvala VII"]       = 16,
   ["Glavis Ringworld"] = 16,
-  ["Kalevala"]         = 16,
+  ["Kalevala"]         = 18,
 }
 
 local DATA     = {
@@ -318,7 +318,7 @@ function handleBaseDamageCounter(counterObj)
     broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. foundBase.getName() .. "[-] has been destroyed!", "White")
     foundBase.setRotation(rot)
     foundBase.setPositionSmooth(pos, false, true)
-    val = 0
+    setValue(0)
     updateVal()
     updateSave()
   end

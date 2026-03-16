@@ -29,9 +29,13 @@ function initCardXML(card)
   end
   
   if card.getName() == "Zam Wesell" or card.getName() == "Lobot" or
-  card.getName() == "Inquisitor" then -- all the multiple choice units etc
+  card.getName() == "Inquisitor" then
     buttonWidth = 85
     posForce = "-87 175 -30"
+  elseif card.getName() == "Landing Craft" then
+    buttonWidth = 85
+    posPri = "45 175 -30"
+    posSec = "-45 175 -30"
   end
 
   local abilityButtonXML = {
@@ -1644,6 +1648,11 @@ function initCardXML(card)
     if card.hasTag("attack_button") then
       table.insert(finalXML, abilityButtonXML["Attack " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Attack " .. buttonColor])
+    end
+
+    if card.hasTag("repair_button_small") then
+      table.insert(finalXML, abilityButtonXML["Repair Small " .. buttonColor])
+      table.insert(finalImg, abilityButtonImg["Repair Small " .. buttonColor])
     end
 
     if card.hasTag("ability_button_sec") then
