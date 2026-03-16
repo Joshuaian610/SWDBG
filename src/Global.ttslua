@@ -371,11 +371,11 @@ function onObjectEnterZone(zone, obj)
 
       -- broadcast card in play
       if toAddResource == 1 then
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play, gains " .. toAddResource .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put [b]" .. obj.getName() .. "[/b] into play, gains " .. toAddResource .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
       elseif toAddResource > 1 then
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play, gains " .. toAddResource .. " Resources. (" .. origValue .. " > " .. currentValue .. ")")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put [b]" .. obj.getName() .. "[/b] into play, gains " .. toAddResource .. " Resources. (" .. origValue .. " > " .. currentValue .. ")")
       else
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put " .. obj.getName() .. " into play.")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has put [b]" .. obj.getName() .. "[/b] into play.")
       end
     end
 
@@ -387,10 +387,11 @@ function onObjectEnterZone(zone, obj)
     
     -- card XML ability button creation
     if (obj.hasTag('ability_button_large') or obj.hasTag('exile_button') or obj.hasTag('ability_button_sec') or
-    obj.hasTag('add_force_button') or obj.hasTag('draw_button') or obj.hasTag("attack_button")) or obj.hasTag("discard_button") and
+    obj.hasTag('add_force_button') or obj.hasTag('draw_button') or obj.hasTag("attack_button") or obj.hasTag("discard_button")) and
     not obj.hasTag("just_bought") and
     (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
     obj.type == "Card" then
+      log("WHY")
       initCardXML(obj)
     end
   end
@@ -523,16 +524,16 @@ function onObjectLeaveZone(zone, obj)
       local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]-[-]: "
       
       if toRemove == 1 then
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed " .. obj.getName() .. " from play, loses " .. toRemove .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed [b]" .. obj.getName() .. "[/b] from play, loses " .. toRemove .. " Resource. (" .. origValue .. " > " .. currentValue .. ")")
       elseif toRemove > 1 then
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed " .. obj.getName() .. " from play, loses " .. toRemove .. " Resources. (" .. origValue .. " > " .. currentValue .. ")")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed [b]" .. obj.getName() .. "[/b] from play, loses " .. toRemove .. " Resources. (" .. origValue .. " > " .. currentValue .. ")")
       else
-        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed " .. obj.getName() .. " from play.")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has removed [b]" .. obj.getName() .. "[/b] from play.")
       end
 
       -- remove xml ability / force etc buttons
       if (obj.hasTag('ability_button_large') or obj.hasTag('exile_button') or obj.hasTag('ability_button_sec') or
-      obj.hasTag('add_force_button') or obj.hasTag('draw_button') or obj.hasTag("attack_button")) or obj.hasTag("discard_button") and
+      obj.hasTag('add_force_button') or obj.hasTag('draw_button') or obj.hasTag("attack_button") or obj.hasTag("discard_button")) and
       (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
       obj.type == "Card" then
         removeAbilityButtons(obj)
