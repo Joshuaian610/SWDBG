@@ -34,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "EmpireGalaxyDeck.c4783d/BobaFett.875d97.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Boba Fett",
@@ -42,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "draw_button",
+    "XML1Button",
     "bounty_hunter",
     "empire",
     "unique",
@@ -61,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "EmpireGalaxyDeck.c4783d/BobaFett.875d97.xml"
+  "XmlUI": ""
 }

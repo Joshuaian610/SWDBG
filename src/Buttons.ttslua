@@ -1841,7 +1841,8 @@ function primaryButtonAction(button, playercolor)
   if button.hasTag('buttons') then
     button.clearButtons()
 
-  elseif button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('draw_button') or button.hasTag('ability_button_sec') then
+  elseif button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('draw_button') or
+  button.hasTag('discard_button') or button.hasTag('ability_button_sec') then
     removeAbilityButtons(button)
   end
 
@@ -1888,8 +1889,7 @@ function secondaryButtonAction(button, playerColor)
     isTop = true
   end
   local bottomFaction, topFaction  = getPlayerAreas()
-  local faction = isBottom and bottomFaction or topFaction  
-  local faction = (faction:gsub("^%l", string.upper))    
+  local faction = isBottom and bottomFaction or topFaction
   local cardName = button.getName()  
   local area = isBottom and "bottom" or "top"  
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "

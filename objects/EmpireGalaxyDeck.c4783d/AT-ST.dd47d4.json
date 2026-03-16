@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Discard Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126848310716/0421D160540641E48CD40F21D8D164216EB4E227/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -41,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "EmpireGalaxyDeck.c4783d/AT-ST.dd47d4.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "AT-ST",
@@ -49,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "discard_button",
+    "XML1Button",
     "empire",
     "unit",
     "vehicle"
@@ -67,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "EmpireGalaxyDeck.c4783d/AT-ST.dd47d4.xml"
+  "XmlUI": ""
 }
