@@ -7,6 +7,7 @@ function initCardXML(card)
   local isBottom = card.hasTag("bottom_owner") and true or false
   local bottomColor, topColor = getPlayerColors()
   local buttonColor = isBottom and bottomColor or topColor
+
   local cardGUID = card.getGUID()
   local finalXML = {}
   local finalImg = {}
@@ -27,7 +28,8 @@ function initCardXML(card)
     buttonWidth = 150
   end
   
-  if card.getName() == "Zam Wesell" or card.getName() == "Lobot" then -- all the multiple choice units etc
+  if card.getName() == "Zam Wesell" or card.getName() == "Lobot" or
+  card.getName() == "Inquisitor" then -- all the multiple choice units etc
     buttonWidth = 85
     posForce = "-87 175 -30"
   end
@@ -1615,7 +1617,7 @@ function initCardXML(card)
     table.insert(finalXML, abilityButtonXML["Ability Large White"])
     table.insert(finalImg, abilityButtonImg["Ability Large White"])
   end
-
+  
   if buttonColor then
 
     -- Insert ability buttons
@@ -1641,7 +1643,7 @@ function initCardXML(card)
 
     if card.hasTag("ability_button_sec") then
       table.insert(finalXML, abilityButtonXML["Ability Small Gold"])
-      table.insert(finalImg, abilityButtonImg["Gold"])
+      table.insert(finalImg, abilityButtonImg["Ability Small Gold"])
     end
     
     if card.hasTag("add_force_button") then
