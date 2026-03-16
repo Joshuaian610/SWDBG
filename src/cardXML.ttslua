@@ -1645,6 +1645,11 @@ function initCardXML(card)
       table.insert(finalImg, abilityButtonImg["Discard " .. buttonColor])
     end
 
+    if card.hasTag("reveal_button") then
+      table.insert(finalXML, abilityButtonXML["Reveal " .. buttonColor])
+      table.insert(finalImg, abilityButtonImg["Reveal " .. buttonColor])
+    end
+
     if card.hasTag("attack_button") then
       table.insert(finalXML, abilityButtonXML["Attack " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Attack " .. buttonColor])

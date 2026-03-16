@@ -1836,13 +1836,11 @@ function primaryButtonAction(button, playercolor)
       end
       -- search exile bag, broadcast to swap
       end
-    end
-    
-  if button.hasTag('buttons') then
-    button.clearButtons()
+    end 
 
-  elseif button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('draw_button') or
-  button.hasTag('discard_button') or button.hasTag('ability_button_sec') then
+  if button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('draw_button') or
+  button.hasTag('discard_button') or button.hasTag('repair_button_small') or button.hasTag('repair_button_large') or
+  button.hasTag('reveal_button') or button.hasTag('ability_button_sec') or button.hasTag('ability_button_small') then
     removeAbilityButtons(button)
   end
 
@@ -1939,9 +1937,9 @@ function secondaryButtonAction(button, playerColor)
     end
   end
 
-  if button.hasTag('buttons_sec') then
-      button.clearButtons()
-  elseif button.hasTag('ability_button_sec') then
+  if button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('draw_button') or
+  button.hasTag('discard_button') or button.hasTag('repair_button_small') or button.hasTag('repair_button_large') or
+  button.hasTag('reveal_button') or button.hasTag('ability_button_sec') or button.hasTag('ability_button_small') then
     removeAbilityButtons(button)
   end
 
