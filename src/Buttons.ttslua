@@ -909,7 +909,7 @@ function primaryButtonAction(button, playercolor)
       broadcastToAll(prefix .. "[b]Tie Bomber[/b] ability used to discard a card from the galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually do so now.", "White")
       
     elseif cardName == "Gozanti Cruiser" then
-      broadcastToAll(prefix .. "[b]Gozanti Cruiser[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] after manually discarding a card, and another card was drawn.", "White")
+      broadcastToAll(prefix .. "[b]Gozanti Cruiser[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] after manually discarding a card, another card was drawn.", "White")
       dealCard(area, 1)
 
     elseif cardName == "Tie Interceptor" then
@@ -1848,7 +1848,7 @@ function primaryButtonAction(button, playercolor)
     removeForceButtons(button)
   end
 
-  if button.hasTag('ship') then button.call('initShipCounter') end
+  if button.hasTag('ship') then initShipCounter(button, button.getVar('val')) end
 
   -- create cancel buttons on requiring cards
   if cardName == 'Grand Moff Tarkin' or cardName == 'Princess Leia' or

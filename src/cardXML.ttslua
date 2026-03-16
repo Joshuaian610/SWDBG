@@ -24,7 +24,7 @@ function initCardXML(card)
   local clickFuncForce = "Global/addUnitForce(" .. cardGUID .. ")"
 
   if card.hasTag('XML1Button') then
-    posPri = card.hasTag('unit') and "0 175 -20" or "0 -75 -30"
+    posPri = card.hasTag('unit') and "0 175 -20" or "133 0 -30"
     buttonWidth = 150
   end
   

@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Ability Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492083153844/EFA3D454799F0BFA8FF0974222193752069A978B/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -40,8 +33,8 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
-  "LuaScriptState": "",
-  "LuaScript_path": "EmpireShips.feee3b/GozantiCruiser.d96708.ttslua",
+  "LuaScript": "require(\"Counters\")",
+  "LuaScriptState": "0",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Gozanti Cruiser",
@@ -49,7 +42,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "ability_button_large",
+    "XML1Button",
     "empire",
     "ship"
   ],
@@ -66,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "EmpireShips.feee3b/GozantiCruiser.d96708.xml"
+  "XmlUI": ""
 }
