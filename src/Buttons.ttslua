@@ -914,7 +914,7 @@ function primaryButtonAction(button, playercolor)
       dealCard(area, 1)
 
     elseif cardName == "Tie Interceptor" then
-      deckGalaxy = getGalaxyDeck
+      deckGalaxy = getGalaxyDeck()
       local topCard = deckGalaxy.takeObject()
       for i = 1, #buttonsGalaxyPurchase do
         buttonsGalaxyPurchase[i].setInvisibleTo(allColors)

@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Reveal Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126848281109/487C6DB2F7B140C8ECF15DE5D9AFE83A7C62E2C7/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -41,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "EmpireGalaxyDeck.c4783d/TieInterceptor.33d222.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Tie Interceptor",
@@ -49,8 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
-    "empire",
+    "reveal_button",
+    "XML1Button",
     "fighter",
     "unit"
   ],
@@ -67,5 +59,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "EmpireGalaxyDeck.c4783d/TieInterceptor.33d222.xml"
+  "XmlUI": ""
 }
