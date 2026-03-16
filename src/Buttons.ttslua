@@ -1015,9 +1015,9 @@ function primaryButtonAction(button, playercolor)
           end
         end
       end
-      if (forceOwner == "Bottom" and bottomFaction == "empire") or (forceOwner == "Top" and topFaction == "empire") then
+      if (forceOwner == "Bottom" and bottomFaction == "Empire") or (forceOwner == "Top" and topFaction == "Empire") then
         broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Moff Jerjerrod[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] searches the top card of the galaxy deck.", "White")
-        Wait.time(function() broadcastToAll(prefix .. "Then, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually swap that card with a card in the galaxy row.", "White") end, 1)
+        Wait.time(function() broadcastToAll(prefix .. "Then, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually swap that card with a card in the galaxy row.\n[" .. Color.fromString("Yellow"):toHex() .. "](** Drop card on top of Galaxy Deck, do not place into Search Window **)[-]", "White") end, 2)
       else
         broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Moff Jerjerrod[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may only search the top card of the galaxy deck.", "White")
       end
