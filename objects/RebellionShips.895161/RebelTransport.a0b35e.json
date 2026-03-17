@@ -22,18 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Repair Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098677516/5B2A174FFDCC0BCF69F760409D3B2B184F18C6FD/"
-    },
-    {
-      "Name": "Ability Gold Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098345554/8C9C31A2B4CC4690F79F86D06A2BEC331305D802/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -45,8 +33,8 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
-  "LuaScriptState": "",
-  "LuaScript_path": "RebellionShips.895161/RebelTransport.a0b35e.ttslua",
+  "LuaScript": "require(\"Counters\")",
+  "LuaScriptState": "0",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Rebel Transport",
@@ -54,6 +42,7 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "repair_button_large",
     "ability_button_sec",
     "rebel",
     "ship"
@@ -71,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RebellionShips.895161/RebelTransport.a0b35e.xml"
+  "XmlUI": ""
 }

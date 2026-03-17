@@ -186,6 +186,7 @@ end -- end initRowDiscardButtons()
 
 
 function initShipCounter(obj, value)
+  log("initShipCounter("..obj.getName()..", "..value..") IS RUNNING")
   -- handles creation of ship damage counters
   local bottomColor, topColor = getPlayerColors()
   local isBottom = obj.hasTag('bottom_owner')
@@ -1254,7 +1255,7 @@ function primaryButtonAction(button, playercolor)
         end, 2)
       end
 
-    elseif cardName == "Millenium Falcon" then      
+    elseif cardName == "Millenium Falcon" then
       local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
       local discardFound = false
       local discardPile  = nil
@@ -1969,6 +1970,9 @@ function secondaryButtonAction(button, playerColor)
   ----- SEPARATIST SECONDARY ACTION BUTTONS -----
     elseif cardName == "Dark Side Agent" then
       broadcastToAll(prefix .. "[b]Dark Side Agent[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has gained a resource.", "White")
+      addResource(area, 1)
+    elseif cardName == "Child of the Watch" then
+      broadcastToAll(prefix .. "[b]Child of the Watch[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has gained a resource.", "White")
       addResource(area, 1)
     end
   end

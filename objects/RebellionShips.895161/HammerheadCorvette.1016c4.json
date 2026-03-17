@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Ability Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086754931/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -40,8 +33,8 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
-  "LuaScriptState": "",
-  "LuaScript_path": "RebellionShips.895161/HammerheadCorvette.1016c4.ttslua",
+  "LuaScript": "require(\"Counters\")",
+  "LuaScriptState": "0",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Hammerhead Corvette",
@@ -49,7 +42,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "exile_button",
+    "XML1Button",
     "rebel",
     "ship"
   ],
@@ -66,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RebellionShips.895161/HammerheadCorvette.1016c4.xml"
+  "XmlUI": ""
 }

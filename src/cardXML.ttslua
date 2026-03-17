@@ -37,8 +37,8 @@ function initCardXML(card)
     buttonWidth = 85
     posPri = "45 175 -30"
     posSec = "-45 175 -30"
-    
-  elseif card.getName() == "Nebulon-B Frigate" then
+
+  elseif card.getName() == "Nebulon-B Frigate" or card.getName() == "Rebel Transport" then
     buttonWidth = 150
     posPri = "133 -75 -30"
     posSec = "133 75 -30"
