@@ -29,7 +29,8 @@ function initCardXML(card)
   end
   
   if card.getName() == "Zam Wesell" or card.getName() == "Lobot" or
-  card.getName() == "Inquisitor" or card.getName() == "Child of the Watch" or card.getName() == "Temple Guardian" then
+  card.getName() == "Inquisitor" or card.getName() == "Child of the Watch" or card.getName() == "Temple Guardian" or
+  card.getName() == "Dark Side Agent" or card.getName() == "Jedi Knight" then
     buttonWidth = 85
     posForce = "-87 175 -30"
 

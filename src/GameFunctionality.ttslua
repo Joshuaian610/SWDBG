@@ -19,6 +19,8 @@ function addUnitForce(player, GUID)
   local card = getObjectFromGUID(GUID)
   local playerColor = player.color
   local isBottom = card.hasTag('bottom_owner') and true or false
+  local bottomFaction, topFaction = getPlayerAreas()
+  local faction = isBottom and bottomFaction or topFaction
   local buttonForceTrack = isBottom and getObjectbyName("Button Force Bottom") or getObjectbyName("Button Force Top")
   local cardName = card.getName()
   local count = nil
@@ -41,7 +43,7 @@ function addUnitForce(player, GUID)
 
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
 
-  broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. cardName .. "[-] has generated Force x" .. count .. ".", "White")
+  broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] has generated [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] Force x" .. count .. ".", "White")
 
   removeForceButtons(card)
 
@@ -850,7 +852,7 @@ function doMoveForceTrack(button, _, altClick)
   moveForceTrack(button, altClick and -1 or 1)
 
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
-  broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-]: Force +" .. count, "White")
+  broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] - [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] Force +" .. count .. ".", "White")
 end
 
 function moveForceTrack(button, count)

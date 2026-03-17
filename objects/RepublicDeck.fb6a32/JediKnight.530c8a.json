@@ -22,33 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Force Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
-    },
-    {
-      "Name": "Force Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098252100/A3FA49EDF4C5F7B8562A79FE9CDDD4D4ED2ECD31/"
-    },
-    {
-      "Name": "Ability Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098250844/EAF0FBDF62C2F1D8664627B67A7236996B44655A/"
-    },
-    {
-      "Name": "Ability Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098249644/A4BAFD0365F26BE3671477F23BDB3F1F1FE6F467/"
-    },
-    {
-      "Name": "Ability Gold",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098021684/4F63BB5AAB161DB6C1ED62C896AF4050EA7747A7/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -61,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RepublicDeck.fb6a32/JediKnight.530c8a.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Jedi Knight",
@@ -69,6 +41,7 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "attack_button",
     "ability_button_sec",
     "add_force_button",
     "jedi",
@@ -89,5 +62,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RepublicDeck.fb6a32/JediKnight.530c8a.xml"
+  "XmlUI": ""
 }
