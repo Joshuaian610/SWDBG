@@ -22,33 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Ability Red Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098333057/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
-    },
-    {
-      "Name": "Ability Orange Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098329187/7058ECC9C3A8CEB53EC411223B8C11B9EC7B0093/"
-    },
-    {
-      "Name": "Ability Purple Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098326569/E44005DEF51A0680CC9B51AC70DF821BB3756819/"
-    },
-    {
-      "Name": "Ability Blue Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098324064/EFA3D454799F0BFA8FF0974222193752069A978B/"
-    },
-    {
-      "Name": "Ability Cancel",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492087450051/E22B9555C97FBDF989BA28A92D56C267120D0728/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -61,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "OriginalNeutralUnits.33b71a/TwilekSmuggler.1b49e1.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Twi'lek Smuggler",
@@ -69,7 +41,9 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "ability_button_large",
+    "XML1Button",
+    "requires_cancel",
     "neutral",
     "scoundrel",
     "unit"
@@ -87,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "OriginalNeutralUnits.33b71a/TwilekSmuggler.1b49e1.xml"
+  "XmlUI": ""
 }

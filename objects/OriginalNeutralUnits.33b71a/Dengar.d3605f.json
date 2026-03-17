@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Resource Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098345554/8C9C31A2B4CC4690F79F86D06A2BEC331305D802/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -41,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "OriginalNeutralUnits.33b71a/Dengar.d3605f.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Dengar",
@@ -49,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "ability_button_large",
+    "XML1Button",
     "bounty_hunter",
     "neutral",
     "unique",
@@ -68,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "OriginalNeutralUnits.33b71a/Dengar.d3605f.xml"
+  "XmlUI": ""
 }

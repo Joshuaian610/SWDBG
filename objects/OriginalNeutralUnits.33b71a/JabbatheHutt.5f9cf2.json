@@ -22,48 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Draw Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100804281/627A606D21D704C684FA0468C58BD3F3E505881C/"
-    },
-    {
-      "Name": "Draw Purple",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100806817/AADBB76B88F4082EAD0FC8FC9D88A4184A984736/"
-    },
-    {
-      "Name": "Draw Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100809758/50DF631912295A5F124D92F02B46C5CE3DADAAD4/"
-    },
-    {
-      "Name": "Draw Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100813346/62D3BCE0A6991EE95C1E245D3FA519EF4F13780E/"
-    },
-    {
-      "Name": "Force Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
-    },
-    {
-      "Name": "Force Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098252100/A3FA49EDF4C5F7B8562A79FE9CDDD4D4ED2ECD31/"
-    },
-    {
-      "Name": "Force Purple",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086175592/5E499E4478784CF279356E6F018E52B2283B9E6A/"
-    },
-    {
-      "Name": "Force Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086174365/A65556DB7C107631AE894811FD3A315B927CBE24/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -76,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "OriginalNeutralUnits.33b71a/JabbatheHutt.5f9cf2.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Jabba the Hutt",
@@ -84,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "draw_button",
+    "XML1Button",
     "add_force_button",
     "neutral",
     "scoundrel",
@@ -104,5 +62,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "OriginalNeutralUnits.33b71a/JabbatheHutt.5f9cf2.xml"
+  "XmlUI": ""
 }

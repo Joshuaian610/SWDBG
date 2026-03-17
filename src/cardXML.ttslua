@@ -29,7 +29,7 @@ function initCardXML(card)
   end
   
   if card.getName() == "Zam Wesell" or card.getName() == "Lobot" or
-  card.getName() == "Inquisitor" then
+  card.getName() == "Inquisitor" or card.getName() == "Child of the Watch" then
     buttonWidth = 85
     posForce = "-87 175 -30"
   elseif card.getName() == "Landing Craft" then
@@ -1689,10 +1689,10 @@ function initCardXML(card)
       table.insert(finalImg, abilityButtonImg["Ability Cancel"])
     end
 
-    log("\nfinalImg:")
-    log(finalImg)
-    log("\nfinalXML:")
-    log(finalXML)
+    -- log("\nfinalImg:")
+    -- log(finalImg)
+    -- log("\nfinalXML:")
+    -- log(finalXML)
 
     -- Apply XML & assets
     if #finalXML > 0 and #finalImg > 0 then

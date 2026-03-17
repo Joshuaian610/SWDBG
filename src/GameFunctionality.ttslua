@@ -26,7 +26,7 @@ function addUnitForce(player, GUID)
   -- 1 force value cards
   if cardName == "Dark Side Agent" or cardName == "Inquisitor" or cardName == "Temple Guardian" or cardName == "Jedi Knight" or
   cardName == "Underworld Contact" or cardName == "Aurra Sing" or cardName == "Wat Tambor" or cardName == "Ahsoka Tano" or
-  cardName == "Magnaguard" or cardName == "Aayla Secura" or cardName == "Anakin Skywalker" then
+  cardName == "Magnaguard" or cardName == "Aayla Secura" or cardName == "Anakin Skywalker" or cardName == "Child of the Watch" then
     moveForceTrack(buttonForceTrack, 1)
     count = 1
 
@@ -47,7 +47,7 @@ function addUnitForce(player, GUID)
 
   -- handle removal of all XML ability buttons in case of multiple other XML ability buttons
   if cardName == "Temple Guardian" or cardName == "Inquisitor" or cardName == "Jedi Knight" or
-  cardName == "Dark Side Agent" or cardName == "Lobot" or cardName == "Zam Wesell" then
+  cardName == "Dark Side Agent" or cardName == "Lobot" or cardName == "Zam Wesell" or cardName == "Child of the Watch" then
     removeAbilityButtons(card)
   end
 end -- end addUnitForce()
@@ -1405,11 +1405,13 @@ function purchaseCard(button, playerColor, altClick)
   -- cleanup
   forFree = false
 
-  -- remove relevant card ability buttons
+  -- remove relevant card ability buttons (Twi-Lek Smuggler)
   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
     if zoneObj.hasTag('twilek_ability') then
       removeAbilityButtons(zoneObj)
       zoneObj.removeTag('twilek_ability')
+      zoneObj.removeTag('cancel_live')
+      removeAbilityButtons(zoneObj)
     end
   end
   

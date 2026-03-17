@@ -402,7 +402,6 @@ function onObjectEnterZone(zone, obj)
     if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner') or obj.hasTag('ai_owner')) and obj.type == "Card" then
       log("ship counter onObjectEnterZone trigger met")
       local val = obj.getVar('val')
-      log("val: " .. val)
       initShipCounter(obj, val)
     end
     

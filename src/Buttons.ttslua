@@ -256,12 +256,14 @@ function removeAbilityButtons(obj)
   obj.UI.hide('exile_red')
   obj.UI.hide('exile_green')
 
-  -- FORCE BUTTONS
-  obj.UI.hide('force_blue')
-  obj.UI.hide('force_purple')
-  obj.UI.hide('force_orange')
-  obj.UI.hide('force_red')
-  obj.UI.hide('force_green')
+  -- FORCE BUTTONS (only hide when force button graphic is used as ability, not as an addUnitForce() button trigger)
+  if obj.hasTag('ability_button_sec') then
+    obj.UI.hide('force_blue')
+    obj.UI.hide('force_purple')
+    obj.UI.hide('force_orange')
+    obj.UI.hide('force_red')
+    obj.UI.hide('force_green')
+  end
 
   -- REPAIR LARGE BUTTONS
   obj.UI.hide('repair_blue_large')
@@ -526,10 +528,13 @@ function primaryButtonAction(button, playercolor)
         end
       end
       if shipInPlay then
-        broadcastToAll(prefix .. "[b]Z-95 Headhunter[/b] ability used while [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] has ship in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has drawn a card.", "white")
+        log("opponentColor: " .. opponentColor)
+        log("opponentFaction: " .. opponentFaction)
+        log("playerColor: " .. playerColor)
+        broadcastToAll(prefix .. "[b]Z-95 Headhunter[/b] ability used while [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] has ship in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has drawn a card.", "White")
         dealCard(area, 1)
       else
-        broadcastToAll("[b]Z-95 Headhunter[/b] ability used while [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] has no ships in play, no card drawn.", "White")
+        broadcastToAll(prefix .. "[b]Z-95 Headhunter[/b] ability used while [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] has no ships in play, no card drawn.", "White")
       end
 
     elseif cardName == "Kel Dor Mystic" then
@@ -566,7 +571,7 @@ function primaryButtonAction(button, playercolor)
       exileCard(playerColor, button)
 
     elseif cardName == "IG-88" then
-      broadcastToAll(prefix .. "]b]IG-88[/b] ability used after " .. attackAction .. ", [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually exile a card from hand or discard.", "White")
+      broadcastToAll(prefix .. "[b]IG-88[/b] ability used after " .. attackAction .. ", [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually exile a card from hand or discard.", "White")
     
     elseif cardName == "Nebulon-B Frigate" then
       broadcastToAll(prefix .. "[b]Nebulon-B Frigate[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has repaired 3 base damage.", "White")
@@ -582,8 +587,7 @@ function primaryButtonAction(button, playercolor)
       end
       dealCard(area, 1)
 
-    elseif cardName == "Jabba's Sail Barge" then
-      broadcastToAll(prefix .. "[b]Jabba's Sail Barge[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually add a 'Bounty Hunter' from discard to hand.", "White")
+    elseif cardName == "Jabba's Sail Barge" then      
       -- check if discard pile exists
       local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
       local discardFound = false
@@ -597,10 +601,27 @@ function primaryButtonAction(button, playercolor)
       if not discardFound then
         broadcastToAll("No discard pile available, Jabba's Sail Barge ability is ineffective.", "White")
       end
-      -- search discard
+      -- if bounty hunter in discard, then open search window
       if discardPile ~= nil then
         if discardPile.type == "Deck" then
-          discardPile.Container.search(playerColor)
+          local bhFound = false
+          for _, deckObj in pairs(discardPile.getObjects()) do
+            local deckObjTags = deckObj.tags
+            if #deckObjTags > 0 then
+              for _, tag in pairs(deckObjTags) do
+                if tag == "bounty_hunter" then
+                  bhFound = true
+                end
+              end
+            end
+          end
+          if discardPile and bhFound then
+            broadcastToAll(prefix .. "[b]Jabba's Sail Barge[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually add a 'Bounty Hunter' from discard to hand.", "White")
+            discardPile.Container.search(playerColor)
+          end
+          if discardPile and not bhFound then
+            broadcastToAll(prefix .. "[b]Jabba's Sail Barge[/b] ability used, however there are no Bounty Hunters in [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] discard pile.", "White")
+          end
         end
       end
 

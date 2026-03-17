@@ -42,6 +42,9 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "attack_button",
+    "ability_button_sec",
+    "add_force_button",
     "mandalorian",
     "mandalorian_owner",
     "unit"
