@@ -273,11 +273,13 @@ function onObjectSpawn(obj)
   elseif name == "Button Discard" then
     initRowDiscardButtons(obj)
 
+  elseif name == "Button Discard Empire" or name == "Button Discard Rebellion" or
+  name == "Button Discard Separatist" or name == "Button Discard Republic" or name == "Button Discard Mandalorian" or
+  name == "Button Discard Bottom" or name == "Button Discard Top" then
+    initRandomDiscardButton(obj)
+
   elseif name == "Button Force Bottom" or name == "Button Force Top" then
     initForceButton(obj)
-
-  elseif name == "Button Discard Bottom" or name == "Button Discard Top" then
-    initRandomDiscardButton(obj)
 
   elseif name == "Button End Turn Bottom" or name == "Button End Turn Top" then
     initEndTurnButton(obj)

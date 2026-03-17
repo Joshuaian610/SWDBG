@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Exile Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100493032/E4CB47D0A10996F008A9B3A4500D9C8225DEAF13/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -41,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RebellionGalaxyDeck.aa8011/Y-Wing.9b51bb.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Y-Wing",
@@ -49,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "exile_button",
+    "XML1Button",
     "fighter",
     "rebel",
     "unit"
@@ -67,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RebellionGalaxyDeck.aa8011/Y-Wing.9b51bb.xml"
+  "XmlUI": ""
 }

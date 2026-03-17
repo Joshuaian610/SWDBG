@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Draw Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100813346/62D3BCE0A6991EE95C1E245D3FA519EF4F13780E/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -41,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RebellionGalaxyDeck.aa8011/X-Wing.6a2340.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "X-Wing",
@@ -49,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "draw_button",
+    "XML1Button",
     "fighter",
     "rebel",
     "unit"
@@ -67,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RebellionGalaxyDeck.aa8011/X-Wing.6a2340.xml"
+  "XmlUI": ""
 }

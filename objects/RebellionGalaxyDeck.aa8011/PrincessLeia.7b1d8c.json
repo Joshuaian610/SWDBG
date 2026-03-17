@@ -22,23 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Force Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
-    },
-    {
-      "Name": "Ability Red Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098333057/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
-    },
-    {
-      "Name": "Ability Cancel",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492087450051/E22B9555C97FBDF989BA28A92D56C267120D0728/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -51,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RebellionGalaxyDeck.aa8011/PrincessLeia.7b1d8c.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Princess Leia",
@@ -59,8 +41,10 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "ability_button_large",
+    "XML1Button",
     "add_force_button",
+    "requires_cancel",
     "officer",
     "rebel",
     "unique",
@@ -79,5 +63,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RebellionGalaxyDeck.aa8011/PrincessLeia.7b1d8c.xml"
+  "XmlUI": ""
 }

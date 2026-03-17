@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Ability Red Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098333057/8B8B852784A18FAEF42D4AC2A3CB515100BFEA1B/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -41,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RebellionGalaxyDeck.aa8011/DurosSpy.a2fb93.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Duros Spy",
@@ -49,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "ability_button_large",
+    "XML1Button",
     "rebel",
     "trooper",
     "unit"
@@ -67,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RebellionGalaxyDeck.aa8011/DurosSpy.a2fb93.xml"
+  "XmlUI": ""
 }

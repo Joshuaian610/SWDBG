@@ -22,13 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Force Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -41,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RebellionGalaxyDeck.aa8011/ChirrutImwe.1ef58e.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Chirrut Imwe",
@@ -68,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RebellionGalaxyDeck.aa8011/ChirrutImwe.1ef58e.xml"
+  "XmlUI": ""
 }

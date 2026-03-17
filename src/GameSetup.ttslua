@@ -499,6 +499,17 @@ function setupFaction(button, _, _)
   local hoverColor = factionVars[factionName].hoverColor
   playerAreaObjs["playerUI"][playerArea][5].call('createAll', buttonColor, hoverColor)
 
+  -- change counter bag to faction
+  local counterBag = playerArea == "Bottom" and getObjectbyName("Counter Bag Bottom") or getObjectbyName("Counter Bag Top")
+  local bagStates = {
+    ["Empire"]      = 2,
+    ["Separatist"]  = 3,
+    ["Rebellion"]   = 4,
+    ["Republic"]    = 5,
+    ["Mandalorian"] = 6
+  }  
+  counterBag.setState(bagStates[factionName])
+
   -- place decks
   local playerAreaVars = {
     Bottom             = {

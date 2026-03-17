@@ -587,7 +587,7 @@ function primaryButtonAction(button, playercolor)
       end
       dealCard(area, 1)
 
-    elseif cardName == "Jabba's Sail Barge" then      
+    elseif cardName == "Jabba's Sail Barge" then
       -- check if discard pile exists
       local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
       local discardFound = false
@@ -620,7 +620,7 @@ function primaryButtonAction(button, playercolor)
             discardPile.Container.search(playerColor)
           end
           if discardPile and not bhFound then
-            broadcastToAll(prefix .. "[b]Jabba's Sail Barge[/b] ability used, however there are no Bounty Hunters in [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] discard pile.", "White")
+            broadcastToAll(prefix .. "[b]Jabba's Sail Barge[/b] ability used, however there are no 'Bounty Hunters' in [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] discard pile.", "White")
           end
         end
       end
@@ -1131,15 +1131,15 @@ function primaryButtonAction(button, playercolor)
 
     elseif cardName == "Rebel Commando" then
       if not isAI then
-        local buttonDiscard = isBottom and buttonDiscardRandomTop or buttonDiscardRandomBottom -- reverse order, opponent is discarding   
-        if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+        local buttonDiscard = getObjectbyName("Button Discard " .. opponentFaction)
+        if (forceOwner == "Bottom" and bottomFaction == "Rebellion") or (forceOwner == "Top" and topFaction == "Rebellion") then
           broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Rebel Commando[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] discards a random card.", "White")
-          discardRandomCard(buttonDiscard, playerColor)
+          discardRandomCard(buttonDiscard, opponentColor)
         else
           broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Rebel Commando[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-]  must choose a card to discard.", "White")
         end
       else
-        if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+        if (forceOwner == "Bottom" and bottomFaction == "Rebellion") or (forceOwner == "Top" and topFaction == "Rebellion") then
           broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Rebel Commando[/b] ability used, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] discards a random card.", "White")
           discardAICard(true)
         else
@@ -1149,7 +1149,7 @@ function primaryButtonAction(button, playercolor)
       end
 
     elseif cardName == "X-Wing" then
-      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+      if (forceOwner == "Bottom" and bottomFaction == "Rebellion") or (forceOwner == "Top" and topFaction == "Rebellion") then
         broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]X-Wing[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] draws a card.", "White")
         dealCard(area, 1)
       else
@@ -1188,10 +1188,10 @@ function primaryButtonAction(button, playercolor)
           broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Jyn Erso[/b] ability used, no action may be taken against the AI.", "White")
         end
       end
-      Wait.time(function() broadcastToAll(prefix .. "Hint: [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] may right click on one of their cards in hand and select 'Show Hand' to easily do so.", "White") end, 1)
+      Wait.time(function() broadcastToAll(prefix .. "Hint: [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] may right click on one of their cards in hand and select 'Show Hand' to easily do so.", "White") end, 2)
  
     elseif cardName == "U-Wing" then
-      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+      if (forceOwner == "Bottom" and bottomFaction == "Rebellion") or (forceOwner == "Top" and topFaction == "Rebellion") then
         broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]U-Wing[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] repairs 3 base damage.", "White")
         repairBase(3, button.getTags())
       else
@@ -1223,7 +1223,7 @@ function primaryButtonAction(button, playercolor)
    
     elseif cardName == "Cassian Andor" then
       if not isAI then
-        broadcastToAll(prefix .. "[b]Cassian Andor[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] after Sabotaging, [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] must discard a card from hand.", "White")
+        broadcastToAll(prefix .. "[b]Cassian Andor[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] after Sabotaging, [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] must choose a card to discard from hand.", "White")
       else
         broadcastToAll(prefix .. "[b]Cassian Andor[/b] ability used for [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] after Sabotaging, AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] must discard a card from hand.", "White")
         discardAICard(false)
@@ -1254,8 +1254,7 @@ function primaryButtonAction(button, playercolor)
         end, 2)
       end
 
-    elseif cardName == "Millenium Falcon" then
-      broadcastToAll(prefix .. "[b]Millennium Falcon[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually add a 'Unique' unit from discard pile to hand.", "White")
+    elseif cardName == "Millenium Falcon" then      
       local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
       local discardFound = false
       local discardPile  = nil
@@ -1269,13 +1268,30 @@ function primaryButtonAction(button, playercolor)
         broadcastToAll(prefix .. "No discard pile available, [b]Millenium Falcon[/b] ability is ineffective.", "White")
       end
       if discardPile ~= nil then
+        local uniqueFound = false
         if discardPile.type == "Deck" then
-          discardPile.Container.search(playerColor)
+          for _, deckObj in pairs(discardPile.getObjects()) do
+            local deckObjTags = deckObj.tags
+            if #deckObjTags > 0 then
+              for _, tag in pairs(deckObjTags) do
+                if tag == "unique" then
+                  uniqueFound = true
+                end
+              end
+            end
+          end
+          if discardPile and uniqueFound then
+            broadcastToAll(prefix .. "[b]Millennium Falcon[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually add a 'Unique' unit from discard pile to hand.", "White")
+            discardPile.Container.search(playerColor)
+          end
+          if discardPile and not uniqueFound then
+            broadcastToAll(prefix .. "[b]Milleniaum Falcon[/b] ability used, however there are no 'Uniques' in [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] discard pile.", "White")
+          end
         end
       end
 
     elseif cardName == "Luke Skywalker" then
-      if (forceOwner == "Bottom" and bottomFaction == "rebellion") or (forceOwner == "Top" and topFaction == "rebellion") then
+      if (forceOwner == "Bottom" and bottomFaction == "Rebellion") or (forceOwner == "Top" and topFaction == "Rebellion") then
         broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Luke Skywalker[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may choose [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] ship to manually destroy.", "White")
       else
         broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] while [b]Luke Skywalker[/b] ability used, no [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] ships destroyed.", "White")
@@ -1873,10 +1889,10 @@ function primaryButtonAction(button, playercolor)
 
   -- create cancel buttons on requiring cards
   if cardName == 'Grand Moff Tarkin' or cardName == 'Princess Leia' or
-  cardName == 'Millenium Falcon'or cardName == 'Acclamator-Class Ship' or
-  cardName == "Twi'lek Smuggler" or cardName == 'B2 Battle Droid' or
-  cardName == 'Munificent-Class Frigate' or cardName == 'Tri-Fighter' or
-  cardName == 'AAT' or cardName == "Nute Gunray" or cardName == 'Wat Tambor' then    
+  cardName == 'Acclamator-Class Ship' or cardName == "Twi'lek Smuggler" or
+  cardName == 'B2 Battle Droid' or cardName == 'Munificent-Class Frigate' or
+  cardName == 'Tri-Fighter' or cardName == 'AAT' or cardName == "Nute Gunray" or
+  cardName == 'Wat Tambor' then    
     button.UI.show('ability_button_cancel')
     button.addTag('cancel_live')
   end

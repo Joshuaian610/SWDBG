@@ -230,9 +230,9 @@ function discardRandomCard(button, playerColor, _)
   
   -- animate the button click
   animateButtonDiscardRandom(button)
-
-  local isBottom = button.getName() == "Button Discard Bottom"
-  local isTop = button.getName() == "Button Discard Top"
+  local posButton = button.getPosition()
+  local isBottom = posButton.z < 0 and true or false
+  local isTop = posButton.z > 0 and true or false
   local rotDiscard = isBottom and { 0, 180, 0 } or { 0, 0, 0 }
   local posDiscard = isBottom and { -8.50, 2.00, -31.00 } or { 8.50, 2.00, 31.00 }
   
@@ -245,11 +245,12 @@ function discardRandomCard(button, playerColor, _)
       randomCard.setRotation(rotDiscard)
       randomCard.setPosition(posDiscard)
 
+      local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]-[-]: "
       -- broadcast discard result
       if Player[playerColor].steam_name ~= nil then
-        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has randomly discarded " .. randomCard.getName() .. ".", "White")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has randomly discarded " .. randomCard.getName() .. ".", "White")
       else
-        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. playerColor .. " Player[-] has randomly discarded " .. randomCard.getName() .. ".", "White")
+        broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. playerColor .. " Player[-] has randomly discarded " .. randomCard.getName() .. ".", "White")
       end
 
     -- broadcast error case to player
