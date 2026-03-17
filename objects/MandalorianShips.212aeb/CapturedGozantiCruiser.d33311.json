@@ -5,19 +5,12 @@
     "z": 0
   },
   "Autoraise": true,
+  "CardID": 13901,
   "ColorDiffuse": {
     "b": 0.71324,
     "g": 0.71324,
     "r": 0.71324
   },
-  "ContainedObjects_order": [
-    "CapturedGozantiCruiser.55af8a",
-    "CapturedGozantiCruiser.78a781",
-    "CapturedGozantiCruiser.d33311",
-    "ArquitensCommandCruiser.f9efff",
-    "ArquitensCommandCruiser.de495b"
-  ],
-  "ContainedObjects_path": "MandalorianShips.212aeb",
   "CustomDeck": {
     "139": {
       "BackIsHidden": true,
@@ -29,41 +22,36 @@
       "UniqueBack": false
     }
   },
-  "DeckIDs": [
-    13901,
-    13901,
-    13901,
-    13900,
-    13900
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "212aeb",
+  "GUID": "d33311",
   "Grid": false,
   "GridProjection": false,
-  "Hands": false,
+  "Hands": true,
   "HideWhenFaceDown": true,
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
-  "Locked": true,
-  "LuaScript": "",
-  "LuaScriptState": "",
+  "Locked": false,
+  "LuaScript": "require(\"Counters\")",
+  "LuaScriptState": "0",
   "MeasureMovement": false,
-  "Name": "Deck",
-  "Nickname": "Mandalorian Ships",
+  "Name": "Card",
+  "Nickname": "Captured Gozanti Cruiser",
   "SidewaysCard": true,
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "draw_button",
     "mandalorian",
-    "ship"
+    "ship",
+    "XML1Button"
   ],
   "Tooltip": true,
   "Transform": {
-    "posX": -8.113,
-    "posY": 0.186,
-    "posZ": -21.834,
+    "posX": 80.717,
+    "posY": 1.985,
+    "posZ": 55.118,
     "rotX": 0,
     "rotY": 90,
     "rotZ": 0,

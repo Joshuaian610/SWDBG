@@ -179,6 +179,10 @@
     {
       "displayed": "XML1Button",
       "normalized": "xml1button"
+    },
+    {
+      "displayed": "draw_button",
+      "normalized": "draw_button"
     }
   ]
 }
