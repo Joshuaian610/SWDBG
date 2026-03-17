@@ -541,7 +541,7 @@ function primaryButtonAction(button, playercolor)
       moveForceTrack(buttonForce, 1)
 
     elseif cardName == "C-Roc Cruiser" then
-      broadcastToAll(prefix .. "[b]C-Roc Cruiser[/b] ability used to discard a card, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] removed 3 damage from their base.", "White")
+      broadcastToAll(prefix .. "[b]C-Roc Cruiser[/b] ability used after [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] manually discarded a card, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] removed 3 damage from their base.", "White")
       repairBase(3, button.getTags())
 
     elseif cardName == "Lobot" then
@@ -1946,8 +1946,9 @@ function secondaryButtonAction(button, playerColor)
     removeForceButtons(button)
   end
 
-  -- cardExhaust(button)
-  if button.hasTag('ship') then button.call('initShipCounter') end
+  if button.hasTag('ship') then initShipCounter(button, button.getVar('val')) end
+
+  -- cardExhaust(button)  
 end -- end secondaryButtonAction()
 
 
