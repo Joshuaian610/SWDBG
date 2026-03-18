@@ -22,33 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Ability Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098020635/CBAC1A3BE3DC97CD70BB5378757A484BFAE07F15/"
-    },
-    {
-      "Name": "Ability Purple",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098022943/EC866655AA1787D09DF2F98006899409E69D0CC5/"
-    },
-    {
-      "Name": "Ability Gold",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098021684/4F63BB5AAB161DB6C1ED62C896AF4050EA7747A7/"
-    },
-    {
-      "Name": "Force Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086174365/A65556DB7C107631AE894811FD3A315B927CBE24/"
-    },
-    {
-      "Name": "Force Purple",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492086175592/5E499E4478784CF279356E6F018E52B2283B9E6A/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -61,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "SeparatistDeck.3afb00/DarkSideAgent.1ae413.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Dark Side Agent",
@@ -69,6 +41,7 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "attack_button",
     "ability_button_sec",
     "add_force_button",
     "outcast",
@@ -89,5 +62,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "SeparatistDeck.3afb00/DarkSideAgent.1ae413.xml"
+  "XmlUI": ""
 }
