@@ -22,18 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Force Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
-    },
-    {
-      "Name": "Force Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098252100/A3FA49EDF4C5F7B8562A79FE9CDDD4D4ED2ECD31/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -46,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RepublicGalaxyDeck.0503ab/AaylaSecura.ebd168.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Aayla Secura",
@@ -73,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RepublicGalaxyDeck.0503ab/AaylaSecura.ebd168.xml"
+  "XmlUI": ""
 }

@@ -22,28 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Reveal Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126847919667/0A06CD151F2F62FFDF0241FDDF130D4ACC301071/"
-    },
-    {
-      "Name": "Reveal Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126847916218/1F97495766E93A8FD8F2E753498B666049CAD8E9/"
-    },
-    {
-      "Name": "Force Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098178013/5A93DC1425923DC98FA16320711DAB2B2043D77F/"
-    },
-    {
-      "Name": "Force Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098252100/A3FA49EDF4C5F7B8562A79FE9CDDD4D4ED2ECD31/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -56,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RepublicGalaxyDeck.0503ab/AhsokaTano.38ac2f.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Ahsoka Tano",
@@ -64,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "reveal_button",
+    "XML1Button",
     "add_force_button",
     "jedi",
     "republic",
@@ -84,5 +62,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RepublicGalaxyDeck.0503ab/AhsokaTano.38ac2f.xml"
+  "XmlUI": ""
 }

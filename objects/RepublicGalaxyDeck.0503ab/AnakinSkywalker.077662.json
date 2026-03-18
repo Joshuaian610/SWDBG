@@ -34,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RepublicGalaxyDeck.0503ab/AnakinSkywalker.077662.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Anakin Skywalker",
@@ -61,5 +60,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RepublicGalaxyDeck.0503ab/AnakinSkywalker.077662.xml"
+  "XmlUI": ""
 }

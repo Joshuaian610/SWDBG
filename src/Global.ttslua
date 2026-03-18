@@ -291,7 +291,9 @@ function onObjectSpawn(obj)
     initFactionSetupButton(obj)
 
   elseif name:find("Button Reveal") then
-    initRepublicRevealPadButtons(obj)
+    local buttonPos = obj.getPosition()
+    if buttonPos.y > 0 then initRepublicRevealPadButtons(obj) end
+
 
   elseif obj.hasTag('ship') and obj.type == "Card" and (obj.hasTag("bottom_owner") or obj.hasTag("topOwner")) then
     for _, zone in pairs(obj.getZones()) do

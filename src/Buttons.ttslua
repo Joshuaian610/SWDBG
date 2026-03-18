@@ -145,6 +145,7 @@ end -- end initRandomDiscardButton()
 
 
 function initRepublicRevealPadButtons(obj)
+  log("initRepublicRevealPadButtons("..obj.getName()..") IS RUNNING")
   local buttonType = obj.getName():match("Button Reveal (.*)")
   local func    = {
     ["Return"]  = "returnRevealed",
@@ -489,7 +490,8 @@ function primaryButtonAction(button, playercolor)
 
   -- helper function to handle get of revealed card in case of discard shuffe required
   local function findRevealedCard(isBottom)
-    for _, object in pairs(isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects() do
+    local revealCheckZone = isBottom and getObjectbyName("Zone Republic Reveal Bottom") or getObjectbyName("Zone Republic Reveal Top1")
+    for _, object in pairs(revealCheckZone.getObjects()) do
       if object.type == "Card" then
         return object
       end
@@ -1389,7 +1391,7 @@ function primaryButtonAction(button, playercolor)
         broadcastToAll(prefix .. "[b]ARC Trooper[/b] ability used while no other 'Trooper' or 'Jedi' in play, [b]ARC Trooper[/b] does not deal +2 Damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] base.", "White")
       else
         broadcastToAll(prefix .. "[b]ARC Trooper[/b] ability used while other 'Trooper' or 'Jedi' in play, [b]ARC Trooper[/b] deals +2 Damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] base.", "White")
-        damageBase(isBottom, 2, playerColor, opponentFaction)
+        damageBase(2, playerColor, opponentFaction)
       end
 
     elseif cardName == "Captain Rex" then
@@ -1412,7 +1414,7 @@ function primaryButtonAction(button, playercolor)
             broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal 'Jedi': [b]" .. revealCard.getName() .. "[/b]. " .. revealCard.getName() .. " may be returned or drawn.", "White")
           end
         else
-          pad_republic_reveal.call('show_reveal_ui', {show_discard=true, show_draw=false})
+          showRevealUI(true, false)
           if revealCard.getName() ~= "Obi-Wan Kenobi" then
             broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal non 'Jedi': [b]" .. revealCard.getName() .. "[/b]. " .. revealCard.getName() .. " may be returned or discarded.", "White")
           end
@@ -1438,7 +1440,7 @@ function primaryButtonAction(button, playercolor)
 
     elseif cardName == "Ahsoka Tano" then
       local function ahsokaReveal(revealCard)
-        if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
+        if (forceOwner == "Bottom" and bottomFaction == "Republic") or (forceOwner == "Top" and topFaction == "Republic") then
           if revealCard.getName() ~= "Obi-Wan Kenobi" then
             broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used to reveal " .. revealCard.getName() .. " while the Force is with them. [b]" .. revealCard.getName() .. "[/b] may be returned or swapped with card in discard.", "White")
           end
@@ -1510,34 +1512,45 @@ function primaryButtonAction(button, playercolor)
             arc170Reveal(revealCard)
           end
 
-        end, 3.5)
+        end, 2)
       end
 
     elseif cardName == "Clone Commander Cody" then
       -- check if discard pile exists
       local zoneDiscard  = isBottom and zoneDiscardBottom or zoneDiscardTop
       local discardFound = false
-      local discardPile  = nil
-      for _, zoneObj in ipairs(zoneDiscard.getObjects()) do
-        if zoneObj.type == "Card" or zoneObj.type == "Deck" then
+      local discardPile = nil
+      for _, object in ipairs(zoneDiscard.getObjects()) do
+        if object.type == "Card" or object.type == "Deck" then
           discardFound = true
-          discardPile  = zoneObj
+          discardPile = object
         end
-      end
-      -- search discard
-      if discardPile ~= nil then
-        if discardPile.type == "Deck" then
-          discardPile.Container.search(playerColor)
-        end
-      end
-      -- broadcast to manually do the thing
-      if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
-        broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] ability used while the Force is with them, and may manually place a 'Trooper' from discard to hand.", "White")
-      else
-        broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] used while the Force is with them, and may manually place a 'Trooper' from discard to top of deck.", "White")
       end
       if not discardFound then
-        broadcastToAll(prefix .. "No discard pile available, [b]Clone Commando[/b] ability is ineffective.", "White")
+        broadcastToAll("No discard pile available, Clone Commander Cody ability is ineffective.", "White")
+      end
+      -- if trooper in discard, then open search window
+      if discardPile ~= nil then
+        if discardPile.type == "Deck" then
+          local trooperFound = false
+          for _, deckObj in pairs(discardPile.getObjects()) do
+            local deckObjTags = deckObj.tags
+            if #deckObjTags > 0 then
+              for _, tag in pairs(deckObjTags) do
+                if tag == "trooper" then
+                  trooperFound = true
+                end
+              end
+            end
+          end
+          if discardPile and trooperFound then
+            broadcastToAll(prefix .. "[b]Clone Commander Cody[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] may manually add a 'Trooper' from discard to hand.", "White")
+            discardPile.Container.search(playerColor)
+          end
+          if discardPile and not bhFound then
+            broadcastToAll(prefix .. "[b]Clone Commander Cody[/b] ability used, however there are no 'Troopers' in [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] discard pile.", "White")
+          end
+        end
       end
 
     elseif cardName == "LAAT Gunship" then
@@ -1587,7 +1600,8 @@ function primaryButtonAction(button, playercolor)
     elseif cardName == "Padmé Amidala" then
       -- check if base == Naboo, draw 2 cards if so, 1 card if not
       local nabooFound = false
-      for _, object in pairs(isBottom and zoneBaseBottom or zoneBaseTop).getObjects() do
+      local checkZone = isBottom and getObjectbyName("Zone Bases Bottom") or getObjectbyName("Zone Bases Bottom")
+      for _, object in pairs(checkZone.getObjects()) do
         if object.getName() == "Naboo" then
           nabooFound = true
         end
@@ -1615,7 +1629,7 @@ function primaryButtonAction(button, playercolor)
           plusAttack = cardData[revealCard.getName()].cost
           if plusAttack > 5 then plusAttack = 5 end
         end,1)
-        if (forceOwner == "Bottom" and bottomFaction == "republic") or (forceOwner == "Top" and topFaction == "republic") then
+        if (forceOwner == "Bottom" and bottomFaction == "Republic") or (forceOwner == "Top" and topFaction == "Republic") then
           if revealCard.getName() == "Obi-Wan Kenobi" then
             broadcastToAll(prefix .. "[b]Mace Windu[/b] ability used to reveal [b]Obi-Wan Kenobi[/b] while the Force is with the [" .. Color.fromString(playerColor):toHex() .. "]Republic[-], and may choose to return [b]Obi-Wan Kenobi[/b] for +5 Attack to [b]Mace Windu[/b], or, draw [b]Obi-Wan Kenobi[/b] via his ability.", "White")
             -- hide standard return button

@@ -22,18 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Reveal Red",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126847916218/1F97495766E93A8FD8F2E753498B666049CAD8E9/"
-    },
-    {
-      "Name": "Reveal Orange",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478761126847919667/0A06CD151F2F62FFDF0241FDDF130D4ACC301071/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -46,7 +34,6 @@
   "LayoutGroupSortIndex": 0,
   "Locked": false,
   "LuaScriptState": "",
-  "LuaScript_path": "RepublicGalaxyDeck.0503ab/Delta-7B.3ad827.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Delta-7B",
@@ -54,7 +41,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "reveal_button",
+    "XML1Button",
     "fighter",
     "jedi",
     "republic",
@@ -73,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RepublicGalaxyDeck.0503ab/Delta-7B.3ad827.xml"
+  "XmlUI": ""
 }

@@ -117,15 +117,18 @@ function cardExhaust(card)
 end -- end cardExhaust()
 
 
-function damageBase(isBottom, count, playerColor, faction)
+function damageBase(count, playerColor, faction)
+  log("damageBase("..count..", "..playerColor..", "..faction..") IS RUNNING")
+  local bottomFaction, _ = getPlayerAreas()
+  local isBottom = faction == bottomFaction and true or false
   -- handles damaging and movement of defeated bases
-  local counter = isBottom and counterBaseBottom or counterBaseTop
+  local counter = getObjectbyName("Damage Counter " .. faction)
   local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
   local isAI = checkIfAI()
   if isBottom and isAI then zone = zoneLeadersBases end
-  if faction == "rebellion" then faction = "rebel" end  
+  if faction == "Rebellion" then faction = "rebel" end
   local currentValue = counter.getVar('val')
-  local currentValue = currentValue + count
+  currentValue = currentValue + count
   local maxHP = nil
   local baseFound = false -- boolean to determine if base object is found
   local foundBase = nil -- the base object that may or may not be found
@@ -134,7 +137,7 @@ function damageBase(isBottom, count, playerColor, faction)
 
   for _, obj in pairs(checkZone.getObjects()) do
     if obj.type == "Card" and obj.hasTag(faction .. '_base') then
-      maxHP = obj.getVar('max_hp')
+      maxHP = baseHPData[obj.getName()]
       baseFound = true
       foundBase = obj
     end
@@ -1692,13 +1695,16 @@ function discardRevealed()
   local area = getArea()
   local isBottom = area == "Bottom"
   local discardCard = nil
-  for _, zoneObj in pairs(isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects() do
+  local checkZone = isBottom and getObjectbyName("Zone Republic Reveal Bottom") or getObjectbyName("Zone Republic Reveal Top")
+
+  for _, zoneObj in pairs(checkZone.getObjects()) do
     if zoneObj.type == "Card" then
       discardCard = zoneObj
     end
   end
   discardCard.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
-  discardCard.setPositionSmooth(isBottom and { -8.50, 1.50, -31.00 } or { 8.50, 1.50, 31.00 })
+  discardCard.setPositionSmooth(isBottom and { -8.50, 1.50, -31.00 } or { 8.50, 1.50, 31.00 }, false, true)
+  hideRevealUI()
 end -- end discardRevealed()
 
 
@@ -1707,13 +1713,16 @@ function drawRevealed()
   local area = getArea()
   local isBottom = area == "Bottom"
   local drawCard = nil
-  for _, zoneObj in pairs((isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects()) do
+  local checkZone = isBottom and getObjectbyName("Zone Republic Reveal Bottom") or getObjectbyName("Zone Republic Reveal Top")
+
+  for _, zoneObj in pairs(checkZone.getObjects()) do
     if zoneObj.type == "Card" then
       drawCard = zoneObj
     end
   end
   drawCard.setRotation(isBottom and { 0.00, 180.00, 0.00 } or { 0.00, 0.00, 0.00 })
-  drawCard.setPositionSmooth(isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 })
+  drawCard.setPositionSmooth(isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 }, false, true)
+  hideRevealUI()
 end -- end drawRevealed()
 
 
@@ -1747,13 +1756,18 @@ function returnRevealed()
   local area = getArea()
   local isBottom = area == "Bottom"
   local returnCard = nil
-  for _, zoneObj in pairs(isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop).getObjects() do
+  local checkZone = isBottom and getObjectbyName("Zone Republic Reveal Bottom") or getObjectbyName("Zone Republic Reveal Top")
+
+  for _, zoneObj in pairs(checkZone.getObjects()) do
     if zoneObj.type == "Card" then
-      returnCard = object
+      returnCard = zoneObj
     end
   end
+
   returnCard.setRotation(isBottom and { 0.00, 180.00, 180.00 } or { 0.00, 0.00, 180.00 })
-  returnCard.setPositionSmooth(isBottom and { -3.50, 1.50, -31.00 } or { 3.50, 1.50, 31.00 })
+  returnCard.setPositionSmooth(isBottom and { -3.50, 1.50, -31.00 } or { 3.50, 1.50, 31.00 }, false, true)
+
+  hideRevealUI()
 end -- end returnRevealed()
 
 
@@ -1822,7 +1836,7 @@ function revealACard(button)
     local revealCardName = revealCard.getName()
     if revealCardName == "Obi-Wan Kenobi" then
       if button.getName() ~= "Mace Windu" then
-        broadcastToAll("[" .. Color.fromString(republicColor):toHex() .. "]Hello there![-] [b]Obi-Wan Kenobi[/b] has been revealed, and added to [" .. Color.fromString(republicColor):toHex() .. "]Republic[-] hand.", republicColor)
+        broadcastToAll("[" .. Color.fromString(republicColor):toHex() .. "]Hello there![-] [b]Obi-Wan Kenobi[/b] has been revealed, and added to [" .. Color.fromString(republicColor):toHex() .. "]Republic[-] hand.", "White")
         Wait.time(function() drawRevealed() end, 1)
         Wait.time(function() obiWanRepeatAction(button, republicColor) end, 2)
       end
@@ -1836,7 +1850,7 @@ end -- end revealCard()
 
 function setupRevealUI(area)
   -- handles the setup of republic reveal UI elements
-  local isBottom = area == "Bottom"  
+  local isBottom = area == "Bottom"
   local posPad = isBottom and { -17.50, 0.02, -31.00 } or { 17.50, 0.02, 31.00 }
   local posReturn = isBottom and { -17.50, 0.02, -35.00 } or { 17.50, 0.02, 35.00 }
   local posDiscard = isBottom and { -17.50, 0.02, -36.25 } or { 17.50, 0.02, 36.25 }
@@ -1878,18 +1892,18 @@ function showRevealUI(showDiscard, showDraw)
     revealUIObjs[i].setPosition(posRevealUI[i])
   end
 
-  revealUIObjs[2].call('create_button') -- NEED REQUIRE
+  initRepublicRevealPadButtons(revealUIObjs[2])
 
   if showDiscard then
     revealUIObjs[3].setRotation(rotRevealUI)
     revealUIObjs[3].setPosition(posRevealUI[3])
-    revealUIObjs[3].call('create_button') -- NEED REQUIRE
+    initRepublicRevealPadButtons(revealUIObjs[3])
   end
 
   if showDraw then
     revealUIObjs[4].setRotation(rotRevealUI)
     revealUIObjs[4].setPosition(posRevealUI[4])
-    revealUIObjs[4].call('create_button') -- NEED REQUIRE
+    initRepublicRevealPadButtons(revealUIObjs[4])
   end
 
   if showDraw and not showDiscard then

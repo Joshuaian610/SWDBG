@@ -623,7 +623,7 @@ function setupGame(button, _, _)
 
   -- check that both player areas have selected a faction
   if getObjectbyName("Setup Backdrop Bottom") or getObjectbyName("Setup Backdrop Top") then -- check for backdrop objects
-    broadcastToAll("Both players must select a faction before setup can continue.", "Orange")
+    broadcastToAll("Both players must select a faction before setup can continue.", "Yellow")
     return
   end
 
@@ -631,7 +631,7 @@ function setupGame(button, _, _)
   if getObjectbyName("Button Galaxy Deck Original").getGMNotes() == "disabled" and
   getObjectbyName("Button Galaxy Deck Random").getGMNotes() == "disabled" and
   getObjectbyName("Button Galaxy Deck Expansion").getGMNotes() == "disabled" then
-    broadcastToAll("A galaxy deck option must be selected before setup can continue.", "Orange")
+    broadcastToAll("A galaxy deck option must be selected before setup can continue.", "Yellow")
     return
   end
 
