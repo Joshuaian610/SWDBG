@@ -1361,8 +1361,8 @@ function primaryButtonAction(button, playercolor)
     elseif cardName == "Consular-Class Cruiser" then
       -- check for deck or card in deck zone
       local dealDeckFound = false
-      local dealCard       = nil
-      for _, object in pairs(isBottom and zoneDiscardBottom or zoneDiscardTop).getObjects() do
+      local checkZone = isBottom and getObjectbyName("Zone Deck Bottom") or getObjectbyName("Zone Deck Top")
+      for _, object in pairs(checkZone.getObjects()) do
         if object.type == "Deck" then
           dealDeckFound = true
           object.Container.search(playerColor, 1)

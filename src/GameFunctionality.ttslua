@@ -1411,11 +1411,15 @@ function purchaseCard(button, playerColor, altClick)
   -- cleanup
   forFree = false
 
-  -- remove relevant card ability buttons (Twi-Lek Smuggler)
+  -- remove relevant card ability buttons (Twi-Lek Smuggler, Acclamator-Class Ship)
   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
     if zoneObj.hasTag('twilek_ability') then
       removeAbilityButtons(zoneObj)
       zoneObj.removeTag('twilek_ability')
+      zoneObj.removeTag('cancel_live')
+      removeAbilityButtons(zoneObj)
+    end
+    if zoneObj.getName() == "Acclamator-Class Ship" and zoneObj.hasTag('cancel_live') then
       zoneObj.removeTag('cancel_live')
       removeAbilityButtons(zoneObj)
     end

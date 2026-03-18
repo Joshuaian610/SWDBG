@@ -45,8 +45,8 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
-  "LuaScriptState": "",
-  "LuaScript_path": "RepublicShips.7ff13e/Consular-ClassCruiser.75a833.ttslua",
+  "LuaScript": "require(\"Counters\")",
+  "LuaScriptState": "0",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Consular-Class Cruiser",
@@ -54,7 +54,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "ability_button_large",
+    "XML1Button",
     "republic",
     "ship"
   ],
@@ -71,5 +72,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "RepublicShips.7ff13e/Consular-ClassCruiser.75a833.xml"
+  "XmlUI": ""
 }
