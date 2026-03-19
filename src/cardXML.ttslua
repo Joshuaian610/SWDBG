@@ -1386,6 +1386,7 @@ function initCardXML(card)
       name = "Ability Large Green",
       url  = "https://steamusercontent-a.akamaihd.net/ugc/13417239896628219002/48258C52752EE22F43C3A491234C839E7022BF9F/"
     },
+
     ["Ability Large White"] = {
       name = "Ability Large White",
       url  = "https://steamusercontent-a.akamaihd.net/ugc/2478760492081782979/B8CD7D5C1D924FA08B3278CEEB31D10E415EE6DC/"
@@ -1463,6 +1464,12 @@ function initCardXML(card)
     ["Discard Purple"] = {
       name = "Discard Purple",
       url  = "https://steamusercontent-a.akamaihd.net/ugc/10407394423821863457/CA55B2DB611B6F3A53DFD19C169F30CC6D6C488F/"
+    },
+
+    -- EXILE BUTTONS
+    ["Exile Blue"] = {
+      name = "Exile Blue",
+      url  = "https://steamusercontent-a.akamaihd.net/ugc/2478760492100474631/E099A6762D5874B1FD0AB26F53A95C1B1E75CFAA/"
     },
 
     ["Exile Orange"] = {
@@ -1632,62 +1639,63 @@ function initCardXML(card)
   if buttonColor then
 
     -- Insert ability buttons
-    if card.hasTag("ability_button_large") and (card.hasTag("bottom_owner") or card.hasTag("top_owner")) then -- extra check is to not fire jar jar
+    if card.hasTag("ability_button_large") and (card.hasTag("bottom_owner") or card.hasTag("top_owner")) 
+    and not card.hasTag('used_ability') then -- extra check is to not fire jar jar
       table.insert(finalXML, abilityButtonXML["Ability Large " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Ability Large " .. buttonColor])
     end
     
-    if card.hasTag("exile_button") then
+    if card.hasTag("exile_button") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Exile " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Exile " .. buttonColor])
     end
 
-    if card.hasTag("draw_button") then
+    if card.hasTag("draw_button") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Draw " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Draw " .. buttonColor])
     end
 
-    if card.hasTag("discard_button") then
+    if card.hasTag("discard_button") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Discard " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Discard " .. buttonColor])
     end
 
-    if card.hasTag("reveal_button") then
+    if card.hasTag("reveal_button") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Reveal " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Reveal " .. buttonColor])
     end
 
-    if card.hasTag("attack_button") then
+    if card.hasTag("attack_button") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Attack " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Attack " .. buttonColor])
     end
 
-    if card.hasTag("repair_button_small") then
+    if card.hasTag("repair_button_small") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Repair Small " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Repair Small " .. buttonColor])
     end
 
-    if card.hasTag("repair_button_large") then
+    if card.hasTag("repair_button_large") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Repair Large " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Repair Large " .. buttonColor])
     end
 
-    if card.hasTag("ability_button_sec") and card.hasTag('unit') then
+    if card.hasTag("ability_button_sec") and card.hasTag('unit') and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Ability Small Gold"])
       table.insert(finalImg, abilityButtonImg["Ability Small Gold"])
     end
 
-    if card.hasTag("ability_button_sec") and card.hasTag('ship') then
+    if card.hasTag("ability_button_sec") and card.hasTag('ship') and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Ability Large Gold"])
       table.insert(finalImg, abilityButtonImg["Ability Large Gold"])
     end
     
-    if card.hasTag("add_force_button") then
+    if card.hasTag("add_force_button") and not card.hasTag("spent_force") then
       table.insert(finalXML, abilityButtonXML["Force " .. buttonColor])
       table.insert(finalImg, abilityButtonImg["Force " .. buttonColor])
     end
 
-    if card.hasTag("requires_cancel") then
+    if card.hasTag("requires_cancel") and not card.hasTag('used_ability') then
       table.insert(finalXML, abilityButtonXML["Ability Cancel"])
       table.insert(finalImg, abilityButtonImg["Ability Cancel"])
     end

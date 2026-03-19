@@ -182,7 +182,7 @@ function getObjectbyNameAndNotes(name, gmNotes)
       return object
     end
   end
-  log("getObjectFromNameAndTag() object not found via " .. name .. ", " .. gmNotes)
+  log("getObjectbyNameAndNotes() object not found via " .. name .. ", " .. gmNotes)
   return nil
 end -- end getObjectByNameAndNotes()
 

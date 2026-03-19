@@ -22,18 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Draw Blue",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100804281/627A606D21D704C684FA0468C58BD3F3E505881C/"
-    },
-    {
-      "Name": "Draw Purple",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492100806817/AADBB76B88F4082EAD0FC8FC9D88A4184A984736/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -45,8 +33,8 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
+  "LuaScript": "",
   "LuaScriptState": "",
-  "LuaScript_path": "SeparatistGalaxyDeck.fe508a/AdmiralTrench.421c52.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "Admiral Trench",
@@ -54,8 +42,10 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "draw_button",
+    "XML1Button",
     "officer",
+    "unique",
     "separatist",
     "unit"
   ],
@@ -72,5 +62,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "SeparatistGalaxyDeck.fe508a/AdmiralTrench.421c52.xml"
+  "XmlUI": ""
 }

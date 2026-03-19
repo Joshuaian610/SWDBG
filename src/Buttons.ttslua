@@ -186,6 +186,23 @@ function initRowDiscardButtons(button)
 end -- end initRowDiscardButtons()
 
 
+function initRowExileButtons(button)
+  -- handles init of galaxy row exile buttons
+  button.clearButtons()
+  button.createButton({
+    click_function = "exileRowCard",
+    function_owner = self,
+    label          = "",
+    color          = { 0.6, 0.78, 0.73, 0.0 },
+    hover_color    = { 0.6, 0.78, 0.73, 0.4 },
+    position       = { 0, 0.2, 0 },
+    height         = 750,
+    width          = 2900,
+    tooltip = "Pressing this button will send it's card to it's Exile pile, and automatically replace with a new card.",
+  })
+end -- end initRowExileButtons()
+
+
 function initShipCounter(obj, value)
   log("initShipCounter("..obj.getName()..", "..value..") IS RUNNING")
   -- handles creation of ship damage counters
@@ -354,7 +371,10 @@ function buttonActionSecXML(player, cardGUID, _)
 end -- end buttonActionSecXML()
 
 
-function handleNuteGunray(bagExile, playerColor)
+function handleNuteGunray(playerColor)
+  local bottomColor, topColor = getPlayerColors()
+  local bagExile = playerColor == bottomColor and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
+  log("handleNuteGunray("..bagExile.getName().." "..bagExile.getGMNotes()..", "..playerColor..") IS RUNNING")
   -- opens player's exile bag automatically upon Nute Gunray action trigger execution
   local exileIsValid = false
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
@@ -364,15 +384,17 @@ function handleNuteGunray(bagExile, playerColor)
     end
   end
 
+  log("exileIsValid: " .. tostring(exileIsValid))
+
   if exileIsValid then
-    broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability applied on card leaving galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] must replace it with a non-starter card from their exile.", "White")
+    broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability applied on card leaving galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] must manually replace it with a non-starter card from their exile.", "White")
     bagExile.Container.search(playerColor)
   else
     broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability applied on card leaving galaxy row, but there are no valid [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] cards in their exile to replace. Drawing new card from galaxy deck.", "White")
     drawGalaxyCard()
   end
 
-  getObjectbyName("Nute Gunray").clearButtons()
+  removeAbilityButtons(getObjectbyName("Nute Gunray"))
   nextCardNute = false
 end -- end handleNuteGunray()
 
@@ -471,7 +493,7 @@ function primaryButtonAction(button, playercolor)
   local zoneBase = isBottom and zoneBaseBottom or zoneBaseTop
   local deckGalaxy = getGalaxyDeck()
   local ownerTag = nil
-  local bagExile = (bottomFaction == "separatist") and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
+  local bagExile = (bottomFaction == "Separatist") and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
   local zonesGalaxyRow = {
     zoneGalaxyRow1,
     zoneGalaxyRow2,
@@ -1714,11 +1736,11 @@ function primaryButtonAction(button, playercolor)
     elseif cardName == "B2 Battle Droid" then
       -- set exile row buttons (but only for separatist cards)
       exileRowDeploy(button.getGUID(), isBottom)
-      broadcastToAll(prefix .. "[b]B2 Battle Droid[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: draw a card.", "White")
+      broadcastToAll(prefix .. "[b]B2 Battle Droid[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: draw a card.", "White")
     
     elseif cardName == "Nute Gunray" then
       nextCardNute = true
-      broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability used, next card to leave row will be replaced by non-starter card from [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] exile.", "White")
+      broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability used, next card to leave row will be replaced by non-starter card from [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] exile.", "White")
     
     elseif cardName == "STAP" then
       -- check if more enemy than separatist cards in row, +1 force if so
@@ -1726,7 +1748,7 @@ function primaryButtonAction(button, playercolor)
       local sepCount = 0
       local enemyCount = 0
       for i = 1, 6 do
-        for _, object in pairs(zones[i]).getObjects() do
+        for _, object in pairs(zones[i].getObjects()) do
           if object.type == "Card" and object.hasTag('separatist') then
             sepCount = sepCount + 1
           end
@@ -1736,10 +1758,10 @@ function primaryButtonAction(button, playercolor)
         end
       end
       if enemyCount > sepCount then
-        broadcastToAll(prefix .. "[b]STAP[/b] ability used: " .. sepCount .. " [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], " .. enemyCount .. " [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] cards in galaxy row. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] gains +1 Force.", "White")
+        broadcastToAll(prefix .. "[b]STAP[/b] ability used: " .. sepCount .. " [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], " .. enemyCount .. " [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] cards in galaxy row. [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] gains +1 Force.", "White")
         moveForceTrack(buttonForce, 1)
       else
-        broadcastToAll(prefix .. "[b]STAP[/b] ability used: " .. sepCount .. " [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], " .. enemyCount .. " [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] cards in galaxy row. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] does not gain Force.", "White")
+        broadcastToAll(prefix .. "[b]STAP[/b] ability used: " .. sepCount .. " [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], " .. enemyCount .. " [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] cards in galaxy row. [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] does not gain Force.", "White")
       end
     
     elseif cardName == "Vulture Droid" then
@@ -1750,47 +1772,47 @@ function primaryButtonAction(button, playercolor)
     
     elseif cardName == "Droideka" then
       if metConditionDroideka then
-        broadcastToAll(prefix .. "[b]Droideka[/b] ability used after card has been exiled by [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] this turn. [b]Droideka[/b] gains +2 Attack.", "White")
+        broadcastToAll(prefix .. "[b]Droideka[/b] ability used after card has been exiled by [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] this turn. [b]Droideka[/b] gains +2 Attack.", "White")
       else
-        broadcastToAll(prefix .. "[b]Droideka[/b] ability used, but no card has been exiled by [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] this turn. [b]Droideka[/b] does not gain Attack.", "White")
+        broadcastToAll(prefix .. "[b]Droideka[/b] ability used, but no card has been exiled by [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] this turn. [b]Droideka[/b] does not gain Attack.", "White")
       end
       -- broadcast / modify effective damage counter
     
     elseif cardName == "Munificent-Class Frigate" then
       exileRowDeploy(button.getGUID(), isBottom)
-      broadcastToAll(prefix .. "[b]Munificent-Class Frigate[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: repair 2 base damage.", "White")
+      broadcastToAll(prefix .. "[b]Munificent-Class Frigate[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: repair 2 base damage.", "White")
     
     elseif cardName == "Tri-Fighter" then
       -- if card exiled, broadcast to do damage to capital ship
       exileRowDeploy(button.getGUID(), isBottom)
-      broadcastToAll(prefix .. "[b]Tri-Fighter[/b] ability used. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: do 3 damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] ship.", "White")
+      broadcastToAll(prefix .. "[b]Tri-Fighter[/b] ability used. [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: do 3 damage to [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] ship.", "White")
     
     elseif cardName == "Wat Tambor" then
-      broadcastToAll(prefix .. "[b]Wat Tambor[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] must choose a Neutral row card to discard.", "White")
+      broadcastToAll(prefix .. "[b]Wat Tambor[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] must choose a Neutral row card to discard.", "White")
       metConditionWat =true
     
     elseif cardName == "Droid Control Ship" then
-      broadcastToAll(prefix .. "[b]Droid Control Ship[/b] ability used, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may purchase a droid from exile.", "White")
+      broadcastToAll(prefix .. "[b]Droid Control Ship[/b] ability used, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] may purchase a droid from exile.", "White")
       bagExile.Container.search(playerColor)
 
     --elseif cardName == "Magnaguard" then
       -- will need to modify effective health counter of all owned unique units
     
     elseif cardName == "MTT" then
-      broadcastToAll(prefix .. "[b]MTT[/b] ability used, manually place next purchased 'Droid' to top of [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] deck.", "White")
+      broadcastToAll(prefix .. "[b]MTT[/b] ability used, manually place next purchased 'Droid' to top of [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] deck.", "White")
     
     elseif cardName == "AAT" then
       -- give 2 force if card exiled
       exileRowDeploy(button.getGUID(), isBottom)
-      broadcastToAll(prefix .. "[b]AAT[/b] ability used. [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: gain 2 Force.", "White")
+      broadcastToAll(prefix .. "[b]AAT[/b] ability used. [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] may select a [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] card in galaxy row to exile: gain 2 Force.", "White")
     
     elseif cardName == "Admiral Trench" then
       if metConditionTrench then
-        broadcastToAll(prefix .. "[b]Admiral Trench[/b] ability used after ship in play at turn start, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] draws 2 cards.", "White")
+        broadcastToAll(prefix .. "[b]Admiral Trench[/b] ability used after ship in play at turn start, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] draws 2 cards.", "White")
         dealCard(area, 2)
         metConditionTrench = false
       else
-        broadcastToAll(prefix .. "[b]Admiral Trench[/b] ability used after ship not in play at turn start, [" .. Player.color.fromString(playerColor):toHex() .. "]Separatist[-] draws 1 card.", "White")
+        broadcastToAll(prefix .. "[b]Admiral Trench[/b] ability used after ship not in play at turn start, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] draws 1 card.", "White")
         dealCard(area, 1)
       end
     
@@ -1802,13 +1824,14 @@ function primaryButtonAction(button, playercolor)
     elseif cardName == "Asajj Ventress" then
       -- discard neutrals from row, timed replace
       local zones = zonesGalaxyRow
+      log(zonesGalaxyRow)
       local neutralCount = 0
       for i = 1, 6 do
         local slot = i
         if not isBottom then slot = slot + 6 end
-        local buttonDiscard = getObjectbyNameAndNotes("Button Discard", slot)
-        for _, v in pairs(zones[i].getObjects()) do
-          if v.hasTag('neutral') and v.hasTag('unit') then
+        local buttonDiscard = getObjectbyNameAndNotes("Button Discard", tostring(slot))
+        for _, zoneObj in pairs(zones[i].getObjects()) do
+          if zoneObj.hasTag('neutral') and zoneObj.hasTag('unit') then            
             galaxyDiscard(buttonDiscard, zones[i], true)
             neutralCount = neutralCount + 1
           end
@@ -1846,7 +1869,7 @@ function primaryButtonAction(button, playercolor)
       end, .5)
       Wait.time(function()
 
-        if (forceOwner == "Bottom" and bottomFaction == "separatist") or (forceOwner == "Top" and topFaction == "separatist") then
+        if (forceOwner == "Bottom" and bottomFaction == "Separatist") or (forceOwner == "Top" and topFaction == "Separatist") then
           if #opponentCards == 0 then
             broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-], however there are no enemy cards in row to discard with [b]Asajj Ventress[/b] ability.", "White")
           elseif #opponentCards == 1 then
@@ -1869,10 +1892,10 @@ function primaryButtonAction(button, playercolor)
       end, 1)
 
     elseif cardName == "Count Dooku" then
-      if (forceOwner == "Bottom" and bottomFaction == "separatist") or (forceOwner == "Top" and topFaction == "separatist") then
+      if (forceOwner == "Bottom" and bottomFaction == "Separatist") or (forceOwner == "Top" and topFaction == "Separatist") then
         local exileValid = false
         for _, bagObj in ipairs(bagExile.getObjects()) do
-          if bagObj.cardName ~= "B1 Battle Droid" and bagObj.cardName ~= "Separatist Shuttle" and bagObj.cardName ~= "Dark Side Agent" then
+          if bagObj.name ~= "B1 Battle Droid" and bagObj.name ~= "Separatist Shuttle" and bagObj.name ~= "Dark Side Agent" then
             exileValid = true
           end
         end
@@ -1901,6 +1924,9 @@ function primaryButtonAction(button, playercolor)
   end
 
   if button.hasTag('ship') then initShipCounter(button, button.getVar('val')) end
+
+  -- add 'used_ability' tag, used to detect current state of XML buttons onload, rewind etc
+  button.addTag('used_ability')
 
   -- create cancel buttons on requiring cards
   if cardName == 'Grand Moff Tarkin' or cardName == 'Princess Leia' or
@@ -1997,9 +2023,8 @@ function secondaryButtonAction(button, playerColor)
     removeAbilityButtons(button)
   end
 
-  if button.hasTag('add_force_button') then
-    removeForceButtons(button)
-  end
+  -- add 'used_ability' tag, used to detect current state of XML buttons onload, rewind etc
+  button.addTag('used_ability')
 
   if button.hasTag('ship') then initShipCounter(button, button.getVar('val')) end
 

@@ -46,6 +46,7 @@ function addUnitForce(player, GUID)
   broadcastToAll(prefix .. "[b]" .. cardName .. "[/b] has generated [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] Force x" .. count .. ".", "White")
 
   removeForceButtons(card)
+  card.addTag('spent_force')
 
   -- handle removal of all XML ability buttons in case of multiple other XML ability buttons
   if cardName == "Temple Guardian" or cardName == "Inquisitor" or cardName == "Jedi Knight" or
@@ -84,16 +85,20 @@ function cancelCardAction(button, playerColor, _)
   elseif cardName == "B2 Battle Droid" or cardName == "Munificent-Class Frigate" or
   cardName == "Tri-Fighter" or cardName == "AAT" then
     for _, object in pairs(getObjects()) do
-      if object.hasTag('exile_button') then
+      if object.hasTag('row_exile_button') then
         object.destruct()
       end
     end
 
   elseif cardName == "Wat Tambor" then
     metConditionWat = false
+
+  elseif cardName == "Asajj Ventress" then
+    metConditionAsajj = false
   end
 
   button.removeTag("cancel_live")
+  button.removeTag("used_ability")
   removeAbilityButtons(button)
   initCardXML(button)
 
@@ -548,17 +553,24 @@ function endTurn(button, _, _)
 end -- end endTurn()
 
 
+function doExileCard(playerColor, _, card)
+  local playerArea = (card.hasTag('bottom_owner') and "Bottom") or (card.hasTag('top_owner') and "Top")
+  if not card.hasTag('bottom_owner') and not card.hasTag('top_owner') then
+    local bottomColor, _ = getPlayerColors()
+    playerArea = playerColor == bottomColor and "Bottom" or "Top"
+  end  
+  exileCard(playerArea, card)
+end -- endDoExileCard()
+
 function exileCard(playerArea, obj)
   -- handles the exiling of a card, called via hotkey or context menu
   local bottomColor, topColor = getPlayerColors()
   local bagExile = (obj.hasTag('bottom_owner') and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
   local playerColor = (playerArea == bottomColor and bottomColor or topColor)
   if not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') then
-    bagExile = (playerArea == bottomColor and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
+    bagExile = (playerColor == bottomColor and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top"))
   end
-  local tags = obj.getTags()
-  table.insert(tags, 'exiled')
-  obj.setTags(tags)
+  obj.addTag('exiled')
 
   -- check if card is in galaxy row
   local checkZones = {zoneGalaxyRow1, zoneGalaxyRow2, zoneGalaxyRow3, zoneGalaxyRow4, zoneGalaxyRow5, zoneGalaxyRow6}
@@ -577,7 +589,7 @@ function exileCard(playerArea, obj)
     -- handle Nute Gunray
     if nextCardNute then
       cardInRow = false
-      handleNuteGunray(bagExile, playerColor)
+      handleNuteGunray(playerColor)
     end
 
     -- replace card with galaxy row card if needed
@@ -587,7 +599,7 @@ function exileCard(playerArea, obj)
 end -- end exileCard()
 
 
-function exileRowCard(button, playerColor, zoneCard, callCardGUID)
+function exileRowCard(button, playerColor, _)
   -- this function exiles a card from the galaxy row, called by Separatist card ability scripting & Exile row button
   local bottomColor, topColor = getPlayerColors()
 
@@ -595,8 +607,9 @@ function exileRowCard(button, playerColor, zoneCard, callCardGUID)
   animateButtonGalaxyRow(button)
 
   -- get card in zone
-  local exileTargetCard       = nil
-  local cardFound              = false
+  local exileTargetCard = nil
+  local cardFound = false
+  local zoneCard = getObjectFromGUID(button.getDescription())
   for _, object in pairs(zoneCard.getObjects()) do
     if object.type == "Card" then
       exileTargetCard = object
@@ -613,7 +626,7 @@ function exileRowCard(button, playerColor, zoneCard, callCardGUID)
   exileCard(color, exileTargetCard)
 
   -- do the callCard action (all exile separatist cards only)
-  local callCard = getObjectFromGUID(callCardGUID)
+  local callCard = getObjectFromGUID(button.getGMNotes())
   if callCard.getName() == "B2 Battle Droid" then
     -- draw a card for separatist
     dealCard(playerColor == bottomColor and "bottom" or "top", 1)
@@ -641,8 +654,9 @@ function exileRowCard(button, playerColor, zoneCard, callCardGUID)
     end
     
   elseif callCard.getName() == "AAT" then
-    -- gain 2 force    
-    moveForceTrack(playerColor == bottomColor and buttonForceBottom or buttonForceTop, 2)
+    -- gain 2 force
+    local forceButton = playerColor == bottomColor and getObjectbyName("Button Force Bottom") or getObjectbyName("Button Force Top")
+    moveForceTrack(forceButton, 2)
     if Player[playerColor].steam_name then
       broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has exiled a card, and has gained +2 Force.", "White")
     else
@@ -651,9 +665,12 @@ function exileRowCard(button, playerColor, zoneCard, callCardGUID)
   end
 
   -- remove buttons on callCard
-  if callCard.hasTag('buttons') then
-    callCard.clearButtons()
-  elseif callCard.hasTag('ability_button') then
+  if (callCard.hasTag('ability_button_large') or callCard.hasTag('exile_button') or callCard.hasTag('ability_button_sec') or
+  callCard.hasTag('add_force_button') or callCard.hasTag('draw_button') or callCard.hasTag("attack_button")
+  or callCard.hasTag("discard_button") or callCard.hasTag('reveal_button') or
+  callCard.hasTag('repair_button_small') or callCard.hasTag('repair_button_large')) and
+  (callCard.hasTag('bottom_owner') or callCard.hasTag('top_owner')) and
+  callCard.type == "Card" then
     removeAbilityButtons(callCard)
   end
 
@@ -661,7 +678,7 @@ function exileRowCard(button, playerColor, zoneCard, callCardGUID)
 
     -- clean up exile buttons
     for _, object in pairs(getObjects()) do
-      if object.hasTag('exile_button') then
+      if object.getName() == "Button Exile" then
           object.destruct()
       end
     end
@@ -689,7 +706,6 @@ function exileRowDeploy(callingCard, isBottom)
     isBottom and {7.00, 0.14, -7.00 } or { 7.00, 0.14, 7.00 },
     isBottom and { 14.00, 0.14, -7.00 } or { 14.00, 0.14, 7.00 },
   }
-  local bagExile = isBottom and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
 
   for i = 1, 6 do
     for _, object in ipairs(zones[i].getObjects()) do
@@ -702,7 +718,7 @@ function exileRowDeploy(callingCard, isBottom)
           button.setPosition(posButtonsExile[i])
           button.setDescription(zones[i].getGUID())
           button.setGMNotes(callingCard)
-        end, 1)
+        end)
       end
     end
   end
@@ -737,7 +753,7 @@ function galaxyDiscard(button, _, altClick)
   local watOwnerForce = false
   local stopDraw = false
   local discardFound = false
-  local discardPile  = nil
+  local discardPile = nil
 
   for _, zoneObj in pairs(zoneCard.getObjects()) do
     if zoneObj.type == "Card" then
@@ -760,7 +776,8 @@ function galaxyDiscard(button, _, altClick)
   if nextCardNute then
     Wait.time(function()
 
-      handleNuteGunray(bagExile, playerColor)
+      handleNuteGunray(playerColor)
+      return
 
     end, 1)
   end
@@ -770,26 +787,21 @@ function galaxyDiscard(button, _, altClick)
     if card.hasTag('neutral') then
 
       -- check if separatist has force
-      if forceOwner == "Bottom" and bottomFaction == "separatist" or forceOwner == "Top" and topFaction == "separatist" then
+      if forceOwner == "Bottom" and bottomFaction == "Separatist" or forceOwner == "Top" and topFaction == "Separatist" then
         watOwnerForce = true
-        broadcastToAll("Wat Tambor ability discarded card while [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] is Force owner. It may be replaced with a Separatist card from galaxy discard.", "White")
-
-        -- check if discard pile exists        
-        for _, zoneObj in ipairs(zoneGalaxyDiscard.getObjects()) do
-          if zoneObj.type == "Card" or zoneObj.type == "Deck" then
-            discardFound = true
-            stopDraw = true
-            discardPile = zoneObj
-          end
-        end
+        broadcastToAll("[b]Wat Tambor[/b] ability discarded card while [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] is Force owner. It may be replaced with a Separatist card from galaxy discard.", "White")
+        stopDraw = true
 
       else
-        Wait.time(function()
+        -- Wait.time(function()
 
-          broadcastToAll("Wat Tambor ability discarded card while [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] is not Force owner. Drawing a replacement card from galaxy deck.", "White")
-          drawGalaxyCard()
+        broadcastToAll("Wat Tambor ability discarded card while [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] is not Force owner. Drawing a replacement card from galaxy deck.", "White")
+        Wait.time(function() drawGalaxyCard() end, 1)
+        removeAbilityButtons(getObjectbyName("Wat Tambor"))
+        metConditionWat = false
+        return
 
-        end, 1)
+        -- end, 1)
       end
 
       if not discardFound then
@@ -798,22 +810,37 @@ function galaxyDiscard(button, _, altClick)
           if not stopDraw then
             broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]***[-] No galaxy discard pile available, Wat Tambor ability is ineffective. Drawing a replacement card from galaxy deck.", "White")
             drawGalaxyCard()
+            return
           end
 
         end, 1)
       end
 
-      -- search galaxy discard 
-      if discardFound and watOwnerForce and Player[playerColor].steam_name then
-        if discardPile.type == "Deck" then
-          discardPile.Container.search(playerColor)
+      -- search galaxy discard
+
+      -- check if discard pile exists
+      Wait.time(function()
+
+        for _, zoneObj in ipairs(zoneGalaxyDiscard.getObjects()) do
+          if zoneObj.type == "Card" or zoneObj.type == "Deck" then
+            discardFound = true
+            discardPile = zoneObj
+          end
         end
-      end
+        if discardFound and watOwnerForce and Player[playerColor].steam_name then
+          if discardPile.type == "Deck" then
+            discardPile.Container.search(playerColor)
+          end
+        end
+      
+      end, 1.01)
 
     else
       broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]***[-] Wat Tambor ability is active, next card discarded must be a Neutral card.", "White")
       return
     end
+    removeAbilityButtons(getObjectbyName("Wat Tambor"))
+    metConditionWat = false
   end
 
   if not altClick and not nextCardNute and not metConditionWat then
@@ -825,11 +852,6 @@ function galaxyDiscard(button, _, altClick)
 
     end, 1)
   end
-
-  if metConditionWat then
-    removeAbilityButtons(getObjectbyName("Wat Tambor"))
-  end
-  metConditionWat = false
 
   if Player[playerColor].steam_name ~= nil then
       broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has discarded " .. card.getName() .. " from the galaxy row.", "White")
@@ -1045,7 +1067,7 @@ function nextCardToDeck(faction)
 end -- end nextCardToDeck()
 
 
-function purchaseCard(button, playerColor, altClick)
+function purchaseCard(button, playerColor, altClick)  
   local buttonNumber = tonumber(button.getGMNotes())
   local playerArea = buttonNumber < 8 and "bottom" or "top"
   local isBottom = playerArea == "bottom"
@@ -1121,8 +1143,6 @@ function purchaseCard(button, playerColor, altClick)
   local zoneCard = zoneCards[tonumber(button.getGMNotes())]
   local forFree = altClick and true or false
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
-
-  log("zoneCard: " .. zoneCard.getName())
 
   if nextCardTarkin then forFree = true end
 
@@ -1370,20 +1390,7 @@ function purchaseCard(button, playerColor, altClick)
     cardObj.addTag("tarkin_exile")
     cardObj.setDescription("WILL BE EXILED VIA TARKIN ABILITY AT END OF TURN!")
     cardObj.highlightOn("Blue")
-  end
-
-  if button ~= getObjectbyNameAndNotes("Button Purchase", "7") and button ~= getObjectbyNameAndNotes("Button Purchase", "8") then
-    Wait.time(function()
-
-      if nextCardNute then
-        bagExile = isBottom and getObjectbyNameAndNotes("Exiled!", "Bottom") or getObjectbyNameAndNotes("Exiled!", "Top")
-        handleNuteGunray(bagExile, playerColor)
-      else
-        drawGalaxyCard()
-      end
-
-    end, 1)
-  end
+  end  
 
   if not forFree then
     if Player[playerColor].steam_name ~= nil then
@@ -1408,6 +1415,20 @@ function purchaseCard(button, playerColor, altClick)
     end
   end
 
+  -- draw another card to replace if not OR Pilot purchased and Nute Gunray ability is not active
+  log("purchaseCard() nextCardNute: " .. tostring(nextCardNute))
+  if button ~= getObjectbyNameAndNotes("Button Purchase", "7") and button ~= getObjectbyNameAndNotes("Button Purchase", "8") then
+    Wait.time(function()
+
+      if nextCardNute then
+        handleNuteGunray(playerColor)
+      else
+        drawGalaxyCard()
+      end
+
+    end, 1)
+  end
+
   -- cleanup
   forFree = false
 
@@ -1425,7 +1446,7 @@ function purchaseCard(button, playerColor, altClick)
     end
   end
   
-  -- reset vars
+  -- reset vars  
   nextCardToHandBottom = false
   nextCardToDeckBottom = false
   nextCardToHandBottom = false
@@ -1433,7 +1454,7 @@ function purchaseCard(button, playerColor, altClick)
   nextCardLeia = false
   nextCardTarkin = false
   nextCardContact = false
-  nextCardNute = false
+  Wait.time(function() nextCardNute = false end, 1.01)
 
   for _, obj in ipairs(getObjects()) do
     if obj.hasTag('nextCardContact') then

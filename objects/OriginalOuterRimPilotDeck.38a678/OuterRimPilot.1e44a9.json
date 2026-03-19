@@ -21,7 +21,7 @@
       "Type": 0,
       "UniqueBack": false
     }
-  },  
+  },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -33,6 +33,7 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
+  "LuaScript": "",
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Card",

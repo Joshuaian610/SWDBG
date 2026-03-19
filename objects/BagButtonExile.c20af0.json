@@ -11,7 +11,7 @@
     "r": 0.30589
   },
   "ContainedObjects_order": [
-    "ExileButton.57444a"
+    "ButtonExile.57444a"
   ],
   "ContainedObjects_path": "BagButtonExile.c20af0",
   "Description": "",
@@ -34,10 +34,13 @@
   "Nickname": "Bag Button Exile",
   "Snap": true,
   "Sticky": true,
+  "Tags": [
+    "non_interactable"
+  ],
   "Tooltip": true,
   "Transform": {
     "posX": -51.484,
-    "posY": -2.439,
+    "posY": -3.168,
     "posZ": 0,
     "rotX": 0,
     "rotY": 0,

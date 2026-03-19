@@ -24,7 +24,7 @@ function onLoad()
   invis = true
 
   -- set non interactables, run onSpawn stuff
-  if interactable then
+  if not interactable then
     for _, obj in pairs(getObjects()) do
       if obj.hasTag('non_interactable') then
         obj.interactable = false
@@ -41,6 +41,7 @@ function onLoad()
     getObjectbyName("Resource Counter Board Bottom").setInvisibleTo(allColors)
     getObjectbyName("Resource Counter Board Top").setInvisibleTo(allColors)
     getObjectbyName("Bag Button Exile").setInvisibleTo(allColors)
+    getObjectbyName("Bag Button Exile").interactable = false
   end
 
   -- global toggle vars
@@ -181,13 +182,10 @@ function onLoad()
   -- game has started:
   elseif not buttonSetupGame then
     -- create counters on ship cards when reloaded
-    for _, obj in pairs(zoneInPlay.getObjects()) do
-      -- *** DO WE REALLY NEED REPUBLIC / SEPARATIST CHECKS
-      -- if v.hasTag('ship') and (v.hasTag('bottom_owner') or v.hasTag('top_owner')) or
-      -- v.hasTag('republic_owner') or v.hasTag('separatist_owner') then
-      if obj.hasTag('ship') and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-        local val = obj.getVar('val')
-        initShipCounter(obj, val)
+    for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+      if zoneObj.hasTag('ship') and (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then
+        local val = zoneObj.getVar('val')
+        initShipCounter(zoneObj, val)
       end
     end
     
@@ -244,6 +242,23 @@ function onLoad()
       exileCard(playerArea, hoverObject)
     end
   end, false)
+
+  -- detect XML button state tags, show buttons accordingly
+  for _, zoneObj in pairs(zoneInPlay.getObjects()) do
+    if zoneObj.hasTag('add_force_button') and not zoneObj.hasTag('spent_force') or
+    (zoneObj.hasTag('ability_button_large') or zoneObj.hasTag('ability_button_small') or
+    zoneObj.hasTag('repair_button_large') or zoneObj.hasTag('repair_button_small') or
+    zoneObj.hasTag('discard_button') or zoneObj.hasTag('draw_button') or
+    zoneObj.hasTag('exile_button') or zoneObj.hasTag('attack_button')) and not zoneObj.hasTag('used_ability') then
+      local objInZoneRow = false
+      for _, checkZone in pairs(obj.getZones()) do
+        if checkZone.getName():find("Zone Row") and (not checkZone.getName() == "Zone Row Deck" and not checkZone.getName() == "Zone Row Discard") then
+          objInZoneRow = true
+        end
+      end
+      if not objInZoneRow then initCardXML(zoneObj) end
+    end
+  end
   
   ------- SOLO STUFF ------
   -- all solo stuff in onLoad has been moved to Empire Leaders card object for now
@@ -294,6 +309,8 @@ function onObjectSpawn(obj)
     local buttonPos = obj.getPosition()
     if buttonPos.y > 0 then initRepublicRevealPadButtons(obj) end
 
+  elseif name == "Button Exile" then
+    initRowExileButtons(obj)
 
   elseif obj.hasTag('ship') and obj.type == "Card" and (obj.hasTag("bottom_owner") or obj.hasTag("topOwner")) then
     for _, zone in pairs(obj.getZones()) do
@@ -306,6 +323,11 @@ function onObjectSpawn(obj)
         end, .5)
       end
     end
+  end
+
+  -- handle Exile Card context menu creation
+  if obj.type == "Card" and (obj.hasTag('unit') or obj.hasTag('ship')) then
+    obj.addContextMenuItem("Exile Card", doExileCard)
   end
 end
 
@@ -429,27 +451,34 @@ function onObjectEnterZone(zone, obj)
     initCardXML(obj)
   end
 
-  -- remove ownership tags on cards placed back into galaxy row
+  -- remove ownership tags on cards placed back into galaxy row, ensure buttons removed
   if zone.getName():find("Zone Row") and obj.type == "Card" then
     if obj.hasTag('bottom_owner') then
       obj.removeTag('bottom_owner')
       removeAbilityButtons(obj)
+      if obj.hasTag('ship') then obj.clearButtons() end
     end
     if obj.hasTag('top_owner') then
       obj.removeTag('top_owner')
       removeAbilityButtons(obj)
+      if obj.hasTag('ship') then obj.clearButtons() end
     end
     nextCardNute = false
   end
 
-  -- bounty hunt / sabotage button creation
+  -- zone galazy row stuff
   if zone.getName():find("Zone Row") and zone.getName() ~= "Zone Row Deck" and zone.getName() ~= "Zone Row Discard" then
-
+    -- bounty hunt / sabotage button creation
     if obj.type == "Card" and obj.hasTag('unit') and (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and
     not obj.hasTag('neutral')) then
       local tooltip = cardData[obj.getName()].attackTTip
       local factionName = cardData[obj.getName()].faction
       initBHSaboButtons(obj, tooltip, factionName)
+    end
+
+    -- ensure ship counter removal
+    if obj.type == "Card" and obj.hasTag('ship') then
+      obj.clearButtons()
     end
 
     -- neutral bh /sabotage button creation if required  IS THIS BLOCK ACTUALLY NEEDED
@@ -608,14 +637,14 @@ function onObjectLeaveZone(zone, obj)
     -- removeBHbuttons()
   end
 
-  -- handles republic reveal UI hide  
-  -- local zoneRepublicReveal = isBottom and zoneRepublicRevealBottom or zoneRepublicRevealTop
-  -- if zone == zoneRepublicReveal and obj.hasTag(isBottom and 'bottom_owner' or 'top_owner') then
-  --   local areaRevealPad = getArea()
-  --   local isBottom = areaRevealPad == "Bottom"
-    
-  --   hideRevealUI()
-  -- end
+  -- remove 'spent_force', 'used_ability' tags
+  if zone == getObjectbyName("Zone In Play") and obj.hasTag('spent_force') then
+    obj.removeTag('spent_force')
+  end
+  if zone == getObjectbyName("Zone In Play") and obj.hasTag('used_ability') then
+    obj.removeTag('used_ability')
+  end
+
 end -- end onObjectLeaveZone()
 
 
@@ -648,5 +677,7 @@ function onObjectEnterContainer(container, obj)
     end
   end
 end -- end onObjectEnterContainer()
+
+
 
 -- AI FUNCTIONS HAVE BEEN MOVED TO EMPIRE AI LEADER CARD

@@ -183,6 +183,10 @@
     {
       "displayed": "draw_button",
       "normalized": "draw_button"
+    },
+    {
+      "displayed": "row_exile_button",
+      "normalized": "row_exile_button"
     }
   ]
 }

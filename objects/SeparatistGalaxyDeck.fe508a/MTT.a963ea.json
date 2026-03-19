@@ -22,18 +22,6 @@
       "UniqueBack": false
     }
   },
-  "CustomUIAssets": [
-    {
-      "Name": "Ability Blue Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098324064/EFA3D454799F0BFA8FF0974222193752069A978B/"
-    },
-    {
-      "Name": "Ability Purple Large",
-      "Type": 0,
-      "URL": "https://steamusercontent-a.akamaihd.net/ugc/2478760492098326569/E44005DEF51A0680CC9B51AC70DF821BB3756819/"
-    }
-  ],
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
@@ -45,8 +33,8 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
+  "LuaScript": "",
   "LuaScriptState": "",
-  "LuaScript_path": "SeparatistGalaxyDeck.fe508a/MTT.a963ea.ttslua",
   "MeasureMovement": false,
   "Name": "Card",
   "Nickname": "MTT",
@@ -54,7 +42,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "ability_button",
+    "ability_button_large",
+    "XML1Button",
     "separatist",
     "unit",
     "vehicle"
@@ -72,5 +61,5 @@
     "scaleZ": 2.1
   },
   "Value": 0,
-  "XmlUI_path": "SeparatistGalaxyDeck.fe508a/MTT.a963ea.xml"
+  "XmlUI": ""
 }

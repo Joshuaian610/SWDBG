@@ -33,6 +33,7 @@
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
   "Locked": false,
+  "LuaScript": "",
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Card",
@@ -43,6 +44,7 @@
   "Tags": [
     "repair_button_large",
     "XML1Button",
+    "rebel",
     "transport",
     "unit"
   ],
