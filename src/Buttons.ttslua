@@ -1910,7 +1910,92 @@ function primaryButtonAction(button, playercolor)
       end
       -- search exile bag, broadcast to swap
       end
-    end 
+
+    -- MANDALORIAN PRIMARY ACTION BUTTONS
+    elseif cardName == "Foundling" then
+      -- needs exile button
+      -- exile card to add next purchased bounty hunter or trooper to hand
+
+    elseif cardName == "Paz Vizsla" then
+      -- needs ability large
+      -- broadcast to manually do effect
+
+    elseif cardName == "Clan Kryze Commando" then
+      -- needs ability large
+      -- check if force marker neutral, if so, do 2 damage to opponent base
+
+    elseif cardName == "Balutar Swoop Rider" then
+      -- needs ability large & cancel
+      -- next card purchased will move force marker 1 space towards neutral
+
+    elseif cardName == "Axe Woves" then
+      -- needs ability large
+      -- remove ownership tags, button tags, buttons etc, place axe woves to top of galaxy deck
+      -- move force marker to neutral space
+
+    elseif cardName == "Captured Gozanti Cruiser" then
+      -- needs draw button
+      -- check if force is neutral, if so, draw 1 card
+
+    elseif cardName == "Mandalorian Hunter" then
+      -- needs ability large
+      -- if force with mandalorian, get it's position, then move to neutral
+      -- then, broadcast how much +attack mandalorian hunter gets
+
+    elseif cardName == "Survivor Langskib" then
+      -- needs ability large
+      -- broadcast to manually do either effect
+
+    elseif cardName == "Koska Reeves" then
+      -- needs ability large & cancel
+      -- need to show/hide bounty hunt/sabotage buttons on use/cancel
+      -- remove bounty hunt buttons on neutrals on use
+
+    elseif cardName == "Mandalorian Hijacker" then
+      -- needs exile button
+      -- broadcast about after manually attacking and discarding a ship from the row, exile to do the thing
+
+    elseif cardName == "Protectorate Fighter" then
+      -- add to hand on purchase (like fang fighter)
+      -- check if force is neutral, draw card if so
+
+    -- elseif cardName == "Arquitens Command Center" then
+      -- nothing, troopers get +1 
+
+    elseif cardName == "The Mandalorian" then
+      -- ability large
+      -- broadcast about after defeating target in row, do the thing etc
+      -- search discard pile
+
+    elseif cardName == "Grogu" then
+      -- draw button
+      -- check if Mandalorian in play. if so 2 cards, otherwise 1
+
+    elseif cardName == "Gauntlet Dropship" then
+      -- ability button
+      -- get, reveal top 5 cards in deck, and if they're a trooper or not
+      -- need to refresh discard if draw deck is under 5
+      -- if draw deck is under 5 and there's no discard, just reveal all
+      -- broadcast about adding to hand
+
+    elseif cardName == "The Armorer" then
+      -- repair large button
+      -- check if force neutral, if so, repair 5 base damage, otherwise repair 3
+
+    elseif cardName == "Din's Starfighter" then
+      -- ability large
+      -- check if force neutral. if so, broadcast about manually destroying ship
+
+    elseif cardName == "Razorcrest" then
+      -- ability large
+      -- add next purchased trooper or bounty hunter to hand
+    elseif cardName == "Bo-Katan" then
+      -- ability large
+      -- if force neutral:
+      -- check if discard, if 'mandalorian' is in discard
+      -- if so, open search
+
+    end
 
   if button.hasTag('ability_button_large') or button.hasTag('exile_button') or button.hasTag('draw_button') or
   button.hasTag('discard_button') or button.hasTag('repair_button_small') or button.hasTag('repair_button_large') or
