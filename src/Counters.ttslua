@@ -318,10 +318,12 @@ function onLoad(savedData)
   end
 
   -- add context menu entries
-  self.addContextMenuItem("Add 5", function() updateVal(val + 5) end)
-  self.addContextMenuItem("Subtract 5", function() updateVal(val - 5) end)
-  self.addContextMenuItem("Add 10", function() updateVal(val + 10) end)
-  self.addContextMenuItem("Subtract 10", function() updateVal(val - 10) end)
+  if not self.hasTag('ship') then
+    self.addContextMenuItem("Add 5", function() updateVal(val + 5) end)
+    self.addContextMenuItem("Subtract 5", function() updateVal(val - 5) end)
+    self.addContextMenuItem("Add 10", function() updateVal(val + 10) end)
+    self.addContextMenuItem("Subtract 10", function() updateVal(val - 10) end)
+  end
 end -- end onLoad()
 
 
