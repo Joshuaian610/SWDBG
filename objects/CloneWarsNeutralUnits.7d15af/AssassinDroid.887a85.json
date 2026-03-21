@@ -43,7 +43,8 @@
   "Sticky": true,
   "Tags": [
     "ability_button_large",
-    "bounty_hunter",
+    "XML1Button",
+    "requires_cancel",
     "droid",
     "neutral",
     "unit",

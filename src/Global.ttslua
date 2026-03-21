@@ -50,10 +50,12 @@ function onLoad()
   nextCardToDeckTop = false
   nextCardToHandBottom = false
   nextCardToHandBottom = false
+  nextBHorTrooperToHand = false
   nextCardTarkin = false
   nextCardLeia = false
   nextCardContact = false
   nextCardNute = false
+  nextCardBalutar = false
   metConditionDroideka = false
   metConditionWat = false
   metConditionHondo = false
@@ -312,6 +314,9 @@ function onObjectSpawn(obj)
   elseif name == "Button Exile" then
     initRowExileButtons(obj)
 
+  elseif obj.hasTag('trooper') and obj.hasTag('dropship_revealed') then
+    initDropshipSelectButton(obj)
+
   elseif obj.hasTag('ship') and obj.type == "Card" and (obj.hasTag("bottom_owner") or obj.hasTag("topOwner")) then
     for _, zone in pairs(obj.getZones()) do
       if zone.getName() == "Zone In Play" then
@@ -481,46 +486,23 @@ function onObjectEnterZone(zone, obj)
       obj.clearButtons()
     end
 
-    -- neutral bh /sabotage button creation if required  IS THIS BLOCK ACTUALLY NEEDED
-    -- if obj.hasTag('unit') and not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and obj.hasTag('neutral') then
-    --   -- check for ord mantell
-    --   local zones = {zoneBaseBottom, zoneBaseTop}
-    --   for i = 1, 2 do
-    --     for _, zoneObj in pairs(zones[i].getObjects()) do
-    --       if zoneObj.getName() == "Ord Mantell" then
-    --         -- object.call('bh_neutral_create') -- NEEDISH REQUIRE
-    --       end
-    --     end
-    --   end
-
-    --   -- check for assassin droids      
-    --   for _, zoneObj in pairs(zoneInPlay.getObjects()) do
-    --     if zoneObj.getName() == "Assassin Droid" and (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) then
-    --       -- object.call('bh_neutral_create') -- NEEDISH REQUIRE
-    --     end
-    --   end
-    end
-
-  -- neutral BH / sabotage buttons when ord mantell enters or leaves play -- REVISIT : needs removal functions
-  local function createBHbuttons()
-    local zones = {zoneGalaxyRow1, zoneGalaxyRow2, zoneGalaxyRow3, zoneGalaxyRow4, zoneGalaxyRow5, zoneGalaxyRow6}
-    for i = 1, 6 do
-      for _, zoneObj in pairs(zones[i].getObjects()) do
-        if zoneObj.hasTag('neutral') and (not zoneObj.hasTag('bottom_owner') and not zoneObj.hasTag('top_owner'))then
-          zoneObj.call('bh_neutral_create') -- NEEDISH REQUIRE
+    -- neutral bh /sabotage button creation if required on object entering galaxy row zone
+    if obj.hasTag('unit') and not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') and obj.hasTag('neutral') then
+      -- check for ord mantell
+      local zones = {getObjectbyName("Zone Bases Bottom"), getObjectbyName("Zone Bases Top")}
+      for i = 1, 2 do
+        for _, zoneObj in pairs(zones[i].getObjects()) do
+          if zoneObj.getName() == "Ord Mantell" then
+            initNeutralBHSaboButtons("Empire")
+          end
         end
       end
     end
-  end -- end createBHbuttons() (local)
-
-  if (zone == zoneBaseBottom or zone == zoneBaseTop) and obj.getName() == "Ord Mantell" then
-    -- createBHbuttons() -- REVISIT
   end
 
-  -- NEUTRAL BOUNTY HUNT / SABOTAGE BUTTONS WHEN ASSASSIN DROID IN OR OUT OF PLAY
-  if zone == zoneInPlay and obj.getName() == "Assassin Droid" and
-  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    -- createBHbuttons() -- REVISIT
+  -- neutral bh /sabotage button creation if required on Ord Mantell entering play
+  if (zone == getObjectbyName("Zone Bases Bottom") or zone == getObjectbyName("Zone Bases Top")) and obj.getName() == "Ord Mantell" then
+    initNeutralBHSaboButtons("Empire")
   end
 end -- end onObjectEnterZone()
 
@@ -543,7 +525,7 @@ function onObjectLeaveZone(zone, obj)
     end
 
     if obj.type == "Card" and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
-    not obj.hasTag('just_bought') and not obj.hasTag('exiled') and not obj.hasTag('defeated_ship') then
+    not obj.hasTag('just_bought') and not obj.hasTag('exiled') and not obj.hasTag('defeated_ship') and not obj.hasTag('end_turn_leaving') then
 
       local origValue = 0
       local currentValue = 0
@@ -611,32 +593,18 @@ function onObjectLeaveZone(zone, obj)
 
   -- remove defeated ship tag (used so manually removing ship removes resources while defeating does not)
   if zone == getObjectbyName("Zone In Play") and obj.hasTag('defeated_ship') then obj.removeTag('defeated_ship') end
+  if zone == getObjectbyName("Zone In Play") and obj.hasTag('end_turn_leaving') then obj.removeTag('end_turn_leaving') end
 
   -- remove bounty hunt / sabotage buttons
   if obj.hasTag('unit') and zone.getName():find("Zone Row") then
     obj.clearButtons()
   end
 
-  -- remove neutral BH / sabotage buttons when Ord Mantell in or out of play
-  local function removeBHbuttons()
-    local zones = {zoneGalaxyRow1, zoneGalaxyRow2, zoneGalaxyRow3, zoneGalaxyRow4, zoneGalaxyRow5, zoneGalaxyRow6}
-    for i = 1, 6 do
-      for _, zoneObj in pairs(zones[i].getObjects()) do
-        if zoneObj.hasTag('neutral') and (not zoneObj.hasTag('bottom_owner') and not zoneObj.hasTag('top_owner')) then
-          zoneObj.clearButtons()
-        end
-      end
-    end
-  end -- end removeBHButtons() (local)
-
-  if (zone == zoneBaseBottom or zone == zoneBaseTop) and obj.getName() == "Ord Mantell" then
-    -- removeBHbuttons()
+  -- remove BH buttons upon Ord Mantell leaving play
+  if (zone == getObjectbyName("Zone Bases Bottom") or zone == getObjectbyName("Zone Bases Bottom")) and obj.getName() == "Ord Mantell" then
+    removeNeutralBHSaboButtons()
   end
-  if zone == zoneInPlay and obj.getName() == "Assassin Droid" and
-  (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) then
-    -- removeBHbuttons()
-  end
-
+  
   -- remove 'spent_force', 'used_ability' tags
   if zone == getObjectbyName("Zone In Play") and obj.hasTag('spent_force') then
     obj.removeTag('spent_force')

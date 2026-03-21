@@ -42,6 +42,9 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "draw_button",
+    "XML1Button",
+    "add_force_button",
     "mandalorian",
     "unique",
     "unit"

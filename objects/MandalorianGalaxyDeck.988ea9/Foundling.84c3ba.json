@@ -42,6 +42,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "exile_button",
+    "XML1Button",
     "mandalorian",
     "unit"
   ],

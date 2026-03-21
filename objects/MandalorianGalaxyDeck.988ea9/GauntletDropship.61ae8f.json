@@ -42,6 +42,8 @@
   "Snap": true,
   "Sticky": true,
   "Tags": [
+    "ability_button_large",
+    "XML1Button",
     "mandalorian",
     "transport",
     "unit"

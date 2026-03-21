@@ -36,7 +36,7 @@ function addUnitForce(player, GUID)
   elseif cardName == "Lobot" or cardName == "Zam Wesell" or cardName == "Jabba the Hutt" or cardName == "Count Dooku" or
   cardName == "Asajj Ventress" or cardName == "Kel Dor Mystic" or cardName == "Mace Windu" or cardName == "Darth Vader" or
   cardName == "Luke Skywalker" or cardName == "Princess Leia" or cardName == "Grand Moff Tarkin" or cardName == "Chirrut Imwe" or
-  cardName == "Obi-Wan Kenobi" then
+  cardName == "Obi-Wan Kenobi" or cardName == "Grogu" then
     moveForceTrack(buttonForceTrack, 2)
     count = 2
   end
@@ -95,6 +95,13 @@ function cancelCardAction(button, playerColor, _)
 
   elseif cardName == "Asajj Ventress" then
     metConditionAsajj = false
+
+  elseif cardName == "Balutar Swoop Rider" then
+    nextCardBalutar = false
+
+  elseif cardName == "Koska Reeves" or cardName == "Assassin Droid" then
+    removeNeutralBHSaboButtons()
+
   end
 
   button.removeTag("cancel_live")
@@ -224,12 +231,12 @@ function dealCard(playerArea, count)
           deckDeal.flip()
           deckDeal.shuffle()
           Wait.time(function() deckDeal.setPosition(posDeck) end, 1)
-          deckDeal.setName(faction:gsub("^%l", string.upper))
+          deckDeal.setName(faction .. " Deck")
         end
       end
 
     end, 1)
-    Wait.time(function() deckDeal.deal(count - countDeck, tintFaction) end, 3)
+    Wait.time(function() deckDeal.deal(count - countDeck, tintFaction) end, 2)
   end
 end -- end dealCard()
 
@@ -415,7 +422,6 @@ function endTurn(button, _, _)
   end
 
   local playerColor = isBottom and bottomColor or topColor
-  local faction = isBottom and bottomFaction or topFaction
   local isAI = checkIfAI()
   local rotDiscard = isBottom and { 0, 180, 0 } or { 0, 0, 0 }
   local posDiscard = isBottom and { -8.50, 2.00, -31.00 } or { 8.50, 2.00, 31.00 }
@@ -435,6 +441,8 @@ function endTurn(button, _, _)
         zoneObj.setPositionSmooth(posDiscard, false, true)
       end
     end
+
+    zoneObj.addTag('end_turn_leaving')
 
     -- handle tarkin exile
     if zoneObj.hasTag('tarkin_exile') then
@@ -900,7 +908,6 @@ function moveForceTrack(button, count)
     nil,
     nil
   }
-  local isBottom = button == getObjectbyName("Button Force Bottom") and true or false
   local trackerForce = getObjectbyName("Force Tracker")
   local forceTrack = getObjectbyName("Force Track")
   local posStart = trackerForce.getPosition()
@@ -957,11 +964,7 @@ function moveForceTrack(button, count)
     colorsForceTrack[6] = { 0.33, 1, 0.33 }
     colorsForceTrack[7] = "Green"
   end
-
-  local bottomFaction, topFaction = getPlayerAreas()
-  local faction = isBottom and bottomFaction or topFaction
-  local playerColor = isBottom and bottomColor or topColor
-
+  
   for i = 1, count do
     if button == getObjectbyName("Button Force Bottom") then
       if posStart.z < -7.5 and posStart.z > -9.5 then
@@ -1168,6 +1171,7 @@ function purchaseCard(button, playerColor, altClick)
         broadcastToAll(prefix .. "Next card purchased must be Neutral card, using [b]Underworld Contact[/b] ability.", "White")
         return
       end
+      
     end
   end
 
@@ -1291,20 +1295,49 @@ function purchaseCard(button, playerColor, altClick)
     end
   end
 
-  -- handle Fang Fighter
+  -- handle Fang Fighter, Protectorate Fighter
   local forceOwner = getForceOwner()
   if cardObj.getName() == "Fang Fighter" and (not isAI or (isBottom and isAI)) then
     posCard = (isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 })
+    local isForceOwner = false
     if isBottom then
       if forceOwner == "Bottom" then
-        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-], who draws a card from the [b]Fang Fighter[/b] ability.", "White")
-        dealCard("bottom", 1)
+        Wait.time(function()
+
+          broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-], who draws a card with the [b]Fang Fighter[/b] ability.", "White")
+          dealCard("bottom", 1)
+
+        end, 1)
+        isForceOwner = true
       end
     elseif isTop then
       if forceOwner == "Top" then
-        broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-], who draws a card from the [b]Fang Fighter[/b] ability.", "White")
-        dealCard("top", 1)
+        Wait.time(function()
+          
+          broadcastToAll(prefix .. "The Force is with the [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-], who draws a card with the [b]Fang Fighter[/b] ability.", "White")
+          dealCard("top", 1)
+          
+        end, 1)
+        isForceOwner = true
       end
+    end
+    if not isForceOwner then
+      Wait.time(function() broadcastToAll(prefix .. "The Force is not with the [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-], no card is drawn with the [b]Fang Fighter[/b] ability.", "White") end, 1)
+    end
+  end
+
+  if cardObj.getName() == "Protectorate Fighter" and (not isAI or (isBottom and isAI)) then
+    posCard = (isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 })
+    local mandalorianArea = bottomFaction == "Mandalorian" and "bottom" or "top"
+    if forceOwner == "Nobody" then
+      Wait.time(function()
+        
+        broadcastToAll(prefix .. "The Force is balanced, [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] draws a card with the [b]Protectorate Fighter[/b] ability.", "White")
+        dealCard(mandalorianArea, 1)
+
+      end, 1)
+    else
+      Wait.time(function() broadcastToAll(prefix .. "The Force is not balanced, no card is drawn with the [b]Protectorate Fighter[/b] ability.", "White") end, 1)
     end
   end
 
@@ -1377,6 +1410,12 @@ function purchaseCard(button, playerColor, altClick)
     posCard = { -8.50, 1.00, -31.00 }
     moveForceTrack(buttonForceTop, 1)
   end
+
+  -- handle nextBHorTrooperToHand (Mandalorian Foundling, Razorcrest)
+  if nextBHorTrooperToHand then
+    posCard = isBottom and { 0.00, 1.46, -43.00 } or { 0.00, 1.46, 43.00 }
+  end
+
   cardObj.setRotation(rotCard)
   cardObj.setPositionSmooth(posCard, false, true)
   cardObj.addTag(ownerTag)
@@ -1390,7 +1429,28 @@ function purchaseCard(button, playerColor, altClick)
     cardObj.addTag("tarkin_exile")
     cardObj.setDescription("WILL BE EXILED VIA TARKIN ABILITY AT END OF TURN!")
     cardObj.highlightOn("Blue")
-  end  
+  end
+
+  -- handle Balutar Swoop Rider
+  if nextCardBalutar then
+    if forceOwner == "Bottom" then
+      moveForceTrack(getObjectbyName("Button Force Top"), 1)
+    elseif forceOwner == "Top" then
+      moveForceTrack(getObjectbyName("Button Force Bottom"), 1)
+    end
+    if forceOwner == "Nobody" then
+      broadcastToAll(prefix .. "[b]Balutar Swoop Rider[/b] ability used for Purchase, however the Force is already neutral.", "White")
+    else
+      broadcastToAll(prefix .. "[b]Balutar Swoop Rider[/b] ability used for Purchase, Force moves 1 space towards neutral.", "White")
+    end
+    nextCardBalutar = false
+    for _, object in pairs(getObjects()) do
+      if object.getName() == "Balutar Swoop Rider" and object.hasTag('cancel_live') then
+        object.removeTag('cancel_live')
+        removeAbilityButtons(object)
+      end
+    end
+  end
 
   if not forFree then
     if Player[playerColor].steam_name ~= nil then
@@ -1416,7 +1476,6 @@ function purchaseCard(button, playerColor, altClick)
   end
 
   -- draw another card to replace if not OR Pilot purchased and Nute Gunray ability is not active
-  log("purchaseCard() nextCardNute: " .. tostring(nextCardNute))
   if button ~= getObjectbyNameAndNotes("Button Purchase", "7") and button ~= getObjectbyNameAndNotes("Button Purchase", "8") then
     Wait.time(function()
 
@@ -1454,6 +1513,8 @@ function purchaseCard(button, playerColor, altClick)
   nextCardLeia = false
   nextCardTarkin = false
   nextCardContact = false
+  nextCardBalutar = false
+  nextBHorTrooperToHand = false
   Wait.time(function() nextCardNute = false end, 1.01)
 
   for _, obj in ipairs(getObjects()) do
@@ -1577,10 +1638,12 @@ function setBoard(playerColor)
   nextCardToDeckRebel = false
   nextCardToDeckSeparatist = false
   nextCardToDeckRepublic = false
+  nextBHorTrooperToHand = false
   nextCardTarkin = false
   nextCardLeia = false
   nextCardContact = false
   nextCardNute = false
+  nextCardBalutar = false
   metConditionDroideka = false
   metConditionHondo = false
   metConditionWat = false
@@ -1709,6 +1772,19 @@ function setBoard(playerColor)
     Wait.time(function() deckBases.Container.search(playerColor) end, .5)
   end
 end -- end setBoard()
+
+
+function setForceNeutral()
+  -- handles the forced setting of the Force track to neutral
+  local trackerForce = getObjectbyName("Force Tracker")
+  local forceTrack = getObjectbyName("Force Track")
+  local posTracker = trackerForce.getPosition()
+  posTracker.z = 0
+  trackerForce.setPosition(posTracker)
+  trackerForce.highlightOff()
+  trackerForce.setColorTint("White")
+  forceTrack.setColorTint("White")
+end -- end setForceNeutral()
 
 
 
