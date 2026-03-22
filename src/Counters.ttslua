@@ -491,9 +491,11 @@ function handleShipCounter(self)
       self.setRotation(rotDiscard)
       self.setPositionSmooth(posDiscard, false, true)
       self.addTag('defeated_ship')
+      Global.call("removeAbilityButtons", self)
       setValue(0)
     else
       self.addTag('defeated_ship')
+      Global.call("removeAbilityButtons", self)
       setValue(0)
       getObjectFromGUID("051249").putObject(self)
     end

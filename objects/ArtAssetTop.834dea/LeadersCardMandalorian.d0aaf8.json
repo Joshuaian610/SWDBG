@@ -112,73 +112,73 @@
     },
     {
       "Position": {
-        "x": 1.246,
+        "x": 1.24,
         "y": 0.451,
-        "z": -0.911
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": 0.949,
+        "x": 0.981,
         "y": 0.451,
-        "z": -0.911
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": 0.658,
-        "y": 0.451,
-        "z": -0.911
+        "x": 0.723,
+        "y": 0.452,
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": 0.374,
-        "y": 0.451,
-        "z": -0.911
+        "x": 0.469,
+        "y": 0.452,
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": 0.085,
+        "x": 0.21,
         "y": 0.451,
-        "z": -0.911
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": -0.209,
+        "x": -0.047,
         "y": 0.451,
-        "z": -0.911
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": -0.497,
+        "x": -0.308,
         "y": 0.451,
-        "z": -0.911
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": -0.782,
+        "x": -0.565,
         "y": 0.451,
-        "z": -0.911
+        "z": -0.906
       }
     },
     {
       "Position": {
-        "x": -1.077,
-        "y": 0.451,
-        "z": -0.911
+        "x": -0.823,
+        "y": 0.452,
+        "z": -0.906
       }
     }
   ],
   "Autoraise": true,
   "ColorDiffuse": {
-    "b": 1,
-    "g": 0.53,
-    "r": 0.118
+    "b": 0.168,
+    "g": 0.701,
+    "r": 0.192
   },
   "CustomImage": {
     "CustomTile": {
@@ -188,14 +188,14 @@
       "Type": 0
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667292969132/7A4900F1898D000F1ABDDEDB3A536682DEDAC37E/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667292969132/7A4900F1898D000F1ABDDEDB3A536682DEDAC37E/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/18056368203258456100/D8893524A919D46A7391394FFE75FBC6D6B2A582/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/18056368203258456100/D8893524A919D46A7391394FFE75FBC6D6B2A582/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "f001ad",
+  "GUID": "d0aaf8",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
@@ -207,14 +207,14 @@
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Leaders Card Separatist",
+  "Nickname": "Leaders Card Mandalorian",
   "Snap": true,
   "Sticky": true,
   "Tooltip": false,
   "Transform": {
-    "posX": 93.376,
-    "posY": 1.971,
-    "posZ": 21.694,
+    "posX": 97.648,
+    "posY": 1.987,
+    "posZ": -16.951,
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,

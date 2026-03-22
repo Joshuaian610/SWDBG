@@ -6,26 +6,26 @@
   },
   "Autoraise": true,
   "ColorDiffuse": {
-    "b": 1,
-    "g": 1,
-    "r": 1
+    "b": 0.23529,
+    "g": 0.23529,
+    "r": 0.23529
   },
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.1,
-      "Type": 0
+      "Thickness": 0.2,
+      "Type": 3
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667294876297/C00F26A4CD3CE5D3F167DCA30988DDE366A0F235/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667294877207/6345A8E30DD5362D11A941311937372676E76688/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/18084690968140549590/953456A444195D36CCFB418609D511AEBD881180/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/18084690968140549590/953456A444195D36CCFB418609D511AEBD881180/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "b7e197",
+  "GUID": "965afc",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
@@ -37,23 +37,20 @@
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "",
+  "Nickname": "Select Mandalorian Leader Panel",
   "Snap": true,
   "Sticky": true,
-  "Tags": [
-    "top_owner"
-  ],
-  "Tooltip": true,
+  "Tooltip": false,
   "Transform": {
-    "posX": 102.052,
-    "posY": 5.398,
-    "posZ": 37.294,
+    "posX": 48.416,
+    "posY": 7.828,
+    "posZ": 35.219,
     "rotX": 0,
     "rotY": 180,
     "rotZ": 0,
-    "scaleX": 6,
+    "scaleX": 5,
     "scaleY": 1,
-    "scaleZ": 6
+    "scaleZ": 5
   },
   "Value": 0,
   "XmlUI": ""

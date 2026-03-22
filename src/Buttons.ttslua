@@ -841,7 +841,7 @@ function primaryButtonAction(button, playercolor)
 
   -- helper function to handle get of revealed card in case of discard shuffe required
   local function findRevealedCard(isBottom)
-    local revealCheckZone = isBottom and getObjectbyName("Zone Republic Reveal Bottom") or getObjectbyName("Zone Republic Reveal Top1")
+    local revealCheckZone = isBottom and getObjectbyName("Zone Republic Reveal Bottom") or getObjectbyName("Zone Republic Reveal Top")
     for _, object in pairs(revealCheckZone.getObjects()) do
       if object.type == "Card" then
         return object
@@ -2460,7 +2460,8 @@ function primaryButtonAction(button, playercolor)
   if button.hasTag('ship') then initShipCounter(button, button.getVar('val')) end
 
   -- add 'used_ability' tag, used to detect current state of XML buttons onload, rewind etc
-  button.addTag('used_ability')
+  -- axe woves goes direct back to galaxy deck, should not get this tag
+  if button.getName() ~= "Axe Woves" then button.addTag('used_ability') end
 
   -- create cancel buttons on requiring cards
   -- if cardName == 'Grand Moff Tarkin' or cardName == 'Princess Leia' or

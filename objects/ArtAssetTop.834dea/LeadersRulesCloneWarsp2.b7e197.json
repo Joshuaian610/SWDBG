@@ -6,54 +6,54 @@
   },
   "Autoraise": true,
   "ColorDiffuse": {
-    "b": 0.23529,
-    "g": 0.23529,
-    "r": 0.23529
+    "b": 1,
+    "g": 1,
+    "r": 1
   },
   "CustomImage": {
     "CustomTile": {
       "Stackable": false,
       "Stretch": true,
-      "Thickness": 0.199999988,
-      "Type": 3
+      "Thickness": 0.1,
+      "Type": 0
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667296766477/DB02D9CDFEE1D80A398768A4DF808C84520A7456/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667296796866/364DBFD8FB230C1E84C76C9C0FE8FC38368DDB99/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667294876297/C00F26A4CD3CE5D3F167DCA30988DDE366A0F235/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667294877207/6345A8E30DD5362D11A941311937372676E76688/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
-  "GMNotes": "enabled",
-  "GUID": "903ad5",
+  "GMNotes": "",
+  "GUID": "b7e197",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
   "HideWhenFaceDown": false,
   "IgnoreFoW": false,
   "LayoutGroupSortIndex": 0,
-  "Locked": true,
+  "Locked": false,
   "LuaScript": "",
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "Button Enable Leaders",
+  "Nickname": "Leaders Rules Clone Wars p2",
   "Snap": true,
   "Sticky": true,
   "Tags": [
-    "non_interactable"
+    "top_owner"
   ],
-  "Tooltip": false,
+  "Tooltip": true,
   "Transform": {
-    "posX": -39.212,
-    "posY": 6.321,
-    "posZ": 3.989,
-    "rotX": 60,
-    "rotY": 90,
-    "rotZ": 0,
-    "scaleX": 1.25,
+    "posX": 101.305,
+    "posY": 5.045,
+    "posZ": 1.244,
+    "rotX": 0,
+    "rotY": 180,
+    "rotZ": 5,
+    "scaleX": 6,
     "scaleY": 1,
-    "scaleZ": 1.25
+    "scaleZ": 6
   },
   "Value": 0,
   "XmlUI": ""

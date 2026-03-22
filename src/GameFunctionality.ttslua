@@ -885,7 +885,7 @@ function doMoveForceTrack(button, _, altClick)
   moveForceTrack(button, altClick and -1 or 1)
 
   local prefix = "[" .. Color.fromString(playerColor):toHex() .. "]*[-]: "
-  broadcastToAll(prefix .. "The force is with [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] - [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] Force +" .. count .. ".", "White")
+  broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-]:  Force +" .. count .. ".", "White")
 end
 
 function moveForceTrack(button, count)
@@ -1722,7 +1722,7 @@ function setBoard(playerColor)
 
   if mygeetoInPlay then
     toAdd = toAdd + counter.getVar('val')
-    broadcastToAll("Mygeeto is in play - [" .. Color.fromString(playerColor):toHex() .. "]Separatists[-] begin turn with last turn's overflow, " .. toAdd .. " resources.", "White")
+    broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]![-]: Mygeeto is in play - [" .. Color.fromString(playerColor):toHex() .. "]Separatists[-] begin turn with last turn's overflow, " .. toAdd .. " resources.", "White")
   end
 
   if posTracker > 7.5 and posTracker < 9.5 then
@@ -1745,6 +1745,15 @@ function setBoard(playerColor)
 
   counter.call('setValue', currentValue)
   counterBoard.call('setValue', currentValue)
+
+  -- remove unused remaining ship ability buttons or used_ability tags
+  local shipOwnerTag = setBoardToBottom and "top_owner" or "bottom_owner"
+  for _, zoneObj in pairs(getObjectbyName("Zone In Play").getObjects()) do
+    if zoneObj.hasTag('ship') and zoneObj.hasTag(shipOwnerTag) then
+      removeAbilityButtons(zoneObj)
+      if zoneObj.hasTag('used_ability') then zoneObj.removeTag('used_ability') end
+    end
+  end
 
   -- check for base, force search base deck if no base
   local baseCard = nil

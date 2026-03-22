@@ -1159,14 +1159,14 @@ cardData                        = {
   },
 
   ["Nebulon-B Frigate"]         = {
-    cost                        = 3,
-    produce                     = 1,
+    cost                        = 5,
+    produce                     = 0,
     force                       = 0,
     fight                       = 0,
     faction                     = "Neutral",
     minVal                      = 0,
-    maxVal                      = 5,
-    maxHP                       = 3,
+    maxVal                      = 7,
+    maxHP                       = 5,
   },
 
 

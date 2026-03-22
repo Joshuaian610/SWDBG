@@ -16,11 +16,11 @@ require("Leaders")
 
 
 function onLoad()
-
+  
   math.randomseed(os.time())
   Turns.enable = false
 
-  interactable = false
+  interactable = true
   invis = true
 
   -- set non interactables, run onSpawn stuff
@@ -62,7 +62,7 @@ function onLoad()
   metConditionTrench = false
 
   -- global var assignments
-  allColors = { "Blue", "Red", "Grey", "Black", "Orange", "Purple", "White", "Green" }
+  allColors = { "Blue", "Red", "Grey", "Black", "Orange", "Purple", "White", "Teal", "Green" }
 
   padGalaxyDeck = getObjectbyName("Pad Galaxy Deck")
   padGalaxyDiscard = getObjectbyName("Pad Galaxy Discard")
@@ -328,6 +328,9 @@ function onObjectSpawn(obj)
         end, .5)
       end
     end
+
+  elseif obj.getName() == "Button Enable Leaders" then
+    toggleLeaders(obj, _, _)
   end
 
   -- handle Exile Card context menu creation
@@ -359,7 +362,7 @@ function onObjectEnterZone(zone, obj)
   end
 
   -- add _owner tags if card obtained by means other than purchase button  
-  if (zone == zoneDiscardBottom or zone == zoneDeckBottom or zone == zoneHandzoneBottom) and obj.type == "Card" then
+  if (zone == getObjectbyName("Zone Discard Bottom") or zone == getObjectbyName("Zone Deck Bottom") or zone == getObjectbyName("Handzone Bottom")) and obj.type == "Card" then
     if not obj.hasTag('bottom_owner') then
       obj.addTag('bottom_owner')
       obj.removeTag('top_owner')
@@ -367,7 +370,7 @@ function onObjectEnterZone(zone, obj)
     end
   end
 
-  if zone == (zoneDiscardTop or zone == zoneDeckTop or zone == zoneHandzoneTop) and obj.type == "Card" then
+  if (zone == getObjectbyName("Zone Discard Top") or zone == getObjectbyName("Zone Deck Top") or zone == getObjectbyName("Handzone Top")) and obj.type == "Card" then
     if not obj.hasTag('top_owner') then
       obj.addTag('top_owner')
       obj.removeTag('bottom_owner')

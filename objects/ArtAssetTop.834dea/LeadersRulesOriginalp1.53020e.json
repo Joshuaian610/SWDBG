@@ -18,14 +18,14 @@
       "Type": 0
     },
     "ImageScalar": 1,
-    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667294877207/6345A8E30DD5362D11A941311937372676E76688/",
-    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/2423592667294876297/C00F26A4CD3CE5D3F167DCA30988DDE366A0F235/",
+    "ImageSecondaryURL": "https://steamusercontent-a.akamaihd.net/ugc/9419106823062419838/785EF089C1F0A9CFD73A411238AEF7505125C96D/",
+    "ImageURL": "https://steamusercontent-a.akamaihd.net/ugc/9419106823062419838/785EF089C1F0A9CFD73A411238AEF7505125C96D/",
     "WidthScale": 0
   },
   "Description": "",
   "DragSelectable": true,
   "GMNotes": "",
-  "GUID": "ac18e9",
+  "GUID": "53020e",
   "Grid": true,
   "GridProjection": false,
   "Hands": false,
@@ -37,7 +37,7 @@
   "LuaScriptState": "",
   "MeasureMovement": false,
   "Name": "Custom_Tile",
-  "Nickname": "",
+  "Nickname": "Leaders Rules Original p1",
   "Snap": true,
   "Sticky": true,
   "Tags": [
@@ -45,12 +45,12 @@
   ],
   "Tooltip": true,
   "Transform": {
-    "posX": 101.543,
-    "posY": 6.049,
-    "posZ": 36.697,
+    "posX": 93.163,
+    "posY": 2.131,
+    "posZ": 17.89,
     "rotX": 0,
     "rotY": 180,
-    "rotZ": 0,
+    "rotZ": 359,
     "scaleX": 6,
     "scaleY": 1,
     "scaleZ": 6
