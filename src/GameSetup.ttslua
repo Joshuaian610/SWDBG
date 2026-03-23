@@ -267,11 +267,30 @@ function initFactionSetupButton(obj)
 end -- end initFactionSetupButton()
 
 
-function toggleLeaders(obj, _, _)  
+function initMandalorianLeaderPanel(obj)
+  obj.clearButtons()
+  obj.createButton({
+    click_function = 'disableNeutralDeckSelection',
+    function_owner = self,
+    label          = '✔',
+    hover_color    = { 1, 1, 1, 0.5 },
+    color          = { 1, 1, 1, 0.2 },
+    font_color     = { 1, 1, 1, 255 },
+    position       = { -0.57, 0.56, -0.46 },
+    rotation       = { 0, 0, 0 },
+    width          = 245,
+    height         = 300,
+    font_size      = 200,
+    tooltip        = "Click to disable use of Original Era Neutral Galaxy Deck.",
+  })
+end -- end initMandalorianLeaderPanel()
 
+
+function initLeaders(obj, _, _)
+  -- need a function to init button onLoad/rewinds
   obj.clearButtons()
 
-  if obj.getGMNotes() == "disabled" then
+  if obj.getGMNotes() == "enabled" then
     obj.createButton({
       click_function = "toggleLeaders",
       function_owner = self,
@@ -302,12 +321,48 @@ function toggleLeaders(obj, _, _)
     })
   end
 
+end -- end initLeaders()
+
+function toggleLeaders(obj, _, _)  
+
+  obj.clearButtons()
+
   if obj.getGMNotes() == "enabled" then
     obj.setGMNotes("disabled")
   elseif obj.getGMNotes() == "disabled" then
     obj.setGMNotes("enabled")
   end
 
+  if obj.getGMNotes() == "enabled" then
+    obj.createButton({
+      click_function = "toggleLeaders",
+      function_owner = self,
+      label          = '✔',
+      color          = { 1, 1, 1, .1 },
+      hover_color    = { 1, 1, 1, .3 },
+      position       = { 0, 0.21, 0 },
+      rotation       = { 0, 0, 0 },
+      width          = 1300,
+      height         = 1000,
+      font_size      = 2500,
+      font_color     = { 1, 1, 1, 255 },
+      tooltip        = "This button, if unchecked, will disable the setup of the top player area for the Leaders AI bot, and enable the setup of the top player area for Multiplayer.",
+    })
+
+  else
+    obj.createButton({
+      click_function = "toggleLeaders",
+      function_owner = self,
+      label          = '',
+      color          = { 1, 1, 1, .1 },
+      hover_color    = { 1, 1, 1, .3 },
+      position       = { 0, 0.21, 0 },
+      rotation       = { 0, 0, 0 },
+      width          = 1300,
+      height         = 1000,
+      tooltip        = "This button, if checked, will enable the setup of the top player area for the Leaders AI bot, and disable the setup of the top player area for Multiplayer.",
+    })
+  end
 end -- end toggleLeaders()
 
 
@@ -1171,137 +1226,43 @@ function setupGame(button, _, _)
   
   
   if isAI then
-    setupSolo(topFaction)
+    setupAIPlayArea(topFaction)
   end
   if getObjectbyName("Button Setup Game") then getObjectbyName("Button Setup Game").destruct() end
 end -- end setupGame()
 
 
-function setupSolo(faction)
-    log("setupSolo("..faction..") IS RUNNING")
-  
-    -- set up solo snap points
-    local snapboardMP = getObjectbyName("Top Snapboard MP")
-    local bagLeaders = getObjectbyName("Art Asset Top") -- bd droid
-    local posSnapboardSolo = { -5.25, -0.25, 14.50 }
-    local snapboardSolo = nil
-    for _, bagObj in pairs(bagLeaders.getObjects()) do
-      if bagObj.name == "Snapboard Solo" then
-        snapboardSolo = bagLeaders.takeObject({guid = bagObj.guid})
-      end
+function setupAIPlayArea(faction)
+  log("setupAIPlayArea("..faction..") IS RUNNING")
+
+  -- set up solo snap points
+  local snapboardMP = getObjectbyName("Top Snapboard MP")
+  local bagLeaders = getObjectbyName("Art Asset Top") -- bd droid
+  local posSnapboardSolo = { -5.25, -0.25, 14.50 }
+  local snapboardSolo = nil
+  for _, bagObj in pairs(bagLeaders.getObjects()) do
+    if bagObj.name == "Snapboard Solo" then
+      snapboardSolo = bagLeaders.takeObject({guid = bagObj.guid})
     end
-    Wait.frames(function()
-      snapboardSolo.setLock(true)
-      snapboardSolo.setRotation({ 0, 180, 0 })
-      snapboardSolo.setPosition(posSnapboardSolo)
-    end)
-    bagLeaders.putObject(snapboardMP)
+  end
+  Wait.frames(function()
+    snapboardSolo.setLock(true)
+    snapboardSolo.setRotation({ 0, 180, 0 })
+    snapboardSolo.setPosition(posSnapboardSolo)
+  end)
+  bagLeaders.putObject(snapboardMP)
 
-    -- get top player color, drop cubes to leader board *** WILL ONLY WORK WHEN RUNNING OFF MAIN SETUP FUNCTION ***
-    -- bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
-    -- so, declare var instead to test
-    bottomColor, topColor = padGalaxyDeck.call('get_playercolors')
-    -- -- faction vars
-    -- -- [1]      = inq/jedi etc
-    -- -- [2],[3]  = troopers
-    -- -- [4]-[10] = shuttles
-    -- -- [11]     = starter deck
-    -- -- [12]     = leader board
-    -- -- [13]     = base deck
-    -- -- [14]     = starter base
-    -- -- [15]     = galaxy deck
-    -- -- [16]     = leader
-    -- -- [17]     = companion
-    -- local all_faction_guids = {
-    --     separatist          = {
-    --         "1ae413", -- 1
-    --         "52eb6e", -- 2
-    --         "030201", -- 3
-    --         "fdfcb1", -- 4
-    --         "875fc2", -- 5
-    --         "83a820", -- 6
-    --         "63eb05", -- 7
-    --         "9c6846", -- 8
-    --         "9bbdab", -- 9
-    --         "af0067", -- 10
-    --         "3afb00", -- 11
-    --         "f001ad", -- 12
-    --         "ef04b2", -- 13
-    --         "25769c", -- 14
-    --         "fe508a", -- 15
-    --         "6bd9bd", -- 16
-    --         "4b3f93", -- 17
-    --     },
-    --     empire              = {
-    --         "118a7e", -- 1
-    --         "8e59cd", -- 2
-    --         "d7f87f", -- 3
-    --         "05a037", -- 4
-    --         "f98eb4", -- 5
-    --         "c0f9aa", -- 6
-    --         "6a89fe", -- 7
-    --         "ba88f9", -- 8
-    --         "7db6d7", -- 9
-    --         "18a05a", -- 10
-    --         "021581", -- 11
-    --         "adf064", -- 12
-    --         "cc1a9c", -- 13
-    --         "0b3ee3", -- 14
-    --         "c4783d", -- 15
-    --         "e9f053", -- 16
-    --         "xxxxxx", -- 17
-    --     },
-    --     republic            = {
-    --         "530c8a", -- 1
-    --         "f353c3", -- 2
-    --         "467fba", -- 3
-    --         "86898c", -- 4
-    --         "31ca94", -- 5
-    --         "c0e093", -- 6
-    --         "c18485", -- 7
-    --         "7a2935", -- 8
-    --         "f8324c", -- 9
-    --         "fdce2c", -- 10
-    --         "fb6a32", -- 11
-    --         "b5ca34", -- 12
-    --         "389e30", -- 13
-    --         "7022f2", -- 14
-    --         "0503ab", -- 15
-    --         "077662", -- 16
-    --         "38ac2f", -- 17
-    --     },
-    --     rebellion           = {
-    --         "95313f", -- 1
-    --         "e53f87", -- 2
-    --         "5aec1f", -- 3
-    --         "e4cae1", -- 4
-    --         "009d9f", -- 5
-    --         "76ecc9", -- 6
-    --         "fbdb57", -- 7
-    --         "ae318f", -- 9
-    --         "eb8260", -- 9
-    --         "ccfa31", -- 10
-    --         "adeeb4", -- 11
-    --         "a41512", -- 12
-    --         "7aa8b1", -- 13
-    --         "70ba75", -- 14
-    --         "aa8011", -- 15
-    --         "9074a9", -- 16
-    --         "xxxxxx", -- 17
-    --     },
-    -- }
-    -- local faction_guids     = all_faction_guids[faction]
-
-    -- place leader_board
+  -- if not Mandalorian, place leader_board and continue to next Leaders setup func
+  if faction ~= "Mandalorian" then
     local rotLeaderBoard = { 0, 180, 0 }
-    local posLeaderBoard = {-11.28, 0.10, 17.14}
+    local posLeaderBoard = { -11.28, 0.10, 17.14 }
     local leaderBoard = nil
     for _, bagObj in pairs(bagLeaders.getObjects()) do
       if bagObj.name == "Leaders Card " .. faction then
         leaderBoard = bagLeaders.takeObject({guid = bagObj.guid})
       end
     end
-    if leaderBoard == nil then log("setupSolo() leaderBoard not found!") return end
+    if leaderBoard == nil then log("setupAIPlayArea() leaderBoard not found in BD Droid bag!") return end
     
     Wait.frames(function()
       leaderBoard.setLock(true)
@@ -1310,249 +1271,282 @@ function setupSolo(faction)
       leaderBoard.addTag('non_interactable')
       leaderBoard.interactable = false
     end)
-    
-    -- pull troopers from starter deck, place to start
-    local deckStarter = getObjectbyName(faction .. " Deck")
-    local posTrooper1 = { -1.88, 0.25, 13.89 } -- play area, faceup
-    local posTrooper2 = { -1.88, 0.25, 20.39 } -- muster area, facedown
-    local pos_reserves = {
-      { -20.78, 0.25, 20.39 },
-      { -20.78, 0.35, 20.39 },
-      { -20.78, 0.45, 20.39 },
-      { -20.78, 0.55, 20.39 },
-      { -20.78, 0.65, 20.39 },
-      { -20.78, 0.75, 20.39 },
-    }
-    local trooperNames = {
-      ["Empire"]       = "Stormtrooper",
-      ["Rebellion"]    = "Rebel Trooper",
-      ["Separatist"]   = "B1 Battle Droid",
-      ["Republic"]     = "Clone Trooper",
-      ["Mandalorian"]  = "Mandalorian Soldier"
-    }
-    local trooperName = trooperNames[faction]
-
-    local trooper1 = nil
-    for _, deckObj in pairs(deckStarter.getObjects()) do
-      if deckObj.name == trooperName then
-        trooper1 = deckStarter.takeObject({ guid = deckObj.guid })
-        break
+  
+  -- if Mandalorian, place Leader select panel
+  elseif faction == "Mandalorian" then
+    local mandalorianLeaderSelectPanel = nil
+    local rotPanel = { 0, 180, 0 }
+    local posPanel = { -17.21, 0.14, 13.50 }
+    for _, bagObj in pairs(bagLeaders.getObjects()) do
+      if bagObj.name == "Select Mandalorian Leader Panel" then
+        mandalorianLeaderSelectPanel = bagLeaders.takeObject({ guid = bagObj.guid })
       end
     end
+    if mandalorianLeaderSelectPanel == nil then log("setupAIPlayArea() mandalorianLeaderSelectPanel not found in BD Droid bag!") return end
+
     Wait.frames(function()
-      if trooper1 then
-        trooper1.setPositionSmooth(posTrooper1, false, true)
-      end
+      mandalorianLeaderSelectPanel.setLock(true)
+      mandalorianLeaderSelectPanel.setRotation(rotPanel)
+      mandalorianLeaderSelectPanel.setPosition(posPanel)
+      mandalorianLeaderSelectPanel.addTag('non_interactable')
+      mandalorianLeaderSelectPanel.interactable = false
     end)
+  end
+end -- end setupAIPlayArea()
 
-    local trooper2 = nil
-    for _, deckObj in pairs(deckStarter.getObjects()) do
-      if deckObj.name == trooperName then
-        trooper2 = deckStarter.takeObject({ guid = deckObj.guid })
-        break
-      end
-    end
-    Wait.frames(function()
-      if trooper2 then
-        trooper2.setPositionSmooth(posTrooper1, false, true)
-      end
-    end)
+
+
+
+
+
+
+-- function setupAIBoard(faction, selectedLeader)
+
+
+
+
+--     -- pull troopers from starter deck, place to start
+--     local deckStarter = getObjectbyName(faction .. " Deck")
+--     local posTrooper1 = { -1.88, 0.25, 13.89 } -- play area, faceup
+--     local posTrooper2 = { -1.88, 0.25, 20.39 } -- muster area, facedown
+--     local pos_reserves = {
+--       { -20.78, 0.25, 20.39 },
+--       { -20.78, 0.35, 20.39 },
+--       { -20.78, 0.45, 20.39 },
+--       { -20.78, 0.55, 20.39 },
+--       { -20.78, 0.65, 20.39 },
+--       { -20.78, 0.75, 20.39 },
+--     }
+--     local trooperNames = {
+--       ["Empire"]       = "Stormtrooper",
+--       ["Rebellion"]    = "Rebel Trooper",
+--       ["Separatist"]   = "B1 Battle Droid",
+--       ["Republic"]     = "Clone Trooper",
+--       ["Mandalorian"]  = "Mandalorian Soldier"
+--     }
+--     local trooperName = trooperNames[faction]
+
+--     local trooper1 = nil
+--     for _, deckObj in pairs(deckStarter.getObjects()) do
+--       if deckObj.name == trooperName then
+--         trooper1 = deckStarter.takeObject({ guid = deckObj.guid })
+--         break
+--       end
+--     end
+--     Wait.frames(function()
+--       if trooper1 then
+--         trooper1.setPositionSmooth(posTrooper1, false, true)
+--       end
+--     end)
+
+--     local trooper2 = nil
+--     for _, deckObj in pairs(deckStarter.getObjects()) do
+--       if deckObj.name == trooperName then
+--         trooper2 = deckStarter.takeObject({ guid = deckObj.guid })
+--         break
+--       end
+--     end
+--     Wait.frames(function()
+--       if trooper2 then
+--         trooper2.setPositionSmooth(posTrooper1, false, true)
+--       end
+--     end)
     
-    -- pull shuttles, drop into pile
-    local shuttleName = (faction == "Empire" and "Imperial Shuttle") or (faction == "Rebellion" and "Alliance Shuttle") or faction .. " Shuttle"
-    local rotShuttles = { 0.00, 180.00, 0.00 }
-    local posShuttles = { -20.78, 0.25, 13.89 }
+--     -- pull shuttles, drop into pile
+--     local shuttleName = (faction == "Empire" and "Imperial Shuttle") or (faction == "Rebellion" and "Alliance Shuttle") or faction .. " Shuttle"
+--     local rotShuttles = { 0.00, 180.00, 0.00 }
+--     local posShuttles = { -20.78, 0.25, 13.89 }
     
-    for i = 1, 3 do
-      local shuttle = nil
-      for _, deckObj in pairs(deckStarter.getObjects()) do
-        if deckObj.name == shuttleName then
-          shuttle = deckStarter.takeObject({ guid = deckObj.guid })
-        end
-      end     
-      Wait.frames(function()
-        shuttle.setRotation(rotShuttles)
-        shuttle.setPosition(posShuttles, false, true)
-      end)
-    end
+--     for i = 1, 3 do
+--       local shuttle = nil
+--       for _, deckObj in pairs(deckStarter.getObjects()) do
+--         if deckObj.name == shuttleName then
+--           shuttle = deckStarter.takeObject({ guid = deckObj.guid })
+--         end
+--       end     
+--       Wait.frames(function()
+--         shuttle.setRotation(rotShuttles)
+--         shuttle.setPosition(posShuttles, false, true)
+--       end)
+--     end
 
 
 
 
     
-    -- create reserves deck
-    -- bottom to top - shuttle X3, maybe companion, inq/jedi, shuttle
-    -- bottom shuttles
-    local reserve_shuttles  = {shuttle_1, shuttle_2, shuttle_3}
-    local deckGalaxy       = getObjectFromGUID(faction_guids[15])
-    -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
-    if deckGalaxy == nil then
-        deckGalaxy = getGalaxyDeck()
-    end
-    for i = 1, 3 do
-        reserve_shuttles[i] = deckStarter.takeObject({guid=faction_guids[i+6], rotation={0.00, 180.00, 180.00}})
-        reserve_shuttles[i].setPositionSmooth(pos_reserves[i], false, false)
-    end
-    if faction == "separatist" or faction == "republic" then
-        -- companion
-        local companion     = deckGalaxy.takeObject({guid=faction_guids[17], rotation={0.00, 180.00, 180.00}})
-        companion.setPositionSmooth(pos_reserves[4], false, false)
-        -- agent (dark side agent / jedi knight)
-        local agent         = deckStarter.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
-        agent.setPositionSmooth(pos_reserves[5], false, false)
-        -- top shuttle
-        getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[6], false, false)
-    else
-        -- agent (inquisitor / temple guardian)
-        local agent         = deckStarter.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
-        agent.setPositionSmooth(pos_reserves[4], false, false)
-        -- top shuttle
-        getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[5], false, false)
-    end
-    -- place leader
-    local leader            = deckGalaxy.takeObject({guid=faction_guids[16], rotation={0.00, 180.00, 0.00}})
-    local pos_leader        = {-7.70, 0.60, 16.67}
-    leader.setPositionSmooth(pos_leader, false, false)
-    -- base setup
-    local base_deck         = getObjectFromGUID(faction_guids[13])
-    local pos_starter_base  = {-14.09, 0.63, 15.88}
-    local pos_bases         = {-14.09, 0.58, 15.90}
-    -- temporarily lock starter base, position
-    local starter_base      = getObjectFromGUID(faction_guids[14])
-    starter_base.setLock(true)
-    starter_base.setRotation({0.00, 180.00, 0.00})
-    starter_base.setPositionSmooth(pos_starter_base, false, false)
-    -- shuffle base deck. draw 2, place (should form deck on each other)
-    base_deck.shuffle()
-    local base_3            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
-    base_3.setPositionSmooth(pos_bases, false, false)
-    local base_2            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
-    pos_bases.y = 0.60
-    base_2.setPositionSmooth(pos_bases, false, false)
-    bag.putObject(base_deck)
-    -- position rules
-    local rot_rules         = {60.00, 180.00, 0.00}
-    local rules_positions   = {
-        {-8.00, 5.85, 28.03},
-        {8.00, 5.85, 28.03},
-    }
-    local rules_guids       = {
-        ((faction == "separatist" or faction == "republic") and "ac18e9" or "53020e"),
-        ((faction == "separatist" or faction == "republic") and "b7e197" or "4d7745"),
-    }
+--     -- create reserves deck
+--     -- bottom to top - shuttle X3, maybe companion, inq/jedi, shuttle
+--     -- bottom shuttles
+--     local reserve_shuttles  = {shuttle_1, shuttle_2, shuttle_3}
+--     local deckGalaxy       = getObjectFromGUID(faction_guids[15])
+--     -- handle if faction galaxy deck has been merged to main galaxy deck pad and no longer exists
+--     if deckGalaxy == nil then
+--         deckGalaxy = getGalaxyDeck()
+--     end
+--     for i = 1, 3 do
+--         reserve_shuttles[i] = deckStarter.takeObject({guid=faction_guids[i+6], rotation={0.00, 180.00, 180.00}})
+--         reserve_shuttles[i].setPositionSmooth(pos_reserves[i], false, false)
+--     end
+--     if faction == "separatist" or faction == "republic" then
+--         -- companion
+--         local companion     = deckGalaxy.takeObject({guid=faction_guids[17], rotation={0.00, 180.00, 180.00}})
+--         companion.setPositionSmooth(pos_reserves[4], false, false)
+--         -- agent (dark side agent / jedi knight)
+--         local agent         = deckStarter.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
+--         agent.setPositionSmooth(pos_reserves[5], false, false)
+--         -- top shuttle
+--         getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[6], false, false)
+--     else
+--         -- agent (inquisitor / temple guardian)
+--         local agent         = deckStarter.takeObject({guid=faction_guids[1], rotation={0.00, 180.00, 180.00}})
+--         agent.setPositionSmooth(pos_reserves[4], false, false)
+--         -- top shuttle
+--         getObjectFromGUID(faction_guids[10]).setPositionSmooth(pos_reserves[5], false, false)
+--     end
+--     -- place leader
+--     local leader            = deckGalaxy.takeObject({guid=faction_guids[16], rotation={0.00, 180.00, 0.00}})
+--     local pos_leader        = {-7.70, 0.60, 16.67}
+--     leader.setPositionSmooth(pos_leader, false, false)
+--     -- base setup
+--     local base_deck         = getObjectFromGUID(faction_guids[13])
+--     local pos_starter_base  = {-14.09, 0.63, 15.88}
+--     local pos_bases         = {-14.09, 0.58, 15.90}
+--     -- temporarily lock starter base, position
+--     local starter_base      = getObjectFromGUID(faction_guids[14])
+--     starter_base.setLock(true)
+--     starter_base.setRotation({0.00, 180.00, 0.00})
+--     starter_base.setPositionSmooth(pos_starter_base, false, false)
+--     -- shuffle base deck. draw 2, place (should form deck on each other)
+--     base_deck.shuffle()
+--     local base_3            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
+--     base_3.setPositionSmooth(pos_bases, false, false)
+--     local base_2            = base_deck.takeObject({rotation={0.00, 180.00, 180.00}})
+--     pos_bases.y = 0.60
+--     base_2.setPositionSmooth(pos_bases, false, false)
+--     bag.putObject(base_deck)
+--     -- position rules
+--     local rot_rules         = {60.00, 180.00, 0.00}
+--     local rules_positions   = {
+--         {-8.00, 5.85, 28.03},
+--         {8.00, 5.85, 28.03},
+--     }
+--     local rules_guids       = {
+--         ((faction == "separatist" or faction == "republic") and "ac18e9" or "53020e"),
+--         ((faction == "separatist" or faction == "republic") and "b7e197" or "4d7745"),
+--     }
 
-    for i = 1, 2 do
-        local rules         = bag.takeObject({guid=rules_guids[i], rotation=rot_rules})
-        rules.setLock(true)
-        rules.setPosition(rules_positions[i])
-    end
-    -- flip, move, or delete required top UI objects for solo play
-    local manipulate_objects = {
-        getObjectFromGUID("c6a07b"), -- [1]  = board resource counter
-        getObjectFromGUID("34be5a"), -- [2]  = player area resource counter (needs to be dropped under table, flipped upside down to prevent button hit)
-        getObjectFromGUID("b6d068"), -- [3]  = end turn button
-        getObjectFromGUID("817b24"), -- [4]  = force with me button (make force with them graphics for buttons lol)
-        getObjectFromGUID("fa055e"), -- [5]  = base damage counter (also needs to be repositioned)
-        getObjectFromGUID("53bed7"), -- [6]  = victory_pad
-        getObjectFromGUID("b282b4"), -- [7]  = purchase button 1 (left to right, galaxy deck to OR deck)
-        getObjectFromGUID("123425"), -- [8]  = purchase button 2
-        getObjectFromGUID("d2d527"), -- [9]  = purchase button 3
-        getObjectFromGUID("e3da81"), -- [10] = purchase button 4
-        getObjectFromGUID("65f0e5"), -- [11] = purchase button 5
-        getObjectFromGUID("d6ff12"), -- [12] = purchase button 6
-        getObjectFromGUID("0fc9b2"), -- [13] = purchase button outer rim
+--     for i = 1, 2 do
+--         local rules         = bag.takeObject({guid=rules_guids[i], rotation=rot_rules})
+--         rules.setLock(true)
+--         rules.setPosition(rules_positions[i])
+--     end
+--     -- flip, move, or delete required top UI objects for solo play
+--     local manipulate_objects = {
+--         getObjectFromGUID("c6a07b"), -- [1]  = board resource counter
+--         getObjectFromGUID("34be5a"), -- [2]  = player area resource counter (needs to be dropped under table, flipped upside down to prevent button hit)
+--         getObjectFromGUID("b6d068"), -- [3]  = end turn button
+--         getObjectFromGUID("817b24"), -- [4]  = force with me button (make force with them graphics for buttons lol)
+--         getObjectFromGUID("fa055e"), -- [5]  = base damage counter (also needs to be repositioned)
+--         getObjectFromGUID("53bed7"), -- [6]  = victory_pad
+--         getObjectFromGUID("b282b4"), -- [7]  = purchase button 1 (left to right, galaxy deck to OR deck)
+--         getObjectFromGUID("123425"), -- [8]  = purchase button 2
+--         getObjectFromGUID("d2d527"), -- [9]  = purchase button 3
+--         getObjectFromGUID("e3da81"), -- [10] = purchase button 4
+--         getObjectFromGUID("65f0e5"), -- [11] = purchase button 5
+--         getObjectFromGUID("d6ff12"), -- [12] = purchase button 6
+--         getObjectFromGUID("0fc9b2"), -- [13] = purchase button outer rim
 
-    }
-    local destroy_objects = {
-        getObjectFromGUID("57f0a2"), -- [1]  = player area deck pad
-        getObjectFromGUID("e3e3b8"), -- [2]  = player area discard pad
-        getObjectFromGUID("c0c024"), -- [3]  = player area base pad
-        getObjectFromGUID("ded0c2"), -- [4]  = player area discard random card button
-        getObjectFromGUID("2db9de"), -- [5]  = discard button 1 (left to right, galaxy deck to OR deck)
-        getObjectFromGUID("14443b"), -- [6]  = discard button 2
-        getObjectFromGUID("5f79fd"), -- [7]  = discard button 3
-        getObjectFromGUID("f371cf"), -- [8]  = discard button 4
-        getObjectFromGUID("8ce5e3"), -- [9]  = discard button 5
-        getObjectFromGUID("5534ea"), -- [10] = discard button 6
-    }
-    -- rotate board resource counter
-    manipulate_objects[1].setRotation({0.00, 180.00, 0.00})
-    -- drop, flip player area resource counter (hide object, button)
-    manipulate_objects[2].setRotation({0.00, 0.00, 180.00})
-    -- rotate end turn button
-    manipulate_objects[3].setRotation({0.00, 180.00, 0.00})
-    -- rotate force with me button
-    manipulate_objects[4].setRotation({0.00, 180.00, 0.00})
-    local force_button_images = {
-        separatist = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296864303/52D7C7B1ACFB4D767CE5334D661D85FEB6401EAC/",
-        republic   = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866003/3EE1657DEAA4B1B54F832270AB029EB182B3A41B/",
-        empire     = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296865269/B758EF2809731A8FE9E76FCF295FB2E00EEC95BA/",
-        rebellion  = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866592/E1C0458973E5499BA1D23BC561AC3ECB4A930E33/",
-    }
-    local force_button_image = force_button_images[faction]
-    manipulate_objects[4].setCustomObject({image=force_button_image})
-    manipulate_objects[4].reload()
-    -- rotate, position base damage counter
-    manipulate_objects[5].setRotation({0.00, 180.00, 0.00})
-    manipulate_objects[5].setPosition({-20.83, 0.10, 7.69})
-    -- rotate victory pad
-    manipulate_objects[6].setRotation({0.00, 180.00, 0.00})
-    -- rotate, tint purchase buttons
-    for i = 7, 13 do
-        manipulate_objects[i].setRotation({0.00, 180.00, 0.00})
-        manipulate_objects[i].setColorTint(topColor)
-    end
-    -- destroy no longer required UI objects
-    for i = 1, #destroy_objects do
-        destroy_objects[i].destruct()
-    end
-    -- pull leader board marker cubes
-    local cube_progress = bag.takeObject({
-        guid        =
-        ((topColor == "Blue" and "4863a8") or
-        (topColor  == "Purple" and "59278f") or
-        (topColor  == "Red" and "4fd77b") or
-        (topColor  == "Orange" and "fa5ca7")),
-        rotation    = {0.00, 180.00, 0.00}
-    })
-    cube_progress.setPosition({-17.76, 0.85, 21.88})
-    local cube_resource = bag.takeObject({guid="590c7d", rotation={0.00, 180.00, 0.00}})
-    cube_resource.setPosition({-15.74, 0.85, 12.85})
-    -- tint leaderboard
-    getObjectFromGUID(faction_guids[12]).setColorTint(topColor)
-    -- place muster pad, reimage, tint
-    local muster_pad_guid = (
-        (faction == "empire" and "5e3df3") or
-        (faction == "rebellion" and "ea4e10") or
-        (faction == "separatist" and "f812d9") or
-        (faction == "republic" and "5248ed")
-    )
-    local muster_pad = bag.takeObject({guid=muster_pad_guid})
-    Wait.frames(function()
-    muster_pad.setLock(true)
-    muster_pad.interactable = false
-    print(faction_image)
-    muster_pad.setRotation({0.00, 180.00, 180.00})
-    muster_pad.setPosition({-1.88, 0.10, 20.39})
-    muster_pad.setColorTint(topColor)
-    muster_pad.setCustomObject({image=faction_image})
-    muster_pad.reload()
-    end, 1)
-    -- A FEW MOMENTS LATER...
-    -- wait 3 seconds, unlock starter base, ### NEED TO MAKE ZONES ETC > name reserves, shuttle, muster
-    Wait.time(function() starter_base.setLock(false) end, 3)
-    Wait.time(function()
-    local zone_reserves = getObjectFromGUID("85aa75")
-    local zone_shuttles = getObjectFromGUID("a82234")
-    for _, object in pairs(zone_reserves.getObjects()) do
-        if object.hasTag('unit') then
-            object.setName("Reserves")
-        end
-    end
-    for _, object in pairs(zone_shuttles.getObjects()) do
-        if object.hasTag('unit') then
-            object.setName("Shuttles")
-        end
-    end
-    end, 3)
-end -- end setup_solo()
+--     }
+--     local destroy_objects = {
+--         getObjectFromGUID("57f0a2"), -- [1]  = player area deck pad
+--         getObjectFromGUID("e3e3b8"), -- [2]  = player area discard pad
+--         getObjectFromGUID("c0c024"), -- [3]  = player area base pad
+--         getObjectFromGUID("ded0c2"), -- [4]  = player area discard random card button
+--         getObjectFromGUID("2db9de"), -- [5]  = discard button 1 (left to right, galaxy deck to OR deck)
+--         getObjectFromGUID("14443b"), -- [6]  = discard button 2
+--         getObjectFromGUID("5f79fd"), -- [7]  = discard button 3
+--         getObjectFromGUID("f371cf"), -- [8]  = discard button 4
+--         getObjectFromGUID("8ce5e3"), -- [9]  = discard button 5
+--         getObjectFromGUID("5534ea"), -- [10] = discard button 6
+--     }
+--     -- rotate board resource counter
+--     manipulate_objects[1].setRotation({0.00, 180.00, 0.00})
+--     -- drop, flip player area resource counter (hide object, button)
+--     manipulate_objects[2].setRotation({0.00, 0.00, 180.00})
+--     -- rotate end turn button
+--     manipulate_objects[3].setRotation({0.00, 180.00, 0.00})
+--     -- rotate force with me button
+--     manipulate_objects[4].setRotation({0.00, 180.00, 0.00})
+--     local force_button_images = {
+--         separatist = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296864303/52D7C7B1ACFB4D767CE5334D661D85FEB6401EAC/",
+--         republic   = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866003/3EE1657DEAA4B1B54F832270AB029EB182B3A41B/",
+--         empire     = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296865269/B758EF2809731A8FE9E76FCF295FB2E00EEC95BA/",
+--         rebellion  = "https://steamusercontent-a.akamaihd.net/ugc/2423592667296866592/E1C0458973E5499BA1D23BC561AC3ECB4A930E33/",
+--     }
+--     local force_button_image = force_button_images[faction]
+--     manipulate_objects[4].setCustomObject({image=force_button_image})
+--     manipulate_objects[4].reload()
+--     -- rotate, position base damage counter
+--     manipulate_objects[5].setRotation({0.00, 180.00, 0.00})
+--     manipulate_objects[5].setPosition({-20.83, 0.10, 7.69})
+--     -- rotate victory pad
+--     manipulate_objects[6].setRotation({0.00, 180.00, 0.00})
+--     -- rotate, tint purchase buttons
+--     for i = 7, 13 do
+--         manipulate_objects[i].setRotation({0.00, 180.00, 0.00})
+--         manipulate_objects[i].setColorTint(topColor)
+--     end
+--     -- destroy no longer required UI objects
+--     for i = 1, #destroy_objects do
+--         destroy_objects[i].destruct()
+--     end
+--     -- pull leader board marker cubes
+--     local cube_progress = bag.takeObject({
+--         guid        =
+--         ((topColor == "Blue" and "4863a8") or
+--         (topColor  == "Purple" and "59278f") or
+--         (topColor  == "Red" and "4fd77b") or
+--         (topColor  == "Orange" and "fa5ca7")),
+--         rotation    = {0.00, 180.00, 0.00}
+--     })
+--     cube_progress.setPosition({-17.76, 0.85, 21.88})
+--     local cube_resource = bag.takeObject({guid="590c7d", rotation={0.00, 180.00, 0.00}})
+--     cube_resource.setPosition({-15.74, 0.85, 12.85})
+--     -- tint leaderboard
+--     getObjectFromGUID(faction_guids[12]).setColorTint(topColor)
+--     -- place muster pad, reimage, tint
+--     local muster_pad_guid = (
+--         (faction == "empire" and "5e3df3") or
+--         (faction == "rebellion" and "ea4e10") or
+--         (faction == "separatist" and "f812d9") or
+--         (faction == "republic" and "5248ed")
+--     )
+--     local muster_pad = bag.takeObject({guid=muster_pad_guid})
+--     Wait.frames(function()
+--     muster_pad.setLock(true)
+--     muster_pad.interactable = false
+--     print(faction_image)
+--     muster_pad.setRotation({0.00, 180.00, 180.00})
+--     muster_pad.setPosition({-1.88, 0.10, 20.39})
+--     muster_pad.setColorTint(topColor)
+--     muster_pad.setCustomObject({image=faction_image})
+--     muster_pad.reload()
+--     end, 1)
+--     -- A FEW MOMENTS LATER...
+--     -- wait 3 seconds, unlock starter base, ### NEED TO MAKE ZONES ETC > name reserves, shuttle, muster
+--     Wait.time(function() starter_base.setLock(false) end, 3)
+--     Wait.time(function()
+--     local zone_reserves = getObjectFromGUID("85aa75")
+--     local zone_shuttles = getObjectFromGUID("a82234")
+--     for _, object in pairs(zone_reserves.getObjects()) do
+--         if object.hasTag('unit') then
+--             object.setName("Reserves")
+--         end
+--     end
+--     for _, object in pairs(zone_shuttles.getObjects()) do
+--         if object.hasTag('unit') then
+--             object.setName("Shuttles")
+--         end
+--     end
+--     end, 3)
+-- end -- end setup_solo()

@@ -195,7 +195,7 @@ function initCardXML(card)
     ["Ability Large White"]               = {
       tag                 = "Panel",
       attributes          = {
-        id                = "ability_button_green_white",
+        id                = "ability_button_white_large",
         active            = "false",
         height            = "40",
         width             = "150",

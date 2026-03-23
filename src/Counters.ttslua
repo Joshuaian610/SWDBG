@@ -177,34 +177,34 @@ local DATA     = {
   -- clone wars neutrals
   ["Aurore-Class Freighter"] = {
     MIN_VALUE = 0,
-    MAX_VALUE = 3,
+    MAX_VALUE = 5,
     MAX_HP = 3,
   },
   ["Dreadnought-Class Carrier"] = {
     MIN_VALUE = 0,
-    MAX_VALUE = 5,
+    MAX_VALUE = 7,
     MAX_HP = 5,
   },
   ["Space Yacht"] = {
     MIN_VALUE = 0,
-    MAX_VALUE = 4,
+    MAX_VALUE = 6,
     MAX_HP = 4,
   },
   
   -- orig neutrals
   ["C-Roc Cruiser"] = {
     MIN_VALUE = 0,
-    MAX_VALUE = 3,
+    MAX_VALUE = 5,
     MAX_HP = 3,
   },
   ["Blockade Runner"] = {
     MIN_VALUE = 0,
-    MAX_VALUE = 4,
+    MAX_VALUE = 6,
     MAX_HP = 4,
   },
   ["Nebulon-B Frigate"] = {
     MIN_VALUE = 0,
-    MAX_VALUE = 5,
+    MAX_VALUE = 7,
     MAX_HP = 5,
   },
 
@@ -359,7 +359,8 @@ end -- end addOrSubtract()
 
 
 function modifyValue(mod)
-  -- sets counter value, also runs resource counter sync
+  -- sets counter value, also runs resource counter sync\
+  log("maxVal: " .. d.MAX_VALUE)
   val = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, val + tonumber(mod)))
   self.editButton({ index = 0, label = tostring(val), font_size = self.hasTag('ship') and 550 or getFontSize(val) })
   updateSave()
@@ -491,11 +492,9 @@ function handleShipCounter(self)
       self.setRotation(rotDiscard)
       self.setPositionSmooth(posDiscard, false, true)
       self.addTag('defeated_ship')
-      Global.call("removeAbilityButtons", self)
       setValue(0)
     else
       self.addTag('defeated_ship')
-      Global.call("removeAbilityButtons", self)
       setValue(0)
       getObjectFromGUID("051249").putObject(self)
     end

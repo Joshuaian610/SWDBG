@@ -282,6 +282,7 @@ function removeAbilityButtons(obj)
   obj.UI.hide('ability_button_red_large')
   obj.UI.hide('ability_button_green_large')
   obj.UI.hide('ability_button_gold_large')
+  obj.UI.hide('ability_button_white_large')
 
   -- SMALL ABILITY BUTTONS
   obj.UI.hide('ability_button_blue_small')
@@ -1017,10 +1018,11 @@ function primaryButtonAction(button, playercolor)
         if isAI then
           rotOpponentDIscard = { 0.00, 0.00, 180.00 }
           posOpponentDiscard = { -1.88, 0.50, 20.39 }
-        end        
+        end
+        removeAbilityButtons(button)
         button.setRotation(rotOpponentDIscard)
-        button.setPosition(posOpponentDiscard)
-        
+        button.setPositionSmooth(posOpponentDiscard, false, true)
+
         Wait.time(function() drawGalaxyCard() end, .5)
 
         local newResourceCount = currentResourceCount - 2
@@ -1079,8 +1081,15 @@ function primaryButtonAction(button, playercolor)
       not (forceOwner == "Top" and topFaction == faction) then
         broadcastToAll(prefix .. "Force is not with [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-], [b]Underworld Contact[/b] discount not applied", "White")
       else
-        nextCardContact = true
-        button.addTag('next_card_contact')
+        if nextCardContact then
+          nextCardContact = false
+          nextCardDoubleContact = true
+        else
+          nextCardContact = true
+          nextCardDoubleContact = false
+        end
+        log("nextCardContact: " .. tostring(nextCardContact))
+        log("nextCardDoubleContact: " .. tostring(nextCardDoubleContact))
         broadcastToAll(prefix .. "[b]Underworld Contact[/b] ability used, 2 Resource discount to next Neutral card purchase.", "White")
       end
 

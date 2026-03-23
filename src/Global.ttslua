@@ -54,6 +54,7 @@ function onLoad()
   nextCardTarkin = false
   nextCardLeia = false
   nextCardContact = false
+  nextCardDoubleContact = false
   nextCardNute = false
   nextCardBalutar = false
   metConditionDroideka = false
@@ -330,7 +331,7 @@ function onObjectSpawn(obj)
     end
 
   elseif obj.getName() == "Button Enable Leaders" then
-    toggleLeaders(obj, _, _)
+    initLeaders(obj, _, _)
   end
 
   -- handle Exile Card context menu creation
@@ -447,6 +448,7 @@ function onObjectEnterZone(zone, obj)
     not obj.hasTag("just_bought") and
     (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
     obj.type == "Card" then
+      log("1st")
       initCardXML(obj)
     end
   end
@@ -456,6 +458,7 @@ function onObjectEnterZone(zone, obj)
   (zone.getName() ~= "Zone Row Deck" and zone.getName() ~= "Zone Row Discard") and
   (not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner')) and obj.getName() == "Jar Jar Binks" and
   obj.type == "Card" then
+    log("2nd")
     initCardXML(obj)
   end
 

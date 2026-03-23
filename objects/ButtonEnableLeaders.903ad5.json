@@ -24,7 +24,7 @@
   },
   "Description": "",
   "DragSelectable": true,
-  "GMNotes": "enabled",
+  "GMNotes": "disabled",
   "GUID": "903ad5",
   "Grid": true,
   "GridProjection": false,

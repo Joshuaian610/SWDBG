@@ -73,7 +73,8 @@ function cancelCardAction(button, playerColor, _)
     nextCardLeia = false
 
   elseif cardName == 'Underworld Contaact' then
-    nextCardContact = false
+    if nextCardDoubleContact then nextCardDoubleContact = false nextCardContact = true else nextCardContact = false end
+
     
   elseif cardName == 'Nute Gunray' then
     nextCardNute = false
@@ -1167,7 +1168,7 @@ function purchaseCard(button, playerColor, altClick)
         return
       end
 
-      if nextCardContact and not zoneObj.hasTag('neutral') then
+      if (nextCardContact or nextCardDoubleContact) and not zoneObj.hasTag('neutral') then
         broadcastToAll(prefix .. "Next card purchased must be Neutral card, using [b]Underworld Contact[/b] ability.", "White")
         return
       end
@@ -1254,9 +1255,9 @@ function purchaseCard(button, playerColor, altClick)
   local newTotal = nil
   
   -- handle Underworld Contact purchase action
-  if nextCardContact and cardObj.hasTag('neutral') then
+  if (nextCardContact or nextCardDoubleContact) and cardObj.hasTag('neutral') then
     local originalCardCost = cardCost
-    cardCost = cardCost -2
+    cardCost = (nextCardContact and cardCost -2) or (nextCardDoubleContact and cardCost -4)
 
     -- need to call the below stuff here as well to prevent discount message in case of not enough resources
     if not forFree and currentResources < cardCost then
@@ -1265,7 +1266,11 @@ function purchaseCard(button, playerColor, altClick)
     end
 
     if cardCost < 0 then cardCost = 0 end
-    broadcastToAll(prefix .. "Original card cost of " .. originalCardCost .. " has been discounted by 2 to " .. cardCost .. ".", "White")
+    if nextCardContact then
+      broadcastToAll(prefix .. "Original card cost of " .. originalCardCost .. " has been discounted by 2 to " .. cardCost .. ".", "White")
+    elseif nextCardDoubleContact then
+      broadcastToAll(prefix .. "Original card cost of " .. originalCardCost .. " has been discounted by 4 to " .. cardCost .. ".", "White")
+    end
   end
 
   if not forFree and currentResources < cardCost then
@@ -1282,12 +1287,10 @@ function purchaseCard(button, playerColor, altClick)
   end
 
   -- clean up nextCardContact
-  if nextCardContact and cardObj.hasTag('neutral') then
+  if (nextCardContact or nextCardDoubleContact) and cardObj.hasTag('neutral') then
     nextCardContact = false
+    nextCardDoubleContact = false
     for _, obj in ipairs(getObjects()) do
-      if obj.hasTag('nextCardContact') then
-        obj.removeTag('nextCardContact')
-      end
       if obj.getName() == "Underworld Contact" and obj.hasTag("cancel_live") then
         removeAbilityButtons(obj)
         obj.removeTag("cancel_live")
@@ -1513,18 +1516,11 @@ function purchaseCard(button, playerColor, altClick)
   nextCardLeia = false
   nextCardTarkin = false
   nextCardContact = false
+  nextCardDoubleContact = false
   nextCardBalutar = false
   nextBHorTrooperToHand = false
   Wait.time(function() nextCardNute = false end, 1.01)
-
-  for _, obj in ipairs(getObjects()) do
-    if obj.hasTag('nextCardContact') then
-      removeAbilityButtons(obj)
-      if obj.hasTag('nextCardContact') then
-        obj.removeTag('nextCardContact')
-      end
-    end
-  end
+  
 end -- end purchaseCard()
 
 
@@ -1642,11 +1638,13 @@ function setBoard(playerColor)
   nextCardTarkin = false
   nextCardLeia = false
   nextCardContact = false
+  nextCardDoubleContact = false
   nextCardNute = false
   nextCardBalutar = false
   metConditionDroideka = false
   metConditionHondo = false
   metConditionWat = false
+  metConditionTrench = false
 
   -- disable hondo highlight if still on
   if getObjectbyName("Hondo Ohnaka") ~= nil then
