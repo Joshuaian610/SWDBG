@@ -20,8 +20,7 @@ function checkIfAI()
   -- NEED TO FIGURE OUT OBJS BELOW & REMOVE GUID methodology
   local isAI = false
   for _, obj in pairs(getObjects()) do
-    if obj.getGUID() == "f001ad" or obj.getGUID() == "adf064" or
-    obj.getGUID() == "b5ca34" or obj.getGUID() == "a41512" then
+    if obj.getName():find("Leaders Card ") then
       isAI = true
     end
   end

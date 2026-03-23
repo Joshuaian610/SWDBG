@@ -332,6 +332,10 @@ function onObjectSpawn(obj)
 
   elseif obj.getName() == "Button Enable Leaders" then
     initLeaders(obj, _, _)
+
+  elseif obj.getName() == "Select Mandalorian Leader Panel" then
+    initMandalorianLeaderPanel(obj)
+
   end
 
   -- handle Exile Card context menu creation
@@ -345,6 +349,8 @@ function onObjectEnterZone(zone, obj)
   
   -- this function handles the discard operations, card button creation, resource management,
   -- adding ownership tags, and the rotation of ship cards while in hand zones
+
+  local isAI = checkIfAI()
 
   -- bottom hand zone ship straighten
   if zone == zoneHandzoneBottom and obj.type == "Card" then
@@ -395,7 +401,7 @@ function onObjectEnterZone(zone, obj)
 
     toAddResource = cardData[obj.getName()].produce
 
-    if (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and not obj.hasTag('just_bought') and obj.type == "Card" then
+    if (obj.hasTag('bottom_owner') or (obj.hasTag('top_owner') and not isAI) and not obj.hasTag('just_bought')) and obj.type == "Card" then
 
       if obj.hasTag('bottom_owner') then
         counterPlayer = counterResourceBottom
@@ -445,7 +451,7 @@ function onObjectEnterZone(zone, obj)
     obj.hasTag("discard_button") or obj.hasTag('reveal_button') or
     obj.hasTag('repair_button_small') or obj.hasTag('repair_button_large')) and
     not obj.hasTag("just_bought") and
-    (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
+    (obj.hasTag('bottom_owner') or (obj.hasTag('top_owner') and not isAI)) and
     obj.type == "Card" then
       initCardXML(obj)
     end
@@ -516,6 +522,8 @@ function onObjectLeaveZone(zone, obj)
     return
   end
 
+  local isAI = checkIfAI()
+
   if zone == zoneInPlay and obj.type == "Card" then
 
     -- remove just_bought tag
@@ -527,7 +535,7 @@ function onObjectLeaveZone(zone, obj)
       return
     end
 
-    if obj.type == "Card" and (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
+    if obj.type == "Card" and (obj.hasTag('bottom_owner') or (obj.hasTag('top_owner') and not isAI)) and
     not obj.hasTag('just_bought') and not obj.hasTag('exiled') and not obj.hasTag('defeated_ship') and not obj.hasTag('end_turn_leaving') then
 
       local origValue = 0
@@ -575,7 +583,7 @@ function onObjectLeaveZone(zone, obj)
       obj.hasTag('add_force_button') or obj.hasTag('draw_button') or obj.hasTag("attack_button")
       or obj.hasTag("discard_button") or obj.hasTag('reveal_button') or
       obj.hasTag('repair_button_small') or obj.hasTag('repair_button_large')) and
-      (obj.hasTag('bottom_owner') or obj.hasTag('top_owner')) and
+      (obj.hasTag('bottom_owner') or (obj.hasTag('top_owner') and not isAI)) and
       obj.type == "Card" then
         removeAbilityButtons(obj)
       end

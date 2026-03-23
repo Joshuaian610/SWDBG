@@ -390,6 +390,7 @@ function handleBaseDamageCounter(counterObj)
   -- this function handles the action of checking for and handling defeated bases
   -- check to see max HP on related base, discard & reset counter if destroyed
   local posCounter = counterObj.getPosition()
+  local isAI = Global.call("checkIfAI")
   local isBottom = posCounter.z < 0 and true or false 
   local baseMaxHP = 999
   local faction = nil
@@ -419,6 +420,10 @@ function handleBaseDamageCounter(counterObj)
     rot = { 0.00, 180.00, 0.00 }
     pos = { 29.50, 3.50, -21.00 }
   end
+
+  if isAI and not isBottom then
+    zone = Global.call("getObjectbyName", "Zone Leaders Bases")
+  end
   
   for _, zoneObj in pairs(zone.getObjects()) do
     if zoneObj.type == "Card" and zoneObj.hasTag(faction .. '_base') then
@@ -446,6 +451,9 @@ end -- end handleBaseDamageCounter()
 
 function handleResourceCounter(self)
   -- handles synchronization of board & base resource counters
+  local isAI = Global.call('checkIfAI')
+  local isBottom = self.getName():find("Bottom") and true or false
+
   local counterpart = nil
   if self.getName() == "Resource Counter Bottom" then
     counterpart = Global.call("getObjectbyName", "Resource Counter Board Bottom")
@@ -453,10 +461,37 @@ function handleResourceCounter(self)
     counterpart = Global.call("getObjectbyName", "Resource Counter Bottom")
   elseif self.getName() == "Resource Counter Top" then
     counterpart = Global.call("getObjectbyName", "Resource Counter Board Top")
-  elseif self.getName() == "Resource Counter Board Top" then
+  elseif self.getName() == "Resource Counter Board Top" and not isAI then
     counterpart = Global.call("getObjectbyName", "Resource Counter Top")
   end
-  setCounterpartValue(val, counterpart)
+
+  -- if not AI, sync counter
+  if not isAI and counterpart ~= nil then
+    setCounterpartValue(val, counterpart)
+  end
+  -- otherwise if AI, move resource tracker cube
+  local resourceTracker = Global.call("getObjectbyName", "AI Resource Tracker")
+  if isAI and not isBottom and resourceTracker ~= nil then
+    local posResourceTrackX = {
+      -15.74,
+      -14.74,
+      -13.73,
+      -12.72,
+      -11.73,
+      -10.71,
+      -9.71,
+      -8.71,
+      -7.69,
+      -6.69,
+      -5.67,
+    }
+    local posTracker = resourceTracker.getPosition()
+    local cubeVal = val + 1
+    if cubeVal < 1 then cubeVal = 1 end
+    if cubeVal > 11 then cubeVal = 11 end
+    posTracker.x = posResourceTrackX[cubeVal]
+    resourceTracker.setPositionSmooth(posTracker, false, true)
+  end
 end -- end handleResourceCounter()
 
 
