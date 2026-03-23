@@ -360,7 +360,6 @@ end -- end addOrSubtract()
 
 function modifyValue(mod)
   -- sets counter value, also runs resource counter sync\
-  log("maxVal: " .. d.MAX_VALUE)
   val = math.max(d.MIN_VALUE, math.min(d.MAX_VALUE, val + tonumber(mod)))
   self.editButton({ index = 0, label = tostring(val), font_size = self.hasTag('ship') and 550 or getFontSize(val) })
   updateSave()

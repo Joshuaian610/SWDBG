@@ -365,7 +365,6 @@ end -- end removeForceButtons()
 
  
 function removeNeutralBHSaboButtons()
-  log("running removeNeutralBHSaboButtons()")
   -- remove neutral BH / sabotage buttons when Ord Mantell in or out of play
   local zones = {zoneGalaxyRow1, zoneGalaxyRow2, zoneGalaxyRow3, zoneGalaxyRow4, zoneGalaxyRow5, zoneGalaxyRow6}
   for i = 1, 6 do
@@ -714,8 +713,6 @@ function handleNuteGunray(playerColor)
     end
   end
 
-  log("exileIsValid: " .. tostring(exileIsValid))
-
   if exileIsValid then
     broadcastToAll(prefix .. "[b]Nute Gunray[/b] ability applied on card leaving galaxy row, [" .. Color.fromString(playerColor):toHex() .. "]Separatist[-] must manually replace it with a non-starter card from their exile.", "White")
     bagExile.Container.search(playerColor)
@@ -884,9 +881,6 @@ function primaryButtonAction(button, playercolor)
         end
       end
       if shipInPlay then
-        log("opponentColor: " .. opponentColor)
-        log("opponentFaction: " .. opponentFaction)
-        log("playerColor: " .. playerColor)
         broadcastToAll(prefix .. "[b]Z-95 Headhunter[/b] ability used while [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] has ship in play, [" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has drawn a card.", "White")
         dealCard(area, 1)
       else
@@ -1088,8 +1082,6 @@ function primaryButtonAction(button, playercolor)
           nextCardContact = true
           nextCardDoubleContact = false
         end
-        log("nextCardContact: " .. tostring(nextCardContact))
-        log("nextCardDoubleContact: " .. tostring(nextCardDoubleContact))
         broadcastToAll(prefix .. "[b]Underworld Contact[/b] ability used, 2 Resource discount to next Neutral card purchase.", "White")
       end
 
@@ -2172,7 +2164,6 @@ function primaryButtonAction(button, playercolor)
     elseif cardName == "Asajj Ventress" then
       -- discard neutrals from row, timed replace
       local zones = zonesGalaxyRow
-      log(zonesGalaxyRow)
       local neutralCount = 0
       for i = 1, 6 do
         local slot = i
