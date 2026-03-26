@@ -154,6 +154,7 @@ function damageBase(count, playerColor, faction)
       foundBase = obj
     end
   end
+  if not baseFound then log("damageBase() base not found!") return end
   
   if currentValue >= maxHP then
     broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. foundBase.getName() .. "[-] has been destroyed!", "White")
@@ -1490,7 +1491,7 @@ function purchaseCard(button, playerColor, altClick)
   cardObj.addTag(ownerTag)
 
   -- add just bought tag
-  if not isAI then
+  if isBottom or (not isBottom and not isAI) then
     cardObj.addTag('just_bought')
   end
 
@@ -1525,7 +1526,7 @@ function purchaseCard(button, playerColor, altClick)
     if Player[playerColor].steam_name ~= nil then
       broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
     else
-      if isAI then
+      if isAI and not isBottom then
         broadcastToAll("AI [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
       else
         broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b].", "White")
@@ -1536,7 +1537,7 @@ function purchaseCard(button, playerColor, altClick)
     if Player[playerColor].steam_name ~= nil then
       broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
     else
-      if isAI then
+      if isAI and not isBottom then
         broadcastToAll("AI [" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
       else
         broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. currentFaction .. "[-] has purchased [b]" .. cardObj.getName() .. "[/b] for free.", "White")
