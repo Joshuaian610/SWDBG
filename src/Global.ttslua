@@ -20,7 +20,7 @@ function onLoad()
   math.randomseed(os.time())
   Turns.enable = false
 
-  interactable = true
+  interactable = false
   invis = true
 
   -- set non interactables, run onSpawn stuff
@@ -382,6 +382,14 @@ function onObjectEnterZone(zone, obj)
       obj.addTag('top_owner')
       obj.removeTag('bottom_owner')
       return
+    end
+  end
+
+  if zone == getObjectbyName("Zone Leaders Facedown Muster") then
+    if not obj.hasTag('ai_owner') then
+      obj.addTag('ai_owner')
+      obj.removeTag('bottom_owner')
+      obj.removeTag('top_owner')
     end
   end
 

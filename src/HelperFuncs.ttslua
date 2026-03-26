@@ -169,7 +169,7 @@ function getObjectbyName(name)
       return object
     end
   end
-  log("getObjectFromName() object not found via " .. name)
+  -- log("getObjectFromName() object not found via " .. name)
   return nil
 end -- end getObjectFromName()
 
@@ -181,7 +181,7 @@ function getObjectbyNameAndNotes(name, gmNotes)
       return object
     end
   end
-  log("getObjectbyNameAndNotes() object not found via " .. name .. ", " .. gmNotes)
+  -- log("getObjectbyNameAndNotes() object not found via " .. name .. ", " .. gmNotes)
   return nil
 end -- end getObjectByNameAndNotes()
 
@@ -205,19 +205,12 @@ end -- end getPlayerColors()
 
 function getTurn()
   -- checks position of turn tracker obj to determine current turn
-  local zoneBottom = getObjectbyName("Zone Active Faction Bottom")
-  local zoneTop = getObjectbyName("Zone Active Faction Top")
-  local checkZones = {zoneBottom, zoneTop}
-  for i = 1, 2 do
-    for _, zoneObj in ipairs(checkZones[i].getObjects()) do
-      if zoneObj.hasTag('turnTracker') then
-        if i == 1 then
-          return "Bottom"
-        elseif i == 2 then
-          return "Top"
-        end
-      end
-    end
+  local turnTracker = getTurnTracker()
+  local posTurnTracker = turnTracker.getPosition()
+  if posTurnTracker.z < 0 then
+    return "Bottom"
+  elseif posTurnTracker.z > 0 then
+    return "Top"
   end
   return nil
 end -- end getTurn()

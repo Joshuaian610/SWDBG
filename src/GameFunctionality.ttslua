@@ -131,7 +131,6 @@ end -- end cardExhaust()
 
 
 function damageBase(count, playerColor, faction)
-  log("damageBase("..count..", "..playerColor..", "..faction..") IS RUNNING")
   local bottomFaction, _ = getPlayerAreas()
   local isBottom = faction == bottomFaction and true or false
   -- handles damaging and movement of defeated bases
@@ -155,7 +154,6 @@ function damageBase(count, playerColor, faction)
       foundBase = obj
     end
   end
-  if not baseFound then log("damageBase() base not found!") return end
   
   if currentValue >= maxHP then
     broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. foundBase.getName() .. "[-] has been destroyed!", "White")
@@ -433,6 +431,7 @@ function endTurn(button, _, _)
       if zoneObj.hasTag('unit') and zoneObj.hasTag('bottom_owner') then
         zoneObj.setRotation(rotDiscard)
         zoneObj.setPositionSmooth(posDiscard, false, true)
+        zoneObj.addTag('end_turn_leaving')
       end
     end
 
@@ -440,10 +439,9 @@ function endTurn(button, _, _)
       if zoneObj.hasTag('unit') and zoneObj.hasTag('top_owner') then
         zoneObj.setRotation(rotDiscard)
         zoneObj.setPositionSmooth(posDiscard, false, true)
+        zoneObj.addTag('end_turn_leaving')
       end
     end
-
-    zoneObj.addTag('end_turn_leaving')
 
     -- handle tarkin exile
     if zoneObj.hasTag('tarkin_exile') then
@@ -454,10 +452,56 @@ function endTurn(button, _, _)
     end
   end
 
+  -- handle AI card discard
+  if isTop and isAI then
+    local zoneAIPlay = getObjectbyName("Zone Leaders Ships")
+    for _, zoneObj in pairs(zoneAIPlay.getObjects()) do
+      local leaderName = getObjectbyName("Leaders Card " .. topFaction)
+      if zoneObj.hasTag('unit') and zoneObj.hasTag('ai_owner') and zoneObj.type == "Card" and
+      not zoneObj.getName():find("Reserves") and not zoneObj.getName():find("Shuttle") then
+
+        local name = zoneObj.getName()
+
+        local doNotExile =
+          name == "Rebel Trooper" or
+          name == "Stormtrooper" or
+          name == "Clone Trooper" or
+          name == "B1 Battle Droid" or
+          name == "Mandalorian Soldier" or
+          name == "Temple Guardian" or
+          name == "Inquisitor" or
+          name == "Dark Side Agent" or
+          name == "Child of the Watch" or
+          name == "General Grievous" or
+          name == "Ahsoka Tano" or
+          name == leaderName or
+          (leaderName == "The Mandalorian" and name == "Grogu")
+
+        if not doNotExile then
+          -- exile card
+          broadcastToAll("AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] card [b]" .. name .. "[/b] has been exiled.")
+          -- if OR pilot being exiled, give 1 force to AI
+          if zoneObj.getName() == "Outer Rim Pilot" then
+            moveForceTrack(getObjectbyName("Button Force Top"), 1)
+          end
+          exileCard(topColor, zoneObj)
+        else
+          -- place card facedown to muster
+          broadcastToAll("AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] card [b]" .. name .. "[/b] has been returned to Muster.")
+          local rotMuster = { 0.00, 180.00, 180.00 }
+          local posMuster = { -1.87, 0.50, 20.39 }
+          zoneObj.setRotation(rotMuster)
+          zoneObj.setPositionSmooth(posMuster, false, true)
+        end
+
+      end
+    end
+  end
+
   -- reset resource counter (needs Mygeeto base in play check)
   local mygeetoInPlay = false
   local checkZone = isBottom and zoneBaseBottom or zoneBaseTop
-
+  
   for _, object in pairs(checkZone.getObjects()) do
     if object.getName() == "Mygeeto" then
       mygeetoInPlay = true
@@ -466,6 +510,20 @@ function endTurn(button, _, _)
 
   local counterResource = isBottom and counterResourceBottom or counterResourceTop
   local counterResourceBoard = isBottom and counterResourceBoardBottom or counterResourceBoardTop
+
+  -- if AI, broadcast current resources remaining
+  if isAI and not isBottom then
+    local currentResources = counterResourceBoard.getVar('val')
+    broadcastToAll("AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] is ending their turn with " .. currentResources .. " resources.")
+    Wait.time(function()
+
+      local progressMovement = currentResources      
+      if progressMovement < 1 then progressMovement = 1 end
+      local pluralString = progressMovement == 1 and "space" or "spaces"
+      broadcastToAll("AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] manually moves their progress tracker cube " .. progressMovement .. " " .. pluralString .. ", and manually gains any required rewards.")
+
+    end, 2)
+  end
 
   if not mygeetoInPlay then
     counterResource.call('setValue', 0)
@@ -503,7 +561,6 @@ function endTurn(button, _, _)
           zoneObj.hasTag('add_force_button') or zoneObj.hasTag('draw_button') or zoneObj.hasTag("attack_button")
           or zoneObj.hasTag("discard_button") or zoneObj.hasTag('reveal_button') or
           zoneObj.hasTag('repair_button_small') or zoneObj.hasTag('repair_button_large')) and
-          (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) and
           zoneObj.type == "Card" then
             removeAbilityButtons(zoneObj)
           end
@@ -514,7 +571,13 @@ function endTurn(button, _, _)
       end
 
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
-        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and (zoneObj.hasTag('ability_button') or zoneObj.hasTag('ability_button_sec')) then
+        if (zoneObj.hasTag('ability_button_large') or zoneObj.hasTag('exile_button') or zoneObj.hasTag('ability_button_sec') or
+        zoneObj.hasTag('add_force_button') or zoneObj.hasTag('draw_button') or zoneObj.hasTag("attack_button") or
+        zoneObj.hasTag("discard_button") or zoneObj.hasTag('reveal_button') or
+        zoneObj.hasTag('repair_button_small') or zoneObj.hasTag('repair_button_large')) and
+        not zoneObj.hasTag("just_bought") and
+        ((zoneObj.hasTag('top_owner') and not isAI)) and
+        zoneObj.type == "Card" then
           initCardXML(zoneObj)
         end
       end
@@ -522,12 +585,11 @@ function endTurn(button, _, _)
     else -- isTop
 
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
-        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') then
+        if zoneObj.hasTag('top_owner') and zoneObj.hasTag('ship') and not isAI then
           if (zoneObj.hasTag('ability_button_large') or zoneObj.hasTag('exile_button') or zoneObj.hasTag('ability_button_sec') or
           zoneObj.hasTag('add_force_button') or zoneObj.hasTag('draw_button') or zoneObj.hasTag("attack_button")
           or zoneObj.hasTag("discard_button") or zoneObj.hasTag('reveal_button') or
           zoneObj.hasTag('repair_button_small') or zoneObj.hasTag('repair_button_large')) and
-          (zoneObj.hasTag('bottom_owner') or zoneObj.hasTag('top_owner')) and
           zoneObj.type == "Card" then
             removeAbilityButtons(zoneObj)
           end
@@ -538,9 +600,13 @@ function endTurn(button, _, _)
       end
 
       for _, zoneObj in pairs(zoneInPlay.getObjects()) do
-        if zoneObj.hasTag('bottom_owner') and zoneObj.hasTag('ship') and
-        (zoneObj.hasTag('ability_button_large') or zoneObj.hasTag('ability_button_sec') or zoneObj.hasTag('exile_button') or
-        zoneObj.hasTag('draw_button') or zoneObj.hasTag('discard_button') or zoneObj.hasTag('reveal_button')) then
+        if (zoneObj.hasTag('ability_button_large') or zoneObj.hasTag('exile_button') or zoneObj.hasTag('ability_button_sec') or
+        zoneObj.hasTag('add_force_button') or zoneObj.hasTag('draw_button') or zoneObj.hasTag("attack_button") or
+        zoneObj.hasTag("discard_button") or zoneObj.hasTag('reveal_button') or
+        zoneObj.hasTag('repair_button_small') or zoneObj.hasTag('repair_button_large')) and
+        not zoneObj.hasTag("just_bought") and
+        zoneObj.hasTag('bottom_owner') and
+        zoneObj.type == "Card" then
           initCardXML(zoneObj)
         end
       end
@@ -1757,10 +1823,8 @@ function setBoard(playerColor)
   local baseCard = nil
   local deckBases = nil
   local zoneBase = setBoardToBottom and zoneBaseBottom or zoneBaseTop
-  if setBoardToTop and isAI then
-    zoneBase = zoneLeadersBases
-  end
-
+  if setBoardToTop and isAI then zoneBase = getObjectbyName("Zone Leaders Bases") end
+  
   for _, object in ipairs(zoneBase.getObjects()) do
     if object.type == "Card" then
       baseCard = object
@@ -1771,13 +1835,136 @@ function setBoard(playerColor)
   end
 
   if baseCard == nil then
-    if Player[playerColor].steam_name then
-      broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-]: Base destroyed, please select a new base!", "White")
+    if setBoardToTop and isAI then
+      Wait.time(function()
+
+        broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]Reminder[-]: AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] was defeated last turn, manually set up their next base and it's actions.")
+        return
+
+      end, 2)
+
     else
-      broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. playerColor .. " Player[-]: Base destroyed, please select a new base!", "White")
+      if Player[playerColor].steam_name then
+        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. Player[playerColor].steam_name .. "[-]: Base destroyed, please select a new base!", "White")
+      else
+        broadcastToAll("[" .. Color.fromString(playerColor):toHex() .. "]" .. playerColor .. " Player[-]: Base destroyed, please select a new base!", "White")
+      end
+      Wait.time(function() deckBases.Container.search(playerColor) end, .5)
     end
-    Wait.time(function() deckBases.Container.search(playerColor) end, .5)
   end
+
+  -- if swapping to AI, handle automatic Leaders bot actions
+  Wait.time(function()
+
+    if setBoardToTop and isAI then
+
+      
+      -- gain resources - shuttle count, resources in play, broadcast
+      Wait.time(function()
+        broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]*[-] Step I: AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] turn has begun!")
+      end, 1)
+      Wait.time(function()
+        gainAIResources() -- also kicks off force gain, broadcast to manually run purchase & attack steps
+      end, 2)
+
+      -- move face up muster cards to play area
+      local zoneMuster = getObjectbyName("Zone Leaders Muster")
+      local cardsInPlay = false
+      local countInPlay = 0
+      for _, zoneObj in pairs(zoneMuster.getObjects()) do
+        if zoneObj.type == "Card" and zoneObj.hasTag("ai_owner") then
+          local rotPlayPile = { 0.00, 180.00, 0.00 }
+          local posPlayPile = { -1.87, 0.50, 13.90 }
+          zoneObj.setRotation(rotPlayPile)
+          zoneObj.setPositionSmooth(posPlayPile, false, true)
+          broadcastToAll("AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] has put [b]" .. zoneObj.getName() .. "[/b] into play from their Muster area.")
+          cardsInPlay = true
+          countInPlay = countInPlay + 1
+        end
+      end
+      Wait.time(function()
+
+        if cardsInPlay and countInPlay > 1 then
+          broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]Reminder[-]: Human [" .. Color.fromString(bottomColor):toHex() .. "]" .. bottomFaction .. "[-] player must manually draw and position AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] cards.")
+        end
+
+      end, .50)
+
+      -- move muster pile face up to muster area
+
+      -- get deck/card, countMuster
+      local zoneFacedownMuster = getObjectbyName("Zone Leaders Facedown Muster")
+      local countMuster = 0
+      local musterPile = nil
+      for _, zoneObj in pairs(zoneFacedownMuster.getObjects()) do
+        if zoneObj.type == "Deck" then
+          musterPile = zoneObj
+          countMuster = #musterPile.getObjects()
+          break
+        end
+        if zoneObj.type == "Card" then
+          musterPile = zoneObj
+          countMuster = 1
+        end
+      end
+
+      if musterPile ~= nil and countMuster > 0 then
+        -- if 5 or less to place, use wide positioning
+        local posMuster = {}
+        if countMuster < 6 then
+          posMuster = {
+            { 2.77, 0.50, 20.39 },
+            { 7.42, 0.50, 20.39 },
+            { 12.06, 0.50, 20.39 },
+            { 16.72, 0.50, 20.39 },
+            { 21.37, 0.50, 20.39 },
+          }
+        -- if 6 to 10 to plac, use compressed positioning
+        elseif countMuster > 5 and countMuster < 11 then
+           posMuster = {
+            { 2.77, 0.50, 20.39 },
+            { 4.99, 0.50, 20.39 },
+            { 7.42, 0.50, 20.39 },
+            { 9.65, 0.50, 20.39 },
+            { 12.06, 0.50, 20.39 },
+            { 14.29, 0.50, 20.39 },
+            { 16.72, 0.50, 20.39 },
+            { 18.94, 0.50, 20.39 },
+            { 21.37, 0.50, 20.39 },
+            { 23.58, 0.50, 20.39 },
+          }
+        end        
+        local rotMuster = { 0.00, 180.00, 0.00 }
+
+        if musterPile.type == "Card" then
+          musterPile.setRotation(rotMuster)
+          musterPile.setPositionSmooth(posMuster[1])
+          
+        elseif musterPile.type == "Deck" then
+          for i = 1, countMuster do
+            local musterCard = nil
+            for _, zoneObj in pairs(zoneFacedownMuster.getObjects()) do
+              if zoneObj.type == "Deck" then
+                musterCard = zoneObj.takeObject()
+                break
+              end
+              if zoneObj.type == "Card" then
+                musterCard = zoneObj
+                break
+              end
+            end
+            if musterCard then
+              musterCard.setRotation(rotMuster)
+              musterCard.setPosition(posMuster[i])
+            end
+          end
+        end
+      end
+      
+      -- broadcast to manually perform Purchase & Attack steps, then End Turn
+    end
+
+  end, 1)
 end -- end setBoard()
 
 

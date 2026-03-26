@@ -87,3 +87,113 @@ function discardAICard(isRandom)
 
   end, 1)
 end -- discardAICard()
+
+
+function gainAIResources()
+  -- this function will check all potential AI resource generators, apply, and broadcast
+  local _, topFaction = getPlayerAreas()
+  local _, topColor = getPlayerColors()
+  local broadcastStr = "[" .. Color.fromString(topColor):toHex() .. "]*[-] Step II: Gain Resources - [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] gains:"
+
+  local totalResourceCount = 0
+
+  -- check force for 1
+  local forceResourceCount = 0
+  local trackerForce = getObjectbyName("Force Tracker")
+  local posTrackerForce = trackerForce.getPosition()
+  if posTrackerForce.z > 8.0 then
+    forceResourceCount = 1
+    broadcastStr = broadcastStr .. "\nForce: 1"
+  end
+
+  -- check shuttle pile
+  local shuttleResourceCount = 0
+  local zoneShuttles = getObjectbyName("Zone Leaders Shuttles")
+  for _, zoneObj in pairs(zoneShuttles.getObjects()) do
+    if zoneObj.type == "Deck" then
+      shuttleResourceCount = #zoneObj.getObjects()
+      broadcastStr = broadcastStr .. "\nShuttles: " .. shuttleResourceCount
+    end
+  end
+
+  -- check play area
+  local inPlayResourceCount = 0
+  local zoneAIPlay = getObjectbyName("Zone Leaders Ships")
+  for _, zoneObj in pairs(zoneAIPlay.getObjects()) do
+    if zoneObj.type == "Deck" then
+      for _, deckObj in pairs(zoneObj.getObjects()) do
+        local cardResource = cardData[deckObj.name].produce
+        if cardResource > 0 then
+          inPlayResourceCount = inPlayResourceCount + cardResource
+        end
+      end
+    end
+    if zoneObj.type == "Card" and zoneObj.hasTag('ai_owner') then
+      local cardResource = cardData[zoneObj.getName()].produce
+      inPlayResourceCount = inPlayResourceCount + cardResource
+    end
+  end
+  if inPlayResourceCount > 0 then
+    broadcastStr = broadcastStr .. "\nIn Play: " .. inPlayResourceCount
+  end
+
+  totalResourceCount = forceResourceCount + shuttleResourceCount + inPlayResourceCount
+  broadcastStr = broadcastStr .. "\nTotal AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] resources gained: " .. totalResourceCount
+
+  -- set board counter value
+  local counterAIResources = getObjectbyName("Resource Counter Board Top")
+  counterAIResources.call('setValue', totalResourceCount)
+
+  -- broadcast line with info for all 3
+  broadcastToAll(broadcastStr, "White")
+
+  -- wait 2 seconds, always, then run step III gain force
+  Wait.time(function()
+    gainAIForce()
+  end, 2)
+
+end -- end gainAIResources()
+
+
+function gainAIForce()
+  -- this function will check in play cards for force increase
+  -- increase force accordingly, then, broadcast
+  local _, topFaction = getPlayerAreas()
+  local _, topColor = getPlayerColors()
+  local broadcastStr = "[" .. Color.fromString(topColor):toHex() .. "]*[-] Step III: Gain Force - [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] gains:"
+  local trackerForce = getObjectbyName("Force Tracker")
+  local posTrackerForce = trackerForce.getPosition()
+  if posTrackerForce.z > 8.0 then
+    broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]*[-] Step III: Gain Force - No Force gained!")
+    return
+  end
+  local totalForce = 0
+  local checkZone = getObjectbyName("Zone Leaders Ships")
+  for _, zoneObj in pairs(checkZone.getObjects()) do
+    if zoneObj.type == "Deck" then
+      for _, deckObj in pairs(zoneObj.getObjects()) do
+        local cardForce = cardData[deckObj.name].force
+        if cardForce > 0 then
+          inPlayResourceCount = inPlayResourceCount + cardForce
+          broadcastStr = broadcastStr .. "\n" .. deckObj.name .. ": " .. cardForce
+        end
+      end
+    end
+    if zoneObj.type == "Card" and zoneObj.hasTag('ai_owner') then
+      local cardForce = cardData[zoneObj.getName()].force
+      totalForce = totalForce + cardForce
+      broadcastStr = broadcastStr .. "\n" .. zoneObj.name .. ": " .. cardForce
+    end
+  end
+
+  if totalForce < 1 then
+    broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]*[-] Step III: Gain Force - No Force gained!")
+  else
+    broadcastToAll(broadcastStr, "White")
+  end
+
+  -- wait 2 more seconds, broadcast to manually run steps IV & V
+  Wait.time(function()
+    broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]*[-] Manually perform AI Steps IV (Purchase) & V (Attack), then, use AI End Turn button when ready to run AI Step VI (End of Turn).")
+  end, 2)
+end -- end gainAIForce()

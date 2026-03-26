@@ -1,9 +1,7 @@
 -- this require page will contain the XML data and functions to manage the XML card buttons
 
 function initCardXML(card)
-
-  log("initCardXML(" .. card.getName() .. ") IS RUNNING")
-
+  -- this function handles the XML code injection to card objects
   local isBottom = card.hasTag("bottom_owner") and true or false
   local bottomColor, topColor = getPlayerColors()
   local buttonColor = isBottom and bottomColor or topColor
@@ -1699,11 +1697,6 @@ function initCardXML(card)
       table.insert(finalXML, abilityButtonXML["Ability Cancel"])
       table.insert(finalImg, abilityButtonImg["Ability Cancel"])
     end
-
-    -- log("\nfinalImg:")
-    -- log(finalImg)
-    -- log("\nfinalXML:")
-    -- log(finalXML)
 
     -- Apply XML & assets
     if #finalXML > 0 and #finalImg > 0 then

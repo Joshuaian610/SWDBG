@@ -668,7 +668,6 @@ function setupFaction(button, _, _)
       initialBase = deckBases.takeObject({guid=deckObj.guid})
     end
   end
-  if initialBase == nil then log("Starter Base not found in deck!!") return end
 
   deckBases.setLock(true)
   Wait.time(function() deckBases.setLock(false) end, 2)
@@ -862,7 +861,7 @@ function setupGame(button, _, _)
         tintObjTop[i].setColorTint(topColor)
       end
     end
-  end, 2) -- was previously 2 frames, revert if issue comes up
+  end) -- was previously 2 frames, revert if issue comes up
 
   -- place selected galaxy deck, remove other
   local deckPlacementGalaxy = nil
@@ -946,7 +945,7 @@ function setupGame(button, _, _)
       { 14.00, 0.75, 0.00 }
     }
     for i = 1, 6 do
-      local card = deckGalaxy.takeObject()      
+      local card = deckGalaxy.takeObject()
       Wait.frames(function() rotateDealtCard(card, posDeal[i]) end)
     end
 
@@ -1204,6 +1203,9 @@ function setupGame(button, _, _)
 
   if isAI then
     rotTracker = { 0, 180, 0 }
+    for i = 1, 9 do
+      tintObjTop[i].setColorTint(topColor)
+    end
   end
 
   turnTracker.setRotation(rotTracker)
@@ -1245,7 +1247,6 @@ end -- end setupGame()
 
 
 function setupAIPlayArea(faction)
-  log("setupAIPlayArea("..faction..") IS RUNNING")
 
   -- set up solo snap points
   local snapboardMP = getObjectbyName("Top Snapboard MP")
@@ -1274,7 +1275,6 @@ function setupAIPlayArea(faction)
         leaderBoard = bagLeaders.takeObject({guid = bagObj.guid})
       end
     end
-    if leaderBoard == nil then log("setupAIPlayArea() leaderBoard not found in BD Droid bag!") return end
     
     Wait.frames(function()
       leaderBoard.setLock(true)
@@ -1295,7 +1295,6 @@ function setupAIPlayArea(faction)
         mandalorianLeaderSelectPanel = bagLeaders.takeObject({ guid = bagObj.guid })
       end
     end
-    if mandalorianLeaderSelectPanel == nil then log("setupAIPlayArea() mandalorianLeaderSelectPanel not found in BD Droid bag!") return end
 
     Wait.frames(function()
       mandalorianLeaderSelectPanel.setLock(true)
@@ -1320,7 +1319,6 @@ function selectBoKatan()
       leaderBoard = bagLeaders.takeObject({guid = bagObj.guid})
     end
   end
-  if leaderBoard == nil then log("setupAIPlayArea() leaderBoard not found in BD Droid bag!") return end
   
   Wait.frames(function()
     leaderBoard.setLock(true)
@@ -1346,7 +1344,6 @@ function selectTheMandalorian()
       leaderBoard = bagLeaders.takeObject({guid = bagObj.guid})
     end
   end
-  if leaderBoard == nil then log("setupAIPlayArea() leaderBoard not found in BD Droid bag!") return end
   
   Wait.frames(function()
     leaderBoard.setLock(true)
@@ -1360,14 +1357,15 @@ function selectTheMandalorian()
 end -- end selectTheMandalorian()
 
 
-function setupAIBoard(faction, factionLeader)  
+function setupAIBoard(faction, factionLeader)
   
   -- pull troopers from starter deck, place to start
+  local leaderName = nil
   local deckStarter = getObjectbyName(faction .. " Deck")
   local rotTrooper1 = { 0.00, 180.00, 0.00 }
-  local posTrooper1 = { 2.77, 0.15, 20.39 } -- muster area, faceup
-  local rotTrooper2 = { 0.00, 180.00, 180.00 }
-  local posTrooper2 = { -1.88, 0.25, 20.39 } -- muster area, facedown  
+  local posTrooper1 = getTurn() == "Top" and {-1.87, 0.15, 13.90} or {2.77, 0.15, 20.39}
+  local rotTrooper2 = getTurn() == "Top" and { 0.00, 180.00, 0.00 } or { 0.00, 180.00, 180.00 }
+  local posTrooper2 = getTurn() == "Top" and {2.77, 0.15, 20.39} or {-1.87, 0.15, 20.39}
   local trooperNames = {
     ["Empire"]       = "Stormtrooper",
     ["Rebellion"]    = "Rebel Trooper",
@@ -1386,6 +1384,7 @@ function setupAIBoard(faction, factionLeader)
   end
   Wait.frames(function()
     if trooper1 then
+      trooper1.addTag('ai_owner')
       trooper1.setRotation(rotTrooper1)
       trooper1.setPositionSmooth(posTrooper1, false, true)
     end
@@ -1400,6 +1399,7 @@ function setupAIBoard(faction, factionLeader)
   end
   Wait.frames(function()
     if trooper2 then
+      trooper2.addTag('ai_owner')
       trooper2.setRotation(rotTrooper2)
       trooper2.setPositionSmooth(posTrooper2, false, true)
     end
@@ -1419,6 +1419,7 @@ function setupAIBoard(faction, factionLeader)
       end
     end
     Wait.frames(function()
+      shuttle.addTag('ai_owner')
       shuttle.setRotation(rotShuttles)
       shuttle.setPosition(posShuttles, false, true)
     end)
@@ -1453,6 +1454,7 @@ function setupAIBoard(faction, factionLeader)
         end
       end      
       Wait.frames(function()
+        shuttle.addTag('ai_owner')
         shuttle.setRotation(rotReserves)
         shuttle.setPosition(posReserves[i])
       end)
@@ -1468,8 +1470,8 @@ function setupAIBoard(faction, factionLeader)
           break
         end
       end
-      if companion == nil then log("setupAIBoard() companion not found") return end
       Wait.frames(function()
+        companion.addTag('ai_owner')
         companion.setRotation(rotReserves)
         companion.setPosition(posReserves[4])
       end)
@@ -1491,8 +1493,8 @@ function setupAIBoard(faction, factionLeader)
         break
       end
     end
-    if agent == nil then log("setupAIBoard() agent not found") return end
     Wait.frames(function()
+      agent.addTag('ai_owner')
       agent.setRotation(rotReserves)
       agent.setPosition(posReserves[5])
     end)
@@ -1507,8 +1509,8 @@ function setupAIBoard(faction, factionLeader)
           lastShuttle = zoneObj
         end
       end
-      if lastShuttle == nil then log("setupAIBoard() lastShuttle not found") return end
       Wait.frames(function()
+        lastShuttle.addTag('ai_owner')
         lastShuttle.setRotation(rotReserves)
         lastShuttle.setPosition(posReserves[6])
       end)
@@ -1535,8 +1537,7 @@ function setupAIBoard(faction, factionLeader)
       ["Separatist"] = "Asajj Ventress",
       ["Rebellion"]  = "Luke Skywalker",
       ["Republic"]   = "Anakin Skywalker",
-    }
-    local leaderName = nil
+    }    
     if faction ~= "Mandalorian" then
       leaderName = leaderNames[faction]
     else
@@ -1549,7 +1550,6 @@ function setupAIBoard(faction, factionLeader)
         leader = deckGalaxy.takeObject({guid = deckObj.guid})
       end
     end
-    if leader == nil then log("setupAIBoard() leader not found") return end
     local rotLeader = { 0.00, 180.00, 0.00 }
     local posLeader = { -7.70, 0.60, 16.67 }
     Wait.frames(function()
@@ -1573,7 +1573,6 @@ function setupAIBoard(faction, factionLeader)
 
   -- get, position, lock starter base  
   local starterBase = getObjectbyName(starterBaseName)
-  if not starterBase then log("setupAIBoard() starterBase not found") return end
 
   starterBase.setLock(true)
   starterBase.setRotation( rotStarterBase)
@@ -1760,6 +1759,10 @@ function setupAIBoard(faction, factionLeader)
     -- tint leaderboard
     getObjectbyName("Leaders Card " .. faction).setColorTint(topColor)
 
+    -- mark leaderboard with current leader GMNote
+    getObjectbyName("Leaders Card " .. faction).setGMNotes(leaderName)
+    
+
     -- place muster pad, reimage, tint
     local musterPadName = "Facedown Muster Pad " .. faction
     local musterPad = nil
@@ -1783,5 +1786,21 @@ function setupAIBoard(faction, factionLeader)
     
     -- wait 3 seconds, unlock starter base
     Wait.time(function() starterBase.setLock(false) end, 3)
+
+    -- wait 2 seconds, fire the step 2 resource gain stuff
+    local currentTurn = getTurn()
+    if currentTurn == "Top" then
+      Wait.time(function()
+        local _, topFaction = getPlayerAreas()
+        local _, topColor = getPlayerColors()
+        broadcastToAll("[" .. Color.fromString(topColor):toHex() .. "]*[-] Step I: AI [" .. Color.fromString(topColor):toHex() .. "]" .. topFaction .. "[-] turn has begun!")
+      end, 4.1)
+      -- gain resources - shuttle count, resources in play, broadcast
+      Wait.time(function()
+
+        gainAIResources()
+
+      end, 5)
+    end
     
 end -- end setupAIBoard()
