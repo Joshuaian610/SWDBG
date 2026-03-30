@@ -1190,7 +1190,6 @@ function purchaseCard(button, playerColor, altClick)
 
     end
   end
-
   local currentResources = counter.getVar('val')
   local cardObj = nil
   local cardCost = nil
@@ -1262,6 +1261,7 @@ function purchaseCard(button, playerColor, altClick)
         else
           cardInZone = true
           cardObj = zoneObj.takeObject()
+          Wait.frames(function() cardObj.addTag('just_bought') end)
           cardCost = 0
           baseCardCost = 2
         end

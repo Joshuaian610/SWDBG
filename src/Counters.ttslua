@@ -466,7 +466,7 @@ function handleResourceCounter(self)
   end
 
   -- if not AI, sync counter
-  if not isAI and counterpart ~= nil then
+  if isBottom or (not isBottom and not isAI) and counterpart ~= nil then
     setCounterpartValue(val, counterpart)
   end
   -- otherwise if AI, move resource tracker cube

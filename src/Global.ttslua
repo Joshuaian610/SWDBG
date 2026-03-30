@@ -386,10 +386,8 @@ function onObjectEnterZone(zone, obj)
   end
 
   if zone == getObjectbyName("Zone Leaders Facedown Muster") then
-    if not obj.hasTag('ai_owner') then
+    if not obj.hasTag('ai_owner') and not obj.hasTag('bottom_owner') and not obj.hasTag('top_owner') then
       obj.addTag('ai_owner')
-      obj.removeTag('bottom_owner')
-      obj.removeTag('top_owner')
     end
   end
 
@@ -408,9 +406,8 @@ function onObjectEnterZone(zone, obj)
     local currentValue = 0
 
     toAddResource = cardData[obj.getName()].produce
-
-    if (obj.hasTag('bottom_owner') or (obj.hasTag('top_owner') and not isAI) and not obj.hasTag('just_bought')) and obj.type == "Card" then
-
+    
+    if (obj.hasTag('bottom_owner') or (obj.hasTag('top_owner') and not isAI)) and not obj.hasTag('just_bought') and obj.type == "Card" then
       if obj.hasTag('bottom_owner') then
         counterPlayer = counterResourceBottom
         counterBoard = counterResourceBoardBottom

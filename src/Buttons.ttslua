@@ -1195,8 +1195,8 @@ function primaryButtonAction(button, playercolor)
       if metConditionHondo then
         broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .."[-] has met [b]Hondo Ohnaka[/b] ability condition, and draws a card.", "White")
         dealCard(area, 1)
-        metConditionHondo = false
         button.highlightOff()
+        metConditionHondo = false
       else
         broadcastToAll(prefix .. "[" .. Color.fromString(playerColor):toHex() .. "]" .. faction .. "[-] has not met [b]Hondo Ohnaka[/b] ability condition, no card drawn.", "White")
       end
@@ -2441,6 +2441,13 @@ function primaryButtonAction(button, playercolor)
     removeAbilityButtons(button)
   end
 
+  -- Hondo ability is a trigger, can be used multiple times - reform button after use
+  Wait.time(function()
+    if cardName == "Hondo Ohnaka" then
+      initCardXML(button)
+    end
+  end, 1)
+
   if cardName == "Temple Guardian" or cardName == "Inquisitor" or cardName == "Jedi Knight" or
   cardName == "Dark Side Agent" or cardName == "Lobot" or cardName == "Zam Wesell" then
     removeForceButtons(button)
@@ -2449,8 +2456,8 @@ function primaryButtonAction(button, playercolor)
   if button.hasTag('ship') then initShipCounter(button, button.getVar('val')) end
 
   -- add 'used_ability' tag, used to detect current state of XML buttons onload, rewind etc
-  -- axe woves goes direct back to galaxy deck, should not get this tag
-  if button.getName() ~= "Axe Woves" then button.addTag('used_ability') end
+  -- axe woves goes direct back to galaxy deck, should not get this tag, Hondo Ohnaka ability is a trigger, can be used multiple times
+  if button.getName() ~= "Axe Woves" and button.getName() ~= "Hondo Ohnaka" then button.addTag('used_ability') end
 
   -- create cancel buttons on requiring cards
   -- if cardName == 'Grand Moff Tarkin' or cardName == 'Princess Leia' or
