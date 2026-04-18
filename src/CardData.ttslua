@@ -1120,7 +1120,7 @@ cardData                        = {
 
   ["Twi'lek Smuggler"]          = {
     cost                        = 3,
-    produce                     = 0,
+    produce                     = 3,
     force                       = 0,
     fight                       = 0,
     faction                     = "Neutral",
