@@ -1467,7 +1467,7 @@ function primaryButtonAction(button, playercolor)
           discardAICard(false)
         else
           broadcastToAll(prefix .. "[b]Duros Spy[/b] ability used: AI [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] chooses for you to gain +1 Force.", "White")
-          moveForceTrack(buttonForceBottom, 1)
+          moveForceTrack(getObjectbyName("Button Force Bottom"), 1)
         end
       end
 
@@ -1557,12 +1557,14 @@ function primaryButtonAction(button, playercolor)
         broadcastToAll(prefix .. "[b]B-Wing[/b] ability used, [" .. Color.fromString(opponentColor):toHex() .. "]" .. opponentFaction .. "[-] must decide to discard a card from hand, or, [b]B-Wing[/b] gains 2 damage.", "White")
       else
         local posBase = nil
-        for _, zoneObj in pairs(zoneBase.getObjects()) do
-          if zoneObj.hasTag('empire_base') or zoneObj.hasTag('rebel_base') or
-          zoneObj.hasTag('separatist_base') or zoneObj.hasTag('republic_base') then
+        for _, zoneObj in pairs(getObjectbyName("Zone Leaders Bases").getObjects()) do
+          if (zoneObj.hasTag('empire_base') or zoneObj.hasTag('rebel_base') or
+          zoneObj.hasTag('separatist_base') or zoneObj.hasTag('republic_base') or zoneObj.hasTag('mandalorian_base')) and
+          zoneObj.type == "Card" and not zoneObj.is_face_down then
             posBase = zoneObj.getPosition()
           end
         end
+
         if posBase == nil then
           broadcastToAll(prefix .. "[b]B-Wing[/b] ability used, but scripting is unable to determine position of AI base stack, and thus, how many AI bases are left. Perform [b]B-Wing[/b] ability manually per Original Leaders ruleset.", "White")
         else
