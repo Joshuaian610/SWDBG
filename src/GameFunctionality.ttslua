@@ -1305,10 +1305,12 @@ function purchaseCard(button, playerColor, altClick)
     currentFaction = artAssetTop.getGMNotes()
     enemyFaction   = artAssetBottom.getGMNotes()
   end
-  
+
   ownerTag = isBottom and "bottom_owner" or "top_owner"
   if isAI and not isBottom then
     ownerTag = "ai_owner"
+    counter = getObjectbyName("Resource Counter Board Top")
+    currentResources = counter.getVar('val')
   end
   for _, tag in pairs(cardTags) do
     if tag == enemyFaction then
@@ -1320,7 +1322,7 @@ function purchaseCard(button, playerColor, altClick)
   -- determine cost of card and current player's resource total,
   -- then end the function if not enough resources to pay for card
   local newTotal = nil
-  
+
   -- handle Underworld Contact purchase action
   if (nextCardContact or nextCardDoubleContact) and cardObj.hasTag('neutral') then
     local originalCardCost = cardCost
